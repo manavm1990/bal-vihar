@@ -8,18 +8,18 @@
   "editor.bracketPairColorization.enabled": true,
   "editor.linkedEditing": true,
   "editor.wordWrap": "wordWrapColumn",
-  
+
   "files.autoSave": "onFocusChange",
   "html.autoClosingTags": true,
-  
+
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.inlayHints.parameterNames.enabled": "none",
   "typescript.inlayHints.variableTypes.enabled": false,
   "typescript.updateImportsOnFileMove.enabled": "always",
   "typescript.validate.enable": true,
-  
+
   "css.validate": false,
-  
+
   "eslint.validate": ["typescript", "typescriptreact"],
   "eslint.rules.customizations": [
     {
@@ -46,5 +46,6 @@
   },
   "[jsonc]": {
     "editor.formatOnSave": true
-  }
-}                                                                                                                                                                    
+  },
+  "cSpell.words": ["Balvihar"]
+}

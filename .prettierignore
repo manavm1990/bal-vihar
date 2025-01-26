@@ -1,0 +1,9 @@
+.tmp
+**/.git
+**/build
+**/dist/**
+**/node_modules
+**/temp
+tsconfig.json
+payload-types.ts
+tsconfig.tsbuildinfo
