@@ -6,7 +6,6 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
-    
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -18,7 +17,6 @@
     "verbatimModuleSyntax": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    
     /* Next.js Specific */
     "jsx": "preserve",
     "plugins": [
@@ -33,7 +31,6 @@
       "@types/*": ["./types/*"],
       "@payload/*": ["./payload/*"]
     },
-    
     /* Build Options */
     "noEmit": true,
     "isolatedModules": true,
