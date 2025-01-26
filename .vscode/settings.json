@@ -1,0 +1,50 @@
+{
+  "npm.packageManager": "bun",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingComments": "always",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.linkedEditing": true,
+  "editor.wordWrap": "wordWrapColumn",
+  
+  "files.autoSave": "onFocusChange",
+  "html.autoClosingTags": true,
+  
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.inlayHints.parameterNames.enabled": "none",
+  "typescript.inlayHints.variableTypes.enabled": false,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.validate.enable": true,
+  
+  "css.validate": false,
+  
+  "eslint.validate": ["typescript", "typescriptreact"],
+  "eslint.rules.customizations": [
+    {
+      "rule": "*",
+      "severity": "warn"
+    }
+  ],
+
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+
+  "[javascript][typescript][typescriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "addMissingImports": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  "[json]": {
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.formatOnSave": true
+  }
+}                                                                                                                                                                    
