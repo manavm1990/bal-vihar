@@ -14,8 +14,9 @@ const rozhaOne = Rozha_One({
 })
 
 export const metadata = {
-  title: 'Balvihar St. Louis',
-  description: 'Hindu Cultural Education Program in St. Louis',
+  title: 'Center for Indian Cultural Education – Bal Vihar of St. Louis',
+  description:
+    'Balvihar, St. Louis, Saint Louis, India, Indian culture, ethnicity, children, Center for Indian Cultural Education, Annual Gala Event, Bal Vihar of St. Louis, Asian India, Bal Vihar, St. Louis Kids, St. Louis Community Projects, Holi, Diwali, Republic Day',
 }
 
 export default function RootLayout({
