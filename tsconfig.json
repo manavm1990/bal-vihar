@@ -29,20 +29,14 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@app/*": [
-        "./app/*"
+      "@components/*": [
+        "./app/components/*"
       ],
       "@lib/*": [
-        "./lib/*"
+        "./app/lib/*"
       ],
       "@types/*": [
-        "./types/*"
-      ],
-      "@payload/*": [
-        "./payload/*"
+        "./app/types/*"
       ]
     },
     /* Build Options */
