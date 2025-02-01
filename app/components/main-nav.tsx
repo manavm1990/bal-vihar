@@ -125,14 +125,14 @@ export default function MainNav() {
   return (
     <nav>
       <NavigationMenu.Root className="relative">
-        <NavigationMenu.List className="flex items-center gap-8">
+        <NavigationMenu.List className="flex items-center gap-4">
           {NAVIGATION.map((item) => (
             <NavigationMenu.Item key={item.name} className="relative">
               <NavigationMenu.Trigger className="group flex items-center gap-1 p-4 text-sm font-medium">
                 {item.name}
                 <ChevronDownIcon className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
               </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight absolute top-full left-1/2 -translate-x-1/2 rounded-lg bg-white p-4 shadow-lg">
+              <NavigationMenu.Content className="data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight absolute top-full left-1/2 -translate-x-1/2 bg-white">
                 <SubMenu items={item.items} />
               </NavigationMenu.Content>
             </NavigationMenu.Item>
@@ -154,7 +154,7 @@ interface SubMenuProps {
 function SubMenu({ items, defaultValue = 'overview' }: SubMenuProps) {
   return (
     <NavigationMenu.Sub defaultValue={defaultValue}>
-      <NavigationMenu.List className="grid min-w-[400px] grid-cols-2 gap-x-8 gap-y-1">
+      <NavigationMenu.List className="grid min-w-max grid-cols-2 gap-x-4 gap-y-1 shadow">
         {items.map((item) => (
           <NavigationMenu.Item key={item.name}>
             <Link href={item.link} className="block rounded-lg p-3 text-sm hover:bg-blue-50">
