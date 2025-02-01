@@ -34,7 +34,7 @@ export default function DesktopNav() {
                 {item.name}
                 <ChevronDownIcon className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
               </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight absolute top-full left-1/2 -translate-x-1/2 bg-white">
+              <NavigationMenu.Content className="data-[motion=from-start]:animate-enter-from-left data-[motion=from-end]:animate-enter-from-fight data-[motion=to-start]:animate-exit-to-left data-[motion=to-end]:animate-exit-to-right absolute top-full left-1/2 -translate-x-1/2 bg-white">
                 <SubMenu items={item.items} />
               </NavigationMenu.Content>
             </NavigationMenu.Item>
