@@ -23,7 +23,7 @@ function Link({ href, ...props }: LinkProps) {
   )
 }
 
-export default function MainNav() {
+export default function DesktopNav() {
   return (
     <nav className="hidden xl:block">
       <NavigationMenu.Root className="relative">
