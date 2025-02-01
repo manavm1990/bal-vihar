@@ -25,9 +25,9 @@ function Link({ href, ...props }: LinkProps) {
 
 export default function MainNav() {
   return (
-    <nav className="hidden lg:block">
+    <nav className="hidden xl:block">
       <NavigationMenu.Root className="relative">
-        <NavigationMenu.List className="flex items-center gap-4">
+        <NavigationMenu.List className="flex items-center">
           {NAVIGATION.map((item) => (
             <NavigationMenu.Item key={item.name} className="relative">
               <NavigationMenu.Trigger className="group flex items-center gap-1 p-4 text-sm font-medium">

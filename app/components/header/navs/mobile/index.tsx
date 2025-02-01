@@ -72,7 +72,7 @@ export default function MobileNav() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="absolute top-2 left-2 p-2 text-gray-600 hover:text-gray-900 lg:hidden"
+        className="absolute top-2 left-2 p-2 text-gray-600 hover:text-gray-900 xl:hidden"
       >
         {isOpen ? <XIcon className="h-6 w-6" /> : <HamburgerMenuIcon className="h-6 w-6" />}
       </button>
@@ -83,7 +83,7 @@ export default function MobileNav() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/20 lg:hidden"
+            className="fixed inset-0 bg-black/20 xl:hidden"
             onClick={() => setIsOpen(false)}
           />
         )}
@@ -94,7 +94,7 @@ export default function MobileNav() {
         initial="closed"
         animate={isOpen ? 'open' : 'closed'}
         variants={MENU_VARIANTS}
-        className="fixed top-0 bottom-0 left-0 z-10 w-full max-w-xs overflow-y-auto bg-white shadow-lg lg:hidden"
+        className="fixed top-0 bottom-0 left-0 z-10 w-full max-w-xs overflow-y-auto bg-white shadow-lg xl:hidden"
       >
         <div className="border-b p-4">
           <button
