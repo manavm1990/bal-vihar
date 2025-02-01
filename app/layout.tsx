@@ -1,3 +1,4 @@
+import MainNav from '@components/main-nav'
 import { Poppins, Rozha_One } from 'next/font/google'
 import './globals.css'
 
@@ -26,7 +27,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${rozhaOne.variable} font-sans`}>{children}</body>
+      <body className={`${poppins.variable} ${rozhaOne.variable} font-sans`}>
+        <MainNav />
+        {children}
+      </body>
     </html>
   )
 }
