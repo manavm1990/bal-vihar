@@ -33,7 +33,6 @@ export default [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   ...tseslint.configs.strict.filter(removeTypeScriptESLintPlugin),
   ...tseslint.configs.stylistic.filter(removeTypeScriptESLintPlugin),
-  perfectionist.configs['recommended-alphabetical'],
   eslintConfigPrettier,
   {
     ignores: [...defaultESLintIgnores],
