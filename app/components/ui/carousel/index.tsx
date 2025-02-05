@@ -1,3 +1,29 @@
+/**
+ * * This carousel uses React Context in a unique way - not for global state,
+ * but for flexible component composition. While all components are defined
+ * in one file, Context allows the carousel to be used in different layouts:
+ *
+ * @example Horizontal hero carousel with custom nav placement
+ * <Carousel>
+ *   <CarouselContent>
+ *     <CarouselItem>1</CarouselItem>
+ *   </CarouselContent>
+ *   <div className="flex justify-between">
+ *     <CarouselPrevious className="relative left-0" />
+ *     <CarouselNext className="relative right-0" />
+ *   </div>
+ * </Carousel>
+ *
+ * @example Vertical sidebar carousel
+ * <Carousel orientation="vertical">
+ *   <CarouselPrevious className="mx-auto" />
+ *   <CarouselContent>
+ *     <CarouselItem>1</CarouselItem>
+ *   </CarouselContent>
+ *   <CarouselNext className="mx-auto" />
+ * </Carousel>
+ */
+
 'use client'
 
 import { cn } from '@lib/utils'
@@ -9,29 +35,23 @@ import { Button } from '../button'
 import { useCarousel } from './use-carousel'
 
 type CarouselApi = UseEmblaCarouselType[1]
-type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
-type CarouselOptions = UseCarouselParameters[0]
-type CarouselPlugin = UseCarouselParameters[1]
-
+type CarouselContextProps = ReturnType<typeof useCarousel> &
+  Pick<CarouselProps, 'opts' | 'orientation'>
 interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   opts?: CarouselOptions
-  plugins?: CarouselPlugin
   orientation?: 'horizontal' | 'vertical'
   setApi?: (api: CarouselApi) => void
   ref?: React.Ref<HTMLDivElement>
 }
-
-type CarouselContextProps = ReturnType<typeof useCarousel> &
-  Pick<CarouselProps, 'opts' | 'orientation'>
+type CarouselOptions = UseCarouselParameters[0]
+type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null)
 
 function useCarouselContext() {
   const context = React.useContext(CarouselContext)
 
-  if (!context) {
-    throw new Error('useCarousel must be used within a <Carousel />')
-  }
+  if (!context) throw new Error('useCarousel must be used within a <Carousel />')
 
   return context
 }
@@ -40,7 +60,6 @@ const Carousel = ({
   orientation = 'horizontal',
   opts,
   setApi,
-  plugins,
   className,
   children,
   ref,
@@ -50,7 +69,6 @@ const Carousel = ({
     orientation,
     opts,
     setApi,
-    plugins,
   })
 
   return (
@@ -75,6 +93,11 @@ const Carousel = ({
   )
 }
 
+/**
+ * `CarouselContent` and `CarouselItem` components get orientation
+ * and other carousel state from Context instead of props,
+ * making them more flexible to position and style
+ */
 const CarouselContent = React.memo(
   ({
     className,
@@ -98,7 +121,6 @@ const CarouselContent = React.memo(
     )
   },
 )
-
 const CarouselItem = React.memo(
   ({
     className,
@@ -127,6 +149,10 @@ interface ButtonProps extends React.ComponentProps<typeof Button> {
   ref?: React.Ref<HTMLButtonElement>
 }
 
+/**
+ * Navigation buttons can be positioned anywhere in the carousel
+ * while maintaining access to scroll controls via Context.
+ */
 const CarouselPrevious = React.memo(
   ({ className, variant = 'outline', size = 'icon', ref, ...props }: ButtonProps) => {
     const { orientation, scrollPrev, canScrollPrev } = useCarouselContext()

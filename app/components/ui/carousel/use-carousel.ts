@@ -1,40 +1,30 @@
+import Autoplay from 'embla-carousel-autoplay'
 import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react'
 import * as React from 'react'
 
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
 type CarouselOptions = UseCarouselParameters[0]
-type CarouselPlugin = UseCarouselParameters[1]
 
 interface UseCarouselProps {
+  is2AutoPlay?: boolean
   opts?: CarouselOptions
-  plugins?: CarouselPlugin
   orientation?: 'horizontal' | 'vertical'
   setApi?: (api: CarouselApi) => void
 }
 
-interface UseCarouselReturn {
-  carouselRef: ReturnType<typeof useEmblaCarousel>[0]
-  api: ReturnType<typeof useEmblaCarousel>[1]
-  scrollPrev: () => void
-  scrollNext: () => void
-  canScrollPrev: boolean
-  canScrollNext: boolean
-  handleKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => void
-}
-
 export function useCarousel({
+  is2AutoPlay = true,
   orientation = 'horizontal',
   opts,
   setApi,
-  plugins,
-}: UseCarouselProps): UseCarouselReturn {
+}: UseCarouselProps) {
   const [carouselRef, api] = useEmblaCarousel(
     {
       ...opts,
       axis: orientation === 'horizontal' ? 'x' : 'y',
     },
-    plugins,
+    is2AutoPlay ? [Autoplay({ delay: 2000, stopOnMouseEnter: true })] : [],
   )
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
   const [canScrollNext, setCanScrollNext] = React.useState(false)
