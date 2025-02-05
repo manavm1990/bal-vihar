@@ -10,11 +10,31 @@ import {
 import Image from 'next/image'
 
 const IMAGES = [
-  { src: '/hero/canstruction.jpg', alt: '', caption: 'Canstruction' },
-  { src: '/hero/2014-republic-day.jpeg', alt: '', caption: '2014 Republic Day' },
-  { src: '/hero/2015-diwali.jpg', alt: '', caption: '2015 Diwali' },
-  { src: '/hero/2016-canstruction.jpg', alt: '', caption: '2016 Canstruction' },
-  { src: '/hero/canstruction-team.jpg', alt: '', caption: 'Canstruction Volunteers' },
+  {
+    src: 'https://d8n3.c1.e2-8.dev/bal-vihar/hero%2F2014-republic-day.jpeg',
+    alt: '',
+    caption: 'Canstruction',
+  },
+  {
+    src: 'https://d8n3.c1.e2-8.dev/bal-vihar/hero%2F2015-diwali.jpg',
+    alt: '',
+    caption: '2014 Republic Day',
+  },
+  {
+    src: 'https://d8n3.c1.e2-8.dev/bal-vihar/hero%2F2015-diwali.jpg',
+    alt: '',
+    caption: '2015 Diwali',
+  },
+  {
+    src: 'https://d8n3.c1.e2-8.dev/bal-vihar/hero%2F2016-canstruction.jpg',
+    alt: '',
+    caption: '2016 Canstruction',
+  },
+  {
+    src: 'https://d8n3.c1.e2-8.dev/bal-vihar/hero%2Fcanstruction-team.jpg',
+    alt: '',
+    caption: 'Canstruction Volunteers',
+  },
 ] as const
 
 export function HeroCarousel() {
