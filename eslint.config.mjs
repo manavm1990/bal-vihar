@@ -2,6 +2,7 @@ import { FlatCompat } from '@eslint/eslintrc'
 import payloadEsLintConfig from '@payloadcms/eslint-config'
 import payloadPlugin from '@payloadcms/eslint-plugin'
 import eslintConfigPrettier from 'eslint-config-prettier'
+import perfectionist from 'eslint-plugin-perfectionist'
 import eslintPluginUseEncapsulation from 'eslint-plugin-use-encapsulation'
 import { dirname } from 'path'
 import tseslint from 'typescript-eslint'
@@ -32,6 +33,7 @@ export default [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   ...tseslint.configs.strict.filter(removeTypeScriptESLintPlugin),
   ...tseslint.configs.stylistic.filter(removeTypeScriptESLintPlugin),
+  perfectionist.configs['recommended-alphabetical'],
   eslintConfigPrettier,
   {
     ignores: [...defaultESLintIgnores],
@@ -39,10 +41,16 @@ export default [
       globals: {
         React: true,
       },
+      parser: tseslint.parser,
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: __dirname,
+      },
     },
     plugins: {
       payload: payloadPlugin,
       'use-encapsulation': eslintPluginUseEncapsulation,
+      perfectionist,
     },
     rules: {
       // Payload rules
@@ -137,7 +145,6 @@ export default [
       'no-array-constructor': 'error',
       'no-new-object': 'error',
 
-      // React & Next.js
       '@next/next/no-page-custom-font': 'off',
       'react/no-unescaped-entities': 'off',
       'use-encapsulation/prefer-custom-hooks': 'error',
