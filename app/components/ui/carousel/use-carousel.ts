@@ -25,7 +25,7 @@ export function useCarousel({
       axis: orientation === 'horizontal' ? 'x' : 'y',
       loop: true,
     },
-    is2AutoPlay ? [Autoplay({ delay: 6000, stopOnMouseEnter: true })] : [],
+    is2AutoPlay ? [Autoplay({ delay: 6000, stopOnMouseEnter: true, stopOnLastSnap: true })] : [],
   )
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
   const [canScrollNext, setCanScrollNext] = React.useState(false)
