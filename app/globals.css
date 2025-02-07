@@ -200,3 +200,5 @@
     @apply font-rozha-one;
   }
 }
+
+@custom-variant pointer-coarse (@media (pointer: coarse));
