@@ -1,3 +1,4 @@
+import * as motion from 'motion/react-client'
 import NextLink from 'next/link'
 
 interface Link {
@@ -12,29 +13,60 @@ const LINKS: Link[] = [
     type: 'external',
     href: 'https://www.paypal.com/donate?token=KqgZfvm9eCAmtzt-y3rla1Ahp-At4bwhJtvmxmnKSfs3xVsO5MCT8286Mkyi0TVh0yr8b69IdBcYk_6-&locale.x=US',
     text: 'Donate',
-    className: 'bg-primary/85',
+    className: 'bg-primary/80',
   },
   {
     type: 'internal',
     href: '/sponsors',
     text: 'Sponsor',
-    className: 'bg-foreground/95 text-white',
+    className: 'bg-foreground/80 text-white',
   },
   {
     type: 'internal',
     href: '/contact-us',
     text: 'Contact Us',
-    className: 'bg-tertiary/85 text-white',
+    className: 'bg-tertiary/80 text-white',
   },
 ] as const
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.3,
+    },
+  },
+}
+
+const item = {
+  hidden: { x: 100, opacity: 0 },
+  show: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+      damping: 12,
+    },
+  },
+}
+
 export default function QuickLinks() {
   return (
-    <section className="fixed right-0 z-10 mt-4 flex flex-col gap-y-4">
+    <motion.section
+      className="fixed right-0 bottom-4 z-10 mt-4 flex flex-col gap-4"
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
       {LINKS.map((link) => (
-        <Link key={link.text} {...link} />
+        <motion.div key={link.text} className="flex justify-end" variants={item}>
+          <Link {...link} />
+        </motion.div>
       ))}
-    </section>
+    </motion.section>
   )
 }
 

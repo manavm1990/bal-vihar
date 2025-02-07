@@ -1,4 +1,5 @@
 import Header from '@components/header'
+import QuickLinks from '@components/quick-links'
 import { Poppins, Rozha_One } from 'next/font/google'
 import './globals.css'
 
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${rozhaOne.variable} font-sans`}>
+        <QuickLinks />
         <Header />
         {children}
       </body>
