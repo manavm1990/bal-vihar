@@ -1,7 +1,7 @@
 'use client'
 
 import { ChevronDownIcon, HamburgerMenuIcon, Cross1Icon as XIcon } from '@radix-ui/react-icons'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'motion/react'
 import Link from 'next/link'
 import { NAVIGATION } from '../constants'
 import useMobile from './use-mobile'
