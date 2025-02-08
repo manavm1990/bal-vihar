@@ -77,7 +77,7 @@ function Link({ type, href, text, className }: Link) {
   return (
     <Component
       href={href}
-      className={`${className} ml-auto py-2 pr-4 pl-8 text-xs [clip-path:polygon(0_0%,100%_0%,100%_100%,8%_100%)]`}
+      className={`${className} ml-auto py-2 pr-4 pl-8 text-xs [clip-path:polygon(100%_4%,100%_96%,8%_100%,0_0)]`}
       {...componentProps}
     >
       {text}
