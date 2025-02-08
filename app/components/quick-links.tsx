@@ -23,8 +23,8 @@ const LINKS: Link[] = [
   },
   {
     type: 'internal',
-    href: '/contact-us',
-    text: 'Contact Us',
+    href: '/questions',
+    text: 'Questions?',
     className: 'bg-tertiary/80 text-white',
   },
 ] as const
