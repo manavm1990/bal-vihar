@@ -18,7 +18,8 @@
     "motion": "^12.4.0",
     "next": "15.1.6",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "schema-dts": "^1.1.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -1,7 +1,11 @@
 import Header from '@components/header'
 import QuickLinks from '@components/quick-links'
+import { BASE_TITLE, DESCRIPTION } from '@lib/constants'
+import { createJsonLd } from '@lib/utils'
 import { Poppins, Rozha_One } from 'next/font/google'
 import './globals.css'
+
+const TITLE = 'Center for Indian Cultural Education'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -16,9 +20,8 @@ const rozhaOne = Rozha_One({
 })
 
 export const metadata = {
-  title: 'Center for Indian Cultural Education – Bal Vihar of St. Louis',
-  description:
-    'Balvihar, St. Louis, Saint Louis, India, Indian culture, ethnicity, children, Center for Indian Cultural Education, Annual Gala Event, Bal Vihar of St. Louis, Asian India, Bal Vihar, St. Louis Kids, St. Louis Community Projects, Holi, Diwali, Republic Day',
+  title: `${BASE_TITLE} | ${TITLE}`,
+  description: DESCRIPTION,
 }
 
 export default function RootLayout({
@@ -29,6 +32,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${rozhaOne.variable} font-sans`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(createJsonLd(TITLE)),
+          }}
+        />
+
         <QuickLinks />
         <Header />
         {children}
