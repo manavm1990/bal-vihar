@@ -4,6 +4,7 @@ import { BASE_TITLE, DESCRIPTION } from '@lib/constants'
 import { createJsonLd } from '@lib/utils'
 import { Poppins, Rozha_One } from 'next/font/google'
 import './globals.css'
+import type { Metadata } from 'next'
 
 const TITLE = 'Center for Indian Cultural Education'
 
@@ -19,7 +20,7 @@ const rozhaOne = Rozha_One({
   variable: '--font-rozha-one',
 })
 
-export const metadata = {
+export const metadata: Metadata = {
   title: `${BASE_TITLE} | ${TITLE}`,
   description: DESCRIPTION,
 }
