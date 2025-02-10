@@ -2,9 +2,9 @@ import Header from '@components/header'
 import QuickLinks from '@components/quick-links'
 import { BASE_TITLE, DESCRIPTION } from '@lib/constants'
 import { createJsonLd } from '@lib/utils'
-import { Poppins, Rozha_One } from 'next/font/google'
-import './globals.css'
 import type { Metadata } from 'next'
+import { Eczar, Poppins } from 'next/font/google'
+import './globals.css'
 
 const TITLE = 'Center for Indian Cultural Education'
 
@@ -14,10 +14,10 @@ const poppins = Poppins({
   variable: '--font-poppins',
 })
 
-const rozhaOne = Rozha_One({
+const eczar = Eczar({
   subsets: ['latin'],
-  weight: '400',
-  variable: '--font-rozha-one',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-eczar',
 })
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${rozhaOne.variable} font-sans`}>
+      <body className={`${poppins.variable} ${eczar.variable} font-sans`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -42,7 +42,7 @@ export default function RootLayout({
 
         <QuickLinks />
         <Header />
-        {children}
+        <main className="container">{children}</main>
       </body>
     </html>
   )

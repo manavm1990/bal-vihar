@@ -30,7 +30,7 @@
   --radius-sm: calc(var(--radius) - 4px);
 
   --font-sans: var(--font-poppins);
-  --font-rozha-one: var(--font-rozha-one);
+  --font-eczar: var(--font-eczar);
 
   --animate-enter-from-right: enterFromRight 250ms ease;
   --animate-enter-from-left: enterFromLeft 250ms ease;
@@ -190,7 +190,7 @@
   h4,
   h5,
   h6 {
-    @apply font-rozha-one;
+    @apply font-eczar;
   }
 }
 
