@@ -1,30 +1,67 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
+  /* Core brand colors */
+  --color-primary: oklch(0.71 0.19 78); /* Saffron (#FF9933) */
+  --color-secondary: oklch(0.45 0.2 145); /* Deep Green (#138808) */
+  --color-navy: oklch(0.25 0.2 265); /* Navy Blue (#000080) */
 
-  --color-primary: hsl(var(--primary));
+  /* Primary (Saffron) scale */
+  --color-primary-50: oklch(0.98 0.02 78);
+  --color-primary-100: oklch(0.95 0.04 78);
+  --color-primary-200: oklch(0.9 0.08 78);
+  --color-primary-300: oklch(0.85 0.12 78);
+  --color-primary-400: oklch(0.78 0.16 78);
+  --color-primary-500: oklch(0.71 0.19 78);
+  --color-primary-600: oklch(0.64 0.22 78);
+  --color-primary-700: oklch(0.57 0.24 78);
+  --color-primary-800: oklch(0.5 0.26 78);
+  --color-primary-900: oklch(0.43 0.28 78);
 
-  --color-secondary: hsl(var(--secondary));
+  /* Navy scale */
+  --color-navy-50: oklch(0.98 0.02 265);
+  --color-navy-100: oklch(0.93 0.04 265);
+  --color-navy-200: oklch(0.86 0.08 265);
+  --color-navy-300: oklch(0.79 0.12 265);
+  --color-navy-400: oklch(0.72 0.16 265);
+  --color-navy-500: oklch(0.25 0.2 265);
+  --color-navy-600: oklch(0.38 0.22 265);
+  --color-navy-700: oklch(0.31 0.24 265);
+  --color-navy-800: oklch(0.24 0.26 265);
+  --color-navy-900: oklch(0.17 0.28 265);
 
-  --color-tertiary: hsl(var(--tertiary));
+  /* Gray Scale with navy tint */
+  --color-gray-50: oklch(0.98 0.005 265);
+  --color-gray-100: oklch(0.94 0.005 265);
+  --color-gray-200: oklch(0.88 0.005 265);
+  --color-gray-300: oklch(0.8 0.005 265);
+  --color-gray-400: oklch(0.65 0.005 265);
+  --color-gray-500: oklch(0.5 0.005 265);
+  --color-gray-600: oklch(0.35 0.005 265);
+  --color-gray-700: oklch(0.25 0.005 265);
+  --color-gray-800: oklch(0.15 0.005 265);
+  --color-gray-900: oklch(0.1 0.005 265);
 
-  --color-destructive: hsl(var(--destructive));
+  /* Semantic mappings */
+  --color-background: oklch(1 0 0);
+  --color-foreground: var(--color-navy);
+  --color-muted: var(--color-gray-100);
+  --color-muted-foreground: var(--color-gray-500);
+  --color-border: var(--color-gray-200);
+  --color-input: var(--color-gray-200);
+  --color-ring: var(--color-primary);
+  --color-card: var(--color-background);
+  --color-card-foreground: var(--color-foreground);
+  --color-popover: var(--color-background);
+  --color-popover-foreground: var(--color-foreground);
 
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
+  /* Status colors */
+  --color-destructive: oklch(0.65 0.27 29); /* Indian Red */
+  --color-success: oklch(0.55 0.15 145);
+  --color-warning: oklch(0.8 0.15 78);
 
-  --color-accent: hsl(var(--accent));
-
-  --color-popover-foreground: hsl(var(--popover-foreground));
-
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-
+  /* Border radius */
+  --radius: 0.5rem;
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
@@ -152,28 +189,6 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
-  }
-}
-
-@layer base {
-  :root {
-    --foreground: 240 100% 25%; /* Navy Blue (#000080) */
-    --card: 0 0% 100%;
-    --card-foreground: 240 100% 25%;
-    --popover-foreground: 240 100% 25%;
-    --primary: 39 100% 50%; /* Saffron (#FF9933) */
-    --secondary: 120 100% 25%; /* Deep Green (#138808) */
-    --tertiary: 120 100% 20%; /* Green (#008000) */
-    --secondary-foreground: 0 0% 98%;
-    --muted: 32 20% 90%;
-    --muted-foreground: 240 50% 40%;
-    --accent: 300 100% 25%; /* Indian Purple (#800080) */
-    --destructive: 0 100% 50%; /* Indian Red (#FF0000) */
-    --border: 32 30% 80%;
-    --input: 32 30% 80%;
-    --ring: 32 100% 60%;
-    --indian-gold: 51 100% 50%; /* Indian Gold (#FFD700) */
-    --radius: 0.5rem;
   }
 }
 
