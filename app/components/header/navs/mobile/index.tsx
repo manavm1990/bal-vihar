@@ -72,7 +72,7 @@ export default function MobileNav() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="absolute top-2 left-2 p-2 text-gray-600 hover:text-gray-900 xl:hidden"
+        className="text-navy-600 hover:text-primary-600 absolute top-2 left-2 p-2 xl:hidden"
       >
         {isOpen ? <XIcon className="h-6 w-6" /> : <HamburgerMenuIcon className="h-6 w-6" />}
       </button>
@@ -99,7 +99,7 @@ export default function MobileNav() {
         <div className="border-b p-4">
           <button
             onClick={() => setIsOpen(false)}
-            className="p-2 text-gray-600 hover:text-gray-900"
+            className="text-navy-600 hover:text-primary-600 p-2"
           >
             <XIcon className="h-6 w-6" />
           </button>
@@ -113,12 +113,18 @@ export default function MobileNav() {
                   onClick={() =>
                     setActiveSection(activeSection === section.name ? null : section.name)
                   }
-                  className="flex w-full items-center justify-between p-2 text-left text-gray-600 hover:text-gray-900"
+                  className={`flex w-full items-center justify-between p-2 text-left font-medium ${
+                    activeSection === section.name
+                      ? 'text-primary-600 bg-primary-50'
+                      : 'text-navy-700 hover:text-primary-600'
+                  }`}
                 >
                   <span>{section.name}</span>
                   <ChevronDownIcon
-                    className={`h-4 w-4 transition-transform ${
-                      activeSection === section.name ? 'rotate-180' : ''
+                    className={`text-navy-400 h-4 w-4 transition-transform ${
+                      activeSection === section.name
+                        ? 'text-primary-400 rotate-180'
+                        : 'group-hover:text-primary-400'
                     }`}
                   />
                 </button>
@@ -136,7 +142,7 @@ export default function MobileNav() {
                         <motion.li key={item.name} variants={SUB_ITEM_VARIANTS}>
                           <Link
                             href={item.link}
-                            className="block p-2 text-sm text-gray-600 hover:text-gray-900"
+                            className="text-navy-600 hover:text-primary-500 block p-2 text-sm"
                           >
                             {item.name}
                           </Link>
