@@ -1,5 +1,5 @@
 import { HeroCarousel } from './hero-carousel'
 
-export default function Home() {
+export default function HomePage() {
   return <HeroCarousel />
 }
