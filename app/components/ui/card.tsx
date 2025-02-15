@@ -7,11 +7,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 const Card = ({ className, ...props }: Props) => (
   <div
-    className={cn(
-      'bg-background text-foreground rounded-lg border shadow-sm',
-      'transition-transform hover:scale-105 active:scale-95',
-      className,
-    )}
+    className={cn('bg-background text-foreground rounded-lg border shadow-sm', className)}
     {...props}
   />
 )
