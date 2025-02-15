@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 export default function QuestionsPage() {
   return (
-    <div className="bg-background relative isolate">
+    <main className="bg-background relative isolate">
       <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
-        <div className="relative px-6 pt-24 pb-20 sm:pt-32 lg:static lg:px-8 lg:py-48">
+        <section className="relative px-6 pt-24 pb-20 sm:pt-32 lg:static lg:px-8 lg:py-48">
           <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
             <div className="bg-muted absolute inset-y-0 left-0 -z-10 w-full overflow-hidden ring-1 ring-gray-900/10 lg:w-1/2">
               <svg
@@ -45,7 +45,7 @@ export default function QuestionsPage() {
               </svg>
             </div>
 
-            <section>
+            <div>
               <H2 className="text-foreground text-4xl font-semibold tracking-tight text-pretty sm:text-5xl">
                 Contact Us
               </H2>
@@ -106,109 +106,114 @@ export default function QuestionsPage() {
                   </dd>
                 </address>
               </dl>
-            </section>
-          </div>
-        </div>
-
-        <form action="#" method="POST" className="px-6 pt-20 pb-24 sm:pb-32 lg:px-8 lg:py-48">
-          <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
-            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="first-name"
-                  className="text-foreground block text-sm/6 font-semibold"
-                >
-                  First name
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    id="first-name"
-                    name="first-name"
-                    type="text"
-                    autoComplete="given-name"
-                    className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="last-name"
-                  className="text-foreground block text-sm/6 font-semibold"
-                >
-                  Last name
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    id="last-name"
-                    name="last-name"
-                    type="text"
-                    autoComplete="family-name"
-                    className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-2">
-                <label htmlFor="email" className="text-foreground block text-sm/6 font-semibold">
-                  Email
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="phone-number"
-                  className="text-foreground block text-sm/6 font-semibold"
-                >
-                  Phone number
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    id="phone-number"
-                    name="phone-number"
-                    type="tel"
-                    autoComplete="tel"
-                    className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-2">
-                <label htmlFor="message" className="text-foreground block text-sm/6 font-semibold">
-                  Message
-                </label>
-                <div className="mt-2.5">
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-                    defaultValue={''}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 flex justify-end">
-              <button
-                type="submit"
-                className="bg-primary hover:bg-primary-600 focus-visible:outline-ring rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
-              >
-                Send message
-              </button>
             </div>
           </div>
-        </form>
+        </section>
+
+        <section>
+          <form action="#" method="POST" className="px-6 pt-20 pb-24 sm:pb-32 lg:px-8 lg:py-48">
+            <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
+              <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="first-name"
+                    className="text-foreground block text-sm/6 font-semibold"
+                  >
+                    First name
+                  </label>
+                  <div className="mt-2.5">
+                    <input
+                      id="first-name"
+                      name="first-name"
+                      type="text"
+                      autoComplete="given-name"
+                      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="last-name"
+                    className="text-foreground block text-sm/6 font-semibold"
+                  >
+                    Last name
+                  </label>
+                  <div className="mt-2.5">
+                    <input
+                      id="last-name"
+                      name="last-name"
+                      type="text"
+                      autoComplete="family-name"
+                      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
+                    />
+                  </div>
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label htmlFor="email" className="text-foreground block text-sm/6 font-semibold">
+                    Email
+                  </label>
+                  <div className="mt-2.5">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
+                    />
+                  </div>
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="phone-number"
+                    className="text-foreground block text-sm/6 font-semibold"
+                  >
+                    Phone number
+                  </label>
+                  <div className="mt-2.5">
+                    <input
+                      id="phone-number"
+                      name="phone-number"
+                      type="tel"
+                      autoComplete="tel"
+                      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
+                    />
+                  </div>
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="message"
+                    className="text-foreground block text-sm/6 font-semibold"
+                  >
+                    Message
+                  </label>
+                  <div className="mt-2.5">
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={4}
+                      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
+                      defaultValue={''}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 flex justify-end">
+                <button
+                  type="submit"
+                  className="bg-primary hover:bg-primary-600 focus-visible:outline-ring rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  Send message
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
       </div>
-    </div>
+    </main>
   )
 }
