@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDownIcon } from '@radix-ui/react-icons'
+import { ChevronDown } from '@components/ui/icons'
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -38,7 +38,7 @@ export default function DesktopNav() {
             <NavigationMenu.Item key={item.name} className="relative">
               <NavigationMenu.Trigger className="group text-navy-700 hover:text-primary-600 data-[state=open]:text-primary-600 flex items-center gap-1 p-4 font-medium">
                 {item.name}
-                <ChevronDownIcon className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
+                <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
               </NavigationMenu.Trigger>
 
               <NavigationMenu.Content className="data-[motion=from-start]:animate-enter-from-left data-[motion=from-end]:animate-enter-from-fight data-[motion=to-start]:animate-exit-to-left data-[motion=to-end]:animate-exit-to-right absolute top-full left-1/2 z-10 -translate-x-1/2 rounded-lg bg-white">

@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDownIcon, HamburgerMenuIcon, Cross1Icon as XIcon } from '@radix-ui/react-icons'
+import { ChevronDown, ThreeBars, X } from '@components/ui/icons'
 import { AnimatePresence, motion } from 'motion/react'
 import Link from 'next/link'
 import { NAVIGATION } from '../constants'
@@ -74,7 +74,7 @@ export default function MobileNav() {
         onClick={() => setIsOpen(!isOpen)}
         className="text-navy-600 hover:text-primary-600 absolute top-2 left-2 p-2 xl:hidden"
       >
-        {isOpen ? <XIcon className="h-6 w-6" /> : <HamburgerMenuIcon className="h-6 w-6" />}
+        {isOpen ? <X /> : <ThreeBars />}
       </button>
 
       <AnimatePresence>
@@ -101,7 +101,7 @@ export default function MobileNav() {
             onClick={() => setIsOpen(false)}
             className="text-navy-600 hover:text-primary-600 p-2"
           >
-            <XIcon className="h-6 w-6" />
+            <X className="h-6 w-6" />
           </button>
         </div>
 
@@ -120,7 +120,7 @@ export default function MobileNav() {
                   }`}
                 >
                   <span>{section.name}</span>
-                  <ChevronDownIcon
+                  <ChevronDown
                     className={`text-navy-400 h-4 w-4 transition-transform ${
                       activeSection === section.name
                         ? 'text-primary-400 rotate-180'
