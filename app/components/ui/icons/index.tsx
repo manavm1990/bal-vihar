@@ -1,3 +1,7 @@
 export { default as ThreeBarsIcon } from './3-bars'
+export { default as BuildingOfficeIcon } from './building-office'
 export { default as ChevronDownIcon } from './chevron-down'
+export { default as EnvelopeIcon } from './envelope'
+export { default as PhoneIcon } from './phone'
+export { default as SchoolIcon } from './school'
 export { default as XIcon } from './x'
