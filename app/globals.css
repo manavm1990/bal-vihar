@@ -73,10 +73,12 @@
   --animate-enter-from-left: enterFromLeft 250ms ease;
   --animate-exit-to-right: exitToRight 250ms ease;
   --animate-exit-to-left: exitToLeft 250ms ease;
-  --animate-scale-in: scaleIn 200ms ease;
-  --animate-scale-out: scaleOut 200ms ease;
   --animate-fade-in: fadeIn 200ms ease;
   --animate-fade-out: fadeOut 200ms ease;
+  --animate-scale-in: scaleIn 200ms ease;
+  --animate-scale-out: scaleOut 200ms ease;
+  --animate-slide-down: slideDown 300ms ease-out;
+  --animate-slide-up: slideUp 300ms ease-out;
 
   @keyframes enterFromRight {
     from {
@@ -122,6 +124,24 @@
     }
   }
 
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
   @keyframes scaleIn {
     from {
       opacity: 0;
@@ -144,21 +164,21 @@
     }
   }
 
-  @keyframes fadeIn {
+  @keyframes slideDown {
     from {
-      opacity: 0;
+      height: 0;
     }
     to {
-      opacity: 1;
+      height: var(--radix-accordion-content-height);
     }
   }
 
-  @keyframes fadeOut {
+  @keyframes slideUp {
     from {
-      opacity: 1;
+      height: var(--radix-accordion-content-height);
     }
     to {
-      opacity: 0;
+      height: 0;
     }
   }
 }
