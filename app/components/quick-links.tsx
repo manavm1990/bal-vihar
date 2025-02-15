@@ -13,19 +13,19 @@ const LINKS: Link[] = [
     type: 'external',
     href: 'https://www.paypal.com/donate?token=KqgZfvm9eCAmtzt-y3rla1Ahp-At4bwhJtvmxmnKSfs3xVsO5MCT8286Mkyi0TVh0yr8b69IdBcYk_6-&locale.x=US',
     text: 'Donate',
-    className: 'bg-primary/80',
+    className: 'bg-primary/80 hover:bg-primary-600/80',
   },
   {
     type: 'internal',
     href: '/sponsors',
     text: 'Sponsor',
-    className: 'bg-foreground/80 text-white',
+    className: 'bg-navy/80 text-white hover:bg-navy-600/80',
   },
   {
     type: 'internal',
     href: '/questions',
     text: 'Questions?',
-    className: 'bg-tertiary/80 text-white',
+    className: 'bg-secondary/80 text-white hover:bg-secondary-600/80',
   },
 ] as const
 
