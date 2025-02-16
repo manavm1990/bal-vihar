@@ -9,6 +9,7 @@ import { BuildingOfficeIcon, PhoneIcon, SchoolIcon } from '@components/ui/icons'
 import { H3, P } from '@components/ui/typography'
 import { BASE_TITLE } from '@lib/constants'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 
 const FAQS = [
   {
@@ -167,7 +168,7 @@ function Contact() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Contact Us</CardTitle>
+        <CardTitle id="contact">Contact Us</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-8 lg:flex-row">
@@ -331,8 +332,8 @@ function FAQ() {
         <CardTitle>Frequently Asked Questions</CardTitle>
         <CardDescription>
           The Center for Indian cultural Education - Bal Vihar of St. Louis is a volunteer-based
-          organization. If you have questions about our school, programs, events, registration, or
-          fees; please check our FAQs for answers to many common questions before contacting us.
+          organization. Please check our FAQs for answers to many common questions before{' '}
+          <Link href="#contact">contacting us.</Link>
         </CardDescription>
       </CardHeader>
       <CardContent>
