@@ -9,7 +9,7 @@ export default function Envelope({ className }: IconProps) {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className={cn('size-6', className)}
+      className={cn('inline-block size-6', className)}
     >
       <path
         strokeLinecap="round"
