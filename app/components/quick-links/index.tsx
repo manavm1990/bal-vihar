@@ -1,5 +1,7 @@
 import * as motion from 'motion/react-client'
 import NextLink from 'next/link'
+import { ExternalIcon } from '../ui/icons'
+import QuickLinkElement from './element'
 
 interface Link {
   type: 'internal' | 'external'
@@ -13,7 +15,7 @@ const LINKS: Link[] = [
     type: 'external',
     href: 'https://www.paypal.com/donate?token=KqgZfvm9eCAmtzt-y3rla1Ahp-At4bwhJtvmxmnKSfs3xVsO5MCT8286Mkyi0TVh0yr8b69IdBcYk_6-&locale.x=US',
     text: 'Donate',
-    className: 'bg-primary/80 hover:bg-primary-600/80',
+    className: 'bg-primary/80 text-navy hover:bg-primary-600/80',
   },
   {
     type: 'internal',
@@ -61,9 +63,16 @@ export default function QuickLinks() {
       initial="hidden"
       animate="show"
     >
-      {LINKS.map((link) => (
-        <motion.div key={link.text} className="flex justify-end" variants={item}>
-          <Link {...link} />
+      {/* TODO: Hide 💩 if we are already on the 📃 page. */}
+      {LINKS.map((link, i) => (
+        <motion.div
+          key={link.text}
+          className={`flex justify-end ${i % 2 ? 'hover:-rotate-3' : 'hover:rotate-3'}`}
+          variants={item}
+        >
+          <QuickLinkElement href={link.href}>
+            <Link {...link} />
+          </QuickLinkElement>
         </motion.div>
       ))}
     </motion.section>
@@ -77,10 +86,11 @@ function Link({ type, href, text, className }: Link) {
   return (
     <Component
       href={href}
-      className={`${className} ml-auto py-2 pr-4 pl-8 text-xs [clip-path:polygon(100%_4%,100%_96%,8%_100%,0_0)]`}
+      className={`${className} ml-auto py-2 pr-4 pl-8 text-xs transition-transform [clip-path:polygon(100%_4%,100%_96%,8%_100%,0_0)] hover:scale-110 hover:no-underline`}
       {...componentProps}
     >
       {text}
+      {type === 'external' && <ExternalIcon className="relative bottom-1 left-0.5 size-2" />}
     </Component>
   )
 }
