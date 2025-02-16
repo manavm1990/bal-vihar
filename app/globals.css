@@ -210,15 +210,15 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   h1,
   h2,
   h3,
@@ -226,6 +226,10 @@
   h5,
   h6 {
     @apply font-eczar;
+  }
+
+  a {
+    @apply text-primary;
   }
 }
 
