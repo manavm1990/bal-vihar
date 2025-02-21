@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from '@components/ui/accordion'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/ui/card'
+import { FormField } from '@components/ui/form/field'
 import { BuildingOfficeIcon, PhoneIcon, SchoolIcon } from '@components/ui/icons'
 import { H3, P } from '@components/ui/typography'
 import { BASE_TITLE } from '@lib/constants'
@@ -199,96 +200,43 @@ function Contact() {
           <div className="flex-1">
             <form action="#" method="POST" className="space-y-6">
               <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="first-name"
-                    className="text-foreground block text-sm/6 font-semibold"
-                  >
-                    First name
-                  </label>
+                <FormField
+                  label="First name"
+                  name="first-name"
+                  autoComplete="given-name"
+                  className="col-span-1"
+                />
 
-                  <div className="mt-2.5">
-                    <input
-                      type="text"
-                      name="first-name"
-                      id="first-name"
-                      autoComplete="given-name"
-                      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-                    />
-                  </div>
-                </div>
+                <FormField
+                  label="Last name"
+                  name="last-name"
+                  autoComplete="family-name"
+                  className="col-span-1"
+                />
 
-                <div>
-                  <label
-                    htmlFor="last-name"
-                    className="text-foreground block text-sm/6 font-semibold"
-                  >
-                    Last name
-                  </label>
-                  <div className="mt-2.5">
-                    <input
-                      type="text"
-                      name="last-name"
-                      id="last-name"
-                      autoComplete="family-name"
-                      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-                    />
-                  </div>
-                </div>
+                <FormField
+                  label="Email"
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  className="col-span-1"
+                />
 
-                <div className="sm:col-span-2">
-                  <label htmlFor="email" className="text-foreground block text-sm/6 font-semibold">
-                    Email
-                  </label>
+                <FormField
+                  label="Phone number"
+                  type="tel"
+                  name="phone-number"
+                  autoComplete="tel"
+                  className="col-span-1"
+                />
 
-                  <div className="mt-2.5">
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      autoComplete="email"
-                      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="phone-number"
-                    className="text-foreground block text-sm/6 font-semibold"
-                  >
-                    Phone number
-                  </label>
-
-                  <div className="mt-2.5">
-                    <input
-                      type="tel"
-                      name="phone-number"
-                      id="phone-number"
-                      autoComplete="tel"
-                      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="message"
-                    className="text-foreground block text-sm/6 font-semibold"
-                  >
-                    Message
-                  </label>
-
-                  <div className="mt-2.5">
-                    <textarea
-                      name="message"
-                      id="message"
-                      rows={4}
-                      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-                      defaultValue={''}
-                    />
-                  </div>
-                </div>
+                <FormField
+                  label="Message"
+                  name="message"
+                  isTextArea
+                  rows={4}
+                  className="col-span-full"
+                />
               </div>
 
               <div className="mt-8">
