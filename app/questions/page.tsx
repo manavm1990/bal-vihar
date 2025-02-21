@@ -206,6 +206,7 @@ function Contact() {
                   >
                     First name
                   </label>
+
                   <div className="mt-2.5">
                     <input
                       type="text"
@@ -216,6 +217,7 @@ function Contact() {
                     />
                   </div>
                 </div>
+
                 <div>
                   <label
                     htmlFor="last-name"
@@ -233,10 +235,12 @@ function Contact() {
                     />
                   </div>
                 </div>
+
                 <div className="sm:col-span-2">
                   <label htmlFor="email" className="text-foreground block text-sm/6 font-semibold">
                     Email
                   </label>
+
                   <div className="mt-2.5">
                     <input
                       type="email"
@@ -247,6 +251,7 @@ function Contact() {
                     />
                   </div>
                 </div>
+
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="phone-number"
@@ -254,6 +259,7 @@ function Contact() {
                   >
                     Phone number
                   </label>
+
                   <div className="mt-2.5">
                     <input
                       type="tel"
@@ -264,6 +270,7 @@ function Contact() {
                     />
                   </div>
                 </div>
+
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="message"
@@ -271,6 +278,7 @@ function Contact() {
                   >
                     Message
                   </label>
+
                   <div className="mt-2.5">
                     <textarea
                       name="message"
@@ -282,7 +290,8 @@ function Contact() {
                   </div>
                 </div>
               </div>
-              <div className="mt-8 flex justify-end">
+
+              <div className="mt-8">
                 <button
                   type="submit"
                   className="bg-primary hover:bg-primary-600 focus-visible:outline-ring rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
