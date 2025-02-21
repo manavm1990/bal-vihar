@@ -10,6 +10,7 @@ import { H3, P } from '@components/ui/typography'
 import { BASE_TITLE } from '@lib/constants'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import React from 'react'
 
 const FAQS = [
   {
@@ -181,45 +182,17 @@ function Contact() {
             </P>
 
             <dl className="text-muted-foreground mt-10 space-y-4 text-base/7">
-              <address className="flex flex-col gap-x-4">
-                <dt className="flex gap-x-2">
-                  <H3>Administrative Address</H3>
-                  <BuildingOfficeIcon
-                    aria-hidden="true"
-                    className="text-muted-foreground h-7 w-6"
-                  />
-                </dt>
-                <dd>
-                  1700 Countrytop Court
-                  <br />
-                  Wildwood, MO 63038-1446
-                </dd>
-              </address>
+              <Address
+                type="administrative"
+                lines={['1700 Countrytop Court', 'Wildwood, MO 63038-1446']}
+              />
 
-              <address className="flex flex-col gap-x-4">
-                <dt className="flex gap-x-2">
-                  <H3>School Address</H3>
-                  <SchoolIcon aria-hidden="true" className="text-muted-foreground h-7 w-6" />
-                </dt>
-                <dd>
-                  Hindu Temple Community Center <br />
-                  725 Weidman Road
-                  <br />
-                  Ballwin, MO 63011
-                </dd>
-              </address>
+              <Address
+                type="school"
+                lines={['Hindu Temple Community Center', '725 Weidman Road', 'Ballwin, MO 63011']}
+              />
 
-              <address className="flex gap-x-2">
-                <dt className="flex-none">
-                  <span className="sr-only">Telephone</span>
-                  <PhoneIcon aria-hidden="true" className="text-muted-foreground h-7 w-6" />
-                </dt>
-                <dd>
-                  <a href="tel:+1 (636) 458-9634" className="hover:text-foreground">
-                    (636) 458-9634
-                  </a>
-                </dd>
-              </address>
+              <Address type="phone" phoneNumber="(636) 458-9634" />
             </dl>
           </div>
 
@@ -322,6 +295,52 @@ function Contact() {
         </div>
       </CardContent>
     </Card>
+  )
+}
+
+interface AddressProps {
+  type: 'administrative' | 'school' | 'phone'
+  lines?: string[]
+  phoneNumber?: string
+}
+
+function Address({ type, lines, phoneNumber }: AddressProps) {
+  const icons = {
+    administrative: BuildingOfficeIcon,
+    school: SchoolIcon,
+    phone: PhoneIcon,
+  }
+
+  const titles = {
+    administrative: 'Administrative Address',
+    school: 'School Address',
+    phone: 'Telephone',
+  }
+
+  const Icon = icons[type]
+  const title = titles[type]
+
+  return (
+    <address className={`flex ${type === 'phone' ? 'gap-x-2' : 'flex-col gap-x-4'}`}>
+      <dt className={`flex gap-x-2 ${type === 'phone' ? 'flex-none' : ''}`}>
+        {type === 'phone' ? <span className="sr-only">{title}</span> : <H3>{title}</H3>}
+        <Icon aria-hidden="true" className="text-muted-foreground h-7 w-6" />
+      </dt>
+      <dd>
+        {type === 'phone' ? (
+          <a href={`tel:${phoneNumber}`} className="hover:text-foreground">
+            {phoneNumber}
+          </a>
+        ) : (
+          lines?.map((line, i) => (
+            <React.Fragment key={i}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))
+        )}
+      </dd>
+    </address>
   )
 }
 
