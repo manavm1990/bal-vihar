@@ -1,3 +1,5 @@
+import kebabCase from 'lodash.kebabcase'
+
 interface FormFieldProps {
   label: string
   type?: 'text' | 'email' | 'tel'
@@ -17,11 +19,13 @@ export function FormField({
   rows,
   className,
 }: FormFieldProps) {
+  const id = kebabCase(name)
+
   return (
     <div className={className}>
-      <FormLabel htmlFor={name}>{label}</FormLabel>
+      <FormLabel htmlFor={id}>{label}</FormLabel>
       {isTextArea ? (
-        <FormTextArea name={name} id={name} rows={rows} />
+        <FormTextArea name={name} id={id} rows={rows} />
       ) : (
         <FormInput type={type} name={name} id={name} autoComplete={autoComplete} />
       )}
