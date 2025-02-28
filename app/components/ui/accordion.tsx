@@ -24,7 +24,7 @@ const AccordionContent = ({ className, children, ...props }: AccordionContentPro
 AccordionContent.displayName = 'AccordionContent'
 
 const AccordionItem = ({ className, ...props }: AccordionItemProps) => (
-  <AccordionPrimitive.Item className={cn('py-6 first:pt-0 last:pb-0', className)} {...props} />
+  <AccordionPrimitive.Item className={cn('py-3 first:pt-0 last:pb-0', className)} {...props} />
 )
 AccordionItem.displayName = 'AccordionItem'
 
