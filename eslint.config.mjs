@@ -52,6 +52,8 @@ export default [
       perfectionist,
     },
     rules: {
+      '@next/next/no-page-custom-font': 'off',
+
       // Payload rules
       'payload/no-jsx-import-statements': 'error',
 
@@ -144,7 +146,7 @@ export default [
       'no-array-constructor': 'error',
       'no-new-object': 'error',
 
-      '@next/next/no-page-custom-font': 'off',
+      'react/no-children-prop': 0,
       'react/no-unescaped-entities': 'off',
       'use-encapsulation/prefer-custom-hooks': 'error',
     },
