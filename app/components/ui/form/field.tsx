@@ -1,59 +1,89 @@
 import kebabCase from 'lodash.kebabcase'
+import {
+  type InputHTMLAttributes,
+  type LabelHTMLAttributes,
+  type TextareaHTMLAttributes,
+} from 'react'
 
-interface FormFieldProps {
+// Base interface with common properties
+interface FormFieldBase {
   label: string
-  type?: 'text' | 'email' | 'tel'
   name: string
-  autoComplete?: string
-  isTextArea?: boolean
-  rows?: number
   className?: string
 }
 
-export function FormField({
-  label,
-  type = 'text',
-  name,
-  autoComplete,
-  isTextArea,
-  rows,
-  className,
-}: FormFieldProps) {
+// Input field specific props
+interface InputFieldProps extends FormFieldBase {
+  isTextArea?: false
+  type?: 'text' | 'email' | 'tel'
+  autoComplete?: string
+  value?: string
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  inputProps?: Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    'type' | 'name' | 'id' | 'autoComplete' | 'value' | 'onChange'
+  >
+}
+
+// Textarea specific props
+interface TextareaFieldProps extends FormFieldBase {
+  isTextArea: true
+  rows?: number
+  value?: string
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+  textareaProps?: Omit<
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    'name' | 'id' | 'rows' | 'value' | 'onChange'
+  >
+}
+
+// Discriminated union
+type FormFieldProps = InputFieldProps | TextareaFieldProps
+
+export function FormField(props: FormFieldProps) {
+  const { label, name, className } = props
   const id = kebabCase(name)
 
   return (
     <div className={className}>
       <FormLabel htmlFor={id}>{label}</FormLabel>
-      {isTextArea ? (
-        <FormTextArea name={name} id={id} rows={rows} />
+      {props.isTextArea ? (
+        <FormTextArea
+          name={name}
+          id={id}
+          rows={props.rows}
+          onChange={props.onChange}
+          {...props.textareaProps}
+          defaultValue={props.value || ''}
+        />
       ) : (
-        <FormInput type={type} name={name} id={name} autoComplete={autoComplete} />
+        <FormInput
+          type={props.type || 'text'}
+          name={name}
+          id={id}
+          autoComplete={props.autoComplete}
+          value={props.value}
+          onChange={props.onChange}
+          {...props.inputProps}
+        />
       )}
     </div>
   )
 }
 
-interface FormLabelProps {
-  htmlFor: string
-  children: React.ReactNode
-}
-
-function FormLabel({ htmlFor, children }: FormLabelProps) {
+function FormLabel({ htmlFor, children, ...props }: LabelHTMLAttributes<HTMLLabelElement>) {
   return (
-    <label htmlFor={htmlFor} className="text-foreground block text-sm/6 font-semibold">
+    <label htmlFor={htmlFor} className="text-foreground block text-sm/6 font-semibold" {...props}>
       {children}
     </label>
   )
 }
 
-interface FormInputProps {
+interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: 'text' | 'email' | 'tel'
-  name: string
-  id: string
-  autoComplete?: string
 }
 
-function FormInput({ type = 'text', name, id, autoComplete }: FormInputProps) {
+function FormInput({ type = 'text', name, id, autoComplete, ...props }: FormInputProps) {
   return (
     <div className="mt-2.5">
       <input
@@ -62,18 +92,18 @@ function FormInput({ type = 'text', name, id, autoComplete }: FormInputProps) {
         id={id}
         autoComplete={autoComplete}
         className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
+        {...props}
       />
     </div>
   )
 }
 
-interface FormTextAreaProps {
-  name: string
-  id: string
-  rows?: number
-}
-
-function FormTextArea({ name, id, rows = 4 }: FormTextAreaProps) {
+function FormTextArea({
+  name,
+  id,
+  rows = 4,
+  ...props
+}: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <div className="mt-2.5">
       <textarea
@@ -81,7 +111,7 @@ function FormTextArea({ name, id, rows = 4 }: FormTextAreaProps) {
         id={id}
         rows={rows}
         className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-        defaultValue=""
+        {...props}
       />
     </div>
   )
