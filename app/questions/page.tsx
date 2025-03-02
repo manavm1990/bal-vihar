@@ -10,7 +10,7 @@ import { H3, P } from '@components/ui/typography'
 import { BASE_TITLE } from '@lib/constants'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Form from './form'
+import Form from './components/form'
 
 const FAQS = [
   {
