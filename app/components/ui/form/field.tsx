@@ -10,6 +10,7 @@ interface FormFieldBase {
   label: string
   name: string
   className?: string
+  error?: string
 }
 
 // Input field specific props
@@ -18,6 +19,7 @@ interface InputFieldProps extends FormFieldBase {
   type?: 'text' | 'email' | 'tel'
   autoComplete?: string
   value?: string
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   inputProps?: Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -41,7 +43,7 @@ interface TextareaFieldProps extends FormFieldBase {
 type FormFieldProps = InputFieldProps | TextareaFieldProps
 
 export function FormField(props: FormFieldProps) {
-  const { label, name, className } = props
+  const { label, name, className, error } = props
   const id = kebabCase(name)
 
   return (
@@ -67,6 +69,7 @@ export function FormField(props: FormFieldProps) {
           {...props.inputProps}
         />
       )}
+      {error && <p className="text-destructive mt-1 text-sm">{error}</p>}
     </div>
   )
 }
