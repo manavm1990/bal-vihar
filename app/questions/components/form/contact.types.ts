@@ -1,6 +1,11 @@
 import * as v from 'valibot'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 
+export interface ActionResponse {
+  success: boolean
+  message: string
+}
+
 export const contactSchema = v.object({
   firstName: v.pipe(v.string(), v.trim(), v.nonEmpty('Please enter your first name.')),
   lastName: v.pipe(v.string(), v.trim(), v.nonEmpty('Please enter your last name.')),
@@ -22,3 +27,5 @@ export const contactSchema = v.object({
     v.maxWords('en', 500, "That's a lot of information! Please keep it under 500 words."),
   ),
 })
+
+export type ContactFormData = v.InferInput<typeof contactSchema>

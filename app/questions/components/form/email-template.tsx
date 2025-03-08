@@ -11,8 +11,7 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components'
-import type { contactSchema } from './contact.types'
-import * as v from 'valibot'
+import type { ContactFormData } from './contact.types'
 
 export default function EmailTemplate({
   firstName,
@@ -20,7 +19,7 @@ export default function EmailTemplate({
   email,
   phone,
   message,
-}: v.InferOutput<typeof contactSchema>) {
+}: ContactFormData) {
   return (
     <Html>
       <Head />

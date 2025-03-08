@@ -2,33 +2,24 @@
 
 import { Button } from '@components/ui/button'
 import { FormField } from '@components/ui/form/field'
-
-import { useForm } from '@tanstack/react-form'
-import { contactSchema } from './contact.types'
+import { Strong } from '@components/ui/typography'
+import useContact from './use-contact'
 
 export default function Form() {
-  const form = useForm({
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      message: '',
-    },
-    validators: {
-      onBlur: contactSchema,
-      onChange: contactSchema,
-    },
-  })
+  const { form, isPending, state, shouldShowStateMessage, setShouldShowStateMessage } = useContact()
 
   return (
     <form
-      action="#"
       method="POST"
-      className="space-y-6"
+      className={`space-y-6 ${isPending ? 'pointer-events-none animate-pulse' : ''}`}
+      onFocus={() => {
+        setShouldShowStateMessage(false)
+      }}
       onSubmit={(e) => {
         e.preventDefault()
         e.stopPropagation()
+
+        setShouldShowStateMessage(true)
         form.handleSubmit()
       }}
     >
@@ -124,18 +115,25 @@ export default function Form() {
 
       <div className="mt-8">
         <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting, state.isPristine]}
-          children={([canSubmit, isSubmitting, isPristine]) => (
+          selector={(state) => [state.canSubmit, state.isPristine]}
+          children={([canSubmit, isPristine]) => (
             <Button
               type="submit"
-              disabled={isPristine || !canSubmit}
+              disabled={isPristine || !canSubmit || isPending}
               className="bg-primary hover:bg-primary-600 focus-visible:outline-ring rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
             >
-              {isSubmitting ? 'Sending...' : 'Send message'}
+              {isPending ? 'Sending...' : 'Send message'}
             </Button>
           )}
         />
       </div>
+
+      {/* TODO: Animate this! */}
+      {!state.success && state.message && shouldShowStateMessage && (
+        <output className="text-red-500">
+          <Strong>{state.message}</Strong>
+        </output>
+      )}
     </form>
   )
 }
