@@ -3,6 +3,8 @@
 import { Button } from '@components/ui/button'
 import { FormField } from '@components/ui/form/field'
 import { Strong } from '@components/ui/typography'
+import { FADE } from '@lib/animations'
+import { AnimatePresence, motion } from 'motion/react'
 import useContact from './use-contact'
 
 export default function Form() {
@@ -128,12 +130,19 @@ export default function Form() {
         />
       </div>
 
-      {/* TODO: Animate this! */}
-      {!state.success && state.message && shouldShowStateMessage && (
-        <output className="text-red-500">
-          <Strong>{state.message}</Strong>
-        </output>
-      )}
+      <AnimatePresence>
+        {!state.success && state.message && shouldShowStateMessage && !isPending && (
+          <motion.output
+            className="text-red-500"
+            variants={FADE}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <Strong>{state.message}</Strong>
+          </motion.output>
+        )}
+      </AnimatePresence>
     </form>
   )
 }
