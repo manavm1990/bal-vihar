@@ -16,7 +16,7 @@ const MENU_VARIANTS = {
     },
   },
   closed: {
-    x: '-100%',
+    x: '100%',
     transition: {
       type: 'spring',
       stiffness: 300,
@@ -72,7 +72,7 @@ export default function MobileNav() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-navy-600 hover:text-primary-600 absolute top-2 left-2 p-2 xl:hidden"
+        className="text-navy-600 hover:text-primary-600 absolute top-2 right-2 p-2 xl:hidden"
       >
         {isOpen ? <XIcon className="h-6 w-6" /> : <HamburgerMenuIcon className="h-6 w-6" />}
       </button>
@@ -94,9 +94,9 @@ export default function MobileNav() {
         initial="closed"
         animate={isOpen ? 'open' : 'closed'}
         variants={MENU_VARIANTS}
-        className="fixed top-0 bottom-0 left-0 z-10 w-full max-w-xs overflow-y-auto bg-white shadow-lg xl:hidden"
+        className="fixed top-0 right-0 bottom-0 z-10 w-full max-w-xs overflow-y-auto bg-white shadow-lg xl:hidden"
       >
-        <div className="border-b p-4">
+        <div className="flex justify-end border-b p-4">
           <button
             onClick={() => setIsOpen(false)}
             className="text-navy-600 hover:text-primary-600 p-2"
