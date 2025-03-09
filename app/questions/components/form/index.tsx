@@ -2,147 +2,165 @@
 
 import { Button } from '@components/ui/button'
 import { FormField } from '@components/ui/form/field'
-import { Strong } from '@components/ui/typography'
+import { H2, P, Strong } from '@components/ui/typography'
 import { FADE } from '@lib/animations'
 import { AnimatePresence, motion } from 'motion/react'
+import Confetti from 'react-confetti'
 import useContact from './use-contact'
 
 export default function Form() {
   const { form, isPending, state, shouldShowStateMessage, setShouldShowStateMessage } = useContact()
 
-  return (
-    <form
-      method="POST"
-      className={`space-y-6 ${isPending ? 'pointer-events-none animate-pulse' : ''}`}
-      onFocus={() => {
-        setShouldShowStateMessage(false)
-      }}
-      onSubmit={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
+  {
+    return state.success ? (
+      <div className="relative">
+        <Confetti recycle={false} />
 
-        setShouldShowStateMessage(true)
-        form.handleSubmit()
-      }}
-    >
-      <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-        <form.Field
-          name="firstName"
-          children={(field) => (
-            <FormField
-              label="First name"
-              autoComplete="given-name"
-              className="col-span-1"
-              name={field.name}
-              value={field.state.value}
-              onChange={(e) => {
-                field.handleChange(e.target.value)
-              }}
-              error={field.getMeta().isTouched ? field.getMeta().errors[0]?.message : ''}
-            />
-          )}
-        />
-
-        <form.Field
-          name="lastName"
-          children={(field) => (
-            <FormField
-              label="Last name"
-              autoComplete="family-name"
-              className="col-span-1"
-              name={field.name}
-              value={field.state.value}
-              onChange={(e) => {
-                field.handleChange(e.target.value)
-              }}
-              error={field.getMeta().isTouched ? field.getMeta().errors[0]?.message : ''}
-            />
-          )}
-        />
-
-        <form.Field
-          name="email"
-          children={(field) => (
-            <FormField
-              label="Email"
-              type="email"
-              autoComplete="email"
-              className="col-span-1"
-              name={field.name}
-              value={field.state.value}
-              onChange={(e) => {
-                field.handleChange(e.target.value)
-              }}
-              error={field.getMeta().isTouched ? field.getMeta().errors[0]?.message : ''}
-            />
-          )}
-        />
-
-        <form.Field
-          name="phone"
-          children={(field) => (
-            <FormField
-              label="Phone number"
-              type="tel"
-              autoComplete="tel"
-              className="col-span-1"
-              name={field.name}
-              value={field.state.value}
-              onChange={(e) => {
-                field.handleChange(e.target.value)
-              }}
-              error={field.getMeta().isTouched ? field.getMeta().errors[0]?.message : ''}
-            />
-          )}
-        />
-
-        <form.Field
-          name="message"
-          children={(field) => (
-            <FormField
-              label="Message"
-              isTextArea
-              rows={4}
-              className="col-span-full"
-              name={field.name}
-              value={field.state.value}
-              onChange={(e) => {
-                field.handleChange(e.target.value)
-              }}
-              error={field.getMeta().isTouched ? field.getMeta().errors[0]?.message : ''}
-            />
-          )}
-        />
+        <motion.div
+          className="absolute inset-0 flex flex-col items-center justify-center p-8"
+          variants={FADE}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
+          <H2 className="mb-4 text-2xl font-bold">Success!</H2>
+          <P className="mb-6">✉️ {state.message}✨</P>
+        </motion.div>
       </div>
+    ) : (
+      <form
+        method="POST"
+        className={`space-y-6 ${isPending ? 'pointer-events-none animate-pulse' : ''}`}
+        onFocus={() => {
+          setShouldShowStateMessage(false)
+        }}
+        onSubmit={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
 
-      <div className="mt-8">
-        <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isPristine]}
-          children={([canSubmit, isPristine]) => (
-            <Button
-              type="submit"
-              disabled={isPristine || !canSubmit || isPending}
-              className="bg-primary hover:bg-primary-600 focus-visible:outline-ring rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
+          setShouldShowStateMessage(true)
+          form.handleSubmit()
+        }}
+      >
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+          <form.Field
+            name="firstName"
+            children={(field) => (
+              <FormField
+                label="First name"
+                autoComplete="given-name"
+                className="col-span-1"
+                name={field.name}
+                value={field.state.value}
+                onChange={(e) => {
+                  field.handleChange(e.target.value)
+                }}
+                error={field.getMeta().isTouched ? field.getMeta().errors[0]?.message : ''}
+              />
+            )}
+          />
+
+          <form.Field
+            name="lastName"
+            children={(field) => (
+              <FormField
+                label="Last name"
+                autoComplete="family-name"
+                className="col-span-1"
+                name={field.name}
+                value={field.state.value}
+                onChange={(e) => {
+                  field.handleChange(e.target.value)
+                }}
+                error={field.getMeta().isTouched ? field.getMeta().errors[0]?.message : ''}
+              />
+            )}
+          />
+
+          <form.Field
+            name="email"
+            children={(field) => (
+              <FormField
+                label="Email"
+                type="email"
+                autoComplete="email"
+                className="col-span-1"
+                name={field.name}
+                value={field.state.value}
+                onChange={(e) => {
+                  field.handleChange(e.target.value)
+                }}
+                error={field.getMeta().isTouched ? field.getMeta().errors[0]?.message : ''}
+              />
+            )}
+          />
+
+          <form.Field
+            name="phone"
+            children={(field) => (
+              <FormField
+                label="Phone number"
+                type="tel"
+                autoComplete="tel"
+                className="col-span-1"
+                name={field.name}
+                value={field.state.value}
+                onChange={(e) => {
+                  field.handleChange(e.target.value)
+                }}
+                error={field.getMeta().isTouched ? field.getMeta().errors[0]?.message : ''}
+              />
+            )}
+          />
+
+          <form.Field
+            name="message"
+            children={(field) => (
+              <FormField
+                label="Message"
+                isTextArea
+                rows={4}
+                className="col-span-full"
+                name={field.name}
+                value={field.state.value}
+                onChange={(e) => {
+                  field.handleChange(e.target.value)
+                }}
+                error={field.getMeta().isTouched ? field.getMeta().errors[0]?.message : ''}
+              />
+            )}
+          />
+        </div>
+
+        <div className="mt-8">
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isPristine]}
+            children={([canSubmit, isPristine]) => (
+              <Button
+                type="submit"
+                disabled={isPristine || !canSubmit || isPending}
+                className="bg-primary hover:bg-primary-600 focus-visible:outline-ring rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
+              >
+                {isPending ? 'Sending...' : 'Send message'}
+              </Button>
+            )}
+          />
+        </div>
+
+        <AnimatePresence>
+          {!state.success && state.message && shouldShowStateMessage && !isPending && (
+            <motion.output
+              className="text-red-500"
+              variants={FADE}
+              initial="initial"
+              animate="animate"
+              exit="exit"
             >
-              {isPending ? 'Sending...' : 'Send message'}
-            </Button>
+              <Strong>{state.message}</Strong>
+            </motion.output>
           )}
-        />
-      </div>
-
-      <AnimatePresence>
-        {!state.success && state.message && shouldShowStateMessage && !isPending && (
-          <motion.output
-            className="text-red-500"
-            variants={FADE}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            <Strong>{state.message}</Strong>
-          </motion.output>
-        )}
-      </AnimatePresence>
-    </form>
-  )
+        </AnimatePresence>
+      </form>
+    )
+  }
 }
