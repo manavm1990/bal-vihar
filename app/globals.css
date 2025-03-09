@@ -42,9 +42,8 @@
   --color-gray-800: oklch(0.15 0.005 265);
   --color-gray-900: oklch(0.1 0.005 265);
 
-  /* Semantic mappings */
   --color-background: oklch(1 0 0);
-  --color-foreground: var(--color-navy);
+  --color-foreground: var(--color-gray-800);
   --color-muted: var(--color-gray-100);
   --color-muted-foreground: var(--color-gray-500);
   --color-border: var(--color-gray-200);
@@ -225,7 +224,7 @@
   h4,
   h5,
   h6 {
-    @apply font-eczar;
+    @apply font-eczar text-secondary;
   }
 
   a {
