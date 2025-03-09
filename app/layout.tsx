@@ -1,3 +1,4 @@
+import Footer from '@components/footer'
 import Header from '@components/header'
 import QuickLinks from '@components/quick-links'
 import { BASE_TITLE, DESCRIPTION } from '@lib/constants'
@@ -43,6 +44,7 @@ export default function RootLayout({
         <QuickLinks />
         <Header />
         <main className="container">{children}</main>
+        <Footer />
       </body>
     </html>
   )
