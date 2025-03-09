@@ -13,7 +13,7 @@ const Card = ({ className, ...props }: Props) => (
 )
 
 const CardHeader = ({ className, ...props }: Props) => (
-  <div className={cn('flex flex-col space-y-1.5 p-6', className)} {...props} />
+  <div className={cn('flex flex-col space-y-1.5 p-4', className)} {...props} />
 )
 
 const CardTitle = ({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) => (
@@ -28,11 +28,11 @@ const CardDescription = ({ className, ...props }: HTMLAttributes<HTMLParagraphEl
 )
 
 const CardContent = ({ className, ...props }: Props) => (
-  <div className={cn('p-6 pt-0', className)} {...props} />
+  <div className={cn('p-4 pt-0', className)} {...props} />
 )
 
 const CardFooter = ({ className, ...props }: Props) => (
-  <div className={cn('flex items-center p-6 pt-0', 'mt-auto border-t', className)} {...props} />
+  <div className={cn('flex items-center p-4 pt-0', 'mt-auto border-t', className)} {...props} />
 )
 
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }

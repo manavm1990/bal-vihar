@@ -38,7 +38,7 @@ const AccordionTrigger = ({ className, children, ...props }: AccordionTriggerPro
       {...props}
     >
       <span className="text-base leading-7 font-semibold">{children}</span>
-      <span className="ml-6 flex h-7 items-center">
+      <span className="ml-4 flex h-7 items-center">
         <PlusIcon className="text-primary size-6 group-data-[state=open]:hidden" />
         <MinusIcon className="text-primary hidden size-6 group-data-[state=open]:block" />
       </span>
