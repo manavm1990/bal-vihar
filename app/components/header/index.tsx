@@ -12,9 +12,10 @@ export default function Header() {
         priority
         className="size-24 sm:size-32 md:size-40"
       />
-      <DesktopNav />
 
       <MobileNav />
+
+      <DesktopNav />
     </header>
   )
 }
