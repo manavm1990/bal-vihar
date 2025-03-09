@@ -11,6 +11,8 @@ export async function sendEmail(
 
   await new Promise((resolve) => setTimeout(resolve, 3000))
 
+  // TODO: Send ✉️ once domain is added to Resend.
+
   if (!validatedFields.success)
     return {
       success: false,
