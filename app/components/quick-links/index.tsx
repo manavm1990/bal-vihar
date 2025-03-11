@@ -4,7 +4,7 @@ import { ExternalIcon } from '../ui/icons'
 import QuickLinkElement from './element'
 
 interface Link {
-  type: 'internal' | 'external'
+  type?: 'internal' | 'external'
   href: string
   text: string
   className?: string
@@ -12,22 +12,30 @@ interface Link {
 
 const LINKS: Link[] = [
   {
+    href: '/calendar',
+    text: 'Calendar 🗓️',
+    className: 'bg-navy/80 text-white hover:bg-navy-600/80',
+  },
+  {
     type: 'external',
     href: 'https://www.paypal.com/donate?token=KqgZfvm9eCAmtzt-y3rla1Ahp-At4bwhJtvmxmnKSfs3xVsO5MCT8286Mkyi0TVh0yr8b69IdBcYk_6-&locale.x=US',
     text: 'Donate',
     className: 'bg-primary/80 text-navy hover:bg-primary-600/80',
   },
   {
-    type: 'internal',
-    href: '/sponsors',
-    text: 'Sponsor',
-    className: 'bg-navy/80 text-white hover:bg-navy-600/80',
+    href: '/presidents-message',
+    text: "President's Message",
+    className: 'bg-primary/80 text-navy hover:bg-primary-600/80',
   },
   {
-    type: 'internal',
     href: '/questions',
     text: 'Questions?',
     className: 'bg-secondary/80 text-white hover:bg-secondary-600/80',
+  },
+  {
+    href: '/sponsors',
+    text: 'Sponsor',
+    className: 'bg-navy/80 text-white hover:bg-navy-600/80',
   },
 ] as const
 
@@ -42,18 +50,7 @@ const container = {
   },
 }
 
-const item = {
-  hidden: { x: 100, opacity: 0 },
-  show: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-      damping: 12,
-    },
-  },
-}
+const sortedLinks = [...LINKS].sort((a, b) => a.text.length - b.text.length)
 
 export default function QuickLinks() {
   return (
@@ -63,23 +60,44 @@ export default function QuickLinks() {
       initial="hidden"
       animate="show"
     >
-      {/* TODO: Hide 💩 if we are already on the 📃 page. */}
-      {LINKS.map((link, i) => (
-        <motion.div
-          key={link.text}
-          className={`flex justify-end ${i % 2 ? 'hover:-rotate-3' : 'hover:rotate-3'}`}
-          variants={item}
-        >
-          <QuickLinkElement href={link.href}>
-            <Link {...link} />
-          </QuickLinkElement>
-        </motion.div>
-      ))}
+      {sortedLinks.map((link, i) => {
+        // Increases damping for longer text
+        const springDamping = 12 + i * 0.8
+
+        // Decreases stiffness for longer text
+        const springStiffness = 100 - i * 5
+        // Custom variant for each item
+        const item = {
+          hidden: { x: 100, opacity: 0 },
+          show: {
+            x: 0,
+            opacity: 1,
+            transition: {
+              type: 'spring',
+              stiffness: springStiffness,
+              damping: springDamping,
+              delay: 0.3 + i * 0.05,
+            },
+          },
+        }
+
+        return (
+          <motion.div
+            key={link.text}
+            className={`flex justify-end ${i % 2 ? 'hover:-rotate-3' : 'hover:rotate-3'}`}
+            variants={item}
+          >
+            <QuickLinkElement href={link.href}>
+              <Link {...link} />
+            </QuickLinkElement>
+          </motion.div>
+        )
+      })}
     </motion.section>
   )
 }
 
-function Link({ type, href, text, className }: Link) {
+function Link({ type = 'internal', href, text, className }: Link) {
   const Component = type === 'internal' ? NextLink : 'a'
   const componentProps = type === 'internal' ? {} : { target: '_blank', rel: 'noopener noreferrer' }
 
