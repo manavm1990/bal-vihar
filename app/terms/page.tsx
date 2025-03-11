@@ -1,4 +1,12 @@
 import { H2, H3, LeadP, P, Strong } from '@components/ui/typography'
+import { BASE_TITLE } from '@lib/constants'
+import type { Metadata } from 'next'
+
+const TITLE = 'Terms of Use'
+
+export const metadata: Metadata = {
+  title: `${BASE_TITLE} | ${TITLE}`,
+}
 
 // TODO: Review the verbiage!
 export default function TermsPage() {

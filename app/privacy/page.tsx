@@ -1,4 +1,12 @@
 import { H2, P, Small } from '@components/ui/typography'
+import { BASE_TITLE } from '@lib/constants'
+import type { Metadata } from 'next'
+
+const TITLE = 'Privacy ℹ️'
+
+export const metadata: Metadata = {
+  title: `${BASE_TITLE} | ${TITLE}`,
+}
 
 export default function PrivacyPage() {
   return (
