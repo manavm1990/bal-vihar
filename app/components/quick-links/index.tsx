@@ -17,6 +17,11 @@ const LINKS: Link[] = [
     className: 'bg-navy/80 text-white hover:bg-navy-600/80',
   },
   {
+    href: '/',
+    text: 'Home 🏠',
+    className: 'bg-primary/80 text-navy hover:bg-primary-600/80',
+  },
+  {
     type: 'external',
     href: 'https://www.paypal.com/donate?token=KqgZfvm9eCAmtzt-y3rla1Ahp-At4bwhJtvmxmnKSfs3xVsO5MCT8286Mkyi0TVh0yr8b69IdBcYk_6-&locale.x=US',
     text: 'Donate',
