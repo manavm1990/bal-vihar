@@ -12,7 +12,7 @@ export default function PresidentsMessagePage() {
   return (
     <>
       <H2>President's Message</H2>
-      <H3 className="mt-2">
+      <H3>
         <time dateTime="2024-08-01">August 1, 2024</time>
       </H3>
       <div className="columns-1 space-y-6 py-4 md:columns-2 md:gap-x-12 [&_p]:mt-2 [&_p]:text-pretty">
