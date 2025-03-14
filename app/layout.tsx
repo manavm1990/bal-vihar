@@ -43,7 +43,7 @@ export default function RootLayout({
 
         <QuickLinks />
         <Header />
-        <main className="container py-6">{children}</main>
+        <main className="container py-4">{children}</main>
         <Footer />
       </body>
     </html>
