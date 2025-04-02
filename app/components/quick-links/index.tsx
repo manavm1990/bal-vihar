@@ -3,14 +3,14 @@ import NextLink from 'next/link'
 import { ExternalIcon } from '../ui/icons'
 import QuickLinkElement from './element'
 
-interface Link {
+interface ILink {
   type?: 'internal' | 'external'
   href: string
   text: string
   className?: string
 }
 
-const LINKS: Link[] = [
+const LINKS: ILink[] = [
   {
     href: '/calendar',
     text: 'Calendar 🗓️',
@@ -36,11 +36,6 @@ const LINKS: Link[] = [
     href: '/questions',
     text: 'Questions?',
     className: 'bg-secondary/80 text-white hover:bg-secondary-600/80',
-  },
-  {
-    href: '/sponsors',
-    text: 'Sponsor',
-    className: 'bg-navy/80 text-white hover:bg-navy-600/80',
   },
 ] as const
 
@@ -102,7 +97,7 @@ export default function QuickLinks() {
   )
 }
 
-function Link({ type = 'internal', href, text, className }: Link) {
+function Link({ type = 'internal', href, text, className }: ILink) {
   const Component = type === 'internal' ? NextLink : 'a'
   const componentProps = type === 'internal' ? {} : { target: '_blank', rel: 'noopener noreferrer' }
 
