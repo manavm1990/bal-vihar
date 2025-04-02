@@ -4,15 +4,10 @@ import payloadPlugin from '@payloadcms/eslint-plugin'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import perfectionist from 'eslint-plugin-perfectionist'
 import eslintPluginUseEncapsulation from 'eslint-plugin-use-encapsulation'
-import { dirname } from 'path'
 import tseslint from 'typescript-eslint'
-import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  baseDirectory: import.meta.dirname,
 })
 
 const removeTypeScriptESLintPlugin = (config) => !config.plugins?.['@typescript-eslint']
@@ -30,7 +25,9 @@ export const defaultESLintIgnores = [
 
 export default [
   ...payloadEsLintConfig.filter(removeTypeScriptESLintPlugin),
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...compat.config({
+    extends: ['next/core-web-vitals', 'next/typescript'],
+  }),
   ...tseslint.configs.strict.filter(removeTypeScriptESLintPlugin),
   ...tseslint.configs.stylistic.filter(removeTypeScriptESLintPlugin),
   eslintConfigPrettier,
@@ -43,7 +40,7 @@ export default [
       parser: tseslint.parser,
       parserOptions: {
         project: './tsconfig.json',
-        tsconfigRootDir: __dirname,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     plugins: {
