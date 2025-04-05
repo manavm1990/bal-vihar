@@ -15,8 +15,6 @@ export const NAVIGATION = [
     link: '/about-us',
     items: [
       { name: 'History', link: '/about-us/history' },
-      { name: "President's Message", link: '/about-us/presidents-message' },
-      { name: 'Advisory Board', link: '/about-us/advisory-board' },
       { name: 'Administrative Team', link: '/about-us/administrative-team' },
       { name: 'Policies & Procedures', link: '/about-us/policies-and-procedures' },
       { name: 'Community Outreach', link: '/about-us/community-outreach' },
