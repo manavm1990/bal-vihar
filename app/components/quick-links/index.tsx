@@ -1,5 +1,6 @@
 import * as motion from 'motion/react-client'
 import NextLink from 'next/link'
+
 import { ExternalIcon } from '../ui/icons'
 import QuickLinkElement from './element'
 
@@ -97,7 +98,7 @@ export default function QuickLinks() {
   )
 }
 
-function Link({ type = 'internal', href, text, className }: ILink) {
+function Link({ type = 'internal', href, text, className = '' }: ILink) {
   const Component = type === 'internal' ? NextLink : 'a'
   const componentProps = type === 'internal' ? {} : { target: '_blank', rel: 'noopener noreferrer' }
 

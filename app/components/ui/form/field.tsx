@@ -56,11 +56,11 @@ export function FormField(props: FormFieldProps) {
           rows={props.rows}
           onChange={props.onChange}
           {...props.textareaProps}
-          defaultValue={props.value || ''}
+          defaultValue={props.value ?? ''}
         />
       ) : (
         <FormInput
-          type={props.type || 'text'}
+          type={props.type ?? 'text'}
           name={name}
           id={id}
           autoComplete={props.autoComplete}

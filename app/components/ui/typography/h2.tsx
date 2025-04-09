@@ -1,5 +1,6 @@
-import type TypographyProps from './typography.types'
 import { cn } from '@lib/utils'
+
+import type TypographyProps from './typography.types'
 
 export default function H2({ className, children }: TypographyProps) {
   return (

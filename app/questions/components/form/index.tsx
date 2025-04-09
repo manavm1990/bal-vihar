@@ -6,6 +6,7 @@ import { H2, P, Strong } from '@components/ui/typography'
 import { FADE } from '@lib/animations'
 import { AnimatePresence, motion } from 'motion/react'
 import Confetti from 'react-confetti'
+
 import useContact from './use-contact'
 
 export default function Form() {
@@ -39,7 +40,7 @@ export default function Form() {
           e.stopPropagation()
 
           setShouldShowStateMessage(true)
-          form.handleSubmit()
+          void form.handleSubmit()
         }}
       >
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
@@ -138,7 +139,7 @@ export default function Form() {
             children={([canSubmit, isPristine]) => (
               <Button
                 type="submit"
-                disabled={isPristine || !canSubmit || isPending}
+                disabled={isPristine ?? (!canSubmit || isPending)}
                 className="bg-primary hover:bg-primary-600 focus-visible:outline-ring rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 {isPending ? 'Sending...' : 'Send message'}
@@ -148,7 +149,7 @@ export default function Form() {
         </div>
 
         <AnimatePresence>
-          {!state.success && state.message && shouldShowStateMessage && !isPending && (
+          {state.message && shouldShowStateMessage && !isPending && (
             <motion.output
               className="text-red-500"
               variants={FADE}

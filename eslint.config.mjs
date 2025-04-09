@@ -1,58 +1,59 @@
-import { FlatCompat } from '@eslint/eslintrc'
-import payloadEsLintConfig from '@payloadcms/eslint-config'
-import payloadPlugin from '@payloadcms/eslint-plugin'
-import eslintConfigPrettier from 'eslint-config-prettier'
+import eslint from '@eslint/js'
+import nextPlugin from '@next/eslint-plugin-next'
+import importPlugin from 'eslint-plugin-import'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
 import perfectionist from 'eslint-plugin-perfectionist'
+import reactPlugin from 'eslint-plugin-react'
+import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import eslintPluginUseEncapsulation from 'eslint-plugin-use-encapsulation'
+import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-})
-
-const removeTypeScriptESLintPlugin = (config) => !config.plugins?.['@typescript-eslint']
-
-export const defaultESLintIgnores = [
-  '**/.temp',
-  '**/.*',
-  '**/.git',
-  '**/payload-types.ts',
-  '**/dist/',
-  '**/build/',
-  '**/node_modules/',
-  '**/temp/',
-]
-
-export default [
-  ...payloadEsLintConfig.filter(removeTypeScriptESLintPlugin),
-  ...compat.config({
-    extends: ['next/core-web-vitals', 'next/typescript'],
-  }),
-  ...tseslint.configs.strict.filter(removeTypeScriptESLintPlugin),
-  ...tseslint.configs.stylistic.filter(removeTypeScriptESLintPlugin),
-  eslintConfigPrettier,
+export default tseslint.config(
+  eslint.configs.recommended,
+  tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   {
-    ignores: [...defaultESLintIgnores],
+    ignores: [
+      '**/.temp',
+      '**/.*',
+      '**/.git',
+      '**/dist/',
+      '**/build/',
+      '**/node_modules/',
+      '**/temp/',
+    ],
     languageOptions: {
-      globals: {
-        React: true,
-      },
-      parser: tseslint.parser,
+      globals: { ...globals.browser, ...globals.node, React: true },
       parserOptions: {
-        project: './tsconfig.json',
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
     plugins: {
-      payload: payloadPlugin,
+      '@next/next': nextPlugin,
+      import: importPlugin,
+      'jsx-a11y': jsxA11y,
+      react: reactPlugin,
+      'react-hooks': reactHooksPlugin,
       'use-encapsulation': eslintPluginUseEncapsulation,
       perfectionist,
     },
     rules: {
-      '@next/next/no-page-custom-font': 'off',
+      'perfectionist/sort-imports': 'error',
 
-      // Payload rules
-      'payload/no-jsx-import-statements': 'error',
+      // Import rules
+      'import/first': 'error',
+      'import/no-duplicates': 'error',
+      'import/no-cycle': 'error',
+
+      // Accessibility rules
+      'jsx-a11y/alt-text': 'error',
+      'jsx-a11y/anchor-has-content': 'error',
+      'jsx-a11y/anchor-is-valid': 'error',
+      'jsx-a11y/aria-props': 'error',
+      'jsx-a11y/aria-role': 'error',
 
       // Type safety
       '@typescript-eslint/ban-ts-comment': 'error',
@@ -68,6 +69,16 @@ export default [
           varsIgnorePattern: '^_',
           destructuredArrayIgnorePattern: '^_',
           caughtErrorsIgnorePattern: '^(_|ignore)',
+        },
+      ],
+      '@typescript-eslint/no-unsafe-assignment': 'error',
+      '@typescript-eslint/no-unsafe-member-access': 'error',
+      '@typescript-eslint/no-unsafe-call': 'error',
+      '@typescript-eslint/no-unsafe-return': 'error',
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+          allowNumber: true,
         },
       ],
 
@@ -109,7 +120,7 @@ export default [
       'no-unused-labels': 'error',
       'no-useless-escape': 'error',
       'no-useless-return': 'error',
-      'no-void': 'error',
+      'no-void': ['error', { allowAsStatement: true }],
       'valid-typeof': 'error',
 
       // Modern JavaScript
@@ -143,9 +154,26 @@ export default [
       'no-array-constructor': 'error',
       'no-new-object': 'error',
 
-      'react/no-children-prop': 0,
-      'react/no-unescaped-entities': 'off',
-      'use-encapsulation/prefer-custom-hooks': 'error',
+      // React & Next.js
+      '@next/next/no-html-link-for-pages': 'error',
+      '@next/next/no-img-element': 'error',
+      '@next/next/google-font-display': 'error',
+      '@next/next/google-font-preconnect': 'error',
+      '@next/next/no-unwanted-polyfillio': 'error',
+      '@next/next/no-typos': 'error',
+      '@next/next/no-sync-scripts': 'error',
+      '@next/next/no-assign-module-variable': 'error',
+      '@next/next/no-async-client-component': 'error',
+      '@next/next/no-document-import-in-page': 'error',
+      '@next/next/no-head-import-in-document': 'error',
+      '@next/next/no-head-element': 'error',
+      'react/no-children-prop': [
+        2,
+        {
+          allowFunctions: true,
+        },
+      ],
+      'use-encapsulation/prefer-custom-hooks': ['error', { allow: ['useMemo'] }],
     },
   },
-]
+)

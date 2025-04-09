@@ -1,6 +1,8 @@
+import type { Metadata } from 'next'
+
 import Article from '@components/article'
 import { Bq, P, Strong } from '@components/ui/typography'
-import type { Metadata } from 'next'
+
 import { ABOUT_US_TITLE } from '../constants'
 
 const TITLE = 'History 📜'
@@ -15,7 +17,7 @@ export default function HistoryPage() {
     <Article title="History 📜">
       <P>
         Bal Vihar is a <Strong>non-profit 501 (c) (3)</Strong> corporation under the name of{' '}
-        <Strong>"Center for Indian Cultural Education - Bal Vihar of St. Louis"</Strong>.
+        <Strong>&quot;Center for Indian Cultural Education - Bal Vihar of St. Louis&quot;</Strong>.
       </P>
       <P>
         Since its <Strong>inception in 1992</Strong>, Bal Vihar has been serving the Metro St. Louis
@@ -38,9 +40,9 @@ export default function HistoryPage() {
         Bal Vihar helps students to learn Indian culture and its application to global multicultural
         and multifaceted society. With value based teaching, the students learn respect, honesty and
         good citizenship. They are also taught discipline, tolerance and devotion in their daily
-        routine. Bal Vihar's main goal is to integrate Indian cultural values with the mainstream.
-        This organization prepares the future achievers of the United States to be well rounded and
-        apply the learned values for the best of the communities.
+        routine. Bal Vihar&apos;s main goal is to integrate Indian cultural values with the
+        mainstream. This organization prepares the future achievers of the United States to be well
+        rounded and apply the learned values for the best of the communities.
         <Bq>
           The ultimate goal is to throw the light of cultural knowledge on every child, to make
           every child an outstanding citizen and to spread the song of peace and harmony around the

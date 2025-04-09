@@ -1,7 +1,8 @@
+import type { Metadata } from 'next'
+
 import Article from '@components/article'
 import { H3, LeadP, P, Strong } from '@components/ui/typography'
 import { BASE_TITLE } from '@lib/constants'
-import type { Metadata } from 'next'
 
 const TITLE = 'Terms of Use'
 
@@ -22,9 +23,9 @@ export default function TermsPage() {
       <section>
         <H3>Please Read Before Using This Site</H3>
         <P>
-          The materials on this website (the "Site") are provided by Center for Indian Cultural
-          Education – Bal Vihar of St. Louis as a service to its customers and may be used for
-          informational purposes only. Single copies may be downloaded subject to the provisions
+          The materials on this website (the &quot;Site&quot;) are provided by Center for Indian
+          Cultural Education – Bal Vihar of St. Louis as a service to its customers and may be used
+          for informational purposes only. Single copies may be downloaded subject to the provisions
           below. By downloading any materials from this site, you agree to these terms. If you do
           not agree to them, do not use the site or download any materials from it.
         </P>
@@ -41,8 +42,8 @@ export default function TermsPage() {
       <section>
         <H3>US Government Restrictions</H3>
         <P>
-          The materials are provided with "Restricted rights." Use, duplication, or disclosure by
-          the Government is subject to restrictions as set forth in FAR52.227-14 and
+          The materials are provided with &quot;Restricted rights.&quot; Use, duplication, or
+          disclosure by the Government is subject to restrictions as set forth in FAR52.227-14 and
           DFAR252.227-7013 et seq. or its successor. Use of the Materials by the Government
           constitutes acknowledgment of Center for Indian Cultural Education – Bal Vihar of St.
           Louis proprietary rights in them.
@@ -53,12 +54,12 @@ export default function TermsPage() {
         <H3>User Material</H3>
         <P>
           Any material, information or other communication you transmit or post to this Site will be
-          considered non-confidential and non-proprietary ("Communications"). Center for Indian
-          Cultural Education – Bal Vihar of St. Louis will have no obligations with respect to the
-          Communications. Center for Indian Cultural Education – Bal Vihar of St. Louis and its
-          designees will be free to copy, disclose, distribute, incorporate and otherwise use the
-          Communications and all data, images, sounds, text and other things embodied therein for
-          any and all commercial or non-commercial purposes. You are prohibited from posting or
+          considered non-confidential and non-proprietary (&quot;Communications&quot;). Center for
+          Indian Cultural Education – Bal Vihar of St. Louis will have no obligations with respect
+          to the Communications. Center for Indian Cultural Education – Bal Vihar of St. Louis and
+          its designees will be free to copy, disclose, distribute, incorporate and otherwise use
+          the Communications and all data, images, sounds, text and other things embodied therein
+          for any and all commercial or non-commercial purposes. You are prohibited from posting or
           transmitting to or from this Site any unlawful, threatening, libelous, defamatory,
           obscene, pornographic, or other material that would violate any law.
         </P>
@@ -68,9 +69,9 @@ export default function TermsPage() {
         <H3>Disclaimer</H3>
         <P>
           <Strong>
-            The materials are provided "as is" without any express or implied warranty of any kind
-            including warranties of merchantability, non-infringement of intellectual property, or
-            fitness for any particular purpose. In no event shall
+            The materials are provided &quot;as is&quot; without any express or implied warranty of
+            any kind including warranties of merchantability, non-infringement of intellectual
+            property, or fitness for any particular purpose. In no event shall
           </Strong>{' '}
           Center for Indian Cultural Education – Bal Vihar of St. Louis{' '}
           <Strong>
@@ -153,33 +154,33 @@ export default function TermsPage() {
           Access and the requirements set out elsewhere on our services. You may not copy,
           distribute or redistribute the data, including by caching, framing or similar means or
           sell, resell, re-transmit or otherwise make the data retrieved from our services available
-          in any manner to any third party. The data is provided "as is." We or any third party
-          shall not be liable to you or any third party for any loss or damage, direct, indirect or
-          consequential, arising from (i) any inaccuracy or incompleteness in, or delays,
-          interruptions, errors or omissions in the delivery of the data or any other information
-          supplied to you through our services or (ii) any decision made or action taken by you or
-          any third party in reliance upon the data. Neither any third party nor we shall be liable
-          for loss of business revenues, lost profits or any punitive, indirect, consequential,
-          special or similar damages whatsoever, whether in contract, tort or otherwise, even if
-          advised of the possibility of such damages incurred by you or any third party. Where the
-          information consists of pricing or performance data, the data contained therein has been
-          obtained from sources believed reliable. Data computations are not guaranteed by any
-          information service provider, third party or us or any affiliates and may not be complete.
-          Neither any information service provider, third party or us give any warranties, as to the
-          accuracy, adequacy, quality or fitness, timeless, non-infringement, title, of any
-          information for a particular purpose or use and all such warranties are expressly excluded
-          to the fullest extent that such warranties may be excluded by law. You bear all risk from
-          any use or results of using any information. You are responsible for validating the
-          integrity of any information received over the Internet. Transmission may be subject to
-          arbitrary delays beyond our control, which may delay the provision of our services and the
-          execution of your orders. You acknowledge that neither Center for Indian Cultural
-          Education – Bal Vihar of St. Louis Inc., any information service provider nor third party
-          will be liable to you or any third party for any losses arising from such delay. In no
-          event will any information provider, third party or we, be liable for any consequential
-          loss including but not limited to special, incidental, direct or indirect damages
-          resulting from delay or loss of use of our services. We are not responsible for any damage
-          to your computer, software, modem, telephone or other property resulting from your use of
-          our services.
+          in any manner to any third party. The data is provided &quot;as is.&quot; We or any third
+          party shall not be liable to you or any third party for any loss or damage, direct,
+          indirect or consequential, arising from (i) any inaccuracy or incompleteness in, or
+          delays, interruptions, errors or omissions in the delivery of the data or any other
+          information supplied to you through our services or (ii) any decision made or action taken
+          by you or any third party in reliance upon the data. Neither any third party nor we shall
+          be liable for loss of business revenues, lost profits or any punitive, indirect,
+          consequential, special or similar damages whatsoever, whether in contract, tort or
+          otherwise, even if advised of the possibility of such damages incurred by you or any third
+          party. Where the information consists of pricing or performance data, the data contained
+          therein has been obtained from sources believed reliable. Data computations are not
+          guaranteed by any information service provider, third party or us or any affiliates and
+          may not be complete. Neither any information service provider, third party or us give any
+          warranties, as to the accuracy, adequacy, quality or fitness, timeless, non-infringement,
+          title, of any information for a particular purpose or use and all such warranties are
+          expressly excluded to the fullest extent that such warranties may be excluded by law. You
+          bear all risk from any use or results of using any information. You are responsible for
+          validating the integrity of any information received over the Internet. Transmission may
+          be subject to arbitrary delays beyond our control, which may delay the provision of our
+          services and the execution of your orders. You acknowledge that neither Center for Indian
+          Cultural Education – Bal Vihar of St. Louis Inc., any information service provider nor
+          third party will be liable to you or any third party for any losses arising from such
+          delay. In no event will any information provider, third party or we, be liable for any
+          consequential loss including but not limited to special, incidental, direct or indirect
+          damages resulting from delay or loss of use of our services. We are not responsible for
+          any damage to your computer, software, modem, telephone or other property resulting from
+          your use of our services.
         </P>
       </section>
     </Article>

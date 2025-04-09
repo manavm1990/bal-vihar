@@ -3,6 +3,7 @@
 import { ChevronDownIcon, HamburgerMenuIcon, Cross1Icon as XIcon } from '@radix-ui/react-icons'
 import { AnimatePresence, motion } from 'motion/react'
 import Link from 'next/link'
+
 import { NAVIGATION } from '../constants'
 import useMobile from './use-mobile'
 
@@ -71,7 +72,9 @@ export default function MobileNav() {
   return (
     <>
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen)
+        }}
         className="text-navy-600 hover:text-primary-600 absolute top-2 right-2 p-2 xl:hidden"
       >
         {isOpen ? <XIcon className="h-6 w-6" /> : <HamburgerMenuIcon className="h-6 w-6" />}
@@ -84,7 +87,9 @@ export default function MobileNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/20 xl:hidden"
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              setIsOpen(false)
+            }}
           />
         )}
       </AnimatePresence>
@@ -98,7 +103,9 @@ export default function MobileNav() {
       >
         <div className="flex justify-end border-b p-4">
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              setIsOpen(false)
+            }}
             className="text-navy-600 hover:text-primary-600 p-2"
           >
             <XIcon className="h-6 w-6" />
@@ -110,9 +117,9 @@ export default function MobileNav() {
             {NAVIGATION.map((section) => (
               <motion.li key={section.name} variants={ITEM_VARIANTS}>
                 <button
-                  onClick={() =>
+                  onClick={() => {
                     setActiveSection(activeSection === section.name ? null : section.name)
-                  }
+                  }}
                   className={`flex w-full items-center justify-between p-2 text-left font-medium ${
                     activeSection === section.name
                       ? 'text-primary-600 bg-primary-50'

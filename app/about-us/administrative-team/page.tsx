@@ -1,6 +1,8 @@
+import type { Metadata } from 'next'
+
 import Article from '@components/article'
 import { P, Strong } from '@components/ui/typography'
-import type { Metadata } from 'next'
+
 import { ABOUT_US_TITLE } from '../constants'
 
 const TITLE = 'Administrative Team 👨‍🏫'
@@ -53,7 +55,7 @@ export default function AdministrativeTeamPage() {
           <li>
             <Strong>Marketing & Communications</Strong> - This team is responsible for publishing
             newsletters, submitting events related articles to various news agencies, marketing Bal
-            Vihar's events etc.
+            Vihar&apos;s events etc.
           </li>
           <li>
             <Strong>Fundraising</Strong> - This team oversees Fundraising activities both in-house

@@ -1,10 +1,12 @@
+import type { Metadata } from 'next'
+
 import Footer from '@components/footer'
 import Header from '@components/header'
 import QuickLinks from '@components/quick-links'
 import { BASE_TITLE, DESCRIPTION } from '@lib/constants'
 import { createJsonLd } from '@lib/utils'
-import type { Metadata } from 'next'
 import { Eczar, Poppins } from 'next/font/google'
+
 import './globals.css'
 
 const TITLE = 'Center for Indian Cultural Education'

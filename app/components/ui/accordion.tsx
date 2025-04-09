@@ -1,5 +1,6 @@
 import { cn } from '@lib/utils'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
+
 import { MinusIcon, PlusIcon } from './icons'
 
 const Accordion = AccordionPrimitive.Root

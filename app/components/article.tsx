@@ -1,5 +1,5 @@
-import { H2 } from './ui/typography'
 import { cn } from '../lib/utils'
+import { H2 } from './ui/typography'
 
 interface ArticleProps {
   title: string

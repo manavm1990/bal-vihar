@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import {
   Accordion,
   AccordionContent,
@@ -8,8 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@comp
 import { BuildingOfficeIcon, PhoneIcon, SchoolIcon } from '@components/ui/icons'
 import { H3, P } from '@components/ui/typography'
 import { BASE_TITLE } from '@lib/constants'
-import type { Metadata } from 'next'
 import Link from 'next/link'
+
 import Form from './components/form'
 
 const FAQS = [

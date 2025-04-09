@@ -1,5 +1,6 @@
 import Card from '@components/card'
 import { H2, H3, LeadP, P, Strong } from '@components/ui/typography'
+
 import { HeroCarousel } from './hero-carousel'
 
 export default function HomePage() {
@@ -10,8 +11,8 @@ export default function HomePage() {
         <H2>Bal Vihar 2025-2026 Registration is Now Open! 📢</H2>
         <H3>Dear Parents and Students,</H3>
         <LeadP>
-          Registration for new and existing students is now open. Classes fill up fast, so don't
-          wait to register!
+          Registration for new and existing students is now open. Classes fill up fast, so
+          don&apos;t wait to register!
         </LeadP>
         <P>
           Bal Vihar of St. Louis has been serving the Metro St. Louis Indian community{' '}

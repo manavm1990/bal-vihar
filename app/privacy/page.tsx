@@ -1,7 +1,8 @@
+import type { Metadata } from 'next'
+
 import Article from '@components/article'
 import { P, Small } from '@components/ui/typography'
 import { BASE_TITLE } from '@lib/constants'
-import type { Metadata } from 'next'
 
 const TITLE = 'Privacy ℹ️'
 
@@ -13,13 +14,14 @@ export default function PrivacyPage() {
   return (
     <Article title="Privacy Statement">
       <P>
-        You don't want your personal information to fall into the wrong hands. Neither does Center
-        for Indian Cultural Education – Bal Vihar of St. Louis. When you visit the Center for Indian
-        Cultural Education – Bal Vihar of St. Louis web site, we may collect and store information
-        about your visit on an anonymous, aggregate basis. This information may include the time and
-        length of your visit, the pages you look at on our site, and the site you visited just
-        before coming to ours. We may also record the name of your Internet service provider. We use
-        this information only to measure site activity and to develop ideas for improving our site.
+        You don&apos;t want your personal information to fall into the wrong hands. Neither does
+        Center for Indian Cultural Education – Bal Vihar of St. Louis. When you visit the Center for
+        Indian Cultural Education – Bal Vihar of St. Louis web site, we may collect and store
+        information about your visit on an anonymous, aggregate basis. This information may include
+        the time and length of your visit, the pages you look at on our site, and the site you
+        visited just before coming to ours. We may also record the name of your Internet service
+        provider. We use this information only to measure site activity and to develop ideas for
+        improving our site.
       </P>
 
       <P>
@@ -33,16 +35,17 @@ export default function PrivacyPage() {
       </P>
 
       <P>
-        Some of our web site may make use of "cookie 🍪" technology to measure site activity and to
-        customize information to your personal tastes. A cookie 🍪 is an element of data that a Web
-        site can send to your browser, which may then store the cookie 🍪 on your hard drive. So,
-        when you come back to visit us again, we can tailor information to suit your individual
-        preferences. The goal is to save you time and provide you with a more meaningful visit.
+        Some of our web site may make use of &quot;cookie 🍪&quot; technology to measure site
+        activity and to customize information to your personal tastes. A cookie 🍪 is an element of
+        data that a Web site can send to your browser, which may then store the cookie 🍪 on your
+        hard drive. So, when you come back to visit us again, we can tailor information to suit your
+        individual preferences. The goal is to save you time and provide you with a more meaningful
+        visit.
       </P>
 
       <P>
         You take online privacy seriously, and so does Center for Indian Cultural Education – Bal
-        Vihar of St. Louis. It's our way of sustaining your trust in Center for Indian Cultural
+        Vihar of St. Louis. It&apos;s our way of sustaining your trust in Center for Indian Cultural
         Education – Bal Vihar of St. Louis and our services.
       </P>
 

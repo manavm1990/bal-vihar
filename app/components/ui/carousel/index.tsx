@@ -26,11 +26,13 @@
 
 'use client'
 
-import { cn } from '@lib/utils'
-import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons'
 import type useEmblaCarousel from 'embla-carousel-react'
 import type { UseEmblaCarouselType } from 'embla-carousel-react'
+
+import { cn } from '@lib/utils'
+import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons'
 import * as React from 'react'
+
 import { Button } from '../button'
 import { useCarousel } from './use-carousel'
 
@@ -76,7 +78,7 @@ const Carousel = ({
       value={{
         ...carousel,
         opts,
-        orientation: orientation || (opts?.axis === 'y' ? 'vertical' : 'horizontal'),
+        orientation,
       }}
     >
       <div
@@ -163,7 +165,7 @@ const CarouselPrevious = React.memo(
         variant={variant}
         size={size}
         className={cn(
-          'pointer-coarse:hidden absolute h-8 w-8 rounded-full',
+          'absolute h-8 w-8 rounded-full pointer-coarse:hidden',
           orientation === 'horizontal'
             ? 'top-1/2 -left-12 -translate-y-1/2'
             : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
@@ -190,7 +192,7 @@ const CarouselNext = React.memo(
         variant={variant}
         size={size}
         className={cn(
-          'pointer-coarse:hidden absolute h-8 w-8 rounded-full',
+          'absolute h-8 w-8 rounded-full pointer-coarse:hidden',
           orientation === 'horizontal'
             ? 'top-1/2 -right-12 -translate-y-1/2'
             : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',

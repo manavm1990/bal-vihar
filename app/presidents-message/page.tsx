@@ -1,7 +1,8 @@
+import type { Metadata } from 'next'
+
 import Article from '@components/article'
 import { H3, P, Strong } from '@components/ui/typography'
 import { BASE_TITLE } from '@lib/constants'
-import type { Metadata } from 'next'
 
 const TITLE = 'Presidents Message 📜'
 
@@ -37,8 +38,9 @@ export default function PresidentsMessagePage() {
       </P>
       <P>
         Our students are taught discipline, diversity, respect and devotion in their daily routine.
-        The ultimate goal is "to throw the light of cultural knowledge on every child, to make every
-        child an outstanding citizen and to spread the song of peace and harmony around the world."
+        The ultimate goal is &quot;to throw the light of cultural knowledge on every child, to make
+        every child an outstanding citizen and to spread the song of peace and harmony around the
+        world.&quot;
       </P>
       <P>
         Center for Indian Cultural Education- Bal Vihar of St. Louis has been holding its classes at

@@ -11,6 +11,7 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components'
+
 import type { ContactFormData } from './contact.types'
 
 export default function EmailTemplate({

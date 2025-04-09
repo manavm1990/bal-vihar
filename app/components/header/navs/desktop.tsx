@@ -5,6 +5,7 @@ import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { type ComponentPropsWithoutRef } from 'react'
+
 import { NAVIGATION } from './constants'
 
 type LinkProps = {

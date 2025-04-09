@@ -1,4 +1,5 @@
 import Image from 'next/image'
+
 import { DesktopNav, MobileNav } from './navs'
 
 export default function Header() {

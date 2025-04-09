@@ -1,5 +1,5 @@
-import Thead, { type TheadProps } from './thead'
 import Tbody, { type TbodyProps } from './tbody'
+import Thead, { type TheadProps } from './thead'
 
 interface TableProps extends TheadProps, TbodyProps {}
 
