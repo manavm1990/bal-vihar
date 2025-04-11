@@ -43,12 +43,12 @@ export default function HistoryPage() {
         routine. Bal Vihar&apos;s main goal is to integrate Indian cultural values with the
         mainstream. This organization prepares the future achievers of the United States to be well
         rounded and apply the learned values for the best of the communities.
-        <Bq>
-          The ultimate goal is to throw the light of cultural knowledge on every child, to make
-          every child an outstanding citizen and to spread the song of peace and harmony around the
-          world.
-        </Bq>
       </P>
+
+      <Bq>
+        The ultimate goal is to throw the light of cultural knowledge on every child, to make every
+        child an outstanding citizen and to spread the song of peace and harmony around the world.
+      </Bq>
     </Article>
   )
 }
