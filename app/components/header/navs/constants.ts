@@ -16,7 +16,7 @@ export const NAVIGATION = [
     items: [
       { name: 'History', link: '/about-us/history' },
       { name: 'Administrative Team', link: '/about-us/administrative-team' },
-      { name: 'Policies & Procedures', link: '/about-us/policies-and-procedures' },
+      { name: 'Policies & Procedures', link: '/about-us/policies-procedures' },
       { name: 'Community Outreach', link: '/about-us/community-outreach' },
     ],
   },
