@@ -167,6 +167,7 @@ export default tseslint.config(
       '@next/next/no-document-import-in-page': 'error',
       '@next/next/no-head-import-in-document': 'error',
       '@next/next/no-head-element': 'error',
+      'react/jsx-no-useless-fragment': 'error',
       'react/no-children-prop': [
         2,
         {
