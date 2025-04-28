@@ -59,6 +59,10 @@
   --color-success: oklch(0.55 0.15 145);
   --color-warning: oklch(0.8 0.15 78);
 
+  --color-primary-foreground: #fff;
+  --color-accent: oklch(0.95 0.02 265);
+  --color-accent-foreground: var(--color-navy-900);
+
   /* Border radius */
   --radius: 0.5rem;
   --radius-lg: var(--radius);

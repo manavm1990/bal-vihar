@@ -1,6 +1,6 @@
 export { default as ThreeBarsIcon } from './3-bars'
 export { default as BuildingOfficeIcon } from './building-office'
-export { default as ChevronDownIcon } from './chevrons/down'
+export { default as CalendarIcon } from './calendar'
 export { default as EnvelopeIcon } from './envelope'
 export { default as ExternalIcon } from './external'
 export { default as MinusIcon } from './minus'
