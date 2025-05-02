@@ -29,7 +29,7 @@ export default function EmailTemplate({
       </Preview>
       <Tailwind>
         <Body className="mx-auto my-auto bg-white px-2 font-sans">
-          <Container className="mx-auto my-10 max-w-xl rounded border border-solid border-gray-200 p-6">
+          <Container className="mx-auto my-8 max-w-xl rounded border border-solid border-gray-200 p-4 shadow-md">
             <Section className="mt-8">
               <Img src="/logo.svg" width="40" height="37" alt="Logo" className="mx-auto my-0" />
             </Section>
@@ -53,7 +53,7 @@ export default function EmailTemplate({
               <strong>Message:</strong> {message}
             </Text>
 
-            <Hr className="my-6 w-full border border-solid border-gray-200" />
+            <Hr className="my-4 w-full border border-solid border-gray-200" />
 
             <Text className="text-sm leading-6 text-gray-600">
               This email was sent from the contact form on your website. If you did not expect this
