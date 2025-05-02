@@ -1,0 +1,59 @@
+'use client'
+
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
+import { DayPicker } from 'react-day-picker'
+
+export interface CalendarProps {
+  showOutsideDays?: boolean
+  numberOfMonths?: number
+  onNextClick?: (date: Date) => void
+  onPrevClick?: (date: Date) => void
+}
+
+function Calendar({
+  showOutsideDays = true,
+  numberOfMonths,
+  onNextClick,
+  onPrevClick,
+}: CalendarProps) {
+  return (
+    <DayPicker
+      showOutsideDays={showOutsideDays}
+      className={`w-fit rounded-lg bg-white p-4 shadow-md`}
+      classNames={{
+        months: 'relative flex',
+        month_caption: 'relative mx-8 flex h-8 items-center justify-center',
+        weekdays: 'flex flex-row',
+        weekday: 'w-8 text-sm font-normal text-muted-foreground',
+        month: 'w-full',
+        caption: 'relative flex flex-col items-center justify-center pt-1',
+        caption_label: 'truncate text-sm font-medium',
+        button_next:
+          'absolute top-0 right-0 size-8 bg-transparent p-0 opacity-80 hover:opacity-100',
+        button_previous:
+          'absolute top-0 left-0 size-8 bg-transparent p-0 opacity-80 hover:opacity-100',
+        nav: 'flex items-center justify-between w-full mb-2',
+        month_grid: 'mx-auto mt-4',
+        week: 'mt-2 flex w-max items-start',
+        day: 'flex size-8 flex-1 items-center justify-center p-0 text-sm',
+        day_button: 'size-8 rounded-md p-0 font-normal transition-none aria-selected:opacity-100',
+        selected:
+          '[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:hover:text-primary-foreground',
+        today: '[&>button]:bg-accent [&>button]:text-accent-foreground',
+        outside: 'day-outside text-muted-foreground opacity-50',
+        disabled: 'text-muted-foreground opacity-50',
+      }}
+      components={{
+        Chevron: ({ orientation }) => {
+          const Icon = orientation === 'left' ? ChevronLeftIcon : ChevronRightIcon
+          return <Icon className="size-4" />
+        },
+      }}
+      numberOfMonths={numberOfMonths}
+      onNextClick={onNextClick}
+      onPrevClick={onPrevClick}
+    />
+  )
+}
+
+export { Calendar }
