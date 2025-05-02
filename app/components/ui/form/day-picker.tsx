@@ -6,16 +6,10 @@ import { DayPicker as DayPickerPrimitive } from 'react-day-picker'
 export interface CalendarProps {
   showOutsideDays?: boolean
   numberOfMonths?: number
-  onNextClick?: (date: Date) => void
-  onPrevClick?: (date: Date) => void
+  onDateSelect?: (date: Date | undefined) => void
 }
 
-export function DayPicker({
-  showOutsideDays = true,
-  numberOfMonths,
-  onNextClick,
-  onPrevClick,
-}: CalendarProps) {
+export function DayPicker({ showOutsideDays = true, numberOfMonths, onDateSelect }: CalendarProps) {
   return (
     <DayPickerPrimitive
       showOutsideDays={showOutsideDays}
@@ -26,12 +20,13 @@ export function DayPicker({
         weekdays: 'flex flex-row',
         weekday: 'w-8 text-sm font-normal text-muted-foreground',
         month: 'w-full',
-        caption: 'relative flex flex-col items-center justify-center pt-1',
-        caption_label: 'truncate text-sm font-medium',
+        caption:
+          'relative flex flex-col items-center justify-center pt-1 bg-gradient-to-r from-primary-50 to-navy-50',
+        caption_label: 'truncate text-lg font-eczar font-medium text-secondary',
         button_next:
-          'absolute top-0 right-0 size-8 bg-transparent p-0 opacity-80 hover:opacity-100',
+          'absolute top-0 right-0 size-8 bg-transparent p-0 opacity-80 hover:opacity-100 hover:text-primary transition-colors',
         button_previous:
-          'absolute top-0 left-0 size-8 bg-transparent p-0 opacity-80 hover:opacity-100',
+          'absolute top-0 left-0 size-8 bg-transparent p-0 opacity-80 hover:opacity-100 hover:text-primary transition-colors',
         nav: 'flex items-center justify-between w-full mb-2',
         month_grid: 'mx-auto mt-4',
         week: 'mt-2 flex w-max items-start',
@@ -39,7 +34,8 @@ export function DayPicker({
         day_button: 'size-8 rounded-md p-0 font-normal transition-none aria-selected:opacity-100',
         selected:
           '[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:hover:text-primary-foreground',
-        today: '[&>button]:bg-accent [&>button]:text-accent-foreground',
+        today:
+          '[&>button]:bg-accent [&>button]:text-accent-foreground [&>button]:shadow-[0_0_8px_var(--color-primary-300)]',
         outside: 'day-outside text-muted-foreground opacity-50',
         disabled: 'text-muted-foreground opacity-50',
       }}
@@ -50,8 +46,7 @@ export function DayPicker({
         },
       }}
       numberOfMonths={numberOfMonths}
-      onNextClick={onNextClick}
-      onPrevClick={onPrevClick}
+      onSelect={onDateSelect} // Pass the handler to the DayPickerPrimitive
     />
   )
 }
