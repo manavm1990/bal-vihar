@@ -1,7 +1,7 @@
 'use client'
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
-import { DayPicker } from 'react-day-picker'
+import { DayPicker as DayPickerPrimitive } from 'react-day-picker'
 
 export interface CalendarProps {
   showOutsideDays?: boolean
@@ -10,14 +10,14 @@ export interface CalendarProps {
   onPrevClick?: (date: Date) => void
 }
 
-function Calendar({
+export function DayPicker({
   showOutsideDays = true,
   numberOfMonths,
   onNextClick,
   onPrevClick,
 }: CalendarProps) {
   return (
-    <DayPicker
+    <DayPickerPrimitive
       showOutsideDays={showOutsideDays}
       className={`w-fit rounded-lg bg-white p-4 shadow-md`}
       classNames={{
@@ -55,5 +55,3 @@ function Calendar({
     />
   )
 }
-
-export { Calendar }
