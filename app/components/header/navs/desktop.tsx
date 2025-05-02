@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDownIcon } from '@components/ui/icons'
+import { ChevronDownIcon } from '@radix-ui/react-icons'
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
