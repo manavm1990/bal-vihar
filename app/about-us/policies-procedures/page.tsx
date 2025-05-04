@@ -470,6 +470,11 @@ export default function PoliciesProceduresPage() {
 
           <section className="container mx-auto max-w-2xl rounded-lg bg-white p-6 shadow-md">
             <H4>Grievance Form</H4>
+            <P className="mb-4">
+              If you have a grievance, please fill out the form below. The grievance will be
+              reviewed by the Grievance Committee and appropriate action will be taken.
+            </P>
+
             <GrievanceForm />
           </section>
         </TextColumns>
