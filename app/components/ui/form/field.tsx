@@ -1,9 +1,7 @@
 import kebabCase from 'lodash.kebabcase'
-import {
-  type InputHTMLAttributes,
-  type LabelHTMLAttributes,
-  type TextareaHTMLAttributes,
-} from 'react'
+import { type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react'
+
+import { Label as FormLabel } from './label'
 
 // Base interface with common properties
 interface FormFieldBase {
@@ -71,14 +69,6 @@ export function FormField(props: FormFieldProps) {
       )}
       {error && <p className="text-destructive mt-1 text-sm">{error}</p>}
     </div>
-  )
-}
-
-function FormLabel({ htmlFor, children, ...props }: LabelHTMLAttributes<HTMLLabelElement>) {
-  return (
-    <label htmlFor={htmlFor} className="text-foreground block text-sm/6 font-semibold" {...props}>
-      {children}
-    </label>
   )
 }
 
