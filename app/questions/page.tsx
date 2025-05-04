@@ -12,7 +12,7 @@ import { H3, P } from '@components/ui/typography'
 import { BASE_TITLE } from '@lib/constants'
 import Link from 'next/link'
 
-import Form from './components/form'
+import ContactForm from './components/form'
 
 const FAQS = [
   {
@@ -227,7 +227,7 @@ function Contact() {
           </div>
 
           <div className="flex-1">
-            <Form />
+            <ContactForm />
           </div>
         </div>
       </CardContent>
