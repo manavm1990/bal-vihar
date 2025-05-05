@@ -45,7 +45,7 @@ export function FormField(props: FormFieldProps) {
   const id = kebabCase(name)
 
   return (
-    <div className={className}>
+    <div className={`${className} space-y-1`}>
       <FormLabel htmlFor={id}>{label}</FormLabel>
       {props.isTextArea ? (
         <FormTextArea
