@@ -3,12 +3,12 @@ import { type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react'
 
 import { Label as FormLabel } from './label'
 
-// Base interface with common properties
 interface FormFieldBase {
   label: string
   name: string
   className?: string
   error?: string
+  placeholder?: string
 }
 
 // Input field specific props
@@ -61,10 +61,9 @@ export function FormField(props: FormFieldProps) {
           type={props.type ?? 'text'}
           name={name}
           id={id}
-          autoComplete={props.autoComplete}
           value={props.value}
           onChange={props.onChange}
-          {...props.inputProps}
+          placeholder={props.placeholder}
         />
       )}
       {error && <p className="text-destructive mt-1 text-sm">{error}</p>}
@@ -76,18 +75,15 @@ interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: 'text' | 'email' | 'tel'
 }
 
-function FormInput({ type = 'text', name, id, autoComplete, ...props }: FormInputProps) {
+function FormInput({ type = 'text', name, id, placeholder }: FormInputProps) {
   return (
-    <div className="mt-2.5">
-      <input
-        type={type}
-        name={name}
-        id={id}
-        autoComplete={autoComplete}
-        className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-        {...props}
-      />
-    </div>
+    <input
+      type={type}
+      name={name}
+      id={id}
+      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
+      placeholder={placeholder}
+    />
   )
 }
 
@@ -98,14 +94,12 @@ function FormTextArea({
   ...props
 }: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
-    <div className="mt-2.5">
-      <textarea
-        name={name}
-        id={id}
-        rows={rows}
-        className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
-        {...props}
-      />
-    </div>
+    <textarea
+      name={name}
+      id={id}
+      rows={rows}
+      className="bg-background text-foreground outline-border placeholder:text-muted-foreground focus:outline-ring block w-full rounded-md px-3.5 py-2 text-base outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2"
+      {...props}
+    />
   )
 }
