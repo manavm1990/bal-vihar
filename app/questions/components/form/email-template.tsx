@@ -12,7 +12,7 @@ import {
   Text,
 } from '@react-email/components'
 
-import type { ContactFormData } from './contact.types'
+import type { ContactFormInputs } from './contact.types'
 
 export default function EmailTemplate({
   firstName,
@@ -20,7 +20,7 @@ export default function EmailTemplate({
   email,
   phone,
   message,
-}: ContactFormData) {
+}: ContactFormInputs) {
   return (
     <Html>
       <Head />

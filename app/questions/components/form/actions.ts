@@ -1,14 +1,16 @@
 'use server'
 
+import type { ActionResponse } from '@lib/types/action.types'
+
 import * as v from 'valibot'
 
-import { contactSchema, type ActionResponse, type ContactFormData } from './contact.types'
+import { ContactFormSchema, type ContactFormInputs } from './contact.types'
 
 export async function sendEmail(
   _: ActionResponse,
-  formData: ContactFormData,
+  formData: ContactFormInputs,
 ): Promise<ActionResponse> {
-  const validatedFields = v.safeParse(contactSchema, formData)
+  const validatedFields = v.safeParse(ContactFormSchema, formData)
 
   await new Promise((resolve) => setTimeout(resolve, 3000))
 

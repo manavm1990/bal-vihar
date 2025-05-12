@@ -2,7 +2,7 @@ import { useForm } from '@tanstack/react-form'
 import { startTransition, useActionState, useState } from 'react'
 
 import { sendEmail } from './actions'
-import { contactSchema } from './contact.types'
+import { ContactFormSchema } from './contact.types'
 
 export default function useContact() {
   const [state, action, isPending] = useActionState(sendEmail, { success: false, message: '' })
@@ -22,8 +22,8 @@ export default function useContact() {
       })
     },
     validators: {
-      onBlur: contactSchema,
-      onChange: contactSchema,
+      onBlur: ContactFormSchema,
+      onChange: ContactFormSchema,
     },
   })
 
