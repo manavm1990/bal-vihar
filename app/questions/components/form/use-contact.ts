@@ -1,38 +1,25 @@
-import { useForm } from '@tanstack/react-form'
-import { startTransition, useActionState, useState } from 'react'
+import { valibotResolver } from '@hookform/resolvers/valibot'
+import { useForm } from 'react-hook-form'
 
-import { sendEmail } from './actions'
 import { ContactFormSchema } from './contact.types'
 
+/**
+ * Manages the contact form state and validation.
+ * Actual form submission is handled in the parent component.
+ */
 export default function useContact() {
-  const [state, action, isPending] = useActionState(sendEmail, { success: false, message: '' })
-  const [shouldShowStateMessage, setShouldShowStateMessage] = useState(false)
-
-  const form = useForm({
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      message: '',
-    },
-    onSubmit: ({ value }) => {
-      startTransition(() => {
-        action(value)
-      })
-    },
-    validators: {
-      onBlur: ContactFormSchema,
-      onChange: ContactFormSchema,
-    },
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: valibotResolver(ContactFormSchema),
   })
 
   return {
-    form,
-    state,
-    sendMail: action,
-    isPending,
-    shouldShowStateMessage,
-    setShouldShowStateMessage,
-  } as const
+    register,
+    handleSubmit,
+    errors,
+    isSubmitting,
+  }
 }
