@@ -6,28 +6,6 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 This is **Bal Vihar of St. Louis**, a Next.js 15 application for the Center for Indian Cultural Education. It's a community organization website that teaches Indian culture and values to children through various events and activities.
 
-## Development Commands
-
-### Core Development
-
-```bash
-# Start development server with Turbopack
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
-
-# Run linting with auto-fix
-npm run lint
-```
-
-### Development Server
-
-The development server runs on `http://localhost:3000` with Turbopack enabled for faster builds.
-
 ## Code Architecture
 
 ### Project Structure
@@ -36,7 +14,6 @@ The development server runs on `http://localhost:3000` with Turbopack enabled fo
 - **TypeScript**: Strict TypeScript configuration with comprehensive type safety rules
 - **Styling**: Tailwind CSS v4 with custom design system
 - **UI Components**: Custom component library in `app/components/ui/`
-- **Font System**: Poppins (sans) and Eczar (serif) from Google Fonts
 
 ### Key Directories
 
@@ -66,7 +43,6 @@ The development server runs on `http://localhost:3000` with Turbopack enabled fo
 - **Server Actions**: Uses Next.js server actions for form submissions (`'use server'`)
 - **Email Integration**: Resend integration configured (TODO: domain setup required)
 - **Schema Validation**: Valibot for runtime type validation
-- **JSON-LD**: Structured data generation for SEO
 
 ### Styling Approach
 
@@ -76,13 +52,6 @@ The development server runs on `http://localhost:3000` with Turbopack enabled fo
 - **Responsive**: Mobile-first responsive design
 
 ## Code Quality & Standards
-
-### Linting & Formatting
-
-- **ESLint**: Comprehensive configuration with TypeScript, React, Next.js, and accessibility rules
-- **Prettier**: Configured with Tailwind plugin for class sorting
-- **Husky**: Pre-commit hooks run `lint-staged`
-- **Import Sorting**: Uses `perfectionist/sort-imports` for consistent import ordering
 
 ### TypeScript Configuration
 
@@ -114,13 +83,6 @@ The development server runs on `http://localhost:3000` with Turbopack enabled fo
 - **Validation**: Valibot for schema validation
 - **Carousel**: Embla Carousel with autoplay
 
-### Development Tools
-
-- ESLint with comprehensive plugin suite
-- Prettier with Tailwind class sorting
-- Husky for Git hooks
-- Lint-staged for pre-commit validation
-
 ## Navigation Structure
 
 The site uses a comprehensive multi-level navigation system defined in `app/components/header/navs/constants.ts`:
@@ -142,11 +104,3 @@ Forms use a consistent pattern:
 2. React Hook Form for form state management
 3. Server actions for form submission
 4. Type-safe form inputs with `ContactFormInputs` pattern
-
-## Email Integration
-
-The project is configured for Resend email service but requires domain verification. Email templates are built using React Email components.
-
-## SEO & Structured Data
-
-Each page includes JSON-LD structured data for organization information, generated via the `createJsonLd()` utility function.
