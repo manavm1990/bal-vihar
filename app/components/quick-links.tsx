@@ -77,7 +77,13 @@ export default function QuickLinks() {
             x: 0,
             opacity: 1,
             transition: {
-              type: 'spring',
+              /**
+               * * 'as const' lets TS know that it will be a specific
+               * 'Motion' type 🏷️,
+               * and not just a string.
+               */
+              type: 'spring' as const,
+
               stiffness,
               damping,
               delay: 0.3 + i * 0.05,
