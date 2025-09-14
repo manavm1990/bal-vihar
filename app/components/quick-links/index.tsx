@@ -62,12 +62,9 @@ export default function QuickLinks() {
       animate="show"
     >
       {sortedLinks.map((link, i) => {
-        // Increases damping for longer text
-        const springDamping = 12 + i * 0.8
+        const damping = 12 + i * 0.8
+        const stiffness = 100 - i * 5
 
-        // Decreases stiffness for longer text
-        const springStiffness = 100 - i * 5
-        // Custom variant for each item
         const item = {
           hidden: { x: 100, opacity: 0 },
           show: {
@@ -75,8 +72,8 @@ export default function QuickLinks() {
             opacity: 1,
             transition: {
               type: 'spring',
-              stiffness: springStiffness,
-              damping: springDamping,
+              stiffness,
+              damping,
               delay: 0.3 + i * 0.05,
             },
           },
