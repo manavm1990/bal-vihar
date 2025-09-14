@@ -4,24 +4,37 @@ This file provides guidance to Anthropic's Claude AI when working with code in t
 
 ## Project Overview
 
-This is **Bal Vihar of St. Louis**, a Next.js 15 application for the Center for Indian Cultural Education. It's a community organization website that teaches Indian culture and values to children through various events and activities.
+This is **Bal Vihar of St. Louis**, a Turborepo monorepo containing a Next.js 15 website and Sanity Studio CMS for the Center for Indian Cultural Education. It's a community organization website that teaches Indian culture and values to children through various events and activities.
 
-## Code Architecture
+## Monorepo Architecture
 
 ### Project Structure
 
-- **App Router Architecture**: Uses Next.js 15 App Router with the `app/` directory
-- **TypeScript**: Strict TypeScript configuration with comprehensive type safety rules
-- **Styling**: Tailwind CSS v4 with custom design system using Radix UI primitives
-- **State Management**: Server actions for form submissions, React Hook Form for form state
-- **UI Components**: Custom component library in `app/components/ui/`
+```
+bal-vihar/
+├── apps/
+│   ├── website/          # Next.js 15 public website
+│   └── studio/           # Sanity Studio CMS
+├── packages/
+│   ├── eslint-config/    # Shared ESLint configuration
+│   ├── typescript-config/ # Shared TypeScript configuration
+│   └── schemas/          # Shared Sanity schemas and types
+├── turbo.json           # Turborepo configuration
+└── package.json         # Root workspace configuration
+```
+
+- **Turborepo**: Monorepo build system with caching and task orchestration
+- **Apps**: Website (Next.js 15) and Studio (Sanity CMS) run independently
+- **Shared Packages**: Common configurations and schemas across apps
+- **Build System**: Bun package manager with workspace support
 
 ### Key Directories
 
-- `app/components/ui/` - Reusable UI components (buttons, forms, typography, etc.)
-- `app/lib/` - Utility functions, constants, and type definitions
-- `app/(home)/` - Homepage with hero carousel
-- Route-based pages follow the App Router file-based routing convention
+- `apps/website/app/components/ui/` - Reusable UI components (buttons, forms, typography, etc.)
+- `apps/website/app/lib/` - Utility functions, constants, and type definitions
+- `apps/website/app/(home)/` - Homepage with hero carousel
+- `apps/studio/` - Sanity Studio for content management
+- `packages/schemas/` - Shared content schemas and TypeScript types
 
 ### Component Architecture
 
@@ -33,10 +46,15 @@ This is **Bal Vihar of St. Louis**, a Next.js 15 application for the Center for 
 ### Path Aliases
 
 ```typescript
-// Available TypeScript path aliases
+// Available TypeScript path aliases (apps/website/)
 "@components/*" -> "./app/components/*"
 "@lib/*" -> "./app/lib/*"
 "@types/*" -> "./app/types/*"
+
+// Workspace packages
+"@bv/eslint-config" -> "../../packages/eslint-config"
+"@bv/typescript-config" -> "../../packages/typescript-config"
+"@bv/schemas" -> "../../packages/schemas"
 ```
 
 ### State Management & Data
@@ -59,6 +77,7 @@ This is **Bal Vihar of St. Louis**, a Next.js 15 application for the Center for 
 - Strict type checking enabled with additional safety rules
 - `noUncheckedIndexedAccess`, `noImplicitOverride`, `verbatimModuleSyntax`
 - Module resolution set to "bundler" for modern tooling
+- Shared base config in `@bv/typescript-config` package
 
 ### Key Development Practices
 
@@ -66,6 +85,8 @@ This is **Bal Vihar of St. Louis**, a Next.js 15 application for the Center for 
 - **Type Safety**: Strict TypeScript with no `any` types allowed
 - **Import Management**: Enforced import ordering and cycle detection
 - **Encapsulation**: Custom hooks encouraged over direct hook usage in components
+- **Monorepo Linting**: Per-package ESLint configurations with shared base rules
+- **Pre-commit Hooks**: lint-staged runs ESLint and Prettier on staged files
 
 ## Environment & Dependencies
 
