@@ -20,7 +20,7 @@
     "turbo": "^2.5.6"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "eslint --cache --fix",
+    "*.{ts,tsx}": "turbo lint",
     "*.{ts,tsx,css,md}": "prettier --write"
   }
 }
