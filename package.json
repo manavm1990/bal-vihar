@@ -20,7 +20,8 @@
     "turbo": "^2.5.6"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "turbo lint",
+    "apps/website/**/*.{ts,tsx}": "cd apps/website && bun run lint",
+    "apps/studio/**/*.{ts,tsx}": "cd apps/studio && bun run lint",
     "*.{ts,tsx,css,md}": "prettier --write"
   }
 }
