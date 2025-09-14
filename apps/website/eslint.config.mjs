@@ -6,15 +6,18 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import eslintPluginUseEncapsulation from 'eslint-plugin-use-encapsulation'
 import { defineConfig } from 'eslint/config'
 
-export default defineConfig(
+export default [
   ...baseConfig,
   {
     ignores: [
       '.next/**',
       'node_modules/**',
-      '*.config.*',
+      '*.config.{js,mjs,cjs,ts}',
       'next-env.d.ts',
+      'public/**',
     ],
+  },
+  {
     languageOptions: {
       globals: { React: true },
       parserOptions: {
@@ -59,4 +62,4 @@ export default defineConfig(
       'use-encapsulation/prefer-custom-hooks': ['error', { allow: ['useMemo'] }],
     },
   },
-)
+]
