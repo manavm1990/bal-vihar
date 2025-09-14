@@ -2,4 +2,4 @@
 const unused_variable = "hello"
 var oldVar = "should use const"
 
-export {}
+export { unused_variable }
