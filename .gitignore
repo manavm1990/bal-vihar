@@ -32,3 +32,6 @@ next-env.d.ts
 .eslintcache
 # Turbo
 .turbo/
+
+# Next.js cache
+.next/cache/
