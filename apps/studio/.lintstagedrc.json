@@ -1,0 +1,4 @@
+{
+  "*.{ts,tsx}": "bun run lint",
+  "*.{ts,tsx,css,md}": "prettier --write"
+}
