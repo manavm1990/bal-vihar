@@ -6,10 +6,11 @@ import perfectionist from 'eslint-plugin-perfectionist'
 import reactPlugin from 'eslint-plugin-react'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import eslintPluginUseEncapsulation from 'eslint-plugin-use-encapsulation'
+import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.strictTypeChecked,
