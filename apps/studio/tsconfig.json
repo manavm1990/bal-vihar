@@ -1,0 +1,10 @@
+{
+  "extends": "@bv/typescript-config/base.json",
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "Preserve",
+    "jsx": "preserve"
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

@@ -21,24 +21,6 @@
     "verbatimModuleSyntax": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    /* Next.js Specific */
-    "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@components/*": [
-        "./app/components/*"
-      ],
-      "@lib/*": [
-        "./app/lib/*"
-      ],
-      "@types/*": [
-        "./app/types/*"
-      ]
-    },
     /* Build Options */
     "noEmit": true,
     "isolatedModules": true,
@@ -48,15 +30,5 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "payload.config.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }

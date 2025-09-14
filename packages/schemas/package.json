@@ -1,0 +1,14 @@
+{
+  "name": "@bv/schemas",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "devDependencies": {
+    "@bv/typescript-config": "workspace:*",
+    "typescript": "^5.9.2"
+  }
+}

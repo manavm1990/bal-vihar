@@ -1,11 +1,6 @@
 import eslint from '@eslint/js'
-import nextPlugin from '@next/eslint-plugin-next'
 import importPlugin from 'eslint-plugin-import'
-import jsxA11y from 'eslint-plugin-jsx-a11y'
 import perfectionist from 'eslint-plugin-perfectionist'
-import reactPlugin from 'eslint-plugin-react'
-import reactHooksPlugin from 'eslint-plugin-react-hooks'
-import eslintPluginUseEncapsulation from 'eslint-plugin-use-encapsulation'
 import { defineConfig } from 'eslint/config'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
@@ -26,19 +21,14 @@ export default defineConfig(
       '**/temp/',
     ],
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node, React: true },
+      globals: { ...globals.browser, ...globals.node },
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
     plugins: {
-      '@next/next': nextPlugin,
       import: importPlugin,
-      'jsx-a11y': jsxA11y,
-      react: reactPlugin,
-      'react-hooks': reactHooksPlugin,
-      'use-encapsulation': eslintPluginUseEncapsulation,
       perfectionist,
     },
     rules: {
@@ -48,13 +38,6 @@ export default defineConfig(
       'import/first': 'error',
       'import/no-duplicates': 'error',
       'import/no-cycle': 'error',
-
-      // Accessibility rules
-      'jsx-a11y/alt-text': 'error',
-      'jsx-a11y/anchor-has-content': 'error',
-      'jsx-a11y/anchor-is-valid': 'error',
-      'jsx-a11y/aria-props': 'error',
-      'jsx-a11y/aria-role': 'error',
 
       // Type safety
       '@typescript-eslint/ban-ts-comment': 'error',
@@ -154,28 +137,6 @@ export default defineConfig(
       yoda: 'error',
       'no-array-constructor': 'error',
       'no-new-object': 'error',
-
-      // React & Next.js
-      '@next/next/no-html-link-for-pages': 'error',
-      '@next/next/no-img-element': 'error',
-      '@next/next/google-font-display': 'error',
-      '@next/next/google-font-preconnect': 'error',
-      '@next/next/no-unwanted-polyfillio': 'error',
-      '@next/next/no-typos': 'error',
-      '@next/next/no-sync-scripts': 'error',
-      '@next/next/no-assign-module-variable': 'error',
-      '@next/next/no-async-client-component': 'error',
-      '@next/next/no-document-import-in-page': 'error',
-      '@next/next/no-head-import-in-document': 'error',
-      '@next/next/no-head-element': 'error',
-      'react/jsx-no-useless-fragment': 'error',
-      'react/no-children-prop': [
-        2,
-        {
-          allowFunctions: true,
-        },
-      ],
-      'use-encapsulation/prefer-custom-hooks': ['error', { allow: ['useMemo'] }],
     },
   },
 )
