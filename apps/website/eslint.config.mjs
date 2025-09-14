@@ -9,6 +9,12 @@ import { defineConfig } from 'eslint/config'
 export default defineConfig(
   ...baseConfig,
   {
+    ignores: [
+      '.next/**',
+      'node_modules/**',
+      '*.config.*',
+      'next-env.d.ts',
+    ],
     languageOptions: {
       globals: { React: true },
       parserOptions: {

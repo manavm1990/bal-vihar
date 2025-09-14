@@ -6,7 +6,7 @@ type PageRoutes = never
 type LayoutRoutes = "/"
 type RedirectRoutes = never
 type RewriteRoutes = never
-type Routes = AppRoutes | PageRoutes | LayoutRoutes | RedirectRoutes | RewriteRoutes
+type Routes = AppRoutes | PageRoutes | LayoutRoutes    
 
 
 interface ParamMap {
@@ -58,7 +58,5 @@ declare global {
   type LayoutProps<LayoutRoute extends LayoutRoutes> = {
     params: Promise<ParamMap[LayoutRoute]>
     children: React.ReactNode
-  } & {
-    [K in LayoutSlotMap[LayoutRoute]]: React.ReactNode
-  }
+  } & Record<LayoutSlotMap[LayoutRoute], React.ReactNode>
 }
