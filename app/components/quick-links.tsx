@@ -1,8 +1,10 @@
+'use client'
+
 import * as motion from 'motion/react-client'
 import NextLink from 'next/link'
+import { usePathname } from 'next/navigation'
 
-import { ExternalIcon } from '../ui/icons'
-import QuickLinkElement from './element'
+import { ExternalIcon } from './ui/icons'
 
 interface ILink {
   type?: 'internal' | 'external'
@@ -54,6 +56,8 @@ const container = {
 const sortedLinks = [...LINKS].sort((a, b) => a.text.length - b.text.length)
 
 export default function QuickLinks() {
+  const pathname = usePathname()
+
   return (
     <motion.section
       className="fixed right-0 bottom-4 z-10 mt-4 flex flex-col gap-4"
@@ -62,6 +66,8 @@ export default function QuickLinks() {
       animate="show"
     >
       {sortedLinks.map((link, i) => {
+        if (pathname === link.href) return null
+
         const damping = 12 + i * 0.8
         const stiffness = 100 - i * 5
 
@@ -85,9 +91,7 @@ export default function QuickLinks() {
             className={`flex justify-end ${i % 2 ? 'hover:-rotate-3' : 'hover:rotate-3'}`}
             variants={item}
           >
-            <QuickLinkElement href={link.href}>
-              <Link {...link} />
-            </QuickLinkElement>
+            <Link {...link} />
           </motion.div>
         )
       })}
