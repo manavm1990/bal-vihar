@@ -41,7 +41,6 @@ yarn-error.log*
 *.pem
 
 # IDEs
-.vscode/
 .idea/
 *.swp
 *.swo

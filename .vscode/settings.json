@@ -62,5 +62,10 @@
     "Samaj",
     "Sudhir",
     "vihar"
+  ],
+  "conventionalCommits.scopes": [
+    "studio",
+    "website", 
+    "schemas"
   ]
 }
