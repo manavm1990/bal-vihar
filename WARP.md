@@ -10,7 +10,7 @@ This is **Bal Vihar of St. Louis**, a Turborepo monorepo containing a Next.js 15
 
 ### Project Structure
 
-```
+```txt
 bal-vihar/
 ├── apps/
 │   ├── website/          # Next.js 15 public website
