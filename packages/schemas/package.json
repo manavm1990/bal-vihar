@@ -10,5 +10,8 @@
   "devDependencies": {
     "@bv/typescript-config": "workspace:*",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "sanity": "^4.11.0"
   }
 }
