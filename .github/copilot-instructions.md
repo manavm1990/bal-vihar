@@ -68,9 +68,7 @@ Multi-level navigation defined in `app/components/header/navs/constants.ts` (Abo
 
 ## For Copilot
 
-- Focus on code generation, bug fixing, and editing in the above directories.
 - Use the established patterns and strict TypeScript.
 - Use Tailwind utility classes for all styling.
-- Do not introduce custom CSS unless absolutely necessary.
 - Use shared configs and types from workspace packages.
-- All code should be accessible and responsive.
+- Code Quality > Technical debt.
