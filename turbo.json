@@ -11,6 +11,10 @@
     },
     "lint": {
       "dependsOn": ["^build"]
+    },
+    "typegen": {
+      "cache": false,
+      "outputs": ["../../packages/schemas/src/sanity.types.ts"]
     }
   }
 }

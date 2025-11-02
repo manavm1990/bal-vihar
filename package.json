@@ -12,7 +12,9 @@
     "dev": "turbo dev",
     "build": "turbo build",
     "lint": "turbo lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "typegen": "turbo run typegen --filter=@bv/studio",
+    "typegen:watch": "turbo run typegen:watch --filter=@bv/studio"
   },
   "devDependencies": {
     "husky": "^9.1.7",

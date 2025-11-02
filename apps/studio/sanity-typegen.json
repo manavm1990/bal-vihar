@@ -1,0 +1,3 @@
+{
+  "generates": "../../packages/schemas/src/sanity.types.ts"
+}
