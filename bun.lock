@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "bal-vihar",
@@ -54,7 +55,7 @@
         "next-sanity": "^11.1.1",
         "react": "^19.1.1",
         "react-confetti": "^6.4.0",
-        "react-day-picker": "9.9.0",
+        "react-day-picker": "9.12.0",
         "react-dom": "^19.1.1",
         "react-hook-form": "^7.62.0",
         "resend": "^6.0.3",
@@ -2234,7 +2235,7 @@
 
     "react-confetti": ["react-confetti@6.4.0", "", { "dependencies": { "tween-functions": "^1.2.0" }, "peerDependencies": { "react": "^16.3.0 || ^17.0.1 || ^18.0.0 || ^19.0.0" } }, "sha512-5MdGUcqxrTU26I2EU7ltkWPwxvucQTuqMm8dUz72z2YMqTD6s9vMcDUysk7n9jnC+lXuCPeJJ7Knf98VEYE9Rg=="],
 
-    "react-day-picker": ["react-day-picker@9.9.0", "", { "dependencies": { "@date-fns/tz": "^1.4.1", "date-fns": "^4.1.0", "date-fns-jalali": "^4.1.0-0" }, "peerDependencies": { "react": ">=16.8.0" } }, "sha512-NtkJbuX6cl/VaGNb3sVVhmMA6LSMnL5G3xNL+61IyoZj0mUZFWTg4hmj7PHjIQ8MXN9dHWhUHFoJWG6y60DKSg=="],
+    "react-day-picker": ["react-day-picker@9.12.0", "", { "dependencies": { "@date-fns/tz": "^1.4.1", "date-fns": "^4.1.0", "date-fns-jalali": "^4.1.0-0" }, "peerDependencies": { "react": ">=16.8.0" } }, "sha512-t8OvG/Zrciso5CQJu5b1A7yzEmebvST+S3pOVQJWxwjjVngyG/CA2htN/D15dLI4uTEuLLkbZyS4YYt480FAtA=="],
 
     "react-dom": ["react-dom@19.1.1", "", { "dependencies": { "scheduler": "^0.26.0" }, "peerDependencies": { "react": "^19.1.1" } }, "sha512-Dlq/5LAZgF0Gaz6yiqZCf6VCcZs1ghAJyrsu84Q/GT0gV+mCxbfmKNoGRKBYMJ8IEdGPqu49YWXD02GCknEDkw=="],
 
