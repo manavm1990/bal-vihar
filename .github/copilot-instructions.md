@@ -6,7 +6,7 @@ This repository is a Turborepo monorepo for the Bal Vihar of St. Louis community
 
 - **Monorepo**: Turborepo with Bun package manager
 - **Apps**:
-  - `apps/website/`: Next.js 15 public website (App Router, React 19, Tailwind CSS v4, TypeScript strict)
+  - `apps/website/`: Next.js 16 public website (App Router, React 19, Tailwind CSS v4, TypeScript strict)
   - `apps/studio/`: Sanity Studio CMS (content management)
 - **Shared Packages**:
   - `packages/schemas/`: Shared Sanity schemas and types
@@ -24,7 +24,7 @@ This repository is a Turborepo monorepo for the Bal Vihar of St. Louis community
 
 ## Core Libraries & Patterns
 
-- **Next.js 15** (App Router, server actions)
+- **Next.js 16** (App Router, server actions)
 - **React 19**
 - **Tailwind CSS v4** (utility-first, no custom CSS preferred)
 - **Radix UI** primitives

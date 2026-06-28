@@ -1,13 +1,13 @@
 # Bal Vihar of St. Louis
 
-A modern Turborepo monorepo for the Center for Indian Cultural Education, containing a Next.js 15 website and Sanity Studio CMS.
+A modern Turborepo monorepo for the Center for Indian Cultural Education, containing a Next.js 16 website and Sanity Studio CMS.
 
 ## 🏗️ Monorepo Architecture
 
 ```
 bal-vihar/
 ├── apps/
-│   ├── website/          # Next.js 15 public website (localhost:3000)
+│   ├── website/          # Next.js 16 public website (localhost:3000)
 │   └── studio/           # Sanity Studio CMS (localhost:3333)
 ├── packages/
 │   ├── eslint-config/    # Shared ESLint configuration (@bv/eslint-config)
@@ -20,7 +20,7 @@ bal-vihar/
 ## 🚀 Quick Start
 
 ### Prerequisites
-- **Node.js** 18+ 
+- **Node.js** 20.9+
 - **Bun** 1.0+ (package manager)
 
 ### Development
@@ -56,7 +56,7 @@ turbo build --filter=@bv/website
 
 ### Apps
 
-- **`@bv/website`** - Next.js 15 application with App Router, TypeScript, and Tailwind CSS
+- **`@bv/website`** - Next.js 16 application with App Router, TypeScript, and Tailwind CSS
 - **`@bv/studio`** - Sanity Studio for content management
 
 ### Shared Packages
@@ -69,7 +69,7 @@ turbo build --filter=@bv/website
 
 ### Core Technologies
 - **Turborepo** - Monorepo build system with intelligent caching
-- **Next.js 15** - React framework with App Router and Turbopack
+- **Next.js 16** - React framework with App Router and Turbopack
 - **Sanity Studio** - Headless CMS for content management
 - **TypeScript** - Strict type checking across all packages
 - **Bun** - Fast package manager and workspace support

@@ -4,7 +4,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-This is **Bal Vihar of St. Louis**, a Turborepo monorepo containing a Next.js 15 website and Sanity Studio CMS for the Center for Indian Cultural Education. It's a community organization website that teaches Indian culture and values to children through various events and activities.
+This is **Bal Vihar of St. Louis**, a Turborepo monorepo containing a Next.js 16 website and Sanity Studio CMS for the Center for Indian Cultural Education. It's a community organization website that teaches Indian culture and values to children through various events and activities.
 
 ## Monorepo Architecture
 
@@ -13,7 +13,7 @@ This is **Bal Vihar of St. Louis**, a Turborepo monorepo containing a Next.js 15
 ```
 bal-vihar/
 ├── apps/
-│   ├── website/          # Next.js 15 public website
+│   ├── website/          # Next.js 16 public website
 │   └── studio/           # Sanity Studio CMS
 ├── packages/
 │   ├── eslint-config/    # Shared ESLint configuration
@@ -24,7 +24,7 @@ bal-vihar/
 ```
 
 - **Turborepo**: Monorepo build system with caching and task orchestration
-- **Apps**: Website (Next.js 15) and Studio (Sanity CMS) run independently
+- **Apps**: Website (Next.js 16) and Studio (Sanity CMS) run independently
 - **Shared Packages**: Common configurations and schemas across apps
 - **Build System**: Bun package manager with workspace support
 
@@ -92,7 +92,7 @@ bal-vihar/
 
 ### Core Stack
 
-- Next.js 15 with App Router and Turbopack
+- Next.js 16 with App Router and Turbopack
 - React 19 with React Hook Form
 - TypeScript with strict configuration
 - Tailwind CSS v4 with PostCSS
