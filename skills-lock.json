@@ -19,11 +19,23 @@
       "skillPath": "skills/seo-aeo-best-practices/SKILL.md",
       "computedHash": "edb99db85683ff99678fcb1bebc3a5653c3ea927eea9ee2534f19be86c7b8b81"
     },
+    "tavily-cli": {
+      "source": "tavily-ai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/tavily-cli/SKILL.md",
+      "computedHash": "3e62960686a24b313bf2c03c30168436de5694fad515a349789c38fa72d4f672"
+    },
     "tavily-extract": {
       "source": "tavily-ai/skills",
       "sourceType": "github",
       "skillPath": "skills/tavily-extract/SKILL.md",
       "computedHash": "8d52d231d67d398637d06234e09e9207fb7caa692ff1c33c0df43493b7d4ca7e"
+    },
+    "tavily-map": {
+      "source": "tavily-ai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/tavily-map/SKILL.md",
+      "computedHash": "9a4996c7249ff1a1e0757e16c89d1e197ec6ef3b0ced9fe7fc103d4707d8ba27"
     },
     "turborepo": {
       "source": "vercel/turborepo",
