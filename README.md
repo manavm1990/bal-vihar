@@ -10,7 +10,6 @@ bal-vihar/
 │   ├── website/          # Next.js 16 public website (localhost:3000)
 │   └── studio/           # Sanity Studio CMS (localhost:3333)
 ├── packages/
-│   ├── eslint-config/    # Shared ESLint configuration (@bv/eslint-config)
 │   ├── typescript-config/ # Shared TypeScript configuration (@bv/typescript-config)
 │   └── schemas/          # Shared Sanity schemas and types (@bv/schemas)
 ├── turbo.json           # Turborepo configuration
@@ -48,6 +47,9 @@ turbo build
 # Lint all packages
 turbo lint
 
+# Lint and auto-fix all packages
+turbo lint:fix
+
 # Build specific packages
 turbo build --filter=@bv/website
 ```
@@ -61,7 +63,6 @@ turbo build --filter=@bv/website
 
 ### Shared Packages
 
-- **`@bv/eslint-config`** - Shared ESLint configuration with TypeScript and accessibility rules
 - **`@bv/typescript-config`** - Shared TypeScript configuration with strict settings
 - **`@bv/schemas`** - Sanity content schemas and generated TypeScript types
 
@@ -75,8 +76,7 @@ turbo build --filter=@bv/website
 - **Bun** - Fast package manager and workspace support
 
 ### Development Tools
-- **ESLint** - Code linting with shared configurations
-- **Prettier** - Code formatting
+- **Biome** - Unified linting and formatting
 - **Husky** - Git hooks for code quality
 - **lint-staged** - Pre-commit linting and formatting
 
@@ -98,6 +98,7 @@ turbo build --filter=@bv/website
 | `turbo dev --filter=@bv/studio` | Start only Sanity Studio |
 | `turbo build` | Build all packages |
 | `turbo lint` | Lint all packages |
+| `turbo lint:fix` | Lint and auto-fix all packages |
 | `bun install` | Install dependencies |
 
 ## 🌐 Local Development
@@ -107,7 +108,7 @@ turbo build --filter=@bv/website
 
 ## 📚 Documentation
 
-- **Development Guide**: See `WARP.md` for detailed development instructions
+- **Development Guide**: See `AGENTS.md` for detailed development instructions
 - **Website Docs**: `apps/website/README.md`
 - **Studio Docs**: `apps/studio/README.md` (if available)
 

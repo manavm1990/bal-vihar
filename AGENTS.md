@@ -17,7 +17,6 @@ bal-vihar/
 │   ├── website/          # Next.js 16 public website
 │   └── studio/           # Sanity Studio CMS
 ├── packages/
-│   ├── eslint-config/    # Shared ESLint configuration
 │   ├── typescript-config/ # Shared TypeScript configuration
 │   └── schemas/          # Shared Sanity schemas and types
 ├── turbo.json           # Turborepo configuration
@@ -53,7 +52,6 @@ bal-vihar/
 "@types/*" -> "./app/types/*"
 
 // Workspace packages
-"@bv/eslint-config" -> "../../packages/eslint-config"
 "@bv/typescript-config" -> "../../packages/typescript-config"
 "@bv/schemas" -> "../../packages/schemas"
 ```
@@ -86,8 +84,8 @@ bal-vihar/
 - **Type Safety**: Strict TypeScript with no `any` types allowed
 - **Import Management**: Enforced import ordering and cycle detection
 - **Encapsulation**: Custom hooks encouraged over direct hook usage in components
-- **Monorepo Linting**: Per-package ESLint configurations with shared base rules
-- **Pre-commit Hooks**: lint-staged runs ESLint and Prettier on staged files
+- **Monorepo Linting**: Biome is used for unified linting and formatting across packages
+- **Pre-commit Hooks**: lint-staged runs Biome checks on staged TypeScript files
 
 ## Environment & Dependencies
 
