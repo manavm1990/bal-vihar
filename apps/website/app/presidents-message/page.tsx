@@ -13,12 +13,12 @@ export default function PresidentsMessagePage() {
   return (
     <Article title="President's Message">
       <H3>
-        <time dateTime="2024-08-01">August 1, 2024</time>
+        <time dateTime="2026-08-01">August 1, 2026</time>
       </H3>
 
       <P>
-        Center for Indian Cultural Education, Bal Vihar of St. Louis, a nonprofit, 501(c ) 3
-        organization was founded 32 years ago to instill and foster East Indian Cultural in the
+        Center for Indian Cultural Education, Bal Vihar of St. Louis, a nonprofit, 501(c) 3
+        organization was founded 34 years ago to instill and foster East Indian Cultural in the
         children of ages 5 through 18. Bal Vihar has been providing this service to the St. Louis
         community since August 1992 and has been growing in number of students ever since then.
         Sincere thanks to all professional volunteers who invest their valuable time in preserving
@@ -48,7 +48,7 @@ export default function PresidentsMessagePage() {
         temples, a worship place.
       </P>
       <P>
-        Enrollment of 300 + students for the Cultural Education in the school year 2024-2025
+        Enrollment of 350 + students for the Cultural Education in the school year 2026-2027
         indicates that there are more children related activities are taking place in the local
         community. Increased volunteering work for our youth, hands-on and interesting projects that
         our educational team and event team are conceptualizing and implementing most effective way
@@ -70,56 +70,71 @@ export default function PresidentsMessagePage() {
         <Strong>
           The Center cultural school is very proud of being partner with the Rockwood school
           district. Our Bal Vihar school received recognition of partnership in Education from
-          Rockwood School District Partners in Education Facilitators on May 4, 2023 and April 29,
-          2024.{" "}
+          Rockwood School District Partners in Education Facilitators on May 4, 2026, and in 2025,
+          2024 and more.
         </Strong>
       </P>
 
       <section className="space-y-4">
-        <P>During the 2023-2024 school year, Bal Vihar celebrated the following events:</P>
+        <P>
+          School year 2025-2026 was another exciting year where students performed a variety of
+          exciting activities as follows:
+        </P>
 
         <ul className="list-disc space-y-4">
           <li>
-            The school year started with the family night on September 16, 2023 where all families
-            and children met, enjoyed food, and participated in activities such as Dandiya Raas,
-            Garba, and more.
+            On September 28, 2025, Bal Vihar children visited St. Louis Buddha temple in Augusta,
+            MO. It was an exciting event. During the visit, students participated in a
+            congregational prayer service, observed Buddhist customs and listened to a lecture on
+            the life and teachings of Siddhartha Gautama.
           </li>
           <li>
-            A grand Diwali celebration was held on November 19, 2023 in person at the Hindu temple
-            where students performed Diwali puja followed by food and fireworks.
+            On October 26, 2025, Diwali event was an exciting event where children enjoyed praying
+            at Hindu Temple and celebrating the festival of light with fireworks and a meal.
           </li>
           <li>
-            On January 28, 2024, Bal Vihar celebrated India’s 75th Republic Day with more than 500
-            participants and dignitaries from diverse backgrounds, including members of the Bach
-            Society of St. Louis, MO, the former principal of Lafayette High School, a Professor
-            from Washington University, leading medical and legal professionals, and representatives
-            from local news media.
+            On January 25, 2026, Bal Vihar celebrated India&apos;s Republic Day in presence of chief
+            guest US senator candidate Brian William and leading community leaders. The students of
+            different grades created an amazing showcase of various Indian states and their key
+            features and celebrations. The event was attended by an amazing audience of more than
+            400 students and parents.
           </li>
           <li>
-            The youth at Center for Indian Cultural Education - Bal Vihar of St. Louis participated
-            in preparing food for the homeless and feeding America by making sandwiches, cookies,
-            brownies, and other items to create meal bags for the community.
+            On April 5, 2026, BV celebrated Holi festival on the HT parking lot including walk for
+            water activities with more than 200 children and more parents too.
           </li>
           <li>
-            A grand festival of Color – Holi was celebrated on March 30, 2024 at the Hindu temple
-            Community Center with plenty of color and food for the children.
+            Graduation ceremony of youth students on April 19, 2026, was also a well-attended event
+            with Dr. Ramanath Cowsik, Indian Presidential Padma Shri award winner and professor of
+            Space science at Washington University. This event included a bridging ceremony of
+            children from Group 7 to Y1 and a graduation ceremony for Y5 students.
           </li>
           <li>
-            Bal Vihar is actively pursuing participation with other St. Louis organizations, such
-            as:
-            <ul>
-              <li>
-                The BV yoga team participated in the cultural program organized by the Gujarati
-                Samaj Community Center and performed yoga on April 13, 2024, among other programs.
-              </li>
-            </ul>
-            In addition, our youth gain exposure by teaching children, practicing yoga and bhajans,
-            supporting teaching aspects, and organizing cultural events. They earn community service
-            hours, a potential Presidential award certificate for volunteering, and credit toward
-            their high school graduation.
+            Yoga and Bhajan showcase was an amazing event held on May 3rd where children of all
+            groups performed yogas and sang bhajans in this event, which parents attended.
+          </li>
+          <li>
+            Also, Rockwood School District provided a Certificate of Appreciation this year to our
+            BV teachers for sharing their talent about Hindu Culture events with Rockwood School
+            District students.
+          </li>
+          <li>
+            Under the leadership of community project leaders, BV youth did several community
+            projects such as the Mental Health summit, Gardening project, drive to recycle
+            electronic waste, sandwiches and care project for a homeless shelter, casserole making
+            for St. Patrick Center, Walk for Water, Feed the Needy, and a teachers recycling
+            project. We are proud of our youth participating in community projects.
           </li>
         </ul>
       </section>
+
+      <P>
+        Now our new 2026-2027 school year registration has opened up as of May 1, 2026 and will
+        close by July 31, 2026. Bal Vihar will restrict registration per class so if you have not
+        registered, please do so as soon as possible. From May 1st till today, more than 105
+        students have already registered. Thank you very much for being part of Bal Vihar family and
+        now we are entering into 35 years of Bal Vihar.
+      </P>
 
       <P>
         Our improved curriculum, hands-on practices for our children, and celebrating Hindu
@@ -134,7 +149,7 @@ export default function PresidentsMessagePage() {
       <footer className="italic">
         Best Regards,
         <br />
-        Dr. Sudhir Brahmbhatt
+        Sudhir Brahmbhatt
       </footer>
     </Article>
   );

@@ -23,7 +23,7 @@ export default function HistoryPage() {
         southeast Asian / Indian community of about 10,000 families. The primary focus of this
         organization is to provide Indian cultural education for children of ages 5 through 16. Bal
         Vihar is a school to educate, foster and preserve Asian cultural values. Bal Vihar has{" "}
-        <Strong>300+ students and over 40 volunteer teachers and teaching assistants</Strong>.
+        <Strong>350+ students and over 70 volunteer teachers and teaching assistants</Strong>.
       </P>
       <P>
         Bal Vihar, is an all-volunteer organization with a well-defined by-laws and a mature
@@ -42,6 +42,10 @@ export default function HistoryPage() {
         routine. Bal Vihar&apos;s main goal is to integrate Indian cultural values with the
         mainstream. This organization prepares the future achievers of the United States to be well
         rounded and apply the learned values for the best of the communities.
+      </P>
+      <P>
+        Currently, Bal Vihar school is operating every other Sunday from August through May of the
+        next year at the Hindu Temple Community Center, 2nd floor.
       </P>
 
       <Bq>
