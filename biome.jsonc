@@ -38,7 +38,7 @@
                 "selector": {
                   "kind": "variable"
                 },
-                "formats": ["camelCase", "CONSTANT_CASE"]
+                "formats": ["camelCase", "PascalCase", "CONSTANT_CASE"]
               },
               {
                 "selector": {
@@ -84,7 +84,7 @@
                 "selector": {
                   "kind": "objectLiteralProperty"
                 },
-                "formats": ["camelCase", "CONSTANT_CASE", "PascalCase"]
+                "formats": ["camelCase", "CONSTANT_CASE", "PascalCase", "snake_case"]
               }
             ]
           }

@@ -1,16 +1,15 @@
-import type { Metadata } from 'next'
+import Article from "@components/article";
+import { P, Strong } from "@components/ui/typography";
+import type { Metadata } from "next";
 
-import Article from '@components/article'
-import { P, Strong } from '@components/ui/typography'
+import { ABOUT_US_TITLE } from "../constants";
 
-import { ABOUT_US_TITLE } from '../constants'
-
-const TITLE = 'Administrative Team 👨‍🏫'
+const TITLE = "Administrative Team 👨‍🏫";
 
 export const metadata: Metadata = {
   title: `${ABOUT_US_TITLE} | ${TITLE}`,
-  description: 'Learn more about our administrative team and their roles.',
-}
+  description: "Learn more about our administrative team and their roles.",
+};
 
 export default function AdministrativeTeamPage() {
   return (
@@ -69,5 +68,5 @@ export default function AdministrativeTeamPage() {
         </li>
       </ul>
     </Article>
-  )
+  );
 }

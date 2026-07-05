@@ -1,4 +1,4 @@
-import calendarEvent from './calendar-event'
-import calendarImport from './calendar-import'
+import calendarEvent from "./calendar-event";
+import calendarImport from "./calendar-import";
 
-export const documents = [calendarEvent, calendarImport]
+export const documents = [calendarEvent, calendarImport];

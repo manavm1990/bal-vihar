@@ -1,18 +1,18 @@
-import type { Metadata } from 'next'
+import TextColumns from "@components/text-columns";
+import { Card, CardContent } from "@components/ui/card";
+import { Separator } from "@components/ui/separator";
+import { H2, H3, H4, H5, LeadP, P, Strong, Table } from "@components/ui/typography";
+import type { Metadata } from "next";
 
-import TextColumns from '@components/text-columns'
-import { Separator } from '@components/ui/separator'
-import { H2, H3, H4, H5, LeadP, P, Strong, Table } from '@components/ui/typography'
+import { ABOUT_US_TITLE } from "../constants";
+import GrievanceForm from "./form.client";
 
-import { ABOUT_US_TITLE } from '../constants'
-import GrievanceForm from './form.client'
-
-const TITLE = 'Policies & Procedures 📜'
+const TITLE = "Policies & Procedures 📜";
 
 export const metadata: Metadata = {
   title: `${ABOUT_US_TITLE} | ${TITLE}`,
-  description: 'Bal Vihar Policies and Procedures',
-}
+  description: "Bal Vihar Policies and Procedures",
+};
 
 export default function PoliciesProceduresPage() {
   return (
@@ -82,19 +82,19 @@ export default function PoliciesProceduresPage() {
               school. Thus:
             </P>
             <Table
-              headers={['Regular School Grade', 'Bal Vihar School Grade']}
+              headers={["Regular School Grade", "Bal Vihar School Grade"]}
               rows={[
-                ['Grade K', 'Grade K'],
-                ['Grade 1', 'Grade 1'],
-                ['Grade 2', 'Grade 2'],
-                ['Grade 3', 'Grade 3'],
-                ['Grade 4', 'Grade 4'],
-                ['Grade 5', 'Grade 5'],
-                ['Grade 6', 'Grade 6'],
-                ['Grade 7', 'Grade 7'],
-                ['Grade 8', 'Youth Group Y1'],
-                ['Grade 9', 'Youth Group Y2'],
-                ['Grade 10', 'Youth Group Y3'],
+                ["Grade K", "Grade K"],
+                ["Grade 1", "Grade 1"],
+                ["Grade 2", "Grade 2"],
+                ["Grade 3", "Grade 3"],
+                ["Grade 4", "Grade 4"],
+                ["Grade 5", "Grade 5"],
+                ["Grade 6", "Grade 6"],
+                ["Grade 7", "Grade 7"],
+                ["Grade 8", "Youth Group Y1"],
+                ["Grade 9", "Youth Group Y2"],
+                ["Grade 10", "Youth Group Y3"],
               ]}
               footer="No admission will be made in youth group Y4 and Y5. Only children from Y3 will go to Y4 and children from Y4 will go to Y5."
             />
@@ -178,7 +178,7 @@ export default function PoliciesProceduresPage() {
           <section>
             <H4>2.1 Bal Vihar Graduation</H4>
             <P>
-              The committee consisting of teacher coordinators and the teachers from the{' '}
+              The committee consisting of teacher coordinators and the teachers from the{" "}
               <Strong>Group 7 and Y4 group</Strong> will finalize the list of graduating students
               after taking teacher’s inputs and based on the following criteria:
             </P>
@@ -321,11 +321,95 @@ export default function PoliciesProceduresPage() {
       <Separator />
 
       <section>
-        <H3>3.0 Volunteer Policies</H3>
+        <H3>3.0 School Requirements</H3>
 
         <TextColumns>
           <section>
-            <H4>3.1 Volunteering Requirements</H4>
+            <H4>3.1 Class Schedule Time - Late Arrival</H4>
+            <P>
+              All students are expected to be in school 15 minutes prior to the start of Aarthi and
+              prayers. The prayer room doors may be closed during prayers, and students should
+              remain outside the classroom until prayers are completed.
+            </P>
+          </section>
+
+          <section>
+            <H4>3.2 Dress Code</H4>
+            <P>
+              On Bal Vihar day, students are urged to take bath in the morning and put on freshly
+              washed, loosely fitting clothes appropriate for Yoga.
+            </P>
+          </section>
+
+          <section>
+            <H4>3.3 Dropping off / Picking up and Parents Responsibility</H4>
+            <P>
+              During drop-off, parents should accompany students to the assembly area rather than
+              dropping them in the parking lot. After class dispersal, students should be picked up
+              from the school lobby and should not walk to the parking lot unaccompanied.
+            </P>
+            <P>
+              Parents are responsible for transportation arrangements. If a third party will pick up
+              a student, written and dated communication must be sent to the Parent Coordinator and
+              classroom teacher in advance.
+            </P>
+          </section>
+
+          <section>
+            <H4>3.4 Student Responsibilities</H4>
+            <P>
+              Students should not touch or disrupt school items including pencils, papers, crayons,
+              and related materials. Use supplies provided by your Bal Vihar teacher only.
+            </P>
+            <P>Chewing gum, bubble gum, candy, and toys are not allowed in Bal Vihar classes.</P>
+            <ul>
+              <li>
+                Any disruption to school or property will be brought to the attention of parents. A
+                repeat offense may result in the student being expelled from Bal Vihar.
+              </li>
+              <li>
+                Leave classrooms in the same configuration and condition as they were when class
+                started. It is the students’ responsibility to put things back.
+              </li>
+              <li>
+                Students should conform to all applicable school-use requirements and Bal Vihar
+                building and facility expectations.
+              </li>
+              <li>
+                Bal Vihar students should not open school lockers during Bal Vihar schedules,
+                including students who attend regular school on campus.
+              </li>
+              <li>
+                No running inside the school is permitted. Stay within classroom boundaries and
+                designated Bal Vihar spaces. Wandering in other school areas is strictly prohibited.
+              </li>
+              <li>No skating shoes are allowed in school premises. Always practice safe habits.</li>
+            </ul>
+            <P>
+              Failure to adhere to student responsibilities may lead to disciplinary action by the
+              administration, up to and including expulsion.
+            </P>
+          </section>
+
+          <section>
+            <H4>3.5 Cancelled Class</H4>
+            <P>
+              Due to classroom availability limitations, Bal Vihar may not be able to make up
+              classes cancelled because of inclement weather or other uncontrollable circumstances.
+              Parents should check the website for updates on class days.
+            </P>
+          </section>
+        </TextColumns>
+      </section>
+
+      <Separator />
+
+      <section>
+        <H3>4.0 Volunteer Policies</H3>
+
+        <TextColumns>
+          <section>
+            <H4>4.1 Volunteering Requirements</H4>
             <P>
               It is required that every Bal Vihar parent complete a voluntary activity(ies) /
               assignment(s) during Bal Vihar school year. Voluntary activity requirement is per
@@ -381,7 +465,7 @@ export default function PoliciesProceduresPage() {
           </section>
 
           <section>
-            <H4>3.2 Volunteer Deposit and Refund</H4>
+            <H4>4.2 Volunteer Deposit and Refund</H4>
 
             <P>
               During registration process parents are required to deposit $50 per child and choose
@@ -408,7 +492,7 @@ export default function PoliciesProceduresPage() {
       <Separator />
 
       <section>
-        <H3>4.0 Grievance Policy</H3>
+        <H3>5.0 Grievance Policy</H3>
 
         <TextColumns>
           <P>
@@ -419,7 +503,7 @@ export default function PoliciesProceduresPage() {
           </P>
 
           <section>
-            <H4>4.1 Grievances against teacher(s):</H4>
+            <H4>5.1 Grievances against teacher(s):</H4>
 
             <P>
               A formal complaint is filed with the Teacher Coordinator committee in writing. Within
@@ -433,7 +517,7 @@ export default function PoliciesProceduresPage() {
           </section>
 
           <section>
-            <H4>4.2 Grievances against parent(s) or volunteer(s):</H4>
+            <H4>5.2 Grievances against parent(s) or volunteer(s):</H4>
 
             <P>
               A formal complaint is filed with the teacher coordinator in writing. The teacher
@@ -448,7 +532,7 @@ export default function PoliciesProceduresPage() {
 
           <section>
             <H4>
-              4.3 Grievance against a member of teacher coordinator committee or any other
+              5.3 Grievance against a member of teacher coordinator committee or any other
               individual in administrative position:
             </H4>
 
@@ -458,7 +542,7 @@ export default function PoliciesProceduresPage() {
           </section>
 
           <section>
-            <H4>4.4 Grievance against another student:</H4>
+            <H4>5.4 Grievance against another student:</H4>
             <P>
               A formal complaint is filed with a teacher coordinator in writing. Teacher coordinator
               notifies parent. Within two weeks, a meeting is scheduled with student’s parent(s),
@@ -468,17 +552,91 @@ export default function PoliciesProceduresPage() {
             </P>
           </section>
 
-          <section className="container mx-auto max-w-2xl rounded-lg bg-white p-6 shadow-md">
-            <H4>Grievance Form</H4>
-            <P className="mb-4">
-              If you have a grievance, please fill out the form below. The grievance will be
-              reviewed by the Grievance Committee and appropriate action will be taken.
-            </P>
+          <Card className="mx-auto w-full max-w-2xl">
+            <CardContent className="space-y-4 p-6">
+              <H4>Grievance Form</H4>
+              <P>
+                If you have a grievance, please fill out the form below. The grievance will be
+                reviewed by the Grievance Committee and appropriate action will be taken.
+              </P>
 
-            <GrievanceForm />
+              <GrievanceForm />
+            </CardContent>
+          </Card>
+        </TextColumns>
+      </section>
+
+      <Separator />
+
+      <section>
+        <H3>6.0 Expense Reimbursement Policies</H3>
+
+        <TextColumns>
+          <P>
+            As part of normal operations, parents and volunteers may incur expenses to buy goods or
+            services for Bal Vihar activities. Legitimate expenses for approved Bal Vihar activities
+            will be reimbursed according to this policy.
+          </P>
+
+          <P>
+            All event-related expenses should be pre-approved by administrative team members before
+            purchase whenever possible.
+          </P>
+
+          <section>
+            <H4>Expense Reimbursement Policy</H4>
+            <P>
+              In general, reimbursement submissions should be made within 90 days of purchase. For
+              purchases made in November and December, claims should be submitted before January 31
+              of the following year.
+            </P>
+          </section>
+
+          <section>
+            <H4>Bal Vihar Issued Check Cashing Policy</H4>
+            <P>
+              If a reimbursement check issued by Bal Vihar is not cashed, it may be cancelled.
+              Cancelled reimbursement checks are generally not re-issued.
+            </P>
+          </section>
+
+          <section>
+            <H4>Expense Submission Resources</H4>
+            <P>
+              Submit expenses online using the{" "}
+              <a
+                href="https://balvihar-stlouis.com/form.php?form_id=19"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                expense submission form
+              </a>
+              .
+            </P>
+          </section>
+        </TextColumns>
+      </section>
+
+      <Separator />
+
+      <section>
+        <H3>7.0 Administrative Policies</H3>
+
+        <TextColumns>
+          <section>
+            <H4>Education Aid Items</H4>
+            <P>
+              Bal Vihar educational aid items remain Bal Vihar property and should be handled with
+              care. Parents and volunteers are expected to treat them as personal property and
+              return all items to the Operations team at the end of the school year.
+            </P>
+            <P>
+              If an item malfunctions, it should be promptly reported and handed over to the
+              Operations team so it can be repaired or replaced.
+            </P>
           </section>
         </TextColumns>
       </section>
     </div>
-  )
+  );
 }

@@ -1,14 +1,13 @@
-import type { Metadata } from 'next'
+import Article from "@components/article";
+import { H3, P, Strong } from "@components/ui/typography";
+import { BASE_TITLE } from "@lib/constants";
+import type { Metadata } from "next";
 
-import Article from '@components/article'
-import { H3, P, Strong } from '@components/ui/typography'
-import { BASE_TITLE } from '@lib/constants'
-
-const TITLE = 'Presidents Message 📜'
+const TITLE = "Presidents Message 📜";
 
 export const metadata: Metadata = {
   title: `${BASE_TITLE} | ${TITLE}`,
-}
+};
 
 export default function PresidentsMessagePage() {
   return (
@@ -72,7 +71,7 @@ export default function PresidentsMessagePage() {
           The Center cultural school is very proud of being partner with the Rockwood school
           district. Our Bal Vihar school received recognition of partnership in Education from
           Rockwood School District Partners in Education Facilitators on May 4, 2023 and April 29,
-          2024.{' '}
+          2024.{" "}
         </Strong>
       </P>
 
@@ -138,5 +137,5 @@ export default function PresidentsMessagePage() {
         Dr. Sudhir Brahmbhatt
       </footer>
     </Article>
-  )
+  );
 }

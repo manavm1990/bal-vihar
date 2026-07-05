@@ -1,29 +1,28 @@
-import type { Metadata } from 'next'
+import Article from "@components/article";
+import { Bq, P, Strong } from "@components/ui/typography";
+import type { Metadata } from "next";
 
-import Article from '@components/article'
-import { Bq, P, Strong } from '@components/ui/typography'
+import { ABOUT_US_TITLE } from "../constants";
 
-import { ABOUT_US_TITLE } from '../constants'
-
-const TITLE = 'History 📜'
+const TITLE = "History 📜";
 
 export const metadata: Metadata = {
   title: `${ABOUT_US_TITLE} | ${TITLE}`,
-  description: 'Bal Vihar History',
-}
+  description: "Bal Vihar History",
+};
 
 export default function HistoryPage() {
   return (
     <Article title="History 📜">
       <P>
-        Bal Vihar is a <Strong>non-profit 501 (c) (3)</Strong> corporation under the name of{' '}
+        Bal Vihar is a <Strong>non-profit 501 (c) (3)</Strong> corporation under the name of{" "}
         <Strong>&quot;Center for Indian Cultural Education - Bal Vihar of St. Louis&quot;</Strong>.
       </P>
       <P>
         Since its <Strong>inception in 1992</Strong>, Bal Vihar has been serving the Metro St. Louis
         southeast Asian / Indian community of about 10,000 families. The primary focus of this
         organization is to provide Indian cultural education for children of ages 5 through 16. Bal
-        Vihar is a school to educate, foster and preserve Asian cultural values. Bal Vihar has{' '}
+        Vihar is a school to educate, foster and preserve Asian cultural values. Bal Vihar has{" "}
         <Strong>300+ students and over 40 volunteer teachers and teaching assistants</Strong>.
       </P>
       <P>
@@ -50,5 +49,5 @@ export default function HistoryPage() {
         child an outstanding citizen and to spread the song of peace and harmony around the world.
       </Bq>
     </Article>
-  )
+  );
 }

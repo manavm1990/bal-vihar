@@ -1,3 +1,3 @@
-import { BASE_TITLE } from '@lib/constants'
+import { BASE_TITLE } from "@lib/constants";
 
-export const ABOUT_US_TITLE = `${BASE_TITLE} | About Us`
+export const ABOUT_US_TITLE = `${BASE_TITLE} | About Us`;

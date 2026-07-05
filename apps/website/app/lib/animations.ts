@@ -1,14 +1,14 @@
 const HORIZONTAL_REVEAL_BASE = {
   initial: {
     width: 0,
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
+    overflow: "hidden",
+    whiteSpace: "nowrap",
   },
   transition: {
     duration: 0.65,
-    ease: 'easeOut',
+    ease: "easeOut",
   },
-} as const
+} as const;
 
 export const BOUNCE_ROTATE = {
   initial: {
@@ -20,11 +20,11 @@ export const BOUNCE_ROTATE = {
     x: [0, 15, 0],
     transition: {
       duration: 1.0,
-      ease: 'easeOut',
+      ease: "easeOut",
       times: [0, 0.7, 1],
     },
   },
-}
+};
 
 export const FADE = {
   initial: { opacity: 0 },
@@ -32,9 +32,9 @@ export const FADE = {
   exit: { opacity: 0 },
   transition: {
     duration: 0.25,
-    ease: 'easeOut',
+    ease: "easeOut",
   },
-} as const
+} as const;
 
 export const FADE_SCALE = {
   initial: { opacity: 0, scale: 0.95 },
@@ -42,13 +42,13 @@ export const FADE_SCALE = {
   exit: { opacity: 0, scale: 0.95, y: 20 },
   transition: {
     duration: 0.2,
-    ease: 'easeOut',
+    ease: "easeOut",
     exit: {
       duration: 0.15,
-      ease: 'easeIn',
+      ease: "easeIn",
     },
   },
-} as const
+} as const;
 
 export const FADE_IN_SCALE = {
   layout: true,
@@ -67,19 +67,19 @@ export const FADE_IN_SCALE = {
     scale: 0.98,
     opacity: 0.8,
   },
-} as const
+} as const;
 
 export const HORIZONTAL_REVEAL = {
   ...HORIZONTAL_REVEAL_BASE,
-  animate: { width: '100%' },
+  animate: { width: "100%" },
   exit: { width: 0 },
-} as const
+} as const;
 
 export const HORIZONTAL_REVEAL_IN_VIEW = {
   ...HORIZONTAL_REVEAL_BASE,
   viewport: { once: true },
-  whileInView: { width: '100%' },
-} as const
+  whileInView: { width: "100%" },
+} as const;
 
 export const POP_OUT = {
   initial: {
@@ -94,20 +94,20 @@ export const POP_OUT = {
       duration: 0.7,
       ease: [0.4, 0, 0.2, 1],
       y: {
-        type: 'spring',
+        type: "spring",
         damping: 6,
         stiffness: 80,
       },
     },
   },
-} as const
+} as const;
 
 export const ROTATE_SCALE = {
   initial: { rotate: -15, scale: 0.95, opacity: 0 },
   animate: { rotate: 0, scale: 1, opacity: 1 },
   exit: { rotate: 15, scale: 0.95, opacity: 0 },
-  transition: { duration: 0.5, ease: 'easeInOut' },
-} as const
+  transition: { duration: 0.5, ease: "easeInOut" },
+} as const;
 
 export const SLIDE_FADE = {
   layout: true,
@@ -131,26 +131,26 @@ export const SLIDE_FADE = {
     ease: [0.4, 0, 0.2, 1],
     layout: {
       duration: 0.2,
-      type: 'spring',
+      type: "spring",
       bounce: 0.1,
     },
   },
-} as const
+} as const;
 
 export const SLIDE_FROM_LEFT = {
   initial: { x: -50, opacity: 0 },
   animate: { x: 0, opacity: 1 },
   exit: { x: 50, opacity: 0 },
-  transition: { duration: 0.4, ease: 'easeOut' },
-} as const
+  transition: { duration: 0.4, ease: "easeOut" },
+} as const;
 
 export const SPRING_LAYOUT = {
   layout: {
-    type: 'spring',
+    type: "spring",
     bounce: 0.2,
     duration: 0.3,
   },
-} as const
+} as const;
 
 export const TELEPORT = {
   layout: true,
@@ -162,25 +162,25 @@ export const TELEPORT = {
       duration: 0.1,
     },
     layout: {
-      type: 'spring',
+      type: "spring",
       bounce: 0.1,
       duration: 0.3,
     },
   },
-} as const
+} as const;
 
 export const ZOOM_IN = {
   initial: { scale: 0.8, opacity: 0 },
   animate: { scale: 1, opacity: 1 },
   exit: { scale: 0.8, opacity: 0 },
-  transition: { duration: 0.3, ease: 'easeOut' },
-} as const
+  transition: { duration: 0.3, ease: "easeOut" },
+} as const;
 
 export const animateSlideUpEntrance = (index: number) =>
   ({
     initial: {
       opacity: 0,
-      y: '50%',
+      y: "50%",
     },
     transition: {
       delay: 0.1 + 0.1 * index,
@@ -188,5 +188,5 @@ export const animateSlideUpEntrance = (index: number) =>
       ease: [0.25, 0.1, 0.25, 1],
     },
     viewport: { once: true },
-    whileInView: { opacity: 1, y: '0' },
-  }) as const
+    whileInView: { opacity: 1, y: "0" },
+  }) as const;

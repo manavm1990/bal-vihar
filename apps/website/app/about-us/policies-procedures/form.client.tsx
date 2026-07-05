@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import { Button } from '@components/ui/button'
-import { DayPicker } from '@components/ui/form/day-picker'
-import { FormField } from '@components/ui/form/field'
-import { Select } from '@components/ui/form/select'
+import { Button } from "@components/ui/button";
+import { DayPicker } from "@components/ui/form/day-picker";
+import { FormField } from "@components/ui/form/field";
+import { Select } from "@components/ui/form/select";
 
 export default function Form() {
   return (
@@ -18,9 +18,9 @@ export default function Form() {
           id="association"
           name="association"
           options={[
-            { value: 'teacher', label: 'Teacher' },
-            { value: 'parent', label: 'Parent' },
-            { value: 'volunteer', label: 'Volunteer' },
+            { value: "teacher", label: "Teacher" },
+            { value: "parent", label: "Parent" },
+            { value: "volunteer", label: "Volunteer" },
           ]}
         />
 
@@ -47,5 +47,5 @@ export default function Form() {
         Submit
       </Button>
     </form>
-  )
+  );
 }

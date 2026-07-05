@@ -1,37 +1,37 @@
-'use client'
+"use client";
 
-import { ChevronDownIcon, HamburgerMenuIcon, Cross1Icon as XIcon } from '@radix-ui/react-icons'
-import { AnimatePresence, motion } from 'motion/react'
-import Link from 'next/link'
+import { ChevronDownIcon, Cross1Icon as CrossIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
 
-import { NAVIGATION } from '../constants'
-import useMobile from './use-mobile'
+import { NAVIGATION } from "../constants";
+import useMobile from "./use-mobile";
 
 const MENU_VARIANTS = {
   open: {
     x: 0,
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 300,
       damping: 30,
     },
   },
   closed: {
-    x: '100%',
+    x: "100%",
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 300,
       damping: 30,
     },
   },
-} as const
+} as const;
 
 const ITEM_VARIANTS = {
   open: {
     opacity: 1,
     y: 0,
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 300,
       damping: 30,
       staggerChildren: 0.07,
@@ -45,14 +45,14 @@ const ITEM_VARIANTS = {
       duration: 0.2,
     },
   },
-} as const
+} as const;
 
 const SUB_ITEM_VARIANTS = {
   open: {
     opacity: 1,
     y: 0,
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 300,
       damping: 30,
     },
@@ -64,20 +64,21 @@ const SUB_ITEM_VARIANTS = {
       duration: 0.2,
     },
   },
-} as const
+} as const;
 
 export default function MobileNav() {
-  const { isOpen, setIsOpen, activeSection, setActiveSection, containerRef } = useMobile()
+  const { isOpen, setIsOpen, activeSection, setActiveSection, containerRef } = useMobile();
 
   return (
     <>
       <button
+        type="button"
         onClick={() => {
-          setIsOpen(!isOpen)
+          setIsOpen(!isOpen);
         }}
         className="text-navy-600 hover:text-primary-600 absolute top-2 right-2 p-2 xl:hidden"
       >
-        {isOpen ? <XIcon className="h-6 w-6" /> : <HamburgerMenuIcon className="h-6 w-6" />}
+        {isOpen ? <CrossIcon className="h-6 w-6" /> : <HamburgerMenuIcon className="h-6 w-6" />}
       </button>
 
       <AnimatePresence>
@@ -88,7 +89,7 @@ export default function MobileNav() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/20 xl:hidden"
             onClick={() => {
-              setIsOpen(false)
+              setIsOpen(false);
             }}
           />
         )}
@@ -97,18 +98,19 @@ export default function MobileNav() {
       <motion.div
         ref={containerRef}
         initial="closed"
-        animate={isOpen ? 'open' : 'closed'}
+        animate={isOpen ? "open" : "closed"}
         variants={MENU_VARIANTS}
         className="fixed top-0 right-0 bottom-0 z-10 w-full max-w-xs overflow-y-auto bg-white shadow-lg xl:hidden"
       >
         <div className="flex justify-end border-b p-4">
           <button
+            type="button"
             onClick={() => {
-              setIsOpen(false)
+              setIsOpen(false);
             }}
             className="text-navy-600 hover:text-primary-600 p-2"
           >
-            <XIcon className="h-6 w-6" />
+            <CrossIcon className="h-6 w-6" />
           </button>
         </div>
 
@@ -117,21 +119,22 @@ export default function MobileNav() {
             {NAVIGATION.map((section) => (
               <motion.li key={section.name} variants={ITEM_VARIANTS}>
                 <button
+                  type="button"
                   onClick={() => {
-                    setActiveSection(activeSection === section.name ? null : section.name)
+                    setActiveSection(activeSection === section.name ? null : section.name);
                   }}
                   className={`flex w-full items-center justify-between p-2 text-left font-medium ${
                     activeSection === section.name
-                      ? 'text-primary-600 bg-primary-50'
-                      : 'text-navy-700 hover:text-primary-600'
+                      ? "text-primary-600 bg-primary-50"
+                      : "text-navy-700 hover:text-primary-600"
                   }`}
                 >
                   <span>{section.name}</span>
                   <ChevronDownIcon
                     className={`text-navy-400 h-4 w-4 transition-transform ${
                       activeSection === section.name
-                        ? 'text-primary-400 rotate-180'
-                        : 'group-hover:text-primary-400'
+                        ? "text-primary-400 rotate-180"
+                        : "group-hover:text-primary-400"
                     }`}
                   />
                 </button>
@@ -164,5 +167,5 @@ export default function MobileNav() {
         </nav>
       </motion.div>
     </>
-  )
+  );
 }

@@ -1,14 +1,13 @@
-import type { Metadata } from 'next'
+import Article from "@components/article";
+import { P, Small } from "@components/ui/typography";
+import { BASE_TITLE } from "@lib/constants";
+import type { Metadata } from "next";
 
-import Article from '@components/article'
-import { P, Small } from '@components/ui/typography'
-import { BASE_TITLE } from '@lib/constants'
-
-const TITLE = 'Privacy ℹ️'
+const TITLE = "Privacy ℹ️";
 
 export const metadata: Metadata = {
   title: `${BASE_TITLE} | ${TITLE}`,
-}
+};
 
 export default function PrivacyPage() {
   return (
@@ -63,5 +62,5 @@ export default function PrivacyPage() {
         </Small>
       </footer>
     </Article>
-  )
+  );
 }

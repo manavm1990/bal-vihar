@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import { Label } from './label'
+import { Label } from "./label";
 
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string
-  options: { value: string; label: string }[]
+  label?: string;
+  options: { value: string; label: string }[];
 }
 
 export function Select({ label, options, className, id, ...props }: SelectProps) {
@@ -23,5 +23,5 @@ export function Select({ label, options, className, id, ...props }: SelectProps)
         ))}
       </select>
     </div>
-  )
+  );
 }

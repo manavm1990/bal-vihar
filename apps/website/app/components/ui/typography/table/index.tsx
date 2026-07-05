@@ -1,8 +1,8 @@
-import Tbody, { type TbodyProps } from './tbody'
-import Thead, { type TheadProps } from './thead'
+import Tbody, { type TbodyProps } from "./tbody";
+import Thead, { type TheadProps } from "./thead";
 
 interface TableProps extends TheadProps, TbodyProps {
-  footer?: React.ReactNode
+  footer?: React.ReactNode;
 }
 
 export default function Table({ headers, rows, footer }: TableProps) {
@@ -14,5 +14,5 @@ export default function Table({ headers, rows, footer }: TableProps) {
       </table>
       {footer && <div className="mt-4">{footer}</div>}
     </div>
-  )
+  );
 }

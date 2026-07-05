@@ -1,7 +1,7 @@
-import Image from 'next/image'
-import Link from 'next/link'
+import Image from "next/image";
+import Link from "next/link";
 
-import { DesktopNav, MobileNav } from './navs'
+import { DesktopNav, MobileNav } from "./navs";
 
 export default function Header() {
   return (
@@ -21,5 +21,5 @@ export default function Header() {
 
       <DesktopNav />
     </header>
-  )
+  );
 }

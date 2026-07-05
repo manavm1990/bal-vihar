@@ -1,33 +1,33 @@
-'use client'
+"use client";
 
-import { ChevronDownIcon } from '@radix-ui/react-icons'
-import * as NavigationMenu from '@radix-ui/react-navigation-menu'
-import NextLink from 'next/link'
-import { usePathname } from 'next/navigation'
-import { type ComponentPropsWithoutRef } from 'react'
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+import NextLink from "next/link";
+import { usePathname } from "next/navigation";
+import type { ComponentPropsWithoutRef } from "react";
 
-import { NAVIGATION } from './constants'
+import { NAVIGATION } from "./constants";
 
 type LinkProps = {
-  href: string
-} & Omit<ComponentPropsWithoutRef<typeof NextLink>, 'href'> &
-  Omit<NavigationMenu.NavigationMenuLinkProps, 'asChild' | 'active'>
+  href: string;
+} & Omit<ComponentPropsWithoutRef<typeof NextLink>, "href"> &
+  Omit<NavigationMenu.NavigationMenuLinkProps, "asChild" | "active">;
 
 function Link({ href, ...props }: LinkProps) {
-  const pathname = usePathname()
-  const isActive = href === pathname
+  const pathname = usePathname();
+  const isActive = href === pathname;
 
   return (
     <NavigationMenu.Link asChild active={isActive}>
       <NextLink
         href={href}
         className={`block rounded-lg p-3 text-sm transition-colors ${
-          isActive ? 'text-primary-600 font-medium' : 'text-navy-600 hover:text-primary-500'
+          isActive ? "text-primary-600 font-medium" : "text-navy-600 hover:text-primary-500"
         }`}
         {...props}
       />
     </NavigationMenu.Link>
-  )
+  );
 }
 
 export default function DesktopNav() {
@@ -50,18 +50,18 @@ export default function DesktopNav() {
         </NavigationMenu.List>
       </NavigationMenu.Root>
     </nav>
-  )
+  );
 }
 
 interface SubMenuProps {
   items: readonly {
-    readonly name: string
-    readonly link: string
-  }[]
-  defaultValue?: string
+    readonly name: string;
+    readonly link: string;
+  }[];
+  defaultValue?: string;
 }
 
-function SubMenu({ items, defaultValue = 'overview' }: SubMenuProps) {
+function SubMenu({ items, defaultValue = "overview" }: SubMenuProps) {
   return (
     <NavigationMenu.Sub defaultValue={defaultValue}>
       <NavigationMenu.List className="grid min-w-max grid-cols-2 gap-x-4 gap-y-1 shadow">
@@ -74,5 +74,5 @@ function SubMenu({ items, defaultValue = 'overview' }: SubMenuProps) {
         ))}
       </NavigationMenu.List>
     </NavigationMenu.Sub>
-  )
+  );
 }

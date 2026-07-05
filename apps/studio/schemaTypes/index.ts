@@ -1,3 +1,3 @@
-import {documents} from './documents'
+import { documents } from "./documents";
 
-export const schemaTypes = [...documents]
+export const schemaTypes = [...documents];

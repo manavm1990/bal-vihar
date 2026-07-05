@@ -10,9 +10,9 @@ import {
   Section,
   Tailwind,
   Text,
-} from '@react-email/components'
+} from "@react-email/components";
 
-import type { ContactFormInputs } from './contact.types'
+import type { ContactFormInputs } from "./contact.types";
 
 export default function EmailTemplate({
   firstName,
@@ -63,5 +63,5 @@ export default function EmailTemplate({
         </Body>
       </Tailwind>
     </Html>
-  )
+  );
 }

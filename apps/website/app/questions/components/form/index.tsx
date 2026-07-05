@@ -1,13 +1,13 @@
-'use client'
+"use client";
 
-import { Button } from '@components/ui/button'
-import { FormField } from '@components/ui/form/field'
-import { H2, P, Strong } from '@components/ui/typography'
-import { FADE } from '@lib/animations'
-import { AnimatePresence, motion } from 'motion/react'
-import Confetti from 'react-confetti'
+import { Button } from "@components/ui/button";
+import { FormField } from "@components/ui/form/field";
+import { H2, P, Strong } from "@components/ui/typography";
+import { FADE } from "@lib/animations";
+import { AnimatePresence, motion } from "motion/react";
+import Confetti from "react-confetti";
 
-import useContact from './use-contact'
+import useContact from "./use-contact";
 
 export default function Form() {
   const {
@@ -19,7 +19,7 @@ export default function Form() {
     errors,
     register,
     handleSubmit,
-  } = useContact()
+  } = useContact();
 
   if (state.success) {
     return (
@@ -36,18 +36,18 @@ export default function Form() {
           <P className="mb-6">✉️ {state.message}✨</P>
         </motion.div>
       </div>
-    )
+    );
   }
 
   return (
     <form
       method="POST"
-      className={`space-y-6 ${isPending ? 'pointer-events-none animate-pulse' : ''}`}
+      className={`space-y-6 ${isPending ? "pointer-events-none animate-pulse" : ""}`}
       onFocus={() => {
-        setShouldShowStateMessage(false)
+        setShouldShowStateMessage(false);
       }}
       onSubmit={() => {
-        handleSubmit(onSubmit)
+        handleSubmit(onSubmit);
       }}
     >
       <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
@@ -55,14 +55,14 @@ export default function Form() {
           label="First name"
           autoComplete="given-name"
           className="col-span-1"
-          {...register('firstName')}
+          {...register("firstName")}
           error={errors.firstName?.message}
         />
         <FormField
           label="Last name"
           autoComplete="family-name"
           className="col-span-1"
-          {...register('lastName')}
+          {...register("lastName")}
           error={errors.lastName?.message}
         />
         <FormField
@@ -70,7 +70,7 @@ export default function Form() {
           type="email"
           autoComplete="email"
           className="col-span-1"
-          {...register('email')}
+          {...register("email")}
           error={errors.email?.message}
         />
         <FormField
@@ -78,7 +78,7 @@ export default function Form() {
           type="tel"
           autoComplete="tel"
           className="col-span-1"
-          {...register('phone')}
+          {...register("phone")}
           error={errors.phone?.message}
         />
         <FormField
@@ -86,7 +86,7 @@ export default function Form() {
           isTextArea
           rows={4}
           className="col-span-full"
-          {...register('message')}
+          {...register("message")}
           error={errors.message?.message}
         />
       </div>
@@ -96,7 +96,7 @@ export default function Form() {
           disabled={isPending}
           className="bg-primary hover:bg-primary-600 focus-visible:outline-ring rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
         >
-          {isPending ? 'Sending...' : 'Send message'}
+          {isPending ? "Sending..." : "Send message"}
         </Button>
       </div>
       <AnimatePresence>
@@ -113,5 +113,5 @@ export default function Form() {
         )}
       </AnimatePresence>
     </form>
-  )
+  );
 }

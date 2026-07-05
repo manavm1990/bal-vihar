@@ -1,47 +1,43 @@
-import type { Metadata } from 'next'
+import Footer from "@components/footer";
+import Header from "@components/header";
+import QuickLinks from "@components/quick-links";
+import { BASE_TITLE, DESCRIPTION, ORGANIZATION_LEGAL_NAME } from "@lib/constants";
+import { createJsonLd } from "@lib/utils";
+import type { Metadata } from "next";
+import { Eczar, Poppins } from "next/font/google";
 
-import Footer from '@components/footer'
-import Header from '@components/header'
-import QuickLinks from '@components/quick-links'
-import { BASE_TITLE, DESCRIPTION } from '@lib/constants'
-import { createJsonLd } from '@lib/utils'
-import { Eczar, Poppins } from 'next/font/google'
+import "./globals.css";
 
-import './globals.css'
-
-const TITLE = 'Center for Indian Cultural Education'
+const TITLE = ORGANIZATION_LEGAL_NAME;
+const FULL_TITLE = `${BASE_TITLE} | ${TITLE}`;
 
 const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-poppins',
-})
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
+});
 
 const eczar = Eczar({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-eczar',
-})
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-eczar",
+});
 
 export const metadata: Metadata = {
-  title: `${BASE_TITLE} | ${TITLE}`,
+  title: FULL_TITLE,
   description: DESCRIPTION,
-}
+  applicationName: BASE_TITLE,
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${poppins.variable} ${eczar.variable} font-sans`}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(createJsonLd(TITLE)),
-          }}
-        />
+        <script type="application/ld+json">{JSON.stringify(createJsonLd(TITLE))}</script>
 
         <QuickLinks />
         <Header />
@@ -49,5 +45,5 @@ export default function RootLayout({
         <Footer />
       </body>
     </html>
-  )
+  );
 }

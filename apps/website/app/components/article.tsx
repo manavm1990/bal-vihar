@@ -1,10 +1,10 @@
-import type { TextColumnsProps } from './text-columns'
+import type { TextColumnsProps } from "./text-columns";
 
-import TextColumns from './text-columns'
-import { H2 } from './ui/typography'
+import TextColumns from "./text-columns";
+import { H2 } from "./ui/typography";
 
 interface ArticleProps extends TextColumnsProps {
-  title: string
+  title: string;
 }
 
 export default function Article({ title, children, className }: ArticleProps) {
@@ -13,5 +13,5 @@ export default function Article({ title, children, className }: ArticleProps) {
       <H2>{title}</H2>
       <TextColumns className={className}>{children}</TextColumns>
     </article>
-  )
+  );
 }

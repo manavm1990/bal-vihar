@@ -1,14 +1,13 @@
-import type { Metadata } from 'next'
+import Article from "@components/article";
+import { H3, LeadP, P, Strong } from "@components/ui/typography";
+import { BASE_TITLE } from "@lib/constants";
+import type { Metadata } from "next";
 
-import Article from '@components/article'
-import { H3, LeadP, P, Strong } from '@components/ui/typography'
-import { BASE_TITLE } from '@lib/constants'
-
-const TITLE = 'Terms of Use'
+const TITLE = "Terms of Use";
 
 export const metadata: Metadata = {
   title: `${BASE_TITLE} | ${TITLE}`,
-}
+};
 
 // TODO: Review the verbiage!
 export default function TermsPage() {
@@ -72,19 +71,19 @@ export default function TermsPage() {
             The materials are provided &quot;as is&quot; without any express or implied warranty of
             any kind including warranties of merchantability, non-infringement of intellectual
             property, or fitness for any particular purpose. In no event shall
-          </Strong>{' '}
-          Center for Indian Cultural Education – Bal Vihar of St. Louis{' '}
+          </Strong>{" "}
+          Center for Indian Cultural Education – Bal Vihar of St. Louis{" "}
           <Strong>
             or its suppliers be liable for any damages whatsoever (including, without limitation,
             damage for loss of profits, business interruption, loss of information) arising out of
             the use of or inability to use the materials, even if
-          </Strong>{' '}
-          Center for Indian Cultural Education – Bal Vihar of St. Louis{' '}
+          </Strong>{" "}
+          Center for Indian Cultural Education – Bal Vihar of St. Louis{" "}
           <Strong>
             has been advised on the possibility of such damages. Because some jurisdictions prohibit
             the exclusion or limitation of liability for consequential or incidental damages, the
             above limitation may not apply to you.
-          </Strong>{' '}
+          </Strong>{" "}
           Center for Indian Cultural Education – Bal Vihar of St. Louis and its suppliers further do
           not warrant the accuracy or completeness of the information, text, graphics, links or
           other items contained within these materials. Center for Indian Cultural Education – Bal
@@ -184,5 +183,5 @@ export default function TermsPage() {
         </P>
       </section>
     </Article>
-  )
+  );
 }
