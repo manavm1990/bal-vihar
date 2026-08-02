@@ -126,12 +126,6 @@ Forms use a consistent pattern:
 3. Server actions for form submission
 4. Type-safe form inputs with `ContactFormInputs` pattern
 
-## Legacy Content Porting Workflow
-
-- For any content migration from `https://balvihar-stlouis.com/`, use `.agents/skills/tavily-extract/SKILL.md` as the required extraction workflow.
-- Run Tavily extraction first to produce clean markdown/text, then adapt that extracted content into the new site structure.
-- Do not manually port from rendered page HTML when Tavily extraction is available.
-
 ## Frontend UI Engineering Standards
 
 - Build production-quality UI with existing design tokens and Tailwind utility classes; avoid inline styles and arbitrary one-off spacing values.
