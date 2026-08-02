@@ -17,16 +17,16 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/vision": "^6.3.0",
-    "react": "^19.1",
-    "react-dom": "^19.1",
-    "sanity": "^6.3.0",
-    "styled-components": "^6.1.18"
+    "@sanity/vision": "^6.8.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sanity": "^6.8.0",
+    "styled-components": "^6.4.4"
   },
   "devDependencies": {
     "@bv/typescript-config": "workspace:*",
     "@bv/schemas": "workspace:*",
-    "@types/react": "^19.1",
+    "@types/react": "^19.2.18",
     "typescript": "^5.8"
   }
 }
