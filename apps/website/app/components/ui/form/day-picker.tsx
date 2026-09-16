@@ -23,16 +23,16 @@ export function DayPicker({
     <div>
       {label && <Label htmlFor={name}>{label}</Label>}
       <DayPickerPrimitive
+        mode="single"
         showOutsideDays={showOutsideDays}
         className="mt-2.5 w-fit rounded-lg bg-white p-4 shadow-md"
         classNames={{
           months: "relative flex",
-          month_caption: "relative mx-8 flex h-8 items-center justify-center",
+          month_caption:
+            "relative mx-8 flex h-8 items-center justify-center pt-1 bg-gradient-to-r from-primary-50 to-navy-50",
           weekdays: "flex flex-row",
           weekday: "w-8 text-sm font-normal text-muted-foreground",
           month: "w-full",
-          caption:
-            "relative flex flex-col items-center justify-center pt-1 bg-gradient-to-r from-primary-50 to-navy-50",
           caption_label: "truncate text-lg font-eczar font-medium text-secondary",
           button_next:
             "absolute top-0 right-0 size-8 bg-transparent p-0 opacity-80 hover:opacity-100 hover:text-primary transition-colors",
@@ -57,7 +57,9 @@ export function DayPicker({
           },
         }}
         numberOfMonths={numberOfMonths}
-        onSelect={onDateSelect}
+        onSelect={(date) => {
+          onDateSelect?.(date);
+        }}
       />
     </div>
   );
