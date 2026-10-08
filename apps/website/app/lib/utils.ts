@@ -30,7 +30,7 @@ export function createJsonLd(name: string, description = DESCRIPTION) {
     image: "/logo.svg",
     description,
     foundingDate: FOUNDING_YEAR,
-    ["taxID"]: FEDERAL_TAX_ID,
+    taxId: FEDERAL_TAX_ID,
     address: {
       "@type": "PostalAddress",
       streetAddress: ADMIN_OFFICE.streetAddress,

@@ -23,7 +23,7 @@ export function createStaticPageMetadata(page: StaticPageContent): Metadata {
   };
 }
 
-export const STATIC_PAGES: Record<string, StaticPageContent> = {
+export const STATIC_PAGES = {
   about: {
     title: "About Us",
     description:
@@ -330,4 +330,4 @@ export const STATIC_PAGES: Record<string, StaticPageContent> = {
       "**Advisory Board:**\n\n* Sudhir R. Brahmbhatt\n* Subbu Subramanian\n* Kirti Mehrotra\n* Ravi Malhotra\n* Chandrakant Tailor\n* Rajeev Sabherwal\n* Tony Bhalla\n\n**Executive Committee:**\n\n* Sudhir Brahmbhatt\n* Shoba Sekhar\n* Nandita Chickermane\n* Subbu Subramanian\n* Shailee Saran Varanasi\n* Srinivas Rao Pandiri\n* Vishwakant Tripathi\n* Raj Iyer\n* Giri Yanamala\n* Shanthi Krishnan\n* Komal Sabherwal\n\n**Administrative Team:**\n\n* Sudhir Brahmbhatt\n* Subbu Subramanian\n* Srinivas Rao Pandiri\n* Giri Yanamala\n* Ginny Taneja\n* Nayana Deore\n* Kavita Ramkrishnan\n* Vaishali Soneta\n* Nandita Chickermane\n* Jinal Doshi\n* Shanthi Krishnan\n* Komal Sabherwal\n* Sunil Raikhanghar\n* Shoba Sekhar\n* Gururaj Nagarajan\n* Pallavi Rai Sinha\n* Raj Iyer\n* Shailee Saran\n* Vish Tripathi\n* Shuba Bhaskar\n* Manav Misra\n* Shashi Dhar\n* Jwalant Ahir\n* Prashant Rausaria\n* Neeraj Agarwal\n* Suresh Vishwakarma\n* Rajeev Sharma\n* Srinivas Anne",
     singleColumn: true,
   },
-};
+} satisfies Record<string, StaticPageContent>;
