@@ -13,7 +13,8 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "bunx skills update -p -y || true"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.15",

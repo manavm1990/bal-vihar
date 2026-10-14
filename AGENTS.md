@@ -103,6 +103,7 @@ bal-vihar/
 - **Email**: React Email components and Resend
 - **Validation**: Valibot for schema validation
 - **Carousel**: Embla Carousel with autoplay
+- **CMS**: Sanity Studio + `next-sanity` Live Content API
 
 ## Navigation Structure
 
@@ -150,6 +151,7 @@ Project skills live in `.agents/skills/` and are locked in `skills-lock.json`. R
 | `vercel-composition-patterns` | Compound components, boolean-prop cleanup, flexible component APIs, React 19 composition patterns |
 | `web-design-guidelines` | UI/UX accessibility or interface-guideline audits |
 | `code-review-and-quality` | Before merge; multi-axis review of agent or human changes |
+| `vercel-react-best-practices` | React/Next performance: waterfalls, bundle size, server/client data fetching |
 
 Routing rules:
 
