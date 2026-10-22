@@ -300,7 +300,8 @@ export type CALENDAR_EVENTS_QUERY_RESULT = Array<{
   title: string;
   date: string;
   location: "HT/HTCC" | "HTCC" | "HTCC/MGC" | null;
-  eventType: "celebration" | "holiday" | "project" | "regular" | "special" | null;
+  eventType:
+    "celebration" | "holiday" | "project" | "regular" | "special" | null;
   time: string | null;
   description: string | null;
   isHighlighted: boolean | null;
