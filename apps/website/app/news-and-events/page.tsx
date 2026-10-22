@@ -61,7 +61,9 @@ function NewsCard({ post }: { post: NewsEventData }) {
         <div className="flex flex-wrap items-center gap-2">
           <Small className="text-slate-600">{dateLabel}</Small>
           {post.isFeatured ? (
-            <Small className="bg-primary/10 text-primary rounded-full px-2 py-0.5">Featured</Small>
+            <Small className="bg-primary-50 text-primary-ink rounded-full px-2 py-0.5">
+              Featured
+            </Small>
           ) : null}
         </div>
         <CardTitle className="text-lg">{post.title}</CardTitle>

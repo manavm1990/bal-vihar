@@ -2,7 +2,7 @@ import type { StaticPageContent } from "@lib/static-page-content";
 import Link from "next/link";
 import Article from "./article";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { H3, H4, H5, P, Strong, Table } from "./ui/typography";
+import { H2, H3, H4, P, Strong, Table } from "./ui/typography";
 
 type MarkdownBlock =
   | { kind: "heading"; level: number; text: string }
@@ -56,11 +56,16 @@ const INTERNAL_LINKS = new Map<string, string>([
 
 interface StaticContentPageProps {
   page: StaticPageContent;
+  photoPath?: string;
 }
 
-export default function StaticContentPage({ page }: StaticContentPageProps) {
+export default function StaticContentPage({ page, photoPath }: StaticContentPageProps) {
   return (
-    <Article title={page.title} className={page.singleColumn ? "md:columns-1" : undefined}>
+    <Article
+      title={page.title}
+      photoPath={photoPath}
+      className={page.singleColumn ? "md:columns-1" : undefined}
+    >
       <MarkdownContent content={page.content} />
       {page.links && <SectionLinks links={page.links} />}
     </Article>
@@ -72,7 +77,9 @@ function SectionLinks({ links }: Pick<StaticPageContent, "links">) {
 
   return (
     <section className="break-inside-avoid-column space-y-4 pt-2">
-      <H3>Explore this section</H3>
+      <H2 variant="plain" className="text-2xl tracking-tight">
+        Explore this section
+      </H2>
       <div className="grid gap-4 md:grid-cols-2">
         {links.map((link) => (
           <Link key={link.href} href={link.href} className="hover:no-underline">
@@ -96,9 +103,23 @@ function MarkdownContent({ content }: { content: string }) {
 function renderBlock(block: MarkdownBlock, blockIndex: number) {
   const blockKey = `block-${blockIndex}`;
   if (block.kind === "heading") {
-    if (block.level <= 2) return <H3 key={blockKey}>{renderInline(block.text)}</H3>;
-    if (block.level === 3) return <H4 key={blockKey}>{renderInline(block.text)}</H4>;
-    return <H5 key={blockKey}>{renderInline(block.text)}</H5>;
+    if (block.level <= 2)
+      return (
+        <H2 key={blockKey} variant="plain" className="text-2xl tracking-tight">
+          {renderInline(block.text)}
+        </H2>
+      );
+    if (block.level === 3)
+      return (
+        <H3 key={blockKey} className="text-xl">
+          {renderInline(block.text)}
+        </H3>
+      );
+    return (
+      <H4 key={blockKey} className="text-lg">
+        {renderInline(block.text)}
+      </H4>
+    );
   }
 
   if (block.kind === "list") {

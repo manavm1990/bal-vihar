@@ -24,12 +24,12 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
           const external = !slide.link?.startsWith("/");
           const content = (
             <figure className="flex flex-col">
-              <div className="relative aspect-940/272 w-full">
+              <div className="relative aspect-940/272 w-full overflow-hidden rounded-lg">
                 <SlideImage slide={slide} priority={index === 0} />
+                <figcaption className="bg-background/95 text-foreground absolute bottom-3 left-3 rounded-md px-3 py-1 text-sm font-medium">
+                  {caption}
+                </figcaption>
               </div>
-              <figcaption className="bg-gray-800 py-2 text-center text-sm text-gray-200">
-                {caption}
-              </figcaption>
             </figure>
           );
 

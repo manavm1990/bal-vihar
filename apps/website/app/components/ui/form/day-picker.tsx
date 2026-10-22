@@ -35,9 +35,9 @@ export function DayPicker({
           month: "w-full",
           caption_label: "truncate text-lg font-eczar font-medium text-secondary",
           button_next:
-            "absolute top-0 right-0 size-8 bg-transparent p-0 opacity-80 hover:opacity-100 hover:text-primary transition-colors",
+            "absolute top-0 right-0 size-8 bg-transparent p-0 opacity-80 hover:opacity-100 hover:text-primary-ink transition-colors",
           button_previous:
-            "absolute top-0 left-0 size-8 bg-transparent p-0 opacity-80 hover:opacity-100 hover:text-primary transition-colors",
+            "absolute top-0 left-0 size-8 bg-transparent p-0 opacity-80 hover:opacity-100 hover:text-primary-ink transition-colors",
           nav: "flex items-center justify-between w-full mb-2",
           month_grid: "mx-auto mt-4",
           week: "mt-2 flex w-max items-start",

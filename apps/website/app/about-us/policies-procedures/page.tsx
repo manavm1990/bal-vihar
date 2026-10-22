@@ -1,7 +1,7 @@
 import TextColumns from "@components/text-columns";
 import { Card, CardContent } from "@components/ui/card";
 import { Separator } from "@components/ui/separator";
-import { H2, H3, H4, H5, LeadP, P, Strong, Table } from "@components/ui/typography";
+import { H1, H3, H4, H5, LeadP, P, Strong, Table } from "@components/ui/typography";
 import type { Metadata } from "next";
 
 import { ABOUT_US_TITLE } from "../constants";
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function PoliciesProceduresPage() {
   return (
     <div className="[&_h3]:mt-4 [&_h5]:mt-2 [&_ul]:my-2 [&_ul]:list-disc [&>article]:mt-8">
-      <H2>{TITLE}</H2>
+      <H1>{TITLE}</H1>
 
       <LeadP>
         Bal Vihar of St Louis is governed by all the policies and procedures listed in this

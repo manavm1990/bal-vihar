@@ -89,7 +89,7 @@ export const STATIC_PAGES = {
       {
         label: "Tuition",
         href: "/admissions/tuition",
-        description: "Current tuition and volunteer deposit information from the legacy content.",
+        description: "Current tuition and volunteer deposit information.",
       },
       {
         label: "Refund Policy",
@@ -140,12 +140,12 @@ export const STATIC_PAGES = {
       {
         label: "Class Webpages",
         href: "/education/class-webpages",
-        description: "Links to class and enrichment webpages from the legacy site.",
+        description: "Links to class and enrichment webpages.",
       },
       {
         label: "Class Schedule",
         href: "/education/class-schedule",
-        description: "Legacy class schedule information.",
+        description: "Class schedule information.",
       },
     ],
   },
@@ -169,13 +169,13 @@ export const STATIC_PAGES = {
   },
   classWebpages: {
     title: "Class Webpages",
-    description: "Legacy class and enrichment webpage links.",
+    description: "Class and enrichment webpage links.",
     content:
-      "Class webpages from the legacy site are preserved below for reference. Some links may point to older class microsites or downloadable classroom materials.\n\n* [K-1](http://k1.balvihar-stlouis.org)\n* [1-A](http://1a.balvihar-stlouis.org)\n* [2-A](http://2a.balvihar-stlouis.org)\n* [3-A](http://3a.balvihar-stlouis.org)\n* [4-A](http://4a.balvihar-stlouis.org)\n* [5-A](http://5a.balvihar-stlouis.org)\n* [6-A](http://6a.balvihar-stlouis.org)\n* [7-A](http://7a.balvihar-stlouis.org)\n* [Y1](http://y1.balvihar-stlouis.org)\n* [Y2](http://y2.balvihar-stlouis.org)\n* [Y3](http://y3.balvihar-stlouis.org)\n* [Y4](http://y4.balvihar-stlouis.org)\n* [Art](http://art.balvihar-stlouis.org)\n* [Bhajan](http://bhajan.balvihar-stlouis.org)\n* [Yoga](http://yoga.balvihar-stlouis.org)\n* [Community Projects](http://communityprojects.balvihar-stlouis.org/contact-teachers)\n* [Feature Articles/Essays](https://sites.google.com/a/balvihar-stlouis.org/feature-articles-essays/introduction)",
+      "Webpages for each class. Some links may point to older class sites or downloadable classroom materials.\n\n* [K-1](http://k1.balvihar-stlouis.org)\n* [1-A](http://1a.balvihar-stlouis.org)\n* [2-A](http://2a.balvihar-stlouis.org)\n* [3-A](http://3a.balvihar-stlouis.org)\n* [4-A](http://4a.balvihar-stlouis.org)\n* [5-A](http://5a.balvihar-stlouis.org)\n* [6-A](http://6a.balvihar-stlouis.org)\n* [7-A](http://7a.balvihar-stlouis.org)\n* [Y1](http://y1.balvihar-stlouis.org)\n* [Y2](http://y2.balvihar-stlouis.org)\n* [Y3](http://y3.balvihar-stlouis.org)\n* [Y4](http://y4.balvihar-stlouis.org)\n* [Art](http://art.balvihar-stlouis.org)\n* [Bhajan](http://bhajan.balvihar-stlouis.org)\n* [Yoga](http://yoga.balvihar-stlouis.org)\n* [Community Projects](http://communityprojects.balvihar-stlouis.org/contact-teachers)\n* [Feature Articles/Essays](https://sites.google.com/a/balvihar-stlouis.org/feature-articles-essays/introduction)",
   },
   classSchedule: {
     title: "Class Schedule",
-    description: "Legacy class schedule information.",
+    description: "Class schedule information.",
     content:
       "|  |  |  |  |  |\n| --- | --- | --- | --- | --- |\n|  | **K-1** | **Group 1A** | **Group 2A** | **Group 3A** |\n| **10:00 a.m.** | Arathi Class Room # 5 | Arathi Class Room # 10 | Arathi Class Room # 11 | Arathi Class Room # 4 |\n| **10:05 a.m.** | Class Instruction Room # 5 | Class Instruction Room # 10 | Class Instruction Room # 11 | Class Instruction Room # 4 |\n| **10:55 a.m.** | Break | Break | Break | Break |\n| **11:05 a.m.** | Transition to  Yoga/Bhajan | Transition to  Yoga/Bhajan | Transition to  Yoga/Bhajan | Transition to  Yoga/Bhajan |\n| **11.15 a.m.** | Stage Right Room #6   (Bhajan) | Stage Right Room #6   (Bhajan) | Stage Right Room #6   (Bhajan) | Stage Right Room #6   (Bhajan) |\n| **11.45** **a.m** | Stage Right Room # 6 (Yoga) | Stage Left Room # 9 (Bhajan) | Stage Area Center (Yoga) | Center Hall (Bhajan) |\n| **12:20 p.m.** | Dismissal | Dismissal | Dismissal | Dismissal |\n\n|  |  |  |  |  |\n| --- | --- | --- | --- | --- |\n| **Time** | **Group 4A** | **Group 5A** | **Group 6A** | **Group 7A** |\n| **10:00 a.m.** | Assembly Stage Area Center (Room 8) | Assembly Hall Area 1 (Hall) | Assembly Hall Area 2 (Hall) | Assembly Stage Area Left |\n| **10:05 a.m.** | Bhajan Stage Area Center (Room 8) | Yoga Hall Area 1 (Hall) | Yoga Hall Area 2 (Hall) | Bhajan Stage Area Left |\n| **10:35 a.m.** | Yoga Stage Area Center (Room 4) | Bhajan Class Room #3 | Bhajan Class Room #2 | Yoga Stage Area Left |\n| **11:05 a.m.** | Transition to Class | Transition to Class | Transition to Class | Transition to Class |\n| **11.10 a.m.** | Break | Break | Break | Break |\n| **11:20 a.m.** | Class Instruction Room # 10 | Class Instruction Room # 10 | Class Instruction Room # 10 | Class Instruction Room # 10 |\n| **12:30 p.m.** | Dismissal | Dismissal | Dismissal | Dismissal |\n\nY1 Schedule\n\n|  |  |  |\n| --- | --- | --- |\n| **Time** | **Room 13** | **Teachers** |\n| 10.00 a.m.- 10.15 a.m.  10:15 a.m.- 11:15 a.m. | Invocation/Guided Meditation  Bhagavad Gita | Pradeep Singh, Mira Aubuchon, Ravi  Ramphe  Ravi Ramphe |\n| 11:15 a.m.- 11:30 a.m.  11:15 a.m.- 11:30 a.m. | Break  Class Discussion Topics/Speakers etc | Break  Pradeep Singh, Mira Aubuchon |\n\nY2 Schedule\n\n|  |  |  |\n| --- | --- | --- |\n| **Period** | **Room #12** | **Teachers** |\n| **10.00 – 10.45** | Invocation/Guided Meditation | Venu Vennam, Niraj Shah, Padmadisha Das |\n| **10.15 – 11.15**  **11.15 – 11.30** | Bhagavad Gita  Break | Padmadisha  Das |\n| **11.30 - 12.30** | Class Discussion  Topics/Speakers etc | Venu Vennam, Niraj Shah |\n\nY3 Schedule\n\n|  |  |  |\n| --- | --- | --- |\n| **Period** | **Room #1** | **Teachers** |\n| **10.00 – 10:15** | Invocation | Suresh Shaddarsanam, Neelima Swarna, Bhupal Dev |\n| **10.15 – 11:15**    **11.15 – 11.30** | Bhagavad Gita    Break | Bhupal Dev |\n| **11.30 – 12.30** | Class room discussion/Guest speakers | Suresh Shaddarsanam, Neelima Swarna |\n\nY4 Schedule\n\n|  |  |  |\n| --- | --- | --- |\n| **Period** | **Team A**  (Assisting from 10.00 -11.15)  **Room #14** | **Team B**  (Assisting from 11.15 -12.30)  **Room #14** |\n| **10.00 – 10:15** | Assembly in Room #14 | Assembly in Room #14 |\n| **10.15 – 11:05**    **11.20 – 11.30** | Community Service    Meet w Class Room Teachers | Room #14    Meet w Class Room Teachers |\n| **11.30 – 12.30** | Room #14 | Community Service |",
     singleColumn: true,
@@ -184,7 +184,7 @@ export const STATIC_PAGES = {
     title: "Giving",
     description: "Giving overview and donation options for Bal Vihar of St. Louis.",
     content:
-      "**DEHI SAUBHAAGYAM AAROGYAM DEHIME PARAMAM SUKHAM RUPAM DEHI JAYAM DEHI YASHO DEHI DWISHOJAHI**\n\nUse the section links below for giving options. The historical New School Project Update page from the legacy site is intentionally not carried forward.",
+      "**DEHI SAUBHAAGYAM AAROGYAM DEHIME PARAMAM SUKHAM RUPAM DEHI JAYAM DEHI YASHO DEHI DWISHOJAHI**\n\nUse the section links below for giving options.",
     links: [
       {
         label: "Welcome Message",
@@ -209,7 +209,7 @@ export const STATIC_PAGES = {
       {
         label: "Matching Gift Companies",
         href: "/giving/matching-gift-companies",
-        description: "Legacy list of companies with matching-gift programs.",
+        description: "Companies with matching-gift programs.",
       },
       {
         label: "Event Sponsors",
@@ -244,7 +244,7 @@ export const STATIC_PAGES = {
   },
   matchingGiftCompanies: {
     title: "Matching Gift Companies",
-    description: "Legacy matching gift company information.",
+    description: "Matching gift company information.",
     content:
       "Your employer may match charitable contributions made by their employees. It is a great way to increase the size of your donation and voicing your support of Bal Vihar of St. Louis. Please contact the Human Resources Department at your place of employment for the appropriate form(s) and confirmation of a matching gifts program.\n\n**St. Louis Companies with Matching Gift Programs:**\n\n(We attempt to update this list annually, but please be aware companies may discontinue matching gift programs in the meantime)\n\n| * AAA of Missouri * AON * American Express * Ameren/UE * Anheuser-Busch InBev * AT&T * Bank of America * Boeing * Brown Shoe * Charles Schwab * Champion International Corporation * Compaq * Cooper Industries (Cooper Bussmann) * CPI Corporation * Daimler-Chrysler * Deaconess * Emerson * Energizer * First Data Corporation * Gannett Co. * General Dynamics * W. W. Grainger, Inc. * H & R Block * Harcourt, Inc. * Home Depot * IKON * Kemper Group * Laclede Gas * Mallinckrodt Medical Inc. * MasterCard Worldwide | * McDonnell Douglas Foundation * McGraw-Hill Companies * Merrill Lynch * Memco Barge Line * Microsoft * Monsanto Company * Mutual of America * Nestle Purina * Novus International * Office Depot * OHIC Insurance Co. - Columbia, MO * Peabody Energy * PepsiCo * Pfizer, Inc. * Philip Morris Companies * Prudential * Ralston Purina Company * Reliable Life Insurance * Rockwell Automation * SAFECO Insurance Companies * SIRSI Corporation * Solutia Fund * SYSCO * Tenet Healthcare * Tripos, Inc. * Tyco Healthcare/Mallinckrodt * U.S. Bank * Union Pacific Corporation * United Parcel Service * XTRA Corporation |",
     singleColumn: true,
@@ -253,7 +253,7 @@ export const STATIC_PAGES = {
     title: "Event Sponsors",
     description: "Event sponsor information for Bal Vihar.",
     content:
-      "2012 - 2013\n\nUTSAV - 20 Years Celebration\n\n2011 - 2012\n\n2010 - 2011\n\n2009 - 2010\n\n**Fundraising Gala Event for New School Building (2010)**\n\nWe would like to extend our sincere appreciation and thanks to all of the businesses and individuals that donated to the Center for Indian Cultural Education - Bal Vihar of St. Louis fundraising event on **April 24, 2010** at Lafayette High School, Wildwood, MO. We met our goal and collected more than $230,000.\n\nThe detailed 2010 donor list from the legacy site is archived offline and not republished here.",
+      "2012 - 2013\n\nUTSAV - 20 Years Celebration\n\n2011 - 2012\n\n2010 - 2011\n\n2009 - 2010\n\n**Fundraising Gala Event for New School Building (2010)**\n\nWe would like to extend our sincere appreciation and thanks to all of the businesses and individuals that donated to the Center for Indian Cultural Education - Bal Vihar of St. Louis fundraising event on **April 24, 2010** at Lafayette High School, Wildwood, MO. We met our goal and collected more than $230,000.",
   },
   volunteering: {
     title: "Volunteering",
@@ -284,7 +284,7 @@ export const STATIC_PAGES = {
       {
         label: "Volunteers List",
         href: "/volunteering/volunteers-list",
-        description: "Legacy volunteer list content.",
+        description: "Volunteer list.",
       },
     ],
   },
@@ -314,7 +314,7 @@ export const STATIC_PAGES = {
   },
   volunteersList: {
     title: "Volunteers List",
-    description: "Legacy volunteers list content.",
+    description: "Volunteers list.",
     content:
       "**Advisory Board:**\n\n* Sudhir R. Brahmbhatt\n* Subbu Subramanian\n* Kirti Mehrotra\n* Ravi Malhotra\n* Chandrakant Tailor\n* Rajeev Sabherwal\n* Tony Bhalla\n\n**Executive Committee:**\n\n* Sudhir Brahmbhatt\n* Shoba Sekhar\n* Nandita Chickermane\n* Subbu Subramanian\n* Shailee Saran Varanasi\n* Srinivas Rao Pandiri\n* Vishwakant Tripathi\n* Raj Iyer\n* Giri Yanamala\n* Shanthi Krishnan\n* Komal Sabherwal\n\n**Administrative Team:**\n\n* Sudhir Brahmbhatt\n* Subbu Subramanian\n* Srinivas Rao Pandiri\n* Giri Yanamala\n* Ginny Taneja\n* Nayana Deore\n* Kavita Ramkrishnan\n* Vaishali Soneta\n* Nandita Chickermane\n* Jinal Doshi\n* Shanthi Krishnan\n* Komal Sabherwal\n* Sunil Raikhanghar\n* Shoba Sekhar\n* Gururaj Nagarajan\n* Pallavi Rai Sinha\n* Raj Iyer\n* Shailee Saran\n* Vish Tripathi\n* Shuba Bhaskar\n* Manav Misra\n* Shashi Dhar\n* Jwalant Ahir\n* Prashant Rausaria\n* Neeraj Agarwal\n* Suresh Vishwakarma\n* Rajeev Sharma\n* Srinivas Anne",
     singleColumn: true,

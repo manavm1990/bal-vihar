@@ -42,7 +42,7 @@ export default function Form() {
 
       <Button
         type="submit"
-        className="bg-primary hover:bg-primary-600 rounded-md px-4 py-2 font-semibold text-white"
+        className="bg-primary hover:bg-primary-600 rounded-md px-4 py-2 font-semibold text-primary-foreground"
       >
         Submit
       </Button>

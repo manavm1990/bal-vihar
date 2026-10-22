@@ -47,8 +47,8 @@ function AccordionTrigger({ className, children, ...props }: AccordionTriggerPro
       >
         <span className="text-base leading-7 font-semibold">{children}</span>
         <span className="ml-4 flex h-7 items-center">
-          <PlusIcon className="text-primary size-6 group-data-[state=open]:hidden" />
-          <MinusIcon className="text-primary hidden size-6 group-data-[state=open]:block" />
+          <PlusIcon className="text-primary-700 size-6 group-data-[state=open]:hidden" />
+          <MinusIcon className="text-primary-700 hidden size-6 group-data-[state=open]:block" />
         </span>
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

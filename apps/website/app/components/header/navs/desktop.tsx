@@ -22,7 +22,7 @@ function Link({ href, ...props }: LinkProps) {
       <NextLink
         href={href}
         className={`block rounded-lg p-3 text-sm transition-colors ${
-          isActive ? "text-primary-600 font-medium" : "text-navy-600 hover:text-primary-500"
+          isActive ? "text-primary-ink font-medium" : "text-navy-600 hover:text-primary-ink"
         }`}
         {...props}
       />
@@ -32,17 +32,17 @@ function Link({ href, ...props }: LinkProps) {
 
 export default function DesktopNav() {
   return (
-    <nav className="hidden xl:block">
+    <nav className="ml-auto hidden xl:block">
       <NavigationMenu.Root className="relative">
         <NavigationMenu.List className="flex items-center">
           {NAVIGATION.map((item) => (
             <NavigationMenu.Item key={item.name} className="relative">
-              <NavigationMenu.Trigger className="group text-navy-700 hover:text-primary-600 data-[state=open]:text-primary-600 flex items-center gap-1 p-4 font-medium">
+              <NavigationMenu.Trigger className="group text-navy-700 hover:text-primary-ink data-[state=open]:text-primary-ink flex items-center gap-1 px-3 py-4 text-sm font-medium whitespace-nowrap">
                 {item.name}
                 <ChevronDownIcon className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
               </NavigationMenu.Trigger>
 
-              <NavigationMenu.Content className="data-[motion=from-start]:animate-enter-from-left data-[motion=from-end]:animate-enter-from-fight data-[motion=to-start]:animate-exit-to-left data-[motion=to-end]:animate-exit-to-right absolute top-full left-1/2 z-10 -translate-x-1/2 rounded-lg bg-white">
+              <NavigationMenu.Content className="data-[motion=from-start]:animate-enter-from-left data-[motion=from-end]:animate-enter-from-right data-[motion=to-start]:animate-exit-to-left data-[motion=to-end]:animate-exit-to-right absolute top-full left-1/2 z-10 -translate-x-1/2 rounded-lg bg-white">
                 <SubMenu items={item.items} />
               </NavigationMenu.Content>
             </NavigationMenu.Item>

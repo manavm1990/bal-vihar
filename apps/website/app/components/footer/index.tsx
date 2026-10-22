@@ -4,11 +4,11 @@ import Links from "./links.client";
 
 export default function Footer() {
   return (
-    <footer className="space-y-4 border-t-2 border-t-slate-200 p-4 shadow-lg">
+    <footer className="border-t-secondary bg-gray-50 mt-8 space-y-4 border-t-8 p-6">
       <div className="grid gap-4 sm:grid-cols-2">
         <address className="not-italic">
-          <Small className="block text-slate-700">School Location</Small>
-          <MutedP className="mt-1 text-slate-500">
+          <Small className="block text-foreground">School Location</Small>
+          <MutedP className="mt-1 text-muted-foreground">
             {SCHOOL_LOCATION.name}
             <br />
             {SCHOOL_LOCATION.streetAddress}
@@ -19,8 +19,8 @@ export default function Footer() {
         </address>
 
         <address className="not-italic">
-          <Small className="block text-slate-700">Administrative Office</Small>
-          <MutedP className="mt-1 text-slate-500">
+          <Small className="block text-foreground">Administrative Office</Small>
+          <MutedP className="mt-1 text-muted-foreground">
             {ADMIN_OFFICE.streetAddress}
             <br />
             {ADMIN_OFFICE.addressLocality}, {ADMIN_OFFICE.addressRegion} {ADMIN_OFFICE.postalCode}
@@ -30,7 +30,7 @@ export default function Footer() {
         </address>
       </div>
 
-      <MutedP className="text-slate-500">
+      <MutedP className="text-muted-foreground">
         © {new Date().getFullYear()} {ORGANIZATION_NAME} All rights reserved.
       </MutedP>
       <Small>

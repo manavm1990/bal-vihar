@@ -13,15 +13,11 @@ export const metadata: Metadata = {
 export default function StudentsResourcesPage() {
   return (
     <Article title="Students Resources" className="md:columns-1">
-      <P>
-        This hub will list current-year documents and links for students. Prefer a small set of
-        living files over the legacy multi-year downloads archive.
-      </P>
+      <P>Documents and links for students.</P>
       <Card>
         <CardContent className="space-y-2 p-4">
           <MutedP>
-            No documents seeded yet. When Sanity resource documents are added, they will appear
-            here. Meanwhile see{" "}
+            Looking for something specific? See{" "}
             <Link href="/about-us/policies-procedures">Policies &amp; Procedures</Link>,{" "}
             <Link href="/calendar">Calendar</Link>, and <Link href="/questions">Contact</Link>.
           </MutedP>

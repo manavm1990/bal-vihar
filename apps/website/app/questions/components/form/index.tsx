@@ -94,7 +94,7 @@ export default function Form() {
         <Button
           type="submit"
           disabled={isPending}
-          className="bg-primary hover:bg-primary-600 focus-visible:outline-ring rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="bg-primary hover:bg-primary-600 focus-visible:outline-ring rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-primary-foreground shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2"
         >
           {isPending ? "Sending..." : "Send message"}
         </Button>

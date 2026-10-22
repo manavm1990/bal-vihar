@@ -1,6 +1,6 @@
 import { SanityImage } from "@components/sanity/sanity-image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
-import { H5, MutedP, Small } from "@components/ui/typography";
+import { H5, MutedP } from "@components/ui/typography";
 import type { HomePhotoBoardItem } from "@lib/sanity/types";
 
 interface PhotoGridProps {
@@ -14,7 +14,9 @@ export function PhotoGrid({
   title = "Community photos",
   description = "Highlights from Bal Vihar events and service projects.",
 }: PhotoGridProps) {
-  return items.length === 0 ? null : (
+  const withImages = items.filter((item) => item.image?.asset);
+
+  return withImages.length === 0 ? null : (
     <Card className="mx-auto w-full max-w-5xl">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
@@ -22,7 +24,7 @@ export function PhotoGrid({
       </CardHeader>
       <CardContent>
         <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {items.map((item) => (
+          {withImages.map((item) => (
             <li key={item.key}>
               <PhotoCard item={item} />
             </li>
@@ -41,7 +43,7 @@ function PhotoCard({ item }: PhotoCardProps) {
   return (
     <Card className="h-full">
       <div className="relative aspect-video overflow-hidden rounded-t-lg border-b">
-        {item.image?.asset?._id || item.image?.asset?.url ? (
+        {item.image ? (
           <SanityImage
             value={item.image}
             fallbackAlt={item.title}
@@ -51,17 +53,12 @@ function PhotoCard({ item }: PhotoCardProps) {
             sizes="(max-width: 1280px) 50vw, 33vw"
             className="object-cover"
           />
-        ) : (
-          <div className="bg-muted/40 text-muted-foreground flex size-full items-center justify-center px-4 text-center">
-            <Small>Photo coming soon</Small>
-          </div>
-        )}
+        ) : null}
       </div>
 
       <CardContent className="space-y-2 p-4">
         <H5 className="text-base">{item.title}</H5>
         {item.schoolYear ? <MutedP>School year: {item.schoolYear}</MutedP> : null}
-        {item.note ? <MutedP>{item.note}</MutedP> : null}
       </CardContent>
     </Card>
   );

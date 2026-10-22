@@ -8,7 +8,8 @@ const LINKS = [
   { href: "/photos", label: "Photos" },
   { href: "/news-and-events", label: "News & Events" },
   { href: "/resources", label: "Resources" },
-  { href: "/questions", label: "Contact Us" },
+  { href: "/education/class-webpages", label: "Class Webpages" },
+  { href: "/questions", label: "FAQs & Contact" },
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms of Use" },
 ];

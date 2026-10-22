@@ -2,21 +2,21 @@
 
 @theme {
   /* Core brand colors */
-  --color-primary: oklch(0.71 0.19 78); /* Saffron (#FF9933) */
+  --color-primary: oklch(0.774 0.163 60); /* Saffron (#FF9933) */
   --color-secondary: oklch(0.45 0.2 145); /* Deep Green (#138808) */
   --color-navy: oklch(0.25 0.2 265); /* Navy Blue (#000080) */
 
   /* Primary (Saffron) scale */
-  --color-primary-50: oklch(0.98 0.02 78);
-  --color-primary-100: oklch(0.95 0.04 78);
-  --color-primary-200: oklch(0.9 0.08 78);
-  --color-primary-300: oklch(0.85 0.12 78);
-  --color-primary-400: oklch(0.78 0.16 78);
-  --color-primary-500: oklch(0.71 0.19 78);
-  --color-primary-600: oklch(0.64 0.22 78);
-  --color-primary-700: oklch(0.57 0.24 78);
-  --color-primary-800: oklch(0.5 0.26 78);
-  --color-primary-900: oklch(0.43 0.28 78);
+  --color-primary-50: oklch(0.98 0.02 60);
+  --color-primary-100: oklch(0.95 0.04 60);
+  --color-primary-200: oklch(0.9 0.07 60);
+  --color-primary-300: oklch(0.85 0.11 60);
+  --color-primary-400: oklch(0.81 0.15 60);
+  --color-primary-500: oklch(0.774 0.163 60);
+  --color-primary-600: oklch(0.7 0.165 60);
+  --color-primary-700: oklch(0.6 0.15 60);
+  --color-primary-800: oklch(0.5 0.13 60);
+  --color-primary-900: oklch(0.42 0.11 60);
 
   /* Navy scale */
   --color-navy-50: oklch(0.98 0.02 265);
@@ -48,18 +48,23 @@
   --color-muted-foreground: var(--color-gray-500);
   --color-border: var(--color-gray-200);
   --color-input: var(--color-gray-200);
-  --color-ring: var(--color-primary);
+  --color-ring: var(--color-primary-700);
   --color-card: var(--color-background);
   --color-card-foreground: var(--color-foreground);
   --color-popover: var(--color-background);
   --color-popover-foreground: var(--color-foreground);
 
   /* Status colors */
-  --color-destructive: oklch(0.65 0.27 29); /* Indian Red */
+  --color-destructive: oklch(0.55 0.22 29); /* Indian Red, 5.4:1 on white */
+  --color-destructive-foreground: #fff;
   --color-success: oklch(0.55 0.15 145);
   --color-warning: oklch(0.8 0.15 78);
 
-  --color-primary-foreground: #fff;
+  /* Saffron is too light for white text; navy on saffron is about 8:1 */
+  --color-primary-foreground: var(--color-navy);
+  --color-secondary-foreground: #fff;
+  /* Saffron used as text or icon on white (6.2:1) */
+  --color-primary-ink: var(--color-primary-800);
   --color-accent: oklch(0.95 0.02 265);
   --color-accent-foreground: var(--color-navy-900);
 
@@ -232,7 +237,11 @@
   }
 
   a {
-    @apply text-primary hover:underline;
+    @apply text-navy-600 hover:text-primary-ink hover:underline;
+  }
+
+  p a {
+    @apply underline underline-offset-4;
   }
 }
 

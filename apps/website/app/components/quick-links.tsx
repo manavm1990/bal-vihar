@@ -11,11 +11,14 @@ interface LinkItem {
   href: string;
   text: string;
   className?: string;
+  /** Hidden in the mobile bottom bar; reachable from the main menu. */
+  desktopOnly?: boolean;
 }
 const LINKS: LinkItem[] = [
   {
     href: "/",
     text: "Home 🏠",
+    desktopOnly: true,
     className: "bg-primary/80 text-navy hover:bg-primary-600/80",
   },
   {
@@ -27,6 +30,7 @@ const LINKS: LinkItem[] = [
   {
     href: "/presidents-message",
     text: "President's Message",
+    desktopOnly: true,
     className: "bg-primary/80 text-navy hover:bg-primary-600/80",
   },
   {
@@ -54,7 +58,7 @@ export default function QuickLinks() {
 
   return (
     <motion.section
-      className="fixed right-0 bottom-4 z-10 mt-4 flex flex-col gap-4"
+      className="border-border bg-background/95 fixed inset-x-0 bottom-0 z-10 flex justify-center gap-3 border-t p-2 md:inset-x-auto md:right-0 md:bottom-4 md:mt-4 md:flex-col md:gap-4 md:border-t-0 md:bg-transparent md:p-0"
       variants={container}
       initial="hidden"
       animate="show"
@@ -88,7 +92,7 @@ export default function QuickLinks() {
         return (
           <motion.div
             key={link.text}
-            className={`flex justify-end ${i % 2 ? "hover:-rotate-3" : "hover:rotate-3"}`}
+            className={`${link.desktopOnly ? "hidden md:flex" : "flex"} justify-end ${i % 2 ? "md:hover:-rotate-3" : "md:hover:rotate-3"}`}
             variants={item}
           >
             <Link {...link} />
@@ -107,7 +111,7 @@ function Link({ type = "internal", href, text, className = "" }: LinkItem) {
   return (
     <COMPONENT
       href={href}
-      className={`${className} ml-auto py-2 pr-4 pl-8 text-xs transition-transform [clip-path:polygon(100%_4%,100%_96%,8%_100%,0_0)] hover:scale-110 hover:no-underline`}
+      className={`${className} rounded-md px-4 py-2 text-sm transition-transform hover:no-underline md:ml-auto md:rounded-none md:py-2 md:pr-4 md:pl-8 md:text-xs md:[clip-path:polygon(100%_4%,100%_96%,8%_100%,0_0)] md:hover:scale-110`}
       {...componentProps}
     >
       {text}

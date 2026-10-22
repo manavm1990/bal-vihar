@@ -76,7 +76,7 @@ export default function MobileNav() {
         onClick={() => {
           setIsOpen(!isOpen);
         }}
-        className="text-navy-600 hover:text-primary-600 absolute top-2 right-2 p-2 xl:hidden"
+        className="text-navy-600 hover:text-primary-ink absolute top-2 right-2 p-2 xl:hidden"
       >
         {isOpen ? <CrossIcon className="h-6 w-6" /> : <HamburgerMenuIcon className="h-6 w-6" />}
       </button>
@@ -108,7 +108,7 @@ export default function MobileNav() {
             onClick={() => {
               setIsOpen(false);
             }}
-            className="text-navy-600 hover:text-primary-600 p-2"
+            className="text-navy-600 hover:text-primary-ink p-2"
           >
             <CrossIcon className="h-6 w-6" />
           </button>
@@ -125,16 +125,16 @@ export default function MobileNav() {
                   }}
                   className={`flex w-full items-center justify-between p-2 text-left font-medium ${
                     activeSection === section.name
-                      ? "text-primary-600 bg-primary-50"
-                      : "text-navy-700 hover:text-primary-600"
+                      ? "text-primary-ink bg-primary-50"
+                      : "text-navy-700 hover:text-primary-ink"
                   }`}
                 >
                   <span>{section.name}</span>
                   <ChevronDownIcon
                     className={`text-navy-400 h-4 w-4 transition-transform ${
                       activeSection === section.name
-                        ? "text-primary-400 rotate-180"
-                        : "group-hover:text-primary-400"
+                        ? "text-primary-700 rotate-180"
+                        : "group-hover:text-primary-700"
                     }`}
                   />
                 </button>
@@ -152,7 +152,7 @@ export default function MobileNav() {
                         <motion.li key={item.name} variants={SUB_ITEM_VARIANTS}>
                           <Link
                             href={item.link}
-                            className="text-navy-600 hover:text-primary-500 block p-2 text-sm"
+                            className="text-navy-600 hover:text-primary-ink block p-2 text-sm"
                           >
                             {item.name}
                           </Link>
