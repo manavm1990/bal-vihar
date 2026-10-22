@@ -16,7 +16,7 @@
     "typecheck": "turbo run typecheck",
     "typegen": "turbo run typegen --filter=@bv/studio",
     "prepare": "husky",
-    "postinstall": "bunx skills update -p -y || true"
+    "postinstall": "bunx skills@latest update -p -y || true"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.2",
