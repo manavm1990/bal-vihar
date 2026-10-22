@@ -7,5 +7,5 @@ const PAGE = STATIC_PAGES.education;
 export const metadata: Metadata = createStaticPageMetadata(PAGE);
 
 export default function EducationPage() {
-  return <StaticContentPage page={PAGE} />;
+  return <StaticContentPage page={PAGE} photoPath="/education" />;
 }

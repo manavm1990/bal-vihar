@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function HistoryPage() {
   return (
-    <Article title="History 📜">
+    <Article title="History 📜" photoPath="/about-us/history">
       <P>
         Bal Vihar is a <Strong>non-profit 501 (c) (3)</Strong> corporation under the name of{" "}
         <Strong>&quot;Center for Indian Cultural Education - Bal Vihar of St. Louis&quot;</Strong>.

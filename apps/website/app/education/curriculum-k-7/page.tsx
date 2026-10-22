@@ -7,5 +7,5 @@ const PAGE = STATIC_PAGES.curriculumK7;
 export const metadata: Metadata = createStaticPageMetadata(PAGE);
 
 export default function EducationCurriculumK7Page() {
-  return <StaticContentPage page={PAGE} />;
+  return <StaticContentPage page={PAGE} photoPath="/education/curriculum-k-7" />;
 }

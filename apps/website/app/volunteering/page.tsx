@@ -7,5 +7,5 @@ const PAGE = STATIC_PAGES.volunteering;
 export const metadata: Metadata = createStaticPageMetadata(PAGE);
 
 export default function VolunteeringPage() {
-  return <StaticContentPage page={PAGE} />;
+  return <StaticContentPage page={PAGE} photoPath="/volunteering" />;
 }

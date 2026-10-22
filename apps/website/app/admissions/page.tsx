@@ -7,5 +7,5 @@ const PAGE = STATIC_PAGES.admissions;
 export const metadata: Metadata = createStaticPageMetadata(PAGE);
 
 export default function AdmissionsPage() {
-  return <StaticContentPage page={PAGE} />;
+  return <StaticContentPage page={PAGE} photoPath="/admissions" />;
 }

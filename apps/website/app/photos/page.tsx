@@ -4,7 +4,6 @@ import { Card, CardContent } from "@components/ui/card";
 import { MutedP, P } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import { fetchSanityData } from "@lib/sanity/fetch";
-import { LEGACY_PHOTO_BOARD } from "@lib/sanity/home-fallbacks";
 import { mapPhotoGallery } from "@lib/sanity/map-photo-gallery";
 import { PHOTO_GALLERY_QUERY } from "@lib/sanity/queries";
 import type { Metadata } from "next";
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
 export default async function PhotosPage() {
   const payload = await fetchSanityData(PHOTO_GALLERY_QUERY);
   const gallery = mapPhotoGallery(payload, { featuredOnly: false });
-  const photos = gallery?.photos && gallery.photos.length > 0 ? gallery.photos : LEGACY_PHOTO_BOARD;
+  const photos = gallery?.photos ?? [];
 
   return (
     <Article title="Photos" className="md:columns-1">
