@@ -173,7 +173,6 @@ Project skills live in `.agents/skills/` (symlinked into `.claude/skills/`) and 
 | `frontend-design`             | New or reshaped visual design, typography, distinctive aesthetic direction                                                                                                         |
 | `vercel-composition-patterns` | Compound components, boolean-prop cleanup, flexible component APIs, React 19 composition patterns                                                                                  |
 | `web-design-guidelines`       | UI/UX accessibility or interface-guideline audits                                                                                                                                  |
-| `code-review`                 | Before merge; reviews the diff since a fixed point against repo standards and the originating spec (needs `setup-matt-pocock-skills` run once per repo)                            |
 | `vercel-react-best-practices` | React/Next performance: waterfalls, bundle size, server/client data fetching                                                                                                       |
 
 Routing rules:
@@ -182,7 +181,7 @@ Routing rules:
 - Any public page SEO/metadata/structured data work → `seo-aeo-best-practices` (see SEO routing below).
 - Monorepo/build/package work → `turborepo`.
 - UI implementation → `frontend-ui-engineering`; visual identity/direction → `frontend-design`; component API shape → `vercel-composition-patterns`.
-- Finish non-trivial changes with `code-review` before calling the work done.
+- Finish non-trivial changes with the built-in `/code-review` before calling the work done.
 
 ## MCP Servers
 
@@ -218,7 +217,7 @@ When working with Sanity, follow `.agents/skills/sanity-best-practices/SKILL.md`
 3. Update Studio structure/inputs if authors need new editing UX.
 4. Update GROQ/queries and website rendering in `apps/website`.
 5. Regenerate or refresh TypeGen types if the project’s typegen workflow requires it.
-6. Smoke-check Studio + website, then review with `code-review`.
+6. Smoke-check Studio + website, then review with the built-in `/code-review`.
 
 ## SEO Routing Instructions
 
