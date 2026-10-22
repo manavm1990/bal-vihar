@@ -18,10 +18,10 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.15",
+    "@biomejs/biome": "^2.6.2",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
-    "turbo": "^2.11.7"
+    "turbo": "^2.11.10"
   },
   "overrides": {
     "@types/react": "19.2.17",

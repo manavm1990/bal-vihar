@@ -14,10 +14,10 @@
   },
   "dependencies": {
     "@sanity/icons": "^5.2.2",
-    "sanity": "^6.19.0"
+    "sanity": "^6.20.0"
   },
   "devDependencies": {
     "@bv/typescript-config": "workspace:*",
-    "typescript": "^5.9.2"
+    "typescript": "^7.0.2"
   }
 }
