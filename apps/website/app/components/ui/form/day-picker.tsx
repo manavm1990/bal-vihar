@@ -50,12 +50,7 @@ export function DayPicker({
           outside: "day-outside text-muted-foreground opacity-50",
           disabled: "text-muted-foreground opacity-50",
         }}
-        components={{
-          Chevron: ({ orientation }) => {
-            const ICON = orientation === "left" ? ChevronLeftIcon : ChevronRightIcon;
-            return <ICON className="size-4" />;
-          },
-        }}
+        components={{ Chevron }}
         numberOfMonths={numberOfMonths}
         onSelect={(date) => {
           onDateSelect?.(date);
@@ -63,4 +58,13 @@ export function DayPicker({
       />
     </div>
   );
+}
+
+interface ChevronProps {
+  orientation?: "up" | "down" | "left" | "right";
+}
+
+function Chevron({ orientation }: ChevronProps) {
+  const ICON = orientation === "left" ? ChevronLeftIcon : ChevronRightIcon;
+  return <ICON className="size-4" />;
 }
