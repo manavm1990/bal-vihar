@@ -16,12 +16,13 @@
     "typecheck": "turbo run typecheck",
     "typegen": "turbo run typegen --filter=@bv/studio",
     "prepare": "husky",
-    "postinstall": "bunx skills@latest update -p -y || true"
+    "postinstall": "bunx skills update -p -y || true"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.2",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
+    "skills": "^1.7.4",
     "turbo": "^2.11.10"
   },
   "overrides": {

@@ -5,30 +5,18 @@ If tool-specific instruction files exist, they should defer to this file.
 
 ## Project Overview
 
-This is **Bal Vihar of St. Louis**, a Turborepo monorepo containing a Next.js 16 website and Sanity Studio CMS for the Center for Indian Cultural Education. It's a community organization website that teaches Indian culture and values to children through various events and activities.
-
-## Monorepo Architecture
-
-### Project Structure
+**Bal Vihar of St. Louis**: a Turborepo monorepo with a Next.js 16 website and a Sanity Studio CMS for the Center for Indian Cultural Education, a community organization that teaches Indian culture and values to children.
 
 ```
-bal-vihar/
-├── apps/
-│   ├── website/          # Next.js 16 public website
-│   └── studio/           # Sanity Studio CMS
-├── packages/
-│   ├── typescript-config/ # Shared TypeScript configuration
-│   └── schemas/          # Shared Sanity schemas and types
-├── turbo.json           # Turborepo configuration
-└── package.json         # Root workspace configuration
+apps/website/            Next.js 16 public site (App Router, Turbopack)
+apps/studio/             Sanity Studio
+packages/schemas/        Shared Sanity schemas and generated types
+packages/typescript-config/
 ```
 
-- **Turborepo**: Monorepo build system with caching and task orchestration
-- **Apps**: Website (Next.js 16) and Studio (Sanity CMS) run independently
-- **Shared Packages**: Common configurations and schemas across apps
-- **Build System**: Bun package manager with workspace support
+Stack: Bun, Next.js 16, React 19, strict TypeScript, Tailwind CSS v4, Radix UI, React Hook Form + Valibot, Sanity + `next-sanity`, Biome.
 
-### Commands
+## Commands
 
 Run from the repo root (Turborepo fans out to each workspace):
 - `bun run dev` - website and studio dev servers
@@ -37,66 +25,19 @@ Run from the repo root (Turborepo fans out to each workspace):
 - `bun run typecheck` - `tsc --noEmit` in every workspace
 - `bun run typegen` - Sanity `schema.json` + `sanity.types.ts` (studio only); commit the output
 
-Scope a task with `turbo run <task> --filter=@bv/<name>`.
+Scope a task with `turbo run <task> --filter=@bv/<name>`. Pre-push runs typegen then typecheck, so commit regenerated type files.
 
-### Key Directories
+## Code Standards
 
-- `apps/website/app/components/ui/` - Reusable UI components (buttons, forms, typography, etc.)
-- `apps/website/app/lib/` - Utility functions, constants, and type definitions
-- `apps/website/app/(home)/` - Homepage: announcements, intro, upcoming events and photos (Sanity-driven)
-- `apps/studio/` - Sanity Studio for content management
-- `packages/schemas/` - Shared content schemas and TypeScript types
+- Strict TypeScript (`noUncheckedIndexedAccess`, `noImplicitOverride`, `verbatimModuleSyntax`); no `any`.
+- Accessibility rules are enforced; use semantic HTML, labelled form controls and proper heading order.
+- Imports are ordered and cycle-checked by Biome.
+- Prefer custom hooks over direct hook use in components.
+- Tailwind utility classes and existing design tokens only; no inline styles, no custom CSS unless unavoidable. Use the established component library (Radix UI) for UI primitives.
+- Mobile-first responsive design. Variants via `class-variance-authority`.
+- Forms: Valibot schema, React Hook Form for state, a server action (`'use server'`) for submission, typed inputs (`ContactFormInputs` pattern).
 
-### Component Architecture
-
-- **Typography System**: Typography primitives in `app/components/ui/typography.tsx`
-- **Form Handling**: React Hook Form with Valibot validation
-- **Icons**: Custom icon components in `app/components/ui/icons/`
-- **Navigation**: Multi-level navigation system with mobile/desktop variants
-
-### Path Aliases
-
-```typescript
-// Available TypeScript path aliases (apps/website/)
-"@components/*" -> "./app/components/*"
-"@lib/*" -> "./app/lib/*"
-
-// Workspace packages
-"@bv/typescript-config" -> "../../packages/typescript-config"
-"@bv/schemas" -> "../../packages/schemas"
-```
-
-### State Management & Data
-
-- **Server Actions**: Uses Next.js server actions for form submissions (`'use server'`)
-- **Email Integration**: Resend integration configured (TODO: domain setup required)
-- **Schema Validation**: Valibot for runtime type validation
-
-### Styling Approach
-
-- **Utility-First**: Tailwind CSS with custom configuration
-- **Design Tokens**: CSS custom properties with font variables
-- **Component Variants**: Uses `class-variance-authority` for component variants
-- **Responsive**: Mobile-first responsive design
-
-## Code Quality & Standards
-
-### TypeScript Configuration
-
-- Strict type checking enabled with additional safety rules
-- `noUncheckedIndexedAccess`, `noImplicitOverride`, `verbatimModuleSyntax`
-- Module resolution set to `"bundler"` for modern tooling
-- Shared base config in `@bv/typescript-config` package
-
-### Key Development Practices
-
-- **Accessibility**: Comprehensive JSX accessibility rules enforced
-- **Type Safety**: Strict TypeScript with no `any` types allowed
-- **Import Management**: Enforced import ordering and cycle detection
-- **Encapsulation**: Custom hooks encouraged over direct hook usage in components
-- **Monorepo Linting**: Biome is used for unified linting and formatting across packages
-- **Pre-commit Hooks**: lint-staged runs Biome on all staged files (repo-wide via root config)
-- **Pre-push Hooks**: Sanity typegen freshness (`schema.json` / `sanity.types.ts`) then `turbo typecheck`. If typegen changes those files the push fails; commit them and push again.
+Path aliases (`apps/website`): `@components/*` -> `./app/components/*`, `@lib/*` -> `./app/lib/*`. Workspace packages: `@bv/schemas`, `@bv/typescript-config`.
 
 ### Website component file organization (`apps/website`)
 
@@ -111,58 +52,9 @@ Scope a task with `turbo run <task> --filter=@bv/<name>`.
 - Prefer **omitting braces** on single-statement `if` bodies (including multi-line `return (` … `)`).
 - Prefer **ternary returns** for simple null/branch UI: `return !src ? null : ( <Image … /> );`
 
+## Agent Skills
 
-## Environment & Dependencies
-
-### Core Stack
-
-- Next.js 16 with App Router and Turbopack
-- React 19 with React Hook Form
-- TypeScript with strict configuration
-- Tailwind CSS v4 with PostCSS
-
-### Notable Dependencies
-
-- **UI**: Radix UI primitives for accessible components
-- **Animation**: Framer Motion (`motion` package)
-- **Email**: React Email components and Resend
-- **Validation**: Valibot for schema validation
-- **Carousel**: Embla Carousel with autoplay
-- **CMS**: Sanity Studio + `next-sanity` Live Content API
-
-## Navigation Structure
-
-The site uses a comprehensive multi-level navigation system defined in `app/components/header/navs/constants.ts`:
-- About Us (History, Admin Team, Policies)
-- Admissions (Process, Tuition, Refund Policy)
-- Education (Curriculum K-7, Youth Group, Class Pages)
-- News & Events
-- Resources (Parents, Students, Faculty, Admin)
-- Giving (Online giving, Matching gifts, Sponsors)
-- Volunteering (Opportunities, Applications, Policies)
-- Community Projects (CANstruction, Drives, Cultural events)
-
-## Form Handling Pattern
-
-Forms use a consistent pattern:
-1. Valibot schema definition for validation
-2. React Hook Form for form state management
-3. Server actions for form submission
-4. Type-safe form inputs with `ContactFormInputs` pattern
-
-## Frontend UI Engineering Standards
-
-- Build production-quality UI with existing design tokens and Tailwind utility classes; avoid inline styles and arbitrary one-off spacing values.
-- Follow semantic structure and accessibility-first patterns: keyboard accessible interactions, associated form labels, proper heading hierarchy, and meaningful empty/error/loading states.
-- Prefer composition over over-configured components and separate data-loading/container concerns from presentational components.
-- Use mobile-first responsive behavior and verify layouts across common breakpoints.
-- Keep component state minimal and local by default; extract custom hooks when behavior grows complex.
-- Use established component library for UI components.
-- Do not introduce custom CSS unless absolutely necessary.
-
-## Agent Skills Map
-
-Project skills live in `.agents/skills/` (symlinked into `.claude/skills/`) and are locked in `skills-lock.json`; commit all three. Read the matching `SKILL.md` (and only the needed `references/` files) before doing work in that domain. Skills refresh automatically on `bun i` (root `postinstall`: `bunx skills@latest update -p -y`), the same way packages do; commit the resulting `.agents/skills/` and `skills-lock.json` changes. Biome ignores `.agents/` and `.claude/` so upstream files stay byte-identical. Do not add, remove or broaden the skill set unless explicitly asked; use `bunx skills add|remove` for that.
+Skills live in `.agents/skills/`. Read the matching `SKILL.md` (and only the needed `references/` files) before doing work in that domain.
 
 | Skill                         | Use when                                                                                                                                                                           |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -174,33 +66,27 @@ Project skills live in `.agents/skills/` (symlinked into `.claude/skills/`) and 
 | `vercel-composition-patterns` | Compound components, boolean-prop cleanup, flexible component APIs, React 19 composition patterns                                                                                  |
 | `web-design-guidelines`       | UI/UX accessibility or interface-guideline audits                                                                                                                                  |
 | `vercel-react-best-practices` | React/Next performance: waterfalls, bundle size, server/client data fetching                                                                                                       |
-
-Routing rules:
-- Prefer the single most specific skill first; load a second skill only when the task truly crosses domains.
-- Sanity content modeling and Studio work → `sanity-best-practices` (not ad-hoc schema guesses).
-- Any public page SEO/metadata/structured data work → `seo-aeo-best-practices` (see SEO routing below).
-- Monorepo/build/package work → `turborepo`.
-- UI implementation → `frontend-ui-engineering`; visual identity/direction → `frontend-design`; component API shape → `vercel-composition-patterns`.
-- Finish non-trivial changes with the built-in `/code-review` before calling the work done.
+- Prefer the single most specific skill first; load a second only when the task truly crosses domains.
+- Sanity content modeling and Studio work -> `sanity-best-practices` (not ad-hoc schema guesses).
+- Public page SEO, metadata or structured data -> `seo-aeo-best-practices`.
+- Monorepo, build or package work -> `turborepo`.
+- UI implementation -> `frontend-ui-engineering`; visual direction -> `frontend-design`; component API shape -> `vercel-composition-patterns`.
+- Finish non-trivial changes with the built-in `/code-review`.
+- Do not add, remove or broaden the skill set unless explicitly asked.
 
 ## MCP Servers
 
-Declared in `.mcp.json` (Claude Code) and `.vscode/mcp.json` (VS Code). The two use different top-level keys (`mcpServers` / `servers`), so keep them in sync by hand.
 - `next-devtools` - Next.js 16 diagnostics and guidance
-- `sanity` - Sanity content and schema (OAuth sign-in)
-- `vercel` - deployments, build and runtime logs (OAuth sign-in)
+- `sanity` - Sanity content and schema
+- `vercel` - deployments, build and runtime logs
 
-## Sanity Workflow
+## Sanity
 
-This monorepo splits Sanity concerns intentionally:
 - Shared schemas/types: `packages/schemas`
 - Studio app: `apps/studio`
-- Public site consumption: `apps/website` (Next.js App Router)
+- Public site consumption: `apps/website`
 
-When working with Sanity, follow `.agents/skills/sanity-best-practices/SKILL.md` and load only the relevant reference guides (usually `references/schema.md`, `references/groq.md`, and/or `references/nextjs.md`).
-
-### Required practices
-
+Follow `.agents/skills/sanity-best-practices/SKILL.md` and load only the relevant references (usually `references/schema.md`, `references/groq.md`, and/or `references/nextjs.md`).
 1. **Schemas first in the shared package** — define or change document/object types in `packages/schemas`, not duplicated inside the website app.
 2. **Studio follows shared schemas** — wire Studio structure/plugins in `apps/studio`; keep desk structure and singletons aligned with schema reality.
 3. **Typed GROQ** — prefer `defineQuery` and generated types via TypeGen over untyped string queries and manual interfaces.
@@ -210,39 +96,15 @@ When working with Sanity, follow `.agents/skills/sanity-best-practices/SKILL.md`
 7. **No production video on Sanity file assets** — use Mux / Media Library / external hosts per the skill’s video rules.
 8. **Validate in both apps** — after schema changes, ensure Studio still loads and website queries/types still build (`turbo` filtered tasks as needed).
 
-### Typical change sequence
+## SEO
 
-1. Read `sanity-best-practices` + the one or two needed references.
-2. Update schema in `packages/schemas`.
-3. Update Studio structure/inputs if authors need new editing UX.
-4. Update GROQ/queries and website rendering in `apps/website`.
-5. Regenerate or refresh TypeGen types if the project’s typegen workflow requires it.
-6. Smoke-check Studio + website, then review with the built-in `/code-review`.
-
-## SEO Routing Instructions
-
-SEO/AEO work is skill-routed, not improvised.
-
-### When to load which skill
-
-- **Default for site-wide or page SEO:** `.agents/skills/seo-aeo-best-practices/SKILL.md`
-  - Metadata / `generateMetadata`, titles, descriptions
-  - Open Graph / Twitter cards
-  - `sitemap` / `robots.txt`
-  - JSON-LD structured data
-  - EEAT and AI-answer (AEO) readiness
-  - Use references as needed: `technical-seo.md`, `structured-data.md`, `eeat-principles.md`, `aeo-considerations.md`
-- **Also load Sanity SEO guidance when metadata is CMS-driven:** `sanity-best-practices` → `references/seo.md` (and schema/GROQ refs if fields or queries change).
-- **UI that affects crawlability or semantics** (heading order, empty states, link text, accessible names): still implement via `frontend-ui-engineering`, but verify SEO implications with `seo-aeo-best-practices`.
-
-### Implementation rules for this repo
-
-1. Every public route should expose correct metadata through Next.js App Router patterns (`metadata` / `generateMetadata`), not ad-hoc `<head>` tags.
+Load `.agents/skills/seo-aeo-best-practices/SKILL.md` (references: `technical-seo.md`, `structured-data.md`, `eeat-principles.md`, `aeo-considerations.md`). When metadata is CMS-driven, also load `sanity-best-practices` -> `references/seo.md`.
+1. Every public route exposes metadata through Next.js App Router patterns (`metadata` / `generateMetadata`), not ad-hoc `<head>` tags.
 2. Prefer canonical, absolute URLs consistent with the production domain when emitting OG/canonical/JSON-LD.
 3. Structured data must match visible content; do not mark up content that is not on the page.
 4. If SEO fields live in Sanity, add/adjust them in `packages/schemas`, edit them in Studio, query them explicitly, and map them into `generateMetadata` / JSON-LD on the website.
-5. Technical artifacts (`sitemap`, `robots`) should stay generated from the real route inventory where possible—avoid hand-maintained stale path lists.
-6. After SEO changes, sanity-check title/description uniqueness, canonical targets, and that JSON-LD parses as valid structured data.
+5. Keep `sitemap` and `robots` generated from the real route inventory—avoid hand-maintained stale path lists.
+6. After SEO changes, check title/description uniqueness, canonical targets, and that JSON-LD parses as valid structured data.
 
 <!-- BEGIN:turborepo-agent-rules -->
 
