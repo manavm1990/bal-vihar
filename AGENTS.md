@@ -87,6 +87,18 @@ bal-vihar/
 - **Monorepo Linting**: Biome is used for unified linting and formatting across packages
 - **Pre-commit Hooks**: lint-staged runs Biome checks on staged TypeScript files
 
+### Website component file organization (`apps/website`)
+
+- **One exported component per file** when the file is a page or shared module.
+- **Colocate private helpers** in the same file below the exported component, in **alphabetical order**, with each helper’s props interface immediately above it.
+- **Constants** (`SCREAMING_SNAKE_CASE`) sit below imports and above the exported component.
+- **Utilities/helpers** (non-components) go below colocated components.
+- **Client components** use the `name.client.tsx` suffix and `"use client"` (opt-in). All other components are server components by default.
+- **Shared/reused UI** gets its own file under `app/components/` (kebab-case). Do not extract a separate file for single-use server presentational pieces.
+- Prefer **omitting braces** on single-statement `if` bodies (including multi-line `return (` … `)`).
+- Prefer **ternary returns** for simple null/branch UI: `return !src ? null : ( <Image … /> );`
+
+
 ## Environment & Dependencies
 
 ### Core Stack

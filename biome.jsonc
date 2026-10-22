@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/latest/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
   "extends": ["./base.jsonc"],
   "files": {
     "ignoreUnknown": true,
@@ -14,7 +14,10 @@
       "react": "recommended"
     },
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
+      "complexity": {
+        "useLiteralKeys": "off"
+      },
       "suspicious": {
         "noUnknownAtRules": "off",
         "noVar": "error"
@@ -101,6 +104,13 @@
       "correctness": {
         "noInnerDeclarations": "error"
       }
+    }
+  },
+  "json": {
+    "parser": {
+      // tsconfig-style files (e.g. packages/typescript-config/base.json) are JSONC
+      "allowComments": true,
+      "allowTrailingCommas": true
     }
   },
   "css": {

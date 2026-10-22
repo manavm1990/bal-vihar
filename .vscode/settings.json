@@ -38,9 +38,5 @@
     "Sudhir",
     "vihar"
   ],
-  "conventionalCommits.scopes": [
-    "studio",
-    "website", 
-    "schemas"
-  ]
+  "conventionalCommits.scopes": ["studio", "website", "schemas"]
 }
