@@ -70,6 +70,7 @@ export const PHOTO_GALLERY_QUERY = defineQuery(`*[_id == "photoGallery"][0]{
     schoolYear,
     note,
     featured,
+    pages,
     image ${mediaImageProjection}
   }
 }`);

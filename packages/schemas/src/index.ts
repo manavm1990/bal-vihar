@@ -2,7 +2,7 @@ import { calendarEvent } from "./documents/calendar-event";
 import { calendarImport } from "./documents/calendar-import";
 import { event } from "./documents/event";
 import { homePage } from "./documents/home-page";
-import { photoGallery } from "./documents/photo-gallery";
+import { PHOTO_PAGE_OPTIONS, photoGallery } from "./documents/photo-gallery";
 import { siteSettings } from "./documents/site-settings";
 import { mediaImage } from "./objects/media-image";
 
@@ -26,4 +26,13 @@ export const schemaTypes = [
   event,
 ];
 
-export { calendarEvent, calendarImport, event, homePage, mediaImage, photoGallery, siteSettings };
+export {
+  calendarEvent,
+  calendarImport,
+  event,
+  homePage,
+  mediaImage,
+  PHOTO_PAGE_OPTIONS,
+  photoGallery,
+  siteSettings,
+};

@@ -658,6 +658,16 @@
                   "type": "inline",
                   "name": "mediaImage"
                 },
+                "optional": false
+              },
+              "pages": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "array",
+                  "of": {
+                    "type": "string"
+                  }
+                },
                 "optional": true
               },
               "featured": {

@@ -41,6 +41,7 @@ export interface HomePhotoBoardItem {
   title: string;
   schoolYear?: string | null;
   note?: string | null;
+  pages?: string[];
   image?: SanityImageValue | null;
 }
 

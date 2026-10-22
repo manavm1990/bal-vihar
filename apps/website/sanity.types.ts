@@ -121,7 +121,8 @@ export type PhotoGallery = {
     title: string;
     schoolYear?: string;
     note?: string;
-    image?: MediaImage;
+    image: MediaImage;
+    pages?: Array<string>;
     featured?: boolean;
     _type: "galleryPhoto";
     _key: string;
@@ -396,7 +397,7 @@ export type NEWS_EVENTS_QUERY_RESULT = Array<{
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: PHOTO_GALLERY_QUERY
-// Query: *[_id == "photoGallery"][0]{  _id,  title,  photos[]{    _key,    title,    schoolYear,    note,    featured,    image {  asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop}  }}
+// Query: *[_id == "photoGallery"][0]{  _id,  title,  photos[]{    _key,    title,    schoolYear,    note,    featured,    pages,    image {  asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop}  }}
 export type PHOTO_GALLERY_QUERY_RESULT =
   | {
       _id: "photoGallery";
@@ -417,6 +418,7 @@ export type PHOTO_GALLERY_QUERY_RESULT =
         schoolYear: string | null;
         note: string | null;
         featured: boolean | null;
+        pages: Array<string> | null;
         image: {
           asset: {
             _id: string;
@@ -433,7 +435,7 @@ export type PHOTO_GALLERY_QUERY_RESULT =
           caption: string | null;
           hotspot: SanityImageHotspot | null;
           crop: SanityImageCrop | null;
-        } | null;
+        };
       }> | null;
     }
   | null;
@@ -487,7 +489,7 @@ declare global {
     '*[_type == "calendarEvent"] | order(date asc) {\n  _id,\n  title,\n  date,\n  location,\n  eventType,\n  time,\n  description,\n  isHighlighted,\n  academicYear\n}': CALENDAR_EVENTS_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  heroSlides[]{\n    _key,\n    link,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  },\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  },\n  whoWeAre\n}': HOME_PAGE_QUERY_RESULT;
     '*[_type == "event"] | order(publishedAt desc) {\n  _id,\n  title,\n  "slug": slug.current,\n  publishedAt,\n  summary,\n  body,\n  isFeatured,\n  externalUrl,\n  image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': NEWS_EVENTS_QUERY_RESULT;
-    '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;
+    '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;
     '*[_id == "siteSettings"][0]{\n  _id,\n  title,\n  registrationUrl,\n  contactEmail,\n  defaultOgImage {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': SITE_SETTINGS_QUERY_RESULT;
   }
 }

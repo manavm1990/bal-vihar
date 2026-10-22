@@ -1,6 +1,16 @@
 import { ImagesIcon } from "@sanity/icons/Images";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+/** Site pages that can show a gallery photo as their banner. */
+export const PHOTO_PAGE_OPTIONS = [
+  { title: "About Us: History", value: "/about-us/history" },
+  { title: "About Us: Community Outreach", value: "/about-us/community-outreach" },
+  { title: "Admissions", value: "/admissions" },
+  { title: "Education", value: "/education" },
+  { title: "Education: Curriculum K-7", value: "/education/curriculum-k-7" },
+  { title: "Volunteering", value: "/volunteering" },
+];
+
 export const photoGallery = defineType({
   name: "photoGallery",
   title: "Photo Gallery",
@@ -18,8 +28,7 @@ export const photoGallery = defineType({
       name: "photos",
       title: "Photos",
       type: "array",
-      description:
-        "Upload community photos here. Leave the image empty to mark a slot as still needed.",
+      description: "Upload community photos here. Every photo needs an image and alt text.",
       of: [
         defineArrayMember({
           type: "object",
@@ -48,6 +57,16 @@ export const photoGallery = defineType({
               name: "image",
               title: "Image",
               type: "mediaImage",
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "pages",
+              title: "Show as banner on pages",
+              type: "array",
+              description:
+                "Optional. Use this photo as the banner at the top of these pages. If several photos match a page, the first one is used.",
+              of: [defineArrayMember({ type: "string" })],
+              options: { list: PHOTO_PAGE_OPTIONS },
             }),
             defineField({
               name: "featured",
