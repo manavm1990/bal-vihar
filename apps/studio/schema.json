@@ -436,6 +436,13 @@
         },
         "optional": false
       },
+      "time": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "location": {
         "type": "objectAttribute",
         "value": {
@@ -483,13 +490,6 @@
               "value": "project"
             }
           ]
-        },
-        "optional": true
-      },
-      "time": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
         },
         "optional": true
       },
@@ -660,6 +660,13 @@
                 },
                 "optional": false
               },
+              "featured": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "boolean"
+                },
+                "optional": true
+              },
               "pages": {
                 "type": "objectAttribute",
                 "value": {
@@ -667,13 +674,6 @@
                   "of": {
                     "type": "string"
                   }
-                },
-                "optional": true
-              },
-              "featured": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "boolean"
                 },
                 "optional": true
               },
@@ -743,51 +743,6 @@
           "type": "string"
         },
         "optional": false
-      },
-      "heroSlides": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "array",
-          "of": {
-            "type": "object",
-            "attributes": {
-              "image": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "inline",
-                  "name": "mediaImage"
-                },
-                "optional": false
-              },
-              "link": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                },
-                "optional": true
-              },
-              "_type": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string",
-                  "value": "heroSlide"
-                }
-              }
-            },
-            "rest": {
-              "type": "object",
-              "attributes": {
-                "_key": {
-                  "type": "objectAttribute",
-                  "value": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "optional": true
       },
       "announcements": {
         "type": "objectAttribute",
@@ -871,6 +826,51 @@
                 "value": {
                   "type": "string",
                   "value": "announcement"
+                }
+              }
+            },
+            "rest": {
+              "type": "object",
+              "attributes": {
+                "_key": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "optional": true
+      },
+      "heroSlides": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "image": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "inline",
+                  "name": "mediaImage"
+                },
+                "optional": false
+              },
+              "link": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "_type": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string",
+                  "value": "heroSlide"
                 }
               }
             },

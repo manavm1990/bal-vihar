@@ -90,9 +90,9 @@ export type CalendarEvent = {
   _rev: string;
   title: string;
   date: string;
+  time?: string;
   location?: "HTCC" | "HT/HTCC" | "HTCC/MGC";
   eventType?: "regular" | "special" | "celebration" | "holiday" | "project";
-  time?: string;
   description?: string;
   isHighlighted?: boolean;
   academicYear?: string;
@@ -122,8 +122,8 @@ export type PhotoGallery = {
     schoolYear?: string;
     note?: string;
     image: MediaImage;
-    pages?: Array<string>;
     featured?: boolean;
+    pages?: Array<string>;
     _type: "galleryPhoto";
     _key: string;
   }>;
@@ -136,12 +136,6 @@ export type HomePage = {
   _updatedAt: string;
   _rev: string;
   title: string;
-  heroSlides?: Array<{
-    image: MediaImage;
-    link?: string;
-    _type: "heroSlide";
-    _key: string;
-  }>;
   announcements?: Array<{
     title: string;
     body: string;
@@ -152,6 +146,12 @@ export type HomePage = {
     endDate?: string;
     tone?: "default" | "urgent" | "success";
     _type: "announcement";
+    _key: string;
+  }>;
+  heroSlides?: Array<{
+    image: MediaImage;
+    link?: string;
+    _type: "heroSlide";
     _key: string;
   }>;
   whoWeAre?: string;
