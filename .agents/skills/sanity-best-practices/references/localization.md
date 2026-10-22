@@ -1,4 +1,5 @@
 ---
+
 title: Sanity Localization Rules
 description: Localization patterns for Sanity using official plugins and best practices.
 ---
@@ -23,19 +24,21 @@ Use the contents list to jump directly to the localization pattern you need.
 ## 1. Guiding Principles
 
 ### Priority: Easy Authoring Experience
+
 The structured nature of Sanity schemas and GROQ make it easy to parse localized content for your frontend. **Never** let frontend architecture dictate your localization approach — prioritize the editor experience.
 
 ### Avoid Content Duplication
+
 Don't create nearly identical copies with slight differences (e.g., US vs British English). Use Portable Text marks and custom blocks to swap out words or sections as needed.
 
 ## 2. Terminology
 
-| Term | Definition |
-|------|------------|
-| **Internationalization (i18n)** | Designing your frontend to support multiple languages |
-| **Localization** | Adapting content for a specific language/region |
-| **Language Tag** | Code like `en`, `en-US`, `zh-Hant-TW` (per IETF RFC 5646) |
-| **Locale** | A language tag with region info (e.g., `en-US`) |
+| Term                            | Definition                                                |
+| ------------------------------- | --------------------------------------------------------- |
+| **Internationalization (i18n)** | Designing your frontend to support multiple languages     |
+| **Localization**                | Adapting content for a specific language/region           |
+| **Language Tag**                | Code like `en`, `en-US`, `zh-Hant-TW` (per IETF RFC 5646) |
+| **Locale**                      | A language tag with region info (e.g., `en-US`)           |
 
 ## 3. Create a Locale Content Type
 
@@ -43,33 +46,39 @@ Don't create nearly identical copies with slight differences (e.g., US vs Britis
 
 ```typescript
 // schemaTypes/locale.ts
-import { TranslateIcon } from '@sanity/icons/Translate'
-import { defineField, defineType } from 'sanity'
+import { TranslateIcon } from "@sanity/icons/Translate";
+import { defineField, defineType } from "sanity";
 
 export const localeType = defineType({
-  name: 'locale',
+  name: "locale",
   icon: TranslateIcon,
-  type: 'document',
+  type: "document",
   fields: [
-    defineField({ name: 'name', type: 'string', validation: (r) => r.required() }),
-    defineField({ name: 'tag', type: 'string', description: 'IANA tag (en, en-US)', validation: (r) => r.required() }),
-    defineField({ name: 'fallback', type: 'reference', to: [{ type: 'locale' }] }),
-    defineField({ name: 'default', type: 'boolean' }),
+    defineField({ name: "name", type: "string", validation: (r) => r.required() }),
+    defineField({
+      name: "tag",
+      type: "string",
+      description: "IANA tag (en, en-US)",
+      validation: (r) => r.required(),
+    }),
+    defineField({ name: "fallback", type: "reference", to: [{ type: "locale" }] }),
+    defineField({ name: "default", type: "boolean" }),
   ],
-  preview: { select: { title: 'name', subtitle: 'tag' } },
-})
+  preview: { select: { title: "name", subtitle: "tag" } },
+});
 ```
 
 **Tip:** Restrict locale editing to admins via Structure by filtering `locale` from non-admin users.
 
 ## 4. Choose Your Localization Method
 
-| Content Type | Examples | Recommended Method |
-|--------------|----------|-------------------|
-| **Structured** (things) | Products, People, Locations, Categories | Field-level |
-| **Presentation** (UI) | Pages, Posts, Components | Document-level |
+| Content Type            | Examples                                | Recommended Method |
+| ----------------------- | --------------------------------------- | ------------------ |
+| **Structured** (things) | Products, People, Locations, Categories | Field-level        |
+| **Presentation** (UI)   | Pages, Posts, Components                | Document-level     |
 
 ### Decision Questions
+
 1. **Are fields shared across languages?** → Field-level
 2. **Should changes be "global" for all locales?** (e.g., reordering components) → Field-level
 3. **Is content mostly the same except regional differences?** → Field-level with PT marks
@@ -84,9 +93,10 @@ npm install @sanity/document-internationalization
 ```
 
 ### Configuration
+
 ```typescript
 // sanity.config.ts
-import { documentInternationalization } from '@sanity/document-internationalization'
+import { documentInternationalization } from "@sanity/document-internationalization";
 
 export default defineConfig({
   plugins: [
@@ -95,57 +105,75 @@ export default defineConfig({
       supportedLanguages: (client) =>
         client.fetch(`*[_type == "locale"]{ "id": tag, "title": name }`),
       // Document types to localize
-      schemaTypes: ['post', 'page'],
+      schemaTypes: ["post", "page"],
     }),
   ],
-})
+});
 ```
 
 ### Add Language Field to Schema
+
 ```typescript
 // In each schema type listed in schemaTypes
 defineField({
-  name: 'language',
-  type: 'string',
+  name: "language",
+  type: "string",
   readOnly: true,
   hidden: true,
-})
+});
 ```
 
 ### Initial Value Templates
+
 Pre-set language when creating documents outside the translation UI:
 
 ```typescript
 // sanity.config.ts
-import { template } from 'sanity'
+import { defineConfig } from "sanity";
+import type { Template } from "sanity";
+
+const LOCALIZED_TYPES = ["post", "page"];
+const BASE_LANGUAGE = "en";
 
 export default defineConfig({
   // ...
   document: {
-    newDocumentOptions: (prev, { creationContext }) => {
-      // Filter to only show base language in "New document" menu
-      // The plugin handles creating translations from there
-      return prev.filter((item) =>
-        !['post', 'page'].includes(item.templateId) ||
-        item.parameters?.language === 'en'
-      )
-    },
+    newDocumentOptions: (prev) => [
+      // Drop the auto-generated entries for localized types — they create
+      // documents with no `language` set
+      ...prev.filter((item) => !LOCALIZED_TYPES.includes(item.templateId)),
+      // Offer the base-language templates instead
+      // The plugin handles creating translations from the document itself
+      ...LOCALIZED_TYPES.map((schemaType) => ({
+        templateId: `${schemaType}-${BASE_LANGUAGE}`,
+        parameters: { language: BASE_LANGUAGE },
+      })),
+    ],
   },
-  // Initial value templates for each language
-  templates: (prev) => [
-    ...prev,
-    template.initial({
-      id: 'post-en',
-      title: 'Post (English)',
-      schemaType: 'post',
-      parameters: [{name: 'language', type: 'string'}],
-      value: ({language}) => ({language}),
-    }),
-  ],
-})
+  schema: {
+    // A base-language template per localized type
+    templates: (prev): Template[] => [
+      ...prev,
+      ...LOCALIZED_TYPES.map((schemaType) => ({
+        id: `${schemaType}-${BASE_LANGUAGE}`,
+        title: `${schemaType} (${BASE_LANGUAGE})`,
+        schemaType,
+        parameters: [{ name: "language", type: "string" }],
+        value: ({ language }: { language: string }) => ({ language }),
+      })),
+    ],
+  },
+});
 ```
 
+A template that declares `parameters` is left out of the auto-generated "New
+document" list, so it only appears if `newDocumentOptions` adds it explicitly,
+with the parameter values supplied on the item. The auto-generated items carry
+no `parameters` of their own, so a filter that tests `item.parameters` matches
+nothing and empties the menu.
+
 ### Querying Translated Documents
+
 ```groq
 // Get document in specific language
 *[_type == "post" && language == $locale && slug.current == $slug][0]
@@ -167,35 +195,35 @@ For singletons like homepages that need a separate document per locale, combine 
 
 ```typescript
 // schemaTypes/homePage.ts
-import { HomeIcon } from '@sanity/icons/Home'
-import { defineType, defineField } from 'sanity'
+import { HomeIcon } from "@sanity/icons/Home";
+import { defineType, defineField } from "sanity";
 
 export const homePageType = defineType({
-  name: 'homePage',
-  title: 'Home Page',
-  type: 'document',
+  name: "homePage",
+  title: "Home Page",
+  type: "document",
   icon: HomeIcon,
   fields: [
     defineField({
-      name: 'language',
-      type: 'string',
+      name: "language",
+      type: "string",
       readOnly: true,
       hidden: true,
     }),
-    defineField({ name: 'title', type: 'string' }),
-    defineField({ name: 'pageBuilder', type: 'pageBuilder' }),
+    defineField({ name: "title", type: "string" }),
+    defineField({ name: "pageBuilder", type: "pageBuilder" }),
     // ... other fields
   ],
   preview: {
-    select: { language: 'language' },
+    select: { language: "language" },
     prepare({ language }) {
       return {
-        title: 'Home Page',
-        subtitle: language?.toUpperCase() || 'No language',
-      }
+        title: "Home Page",
+        subtitle: language?.toUpperCase() || "No language",
+      };
     },
   },
-})
+});
 ```
 
 ### Initial Value Templates
@@ -204,30 +232,33 @@ Create templates that pre-set the language for each locale:
 
 ```typescript
 // sanity.config.ts
-import { defineConfig, Template } from 'sanity'
+import { defineConfig } from "sanity";
+import type { Template } from "sanity";
 
 // Define your supported locales
 const LOCALES = [
-  { id: 'en', title: 'English' },
-  { id: 'fr', title: 'French' },
-  { id: 'de', title: 'German' },
-]
+  { id: "en", title: "English" },
+  { id: "fr", title: "French" },
+  { id: "de", title: "German" },
+];
 
 export default defineConfig({
   // ...
-  templates: (prev) => {
-    // Create a template for each locale
-    const homePageTemplates: Template[] = LOCALES.map((locale) => ({
-      id: `homePage-${locale.id}`,
-      title: `Home Page (${locale.title})`,
-      schemaType: 'homePage',
-      parameters: [{ name: 'language', type: 'string' }],
-      value: { language: locale.id },
-    }))
+  schema: {
+    templates: (prev) => {
+      // Create a template for each locale
+      const homePageTemplates: Template[] = LOCALES.map((locale) => ({
+        id: `homePage-${locale.id}`,
+        title: `Home Page (${locale.title})`,
+        schemaType: "homePage",
+        parameters: [{ name: "language", type: "string" }],
+        value: { language: locale.id },
+      }));
 
-    return [...prev, ...homePageTemplates]
+      return [...prev, ...homePageTemplates];
+    },
   },
-})
+});
 ```
 
 ### Structure: Localized Singleton Helper
@@ -236,16 +267,16 @@ Create a helper to show one singleton per locale in the Structure:
 
 ```typescript
 // src/structure/index.ts
-import { StructureBuilder, StructureResolver } from 'sanity/structure'
-import { HomeIcon } from '@sanity/icons/Home'
+import { StructureBuilder, StructureResolver } from "sanity/structure";
+import { HomeIcon } from "@sanity/icons/Home";
 
-const LOCALES = ['en', 'fr', 'de']
+const LOCALES = ["en", "fr", "de"];
 
 function createLocalizedSingleton(
   S: StructureBuilder,
   typeName: string,
   title: string,
-  icon?: React.ComponentType
+  icon?: React.ComponentType,
 ) {
   return S.listItem()
     .title(title)
@@ -262,27 +293,25 @@ function createLocalizedSingleton(
                 S.document()
                   .schemaType(typeName)
                   .documentId(`${typeName}-${locale}`) // Fixed ID per locale
-                  .title(`${title} (${locale.toUpperCase()})`)
-              )
-          )
-        )
-    )
+                  .title(`${title} (${locale.toUpperCase()})`),
+              ),
+          ),
+        ),
+    );
 }
 
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('Content')
+    .title("Content")
     .items([
       // Localized singletons
-      createLocalizedSingleton(S, 'homePage', 'Home Page', HomeIcon),
+      createLocalizedSingleton(S, "homePage", "Home Page", HomeIcon),
 
       S.divider(),
 
       // Filter localized singletons from default list
-      ...S.documentTypeListItems().filter(
-        (item) => !['homePage'].includes(item.getId() as string)
-      ),
-    ])
+      ...S.documentTypeListItems().filter((item) => !["homePage"].includes(item.getId() as string)),
+    ]);
 ```
 
 ### Querying Localized Singletons
@@ -314,58 +343,61 @@ npm install sanity-plugin-internationalized-array
 ```
 
 ### Configuration
+
 ```typescript
 // sanity.config.ts
-import { internationalizedArray } from 'sanity-plugin-internationalized-array'
+import { internationalizedArray } from "sanity-plugin-internationalized-array";
 
 export default defineConfig({
   plugins: [
     internationalizedArray({
-      languages: (client) =>
-        client.fetch(`*[_type == "locale"]{ "id": tag, "title": name }`),
-      fieldTypes: ['string', 'text', 'simpleBlockContent'],
+      languages: (client) => client.fetch(`*[_type == "locale"]{ "id": tag, "title": name }`),
+      fieldTypes: ["string", "text", "simpleBlockContent"],
     }),
   ],
-})
+});
 ```
 
 ### Usage in Schema
+
 ```typescript
 // The plugin creates types like `internationalizedArrayString`
 defineField({
-  name: 'jobTitle',
-  type: 'internationalizedArrayString', // Localized string field
-})
+  name: "jobTitle",
+  type: "internationalizedArrayString", // Localized string field
+});
 ```
 
 ### Portable Text Localization
+
 Create a reusable block content type, then add it to `fieldTypes`:
 
 ```typescript
 // schemaTypes/simpleBlockContent.ts
 export default defineType({
-  name: 'simpleBlockContent',
-  type: 'array',
+  name: "simpleBlockContent",
+  type: "array",
   of: [
     {
-      type: 'block',
-      styles: [{ title: 'Normal', value: 'normal' }],
+      type: "block",
+      styles: [{ title: "Normal", value: "normal" }],
       lists: [],
     },
   ],
-})
+});
 
 // sanity.config.ts
-fieldTypes: ['string', 'simpleBlockContent']
+fieldTypes: ["string", "simpleBlockContent"];
 
 // In your schema
 defineField({
-  name: 'bio',
-  type: 'internationalizedArraySimpleBlockContent',
-})
+  name: "bio",
+  type: "internationalizedArraySimpleBlockContent",
+});
 ```
 
 ### Querying Internationalized Arrays
+
 ```groq
 // Get specific locale value
 *[_type == "author"][0] {
@@ -391,7 +423,7 @@ npm install @sanity/assist
 
 ```typescript
 // sanity.config.ts
-import { assist } from '@sanity/assist'
+import { assist } from "@sanity/assist";
 
 export default defineConfig({
   plugins: [
@@ -399,18 +431,17 @@ export default defineConfig({
       translate: {
         // For document-level localization
         document: {
-          languageField: 'language',
+          languageField: "language",
         },
         // For field-level localization
         field: {
-          languages: (client) =>
-            client.fetch(`*[_type == "locale"]{ "id": tag, "title": name }`),
-          documentTypes: ['author', 'category'],
+          languages: (client) => client.fetch(`*[_type == "locale"]{ "id": tag, "title": name }`),
+          documentTypes: ["author", "category"],
         },
       },
     }),
   ],
-})
+});
 ```
 
 ## 9. UI Enhancement

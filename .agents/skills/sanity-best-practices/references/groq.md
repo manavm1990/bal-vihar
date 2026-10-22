@@ -1,14 +1,71 @@
 ---
+
 title: GROQ Query Maintenance & Best Practices
 description: Guidelines for GROQ queries, type safety, performance optimization, and syntax highlighting.
 ---
 
 # GROQ Query Maintenance & Best Practices
 
+## Constructing queries before execution
+
+Start with the smallest query that returns the requested result. Use known document IDs, types, and fields, and use query parameters for filter values:
+
+```groq
+*[_id == $id][0]{_id, title, "launchCode": metadata.launchCode}
+```
+
+Before executing queries with reference lookups in filters, mixed `OR` conditions, computed sorts, or deep pagination, review [Performance Rules](#6-performance-rules). A small returned result does not establish that the query is cheap to execute.
+
+### Projection keys and attribute traversal
+
+Plain fields can use `{_id, title}`. Give nested fields and computed expressions an explicit **quoted** output key:
+
+```groq
+*[_type == "article"][0...10]{
+  _id,
+  "displayName": title,
+  "slug": slug.current,
+  "launchCode": metadata["launchCode"]
+}
+```
+
+`{displayName: title}` is invalid: quote the alias. `{slug.current}` and `{metadata["launchCode"]}` also need explicit keys. After a dot, use an attribute name, such as `.title`; do not write `.(title)`.
+
+### Use functions that GROQ actually provides
+
+Do not assume JavaScript or SQL functions exist in GROQ. Check the [GROQ functions reference](https://www.sanity.io/docs/specifications/groq-functions) for unfamiliar operations.
+- To join an array into a string, use `array::join(tags, ", ")`. There is no built-in `string::join()`.
+- There is no built-in `keys()`, `object::keys()`, or `array::keys()`. To report the properties present in an object, retrieve that object and inspect the returned JSON outside GROQ. Do not retry by guessing another namespace. To learn declared fields instead, read the schema.
+- For a conditional value, use `select(featured => title, "Other")`. A standalone `featured => title` is not a value expression. Conditional projection branches use objects, such as `featured => {title}`.
+- To count matching documents, use `count(*[_type == "article"])`.
+
+To inspect the fields present on a document, fetch it by ID:
+
+```groq
+*[_id == $id][0]
+```
+
+Read the property names from the returned object outside GROQ. This does not require a key-enumeration function in the query.
+
+### Check the complete expression
+
+Before submission, check that filters and slices close with `]`, projections with `}`, and function calls with `)`. For example:
+
+```groq
+*[_type == "article" && featured == true][0...10]{title}
+```
+
+```groq
+count(*[_type == "article" && featured == true])
+```
+
+After a syntax rejection, use the reported position and error to inspect the relevant expression, correct it, and retry. Do not resend the unchanged query or change a function namespace without checking that the replacement exists.
+
 Use this contents list to jump to the query concern you need to solve.
 
 ## Table of Contents
 
+- Constructing queries before execution
 - Query definition and imports
 - Query fragments
 - Expansion patterns
@@ -20,7 +77,8 @@ Use this contents list to jump to the query concern you need to solve.
 ## 1. Query Definition & Imports
 
 ### The `defineQuery` Function
-**ALWAYS** wrap GROQ queries in `defineQuery` for TypeGen support. The import location depends on your framework:
+
+**In application code**, wrap GROQ queries in `defineQuery` for TypeGen support. The import location depends on your framework:
 
 ```typescript
 // Framework-agnostic (Angular, Remix, SvelteKit, Astro, vanilla)
@@ -31,6 +89,7 @@ import { defineQuery } from "next-sanity";
 ```
 
 ### Syntax Highlighting
+
 For VS Code syntax highlighting, either:
 1. Use the `groq` tagged template (recommended): `groq\`...\``
 2. Or prefix with `/* groq */` comment when using `defineQuery`
@@ -50,6 +109,7 @@ const QUERY = defineQuery(`*[_type == "post"]`);
 ```
 
 ## 2. Query Fragments
+
 Use string interpolation to reuse query logic and keep queries maintainable.
 
 ```typescript
@@ -78,6 +138,7 @@ export const POST_QUERY = defineQuery(/* groq */ `
 ```
 
 ## 3. Expansion Patterns (Page Builder)
+
 When building a Page Builder query, expand all potential component types.
 
 **Best Practice:** Use a `pageFields` fragment or similar strategy to keep the main query clean.
@@ -98,6 +159,7 @@ const pageBuilderExpansion = /* groq */ `
 ```
 
 ## 4. Maintenance Workflow
+
 When you add a new field or component to the Schema:
 1.  **Update the Query:** Add the new field/expansion to the relevant GROQ query immediately.
 2.  **Run TypeGen:** If you have `typegen.enabled: true` in `sanity.cli.ts`, types regenerate automatically during `sanity dev`/`sanity build`. Otherwise, run `npm run typegen` manually.
@@ -106,6 +168,7 @@ When you add a new field or component to the Schema:
 ## 5. Common Patterns
 
 ### Ordering
+
 ```groq
 // Single field
 *[_type == "post"] | order(publishedAt desc)
@@ -119,6 +182,7 @@ When you add a new field or component to the Schema:
 ```
 
 ### Slice Notation
+
 ```groq
 *[_type == "post"][0]       // Single document (object, not array)
 *[_type == "post"][0...5]   // First 5 (exclusive) ← Most common
@@ -127,13 +191,14 @@ When you add a new field or component to the Schema:
 Slice bounds must be constant numbers — `$params` aren't allowed. For dynamic pagination, validate the numbers in application code and interpolate them directly into the query string:
 
 ```typescript
-const start = Number.isInteger(page) && page >= 0 ? page * pageSize : 0
-const end = start + pageSize
+const start = Number.isInteger(page) && page >= 0 ? page * pageSize : 0;
+const end = start + pageSize;
 
-const query = `*[_type == "post"] | order(publishedAt desc)[${start}...${end}]`
+const query = `*[_type == "post"] | order(publishedAt desc)[${start}...${end}]`;
 ```
 
 ### Default Values with `coalesce()`
+
 ```groq
 *[_type == "page"]{
   "title": coalesce(seoTitle, title, "Untitled"),
@@ -142,6 +207,7 @@ const query = `*[_type == "post"] | order(publishedAt desc)[${start}...${end}]`
 ```
 
 ### Conditionals with `select()`
+
 ```groq
 *[_type == "product"]{
   title,
@@ -154,6 +220,7 @@ const query = `*[_type == "post"] | order(publishedAt desc)[${start}...${end}]`
 ```
 
 ### Aggregation with `count()`
+
 ```groq
 // Total count
 count(*[_type == "post" && defined(slug.current)])
@@ -166,6 +233,7 @@ count(*[_type == "post" && defined(slug.current)])
 ```
 
 ### Reverse References
+
 ```groq
 *[_type == "author"]{
   name,
@@ -174,17 +242,19 @@ count(*[_type == "post" && defined(slug.current)])
 ```
 
 ### Array Filtering
+
 ```groq
 *[_type == "movie"]{
   title,
   "mainCast": castMembers[role == "lead"]->{name}
 }
 
-// Check if value exists in array
-*[_type == "post" && "tech" in categories[]->slug.current]
+// Match a known category ID (see Avoid Joins in Filters for dynamic lookups)
+*[_type == "post" && $categoryId in categories[]._ref]
 ```
 
 ### Special Variables
+
 ```groq
 // ^ = parent document (in nested queries)
 *[_type == "author"]{
@@ -201,25 +271,27 @@ count(*[_type == "post" && defined(slug.current)])
 ## 6. Performance Rules
 
 ### Optimizable vs Non-Optimizable Filters
-GROQ uses indexes for **optimizable** filters. Non-optimizable filters scan ALL documents.
 
-| Pattern | Optimizable | Example |
-|---------|-------------|---------|
-| `_type == "x"` | ✅ Yes | `*[_type == "post"]` |
-| `_id == "x"` | ✅ Yes | `*[_id == "abc123"]` |
-| `slug.current == $slug` | ✅ Yes | `*[slug.current == "hello"]` |
-| `defined(field)` | ✅ Yes | `*[defined(publishedAt)]` |
-| `references($id)` | ✅ Yes | `*[references("author-123")]` |
-| `field->attr == x` | ❌ No | Resolves reference for every doc |
-| `fieldA < fieldB` | ❌ No | Compares two attributes |
+GROQ uses indexes for **optimizable** filters. Other expressions require evaluating candidate documents. An indexed `_type` constraint can narrow those candidates; without an indexed restriction, the query may scan the dataset.
 
-**Fix non-optimizable filters by stacking:**
+| Pattern                 | Optimizable | Example                                         |
+| ----------------------- | ----------- | ----------------------------------------------- |
+| `_type == "x"`          | ✅ Yes      | `*[_type == "post"]`                            |
+| `_id == "x"`            | ✅ Yes      | `*[_id == "abc123"]`                            |
+| `slug.current == $slug` | ✅ Yes      | `*[slug.current == "hello"]`                    |
+| `defined(field)`        | ✅ Yes      | `*[defined(publishedAt)]`                       |
+| `references($id)`       | ✅ Yes      | `*[references("author-123")]`                   |
+| `field->attr == x`      | ❌ No       | Resolves references while evaluating candidates |
+| `fieldA < fieldB`       | ❌ No       | Compares two attributes                         |
+
+**Reduce the candidates for non-optimizable filters:**
 ```groq
-// Stack optimizable filters FIRST to reduce search space
+// Add selective indexed constraints; textual order does not force execution order
 *[_type == "product" && defined(salePrice) && salePrice < displayPrice]
 ```
 
 ### Avoid Joins in Filters
+
 Reference resolution (`->`) in filters is expensive. Use `_ref` instead:
 
 ```groq
@@ -230,21 +302,56 @@ Reference resolution (`->`) in filters is expensive. Use `_ref` instead:
 *[_type == "post" && author._ref == "author-bob-woodward-id"]
 ```
 
-**When you need dynamic lookups** (don't know the ID upfront):
+**When you need dynamic lookups** (don't know the IDs upfront), fetch all matching IDs and pass them as a parameter:
 
 ```groq
 // Two-step approach:
-// 1. Get the reference ID first
-*[_type == "author" && name == "Bob Woodward"][0]._id
+// 1. Get every matching author ID
+*[_type == "author" && name == $name]._id
 
-// 2. Use that ID in your main query
-*[_type == "post" && author._ref == $authorId]
-
-// Or use a subquery (still better than -> in filter):
-*[_type == "post" && author._ref in *[_type == "author" && name == "Bob Woodward"]._id]
+// 2. Pass every returned ID as $authorIds in the main query
+*[_type == "post" && author._ref in $authorIds]
 ```
 
+Using `[0]` in the lookup would silently drop other authors with the same name. Discover the actual reference target types from the schema. Keep the same dataset, API version, and perspective in both requests. If the ID set needs pagination, collect all pages rather than silently truncating it; two requests can observe intervening content changes. A nested lookup is another option, but verify its timings rather than assuming it is faster.
+
+### Mixed OR Filters Can Still Require Joins
+
+```groq
+// Resolves brands while testing product candidates
+*[_type == "product" && (
+  name match $search || brand->name match $search
+)]{_id, name, "brand": brand->name} | order(name asc)
+```
+
+The indexed `name match` branch does not make the whole `OR` optimizable: a product can qualify solely through its brand. Resolve matching brand IDs first, using the schema's target type (here `brand`):
+
+```groq
+*[_type == "brand" && name match $search]._id
+```
+
+Pass that complete result as `$brandIds`, keeping `$search` unchanged (for example, `"Acme*"`):
+
+```groq
+*[_type == "product" && (
+  name match $search || brand._ref in $brandIds
+)] | order(name asc) {
+  _id,
+  name,
+  "brand": brand->name
+}
+```
+
+An empty `$brandIds` array still permits direct product-name matches. Keep `match` semantics, both `OR` branches, ordering, and returned fields intact. Dereferencing in the projection is appropriate when the caller needs the related value; the expensive pattern here is dereferencing to decide which documents qualify.
+
+### Small Results Do Not Prove Cheap Execution
+
+A final slice limits returned results, but may still leave substantial filtering or sorting work. `count()` can also be expensive when its filter requires joins or other per-document evaluation. Add pagination when the task permits it; do not add a limit that changes a request for all results.
+
+Before claiming an improvement, compare results and timings on representative data with the same parameters, API version, and perspective. For a two-step rewrite, include both requests in the timing. Check multiple matching reference targets, no matching targets, and missing references. Local GROQ evaluation can check semantics, but cannot establish Content Lake performance.
+
 ### Merge Repeated Reference Resolutions
+
 Each `->` is a subquery. Don't repeat it:
 
 ```groq
@@ -261,6 +368,7 @@ Each `->` is a subquery. Don't repeat it:
 ```
 
 ### Cursor-Based Pagination (Not Deep Slicing)
+
 Deep slices are slow because all skipped docs must be sorted first.
 
 ```groq
@@ -282,6 +390,7 @@ Deep slices are slow because all skipped docs must be sorted first.
 ```
 
 ### Always Project Fields
+
 Always use projections to return only the fields your application needs. Fetching entire documents wastes bandwidth and processing time.
 
 ```groq
@@ -320,6 +429,7 @@ Use conditional projections for different contexts:
 ```
 
 ### Don't Filter/Sort on Projected Values
+
 Computed attributes can't use indexes:
 
 ```groq
@@ -333,15 +443,16 @@ Computed attributes can't use indexes:
 ```
 
 ### Quick Checklist
-| Rule | Why |
-|------|-----|
-| Always project `{ fields }` | Reduces data returned |
-| Use `defined()` checks | Filters use indexes |
-| Use `$params` not interpolation | Prevents query manipulation + enables caching (exception: slice bounds — see Slice Notation) |
-| Order BEFORE slice | `order()[0...N]` not `[0...N] order()` |
-| Use `_ref` not `->field` in filters | Avoids expensive joins |
-| Merge repeated `->` calls | Single subquery vs many |
-| Cursor pagination for deep pages | Avoids sorting entire dataset |
+
+| Rule                                | Why                                                                                          |
+| ----------------------------------- | -------------------------------------------------------------------------------------------- |
+| Always project `{ fields }`         | Reduces data returned                                                                        |
+| Use `defined()` checks              | Filters use indexes                                                                          |
+| Use `$params` not interpolation     | Prevents query manipulation + enables caching (exception: slice bounds — see Slice Notation) |
+| Order BEFORE slice                  | `order()[0...N]` not `[0...N] order()`                                                       |
+| Use `_ref` not `->field` in filters | Avoids expensive joins                                                                       |
+| Merge repeated `->` calls           | Single subquery vs many                                                                      |
+| Cursor pagination for deep pages    | Avoids sorting entire dataset                                                                |
 
 ## 7. API Version Best Practices
 
@@ -349,8 +460,8 @@ Always use dated versions (`YYYY-MM-DD`) for consistent behavior:
 
 ```typescript
 const client = createClient({
-  apiVersion: '2026-02-01', // Use current date for new projects
-})
+  apiVersion: "2026-02-01", // Use current date for new projects
+});
 ```
 
 - **New projects:** Use current date (e.g., `2026-02-01`)

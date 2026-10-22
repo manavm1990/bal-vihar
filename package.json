@@ -15,8 +15,7 @@
     "lint:fix": "turbo run lint:fix",
     "typecheck": "turbo run typecheck",
     "typegen": "turbo run typegen --filter=@bv/studio",
-    "prepare": "husky",
-    "postinstall": "bunx skills update -p -y || true"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.15",

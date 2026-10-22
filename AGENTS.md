@@ -28,6 +28,17 @@ bal-vihar/
 - **Shared Packages**: Common configurations and schemas across apps
 - **Build System**: Bun package manager with workspace support
 
+### Commands
+
+Run from the repo root (Turborepo fans out to each workspace):
+- `bun run dev` - website and studio dev servers
+- `bun run build` - build all workspaces
+- `bun run lint` / `bun run lint:fix` - Biome check / autofix
+- `bun run typecheck` - `tsc --noEmit` in every workspace
+- `bun run typegen` - Sanity `schema.json` + `sanity.types.ts` (studio only); commit the output
+
+Scope a task with `turbo run <task> --filter=@bv/<name>`.
+
 ### Key Directories
 
 - `apps/website/app/components/ui/` - Reusable UI components (buttons, forms, typography, etc.)
@@ -49,7 +60,6 @@ bal-vihar/
 // Available TypeScript path aliases (apps/website/)
 "@components/*" -> "./app/components/*"
 "@lib/*" -> "./app/lib/*"
-"@types/*" -> "./app/types/*"
 
 // Workspace packages
 "@bv/typescript-config" -> "../../packages/typescript-config"
@@ -86,7 +96,7 @@ bal-vihar/
 - **Encapsulation**: Custom hooks encouraged over direct hook usage in components
 - **Monorepo Linting**: Biome is used for unified linting and formatting across packages
 - **Pre-commit Hooks**: lint-staged runs Biome on all staged files (repo-wide via root config)
-- **Pre-push Hooks**: Sanity typegen freshness (`schema.json` / `sanity.types.ts`) then `turbo typecheck`
+- **Pre-push Hooks**: Sanity typegen freshness (`schema.json` / `sanity.types.ts`) then `turbo typecheck`. If typegen changes those files the push fails; commit them and push again.
 
 ### Website component file organization (`apps/website`)
 
@@ -123,7 +133,6 @@ bal-vihar/
 ## Navigation Structure
 
 The site uses a comprehensive multi-level navigation system defined in `app/components/header/navs/constants.ts`:
-
 - About Us (History, Admin Team, Policies)
 - Admissions (Process, Tuition, Refund Policy)
 - Education (Curriculum K-7, Youth Group, Class Pages)
@@ -136,7 +145,6 @@ The site uses a comprehensive multi-level navigation system defined in `app/comp
 ## Form Handling Pattern
 
 Forms use a consistent pattern:
-
 1. Valibot schema definition for validation
 2. React Hook Form for form state management
 3. Server actions for form submission
@@ -154,33 +162,38 @@ Forms use a consistent pattern:
 
 ## Agent Skills Map
 
-Project skills live in `.agents/skills/` and are locked in `skills-lock.json`. Read the matching `SKILL.md` (and only the needed `references/` files) before doing work in that domain. Do not reinstall or broaden the skill set unless explicitly asked.
+Project skills live in `.agents/skills/` (symlinked into `.claude/skills/`) and are locked in `skills-lock.json`; commit all three. Read the matching `SKILL.md` (and only the needed `references/` files) before doing work in that domain. Do not reinstall, update or broaden the skill set unless explicitly asked; installs do not refresh skills automatically. To change skills, use `bunx skills add|remove|update` and commit the result.
 
-| Skill | Use when |
-| --- | --- |
-| `sanity-best-practices` | Schemas (`defineType` / `defineField`), GROQ / `defineQuery`, TypeGen, Portable Text, images, Studio structure, Visual Editing, Sanity + Next.js integration, Functions/Blueprints |
-| `seo-aeo-best-practices` | Page/metadata SEO, Open Graph, sitemaps, `robots.txt`, JSON-LD, EEAT, AI-answer (AEO) readiness |
-| `turborepo` | `turbo.json`, pipelines, caching, `--filter` / `--affected`, internal packages, monorepo task wiring |
-| `frontend-ui-engineering` | Building or changing user-facing UI, layouts, accessibility, component state |
-| `frontend-design` | New or reshaped visual design, typography, distinctive aesthetic direction |
-| `vercel-composition-patterns` | Compound components, boolean-prop cleanup, flexible component APIs, React 19 composition patterns |
-| `web-design-guidelines` | UI/UX accessibility or interface-guideline audits |
-| `code-review-and-quality` | Before merge; multi-axis review of agent or human changes |
-| `vercel-react-best-practices` | React/Next performance: waterfalls, bundle size, server/client data fetching |
+| Skill                         | Use when                                                                                                                                                                           |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sanity-best-practices`       | Schemas (`defineType` / `defineField`), GROQ / `defineQuery`, TypeGen, Portable Text, images, Studio structure, Visual Editing, Sanity + Next.js integration, Functions/Blueprints |
+| `seo-aeo-best-practices`      | Page/metadata SEO, Open Graph, sitemaps, `robots.txt`, JSON-LD, EEAT, AI-answer (AEO) readiness                                                                                    |
+| `turborepo`                   | `turbo.json`, pipelines, caching, `--filter` / `--affected`, internal packages, monorepo task wiring                                                                               |
+| `frontend-ui-engineering`     | Building or changing user-facing UI, layouts, accessibility, component state                                                                                                       |
+| `frontend-design`             | New or reshaped visual design, typography, distinctive aesthetic direction                                                                                                         |
+| `vercel-composition-patterns` | Compound components, boolean-prop cleanup, flexible component APIs, React 19 composition patterns                                                                                  |
+| `web-design-guidelines`       | UI/UX accessibility or interface-guideline audits                                                                                                                                  |
+| `code-review`                 | Before merge; reviews the diff since a fixed point against repo standards and the originating spec (needs `setup-matt-pocock-skills` run once per repo)                            |
+| `vercel-react-best-practices` | React/Next performance: waterfalls, bundle size, server/client data fetching                                                                                                       |
 
 Routing rules:
-
 - Prefer the single most specific skill first; load a second skill only when the task truly crosses domains.
 - Sanity content modeling and Studio work → `sanity-best-practices` (not ad-hoc schema guesses).
 - Any public page SEO/metadata/structured data work → `seo-aeo-best-practices` (see SEO routing below).
 - Monorepo/build/package work → `turborepo`.
 - UI implementation → `frontend-ui-engineering`; visual identity/direction → `frontend-design`; component API shape → `vercel-composition-patterns`.
-- Finish non-trivial changes with `code-review-and-quality` before calling the work done.
+- Finish non-trivial changes with `code-review` before calling the work done.
+
+## MCP Servers
+
+Declared in `.mcp.json` (Claude Code) and `.vscode/mcp.json` (VS Code). The two use different top-level keys (`mcpServers` / `servers`), so keep them in sync by hand.
+- `next-devtools` - Next.js 16 diagnostics and guidance
+- `sanity` - Sanity content and schema (OAuth sign-in)
+- `vercel` - deployments, build and runtime logs (OAuth sign-in)
 
 ## Sanity Workflow
 
 This monorepo splits Sanity concerns intentionally:
-
 - Shared schemas/types: `packages/schemas`
 - Studio app: `apps/studio`
 - Public site consumption: `apps/website` (Next.js App Router)
@@ -205,7 +218,7 @@ When working with Sanity, follow `.agents/skills/sanity-best-practices/SKILL.md`
 3. Update Studio structure/inputs if authors need new editing UX.
 4. Update GROQ/queries and website rendering in `apps/website`.
 5. Regenerate or refresh TypeGen types if the project’s typegen workflow requires it.
-6. Smoke-check Studio + website, then review with `code-review-and-quality`.
+6. Smoke-check Studio + website, then review with `code-review`.
 
 ## SEO Routing Instructions
 

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "next-devtools": {
+      "command": "bunx",
+      "args": ["-y", "next-devtools-mcp@latest"]
+    },
+    "sanity": {
+      "type": "http",
+      "url": "https://mcp.sanity.io"
+    },
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com"
+    }
+  }
+}
