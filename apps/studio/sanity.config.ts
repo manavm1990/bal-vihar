@@ -7,10 +7,13 @@ import { structureTool } from "sanity/structure";
 import { resolve } from "./presentation/resolve";
 import { structure } from "./structure";
 
+/** Only calendar events are creatable from “New document”. */
+const CREATABLE_TYPES = new Set(["calendarEvent"]);
 const SINGLETON_TYPE_SET = new Set<string>(SINGLETON_TYPES);
 const SINGLETON_ACTIONS = new Set(["publish", "discardChanges", "restore"]);
 
-// Editors preview against the public site. Developers may override for local Next.
+const isDev = process.env["NODE_ENV"] === "development";
+
 const previewOrigin =
   process.env["SANITY_STUDIO_PREVIEW_ORIGIN"]?.replace(/\/$/, "") || "https://balviharstlouis.org";
 
@@ -22,8 +25,9 @@ export default defineConfig({
   dataset: "production",
 
   plugins: [
-    structureTool({ structure }),
+    structureTool({ structure, title: "Edit" }),
     presentationTool({
+      title: "Preview",
       resolve,
       previewUrl: {
         origin: previewOrigin,
@@ -33,7 +37,8 @@ export default defineConfig({
         },
       },
     }),
-    visionTool(),
+    // Vision is a developer query tool — keep it out of the hosted editor UI.
+    ...(isDev ? [visionTool()] : []),
   ],
 
   schema: {
@@ -41,8 +46,8 @@ export default defineConfig({
   },
 
   document: {
-    // Editors cannot create a second Home Page, Photo Gallery or Site Settings.
-    newDocumentOptions: (prev) => prev.filter((item) => !SINGLETON_TYPE_SET.has(item.templateId)),
+    // Editors can only create calendar events (singletons and legacy types are blocked).
+    newDocumentOptions: (prev) => prev.filter((item) => CREATABLE_TYPES.has(item.templateId)),
     // Singletons can be edited and published, but not deleted, duplicated or unpublished.
     actions: (prev, { schemaType }) =>
       SINGLETON_TYPE_SET.has(schemaType)

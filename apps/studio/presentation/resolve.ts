@@ -1,7 +1,8 @@
 import { defineLocations } from "sanity/presentation";
 
 /**
- * Where each document type appears on the website — used by Presentation navigation.
+ * Where each document type appears on the website —
+ * used by Presentation navigation.
  */
 export const resolve = {
   locations: {
@@ -10,32 +11,32 @@ export const resolve = {
       resolve: (doc) => ({
         locations: [
           {
-            title: doc?.title ? `${doc.title}` : "Calendar event",
+            title: doc?.title ? `Calendar · ${doc.title}` : "Calendar",
             href: "/calendar",
           },
-          { title: "Home (upcoming events)", href: "/" },
+          { title: "Home · upcoming events", href: "/" },
         ],
       }),
     }),
     homePage: defineLocations({
       select: { title: "title" },
       resolve: () => ({
-        locations: [{ title: "Home", href: "/" }],
+        locations: [{ title: "Home page", href: "/" }],
       }),
     }),
     photoGallery: defineLocations({
       select: { title: "title" },
       resolve: () => ({
         locations: [
-          { title: "Photos", href: "/photos" },
-          { title: "Home (featured photos)", href: "/" },
+          { title: "Photos page", href: "/photos" },
+          { title: "Home · photo strip", href: "/" },
         ],
       }),
     }),
     siteSettings: defineLocations({
       select: { title: "title" },
       resolve: () => ({
-        locations: [{ title: "Home", href: "/" }],
+        locations: [{ title: "Home page", href: "/" }],
       }),
     }),
   },

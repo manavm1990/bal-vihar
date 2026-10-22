@@ -1,56 +1,58 @@
-import { SINGLETON_IDS, SINGLETON_TYPES } from "@bv/schemas";
+import { SINGLETON_IDS } from "@bv/schemas";
 import { CalendarIcon } from "@sanity/icons/Calendar";
 import { CogIcon } from "@sanity/icons/Cog";
 import { HomeIcon } from "@sanity/icons/Home";
 import { ImagesIcon } from "@sanity/icons/Images";
 import type { StructureResolver } from "sanity/structure";
 
-const SINGLETON_TYPE_SET = new Set<string>(SINGLETON_TYPES);
-
 /**
- * Editor desk prioritizes what actually changes:
- * home announcements/hero, photo gallery, calendar.
+ * Idiot-proof desk: only what editors change week to week.
+ * Legacy types stay in the schema for old data, but are not listed here.
  */
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title("Content")
+    .title("Edit the website")
     .items([
       S.listItem()
-        .title("Home Page")
+        .title("Home page")
         .icon(HomeIcon)
         .child(
-          S.document().schemaType("homePage").documentId(SINGLETON_IDS.homePage).title("Home Page"),
+          S.document().schemaType("homePage").documentId(SINGLETON_IDS.homePage).title("Home page"),
         ),
       S.listItem()
-        .title("Photo Gallery")
+        .title("Photos")
         .icon(ImagesIcon)
         .child(
           S.document()
             .schemaType("photoGallery")
             .documentId(SINGLETON_IDS.photoGallery)
-            .title("Photo Gallery"),
+            .title("Photos"),
         ),
       S.listItem()
-        .title("Calendar Events")
+        .title("Calendar")
         .icon(CalendarIcon)
         .child(
           S.documentTypeList("calendarEvent")
-            .title("Calendar Events")
+            .title("Calendar")
             .defaultOrdering([{ field: "date", direction: "asc" }]),
         ),
       S.divider(),
       S.listItem()
-        .title("Site Settings")
+        .title("Advanced")
         .icon(CogIcon)
         .child(
-          S.document()
-            .schemaType("siteSettings")
-            .documentId(SINGLETON_IDS.siteSettings)
-            .title("Site Settings"),
+          S.list()
+            .title("Advanced")
+            .items([
+              S.listItem()
+                .title("Site settings")
+                .icon(CogIcon)
+                .child(
+                  S.document()
+                    .schemaType("siteSettings")
+                    .documentId(SINGLETON_IDS.siteSettings)
+                    .title("Site settings"),
+                ),
+            ]),
         ),
-      // Hide duplicate singleton entries from the auto list; keep other docs available.
-      ...S.documentTypeListItems().filter((item) => {
-        const id = item.getId();
-        return id ? !SINGLETON_TYPE_SET.has(id) && id !== "calendarEvent" : true;
-      }),
     ]);
