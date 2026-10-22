@@ -40,7 +40,25 @@ export const NAVIGATION = [
       { name: "Education Policy", link: "/education/education-policy" },
       { name: "Class Webpages", link: "/education/class-webpages" },
       { name: "Class Schedule", link: "/education/class-schedule" },
-      { name: "Facility", link: "/education/facility" },
+    ],
+  },
+  {
+    name: "News & Events",
+    link: "/news-and-events",
+    items: [
+      { name: "News & Events", link: "/news-and-events" },
+      { name: "Calendar", link: "/calendar" },
+      { name: "Photos", link: "/photos" },
+    ],
+  },
+  {
+    name: "Resources",
+    link: "/resources",
+    items: [
+      { name: "Parents", link: "/resources/parents" },
+      { name: "Students", link: "/resources/students" },
+      { name: "Faculty", link: "/resources/faculty" },
+      { name: "Admin", link: "/resources/admin" },
     ],
   },
   {
@@ -64,6 +82,14 @@ export const NAVIGATION = [
       { name: "Volunteer Application", link: "/volunteering/volunteer-application" },
       { name: "Volunteer Policies", link: "/volunteering/volunteer-policies" },
       { name: "Volunteers List", link: "/volunteering/volunteers-list" },
+    ],
+  },
+  {
+    name: "Community Projects",
+    link: "/community-projects",
+    items: [
+      { name: "Overview", link: "/community-projects" },
+      { name: "Community Outreach", link: "/about-us/community-outreach" },
     ],
   },
 ] as const satisfies readonly NavigationItem[];

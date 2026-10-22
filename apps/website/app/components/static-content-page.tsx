@@ -10,9 +10,6 @@ type MarkdownBlock =
   | { kind: "list"; items: string[] }
   | { kind: "table"; headers: string[]; rows: string[][] };
 
-// Maps legacy `content.php?page=` identifiers (and a few legacy `.php` paths) to new
-// routes. A Map is used instead of an object literal so the legacy identifiers remain
-// string values rather than property names, which would violate useNamingConvention.
 const INTERNAL_LINKS = new Map<string, string>([
   ["History", "/about-us/history"],
   ["President___s_Message", "/presidents-message"],
@@ -34,7 +31,7 @@ const INTERNAL_LINKS = new Map<string, string>([
   ["Education_Policy", "/education/education-policy"],
   ["Class_Webpages", "/education/class-webpages"],
   ["Class_Schedule", "/education/class-schedule"],
-  ["School", "/education/facility"],
+  ["School", "/about-us"],
   ["Giving", "/giving"],
   ["Welcome_Message", "/giving/welcome-message"],
   ["Give_Online", "/giving/give-online"],
@@ -48,6 +45,13 @@ const INTERNAL_LINKS = new Map<string, string>([
   ["Volunteering_Policies", "/volunteering/volunteer-policies"],
   ["Volunteers_List", "/volunteering/volunteers-list"],
   ["form.php?form_id=11", "/volunteering/volunteer-application"],
+  ["Community_Projects", "/community-projects"],
+  ["Calendar", "/calendar"],
+  ["Upcoming_Classes_Events", "/news-and-events"],
+  ["Parents_Resources", "/resources/parents"],
+  ["Student_Resources", "/resources/students"],
+  ["Faculty_Resources", "/resources/faculty"],
+  ["Admin_Resources", "/resources/admin"],
 ]);
 
 interface StaticContentPageProps {
@@ -86,11 +90,11 @@ function SectionLinks({ links }: Pick<StaticPageContent, "links">) {
 }
 
 function MarkdownContent({ content }: { content: string }) {
-  return parseMarkdown(content).map((block) => renderBlock(block));
+  return parseMarkdown(content).map((block, blockIndex) => renderBlock(block, blockIndex));
 }
 
-function renderBlock(block: MarkdownBlock) {
-  const blockKey = getBlockKey(block);
+function renderBlock(block: MarkdownBlock, blockIndex: number) {
+  const blockKey = `block-${blockIndex}`;
   if (block.kind === "heading") {
     if (block.level <= 2) return <H3 key={blockKey}>{renderInline(block.text)}</H3>;
     if (block.level === 3) return <H4 key={blockKey}>{renderInline(block.text)}</H4>;
@@ -101,22 +105,22 @@ function renderBlock(block: MarkdownBlock) {
     return (
       <ul key={blockKey} className="list-disc space-y-2 pl-6">
         {block.items.map((item) => (
-          <li key={item}>{renderInline(item)}</li>
+          <li key={`${blockKey}-item-${item}`}>{renderInline(item)}</li>
         ))}
       </ul>
     );
   }
 
   if (block.kind === "table") {
-    return <Table key={blockKey} headers={block.headers} rows={block.rows} />;
+    return (
+      <Table
+        key={blockKey}
+        headers={block.headers.map((header) => renderInline(header))}
+        rows={block.rows.map((row) => row.map((cell) => renderInline(cell)))}
+      />
+    );
   }
   return <P key={blockKey}>{renderInline(block.text)}</P>;
-}
-
-function getBlockKey(block: MarkdownBlock) {
-  if (block.kind === "heading" || block.kind === "paragraph") return `${block.kind}-${block.text}`;
-  if (block.kind === "list") return `${block.kind}-${block.items.join("|")}`;
-  return `${block.kind}-${block.headers.join("|")}-${block.rows.map((row) => row.join("|")).join("||")}`;
 }
 
 function parseMarkdown(content: string): MarkdownBlock[] {
