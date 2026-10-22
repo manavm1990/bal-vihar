@@ -85,7 +85,7 @@ bal-vihar/
 - **Import Management**: Enforced import ordering and cycle detection
 - **Encapsulation**: Custom hooks encouraged over direct hook usage in components
 - **Monorepo Linting**: Biome is used for unified linting and formatting across packages
-- **Pre-commit Hooks**: lint-staged runs Biome checks on staged TypeScript files
+- **Pre-commit Hooks**: lint-staged runs Biome on all staged files (repo-wide via root config)
 
 ### Website component file organization (`apps/website`)
 
