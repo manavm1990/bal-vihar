@@ -12,4 +12,11 @@ export default defineCliConfig({
   deployment: {
     autoUpdates: true,
   },
+  typegen: {
+    // Website queries live outside Studio; schemas come from @bv/schemas via sanity.config.
+    path: "../website/**/*.{ts,tsx}",
+    schema: "schema.json",
+    generates: "../website/sanity.types.ts",
+    overloadClientMethods: true,
+  },
 });

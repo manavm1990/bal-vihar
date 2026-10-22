@@ -16,6 +16,13 @@
       "dependsOn": ["transit"],
       "cache": false
     },
+    "typecheck": {
+      "dependsOn": ["^transit"]
+    },
+    "typegen": {
+      "cache": false,
+      "outputs": ["schema.json", "../website/sanity.types.ts"]
+    },
     "transit": {
       "dependsOn": ["^transit"]
     }

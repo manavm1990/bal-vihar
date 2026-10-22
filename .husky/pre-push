@@ -1,0 +1,6 @@
+bun run typegen
+if ! git diff --quiet -- apps/studio/schema.json apps/website/sanity.types.ts; then
+  echo "husky - Sanity typegen produced changes. Commit schema.json / sanity.types.ts and push again."
+  exit 1
+fi
+bun run typecheck

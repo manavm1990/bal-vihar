@@ -86,6 +86,7 @@ bal-vihar/
 - **Encapsulation**: Custom hooks encouraged over direct hook usage in components
 - **Monorepo Linting**: Biome is used for unified linting and formatting across packages
 - **Pre-commit Hooks**: lint-staged runs Biome on all staged files (repo-wide via root config)
+- **Pre-push Hooks**: Sanity typegen freshness (`schema.json` / `sanity.types.ts`) then `turbo typecheck`
 
 ### Website component file organization (`apps/website`)
 

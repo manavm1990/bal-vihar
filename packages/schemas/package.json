@@ -9,7 +9,8 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "build": "tsc --build"
+    "build": "tsc --build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@sanity/icons": "^5.2.2",
