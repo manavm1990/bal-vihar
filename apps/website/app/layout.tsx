@@ -2,6 +2,7 @@ import Footer from "@components/footer";
 import Header from "@components/header";
 import QuickLinks from "@components/quick-links";
 import { BASE_TITLE, DESCRIPTION, ORGANIZATION_LEGAL_NAME } from "@lib/constants";
+import { SanityLive } from "@lib/sanity/live";
 import { createJsonLd } from "@lib/utils";
 import type { Metadata } from "next";
 import { Eczar, Poppins } from "next/font/google";
@@ -43,6 +44,7 @@ export default function RootLayout({
         <Header />
         <main className="container py-4">{children}</main>
         <Footer />
+        <SanityLive />
       </body>
     </html>
   );
