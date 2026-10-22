@@ -3,59 +3,66 @@ import { defineField, defineType } from "sanity";
 
 export const calendarEvent = defineType({
   name: "calendarEvent",
-  title: "Calendar Event",
+  title: "Calendar event",
   type: "document",
   icon: CalendarIcon,
   groups: [
-    { name: "details", title: "Event Details" },
-    { name: "settings", title: "Settings" },
+    { name: "details", title: "Event", default: true },
+    { name: "settings", title: "Extra" },
   ],
   fields: [
     defineField({
       name: "title",
-      title: "Event Title",
+      title: "Name",
       type: "string",
-      description: "The name of the event or activity",
-      validation: (rule) => rule.required(),
+      description: "What parents will see on the calendar.",
+      validation: (rule) => rule.required().error("Add an event name."),
       group: "details",
     }),
     defineField({
       name: "date",
       title: "Date",
       type: "date",
-      description: "Date of the event",
-      validation: (rule) => rule.required(),
+      description: "Day of the event.",
+      validation: (rule) => rule.required().error("Pick a date."),
       options: {
         dateFormat: "YYYY-MM-DD",
       },
       group: "details",
     }),
     defineField({
-      name: "location",
-      title: "Location",
+      name: "time",
+      title: "Time (optional)",
       type: "string",
-      description: "Where the event takes place (e.g., HTCC, HT/HTCC, HTCC/MGC)",
+      description: 'e.g. "10:00 A.M.–12:30 P.M."',
+      group: "details",
+    }),
+    defineField({
+      name: "location",
+      title: "Where",
+      type: "string",
+      description: "Usually HTCC.",
       options: {
         list: [
           { title: "HTCC", value: "HTCC" },
-          { title: "HT/HTCC", value: "HT/HTCC" },
-          { title: "HTCC/MGC", value: "HTCC/MGC" },
+          { title: "HT / HTCC", value: "HT/HTCC" },
+          { title: "HTCC / MGC", value: "HTCC/MGC" },
         ],
       },
       group: "details",
     }),
     defineField({
       name: "eventType",
-      title: "Event Type",
+      title: "Kind of event",
       type: "string",
-      description: "Type of event for styling and organization",
+      description: "Used for grouping on the site.",
       options: {
         list: [
-          { title: "Regular Classes", value: "regular" },
-          { title: "Special Event", value: "special" },
+          { title: "Regular classes", value: "regular" },
+          { title: "Special event", value: "special" },
           { title: "Celebration", value: "celebration" },
           { title: "Holiday", value: "holiday" },
-          { title: "Project/Show", value: "project" },
+          { title: "Project / show", value: "project" },
         ],
         layout: "radio",
       },
@@ -63,32 +70,25 @@ export const calendarEvent = defineType({
       group: "details",
     }),
     defineField({
-      name: "time",
-      title: "Time",
-      type: "string",
-      description: 'Time of the event (e.g., "10:00 A.M.–12:30 P.M.")',
-      group: "details",
-    }),
-    defineField({
       name: "description",
-      title: "Additional Notes",
+      title: "Extra notes (optional)",
       type: "text",
-      description: "Any additional information about the event",
+      description: "Only if parents need more detail.",
       group: "details",
     }),
     defineField({
       name: "isHighlighted",
-      title: "Highlight Event",
+      title: "Highlight on the site",
       type: "boolean",
-      description: "Mark this event as important or featured on the site",
+      description: "Turn on for especially important events.",
       initialValue: false,
       group: "settings",
     }),
     defineField({
       name: "academicYear",
-      title: "Academic Year",
+      title: "School year",
       type: "string",
-      description: 'Academic year (e.g., "2025-26")',
+      description: 'e.g. "2025-26"',
       initialValue: "2025-26",
       group: "settings",
     }),
@@ -108,20 +108,30 @@ export const calendarEvent = defineType({
             year: "numeric",
           })
         : "No date";
+      const kind =
+        eventType === "special"
+          ? "Special"
+          : eventType === "celebration"
+            ? "Celebration"
+            : eventType === "holiday"
+              ? "Holiday"
+              : eventType === "project"
+                ? "Project"
+                : "Classes";
       return {
-        title: title || "Untitled Event",
-        subtitle: `${eventDate} • ${location || "No location"} • ${eventType || "regular"}`,
+        title: title || "Untitled event",
+        subtitle: `${eventDate} · ${location || "Location TBD"} · ${kind}`,
       };
     },
   },
   orderings: [
     {
-      title: "Date, New to Old",
+      title: "Date, newest first",
       name: "dateDesc",
       by: [{ field: "date", direction: "desc" }],
     },
     {
-      title: "Date, Old to New",
+      title: "Date, oldest first",
       name: "dateAsc",
       by: [{ field: "date", direction: "asc" }],
     },

@@ -3,17 +3,17 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 /** Site pages that can show a gallery photo as their banner. */
 export const PHOTO_PAGE_OPTIONS = [
-  { title: "About Us: History", value: "/about-us/history" },
-  { title: "About Us: Community Outreach", value: "/about-us/community-outreach" },
+  { title: "About Us → History", value: "/about-us/history" },
+  { title: "About Us → Community Outreach", value: "/about-us/community-outreach" },
   { title: "Admissions", value: "/admissions" },
   { title: "Education", value: "/education" },
-  { title: "Education: Curriculum K-7", value: "/education/curriculum-k-7" },
+  { title: "Education → Curriculum K–7", value: "/education/curriculum-k-7" },
   { title: "Volunteering", value: "/volunteering" },
 ];
 
 export const photoGallery = defineType({
   name: "photoGallery",
-  title: "Photo Gallery",
+  title: "Photos",
   type: "document",
   icon: ImagesIcon,
   fields: [
@@ -22,13 +22,15 @@ export const photoGallery = defineType({
       title: "Internal title",
       type: "string",
       initialValue: "Photo Gallery",
+      hidden: true,
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "photos",
       title: "Photos",
       type: "array",
-      description: "Upload community photos here. Every photo needs an image and alt text.",
+      description:
+        "Add photos one at a time. Every photo needs a picture and a short description. Use Preview to check crop before Publish.",
       of: [
         defineArrayMember({
           type: "object",
@@ -36,44 +38,47 @@ export const photoGallery = defineType({
           fields: [
             defineField({
               name: "title",
-              title: "Title",
+              title: "Name",
               type: "string",
-              description: 'e.g. "Diwali", "CANstruction", "Annual Day"',
-              validation: (rule) => rule.required(),
+              description: 'Short name, e.g. "Diwali" or "CANstruction"',
+              validation: (rule) => rule.required().error("Give the photo a name."),
             }),
             defineField({
               name: "schoolYear",
-              title: "School year / label",
+              title: "School year",
               type: "string",
-              description: 'e.g. "2025-26" or "2015"',
+              description: 'e.g. "2025-26"',
             }),
             defineField({
               name: "note",
-              title: "Note",
+              title: "Private note",
               type: "string",
-              description: "Optional editor note (not always shown on the site)",
+              description: "Only for editors — not shown on the website.",
             }),
             defineField({
               name: "image",
-              title: "Image",
+              title: "Picture",
               type: "mediaImage",
-              validation: (rule) => rule.required(),
-            }),
-            defineField({
-              name: "pages",
-              title: "Show as banner on pages",
-              type: "array",
               description:
-                "Optional. Use this photo as the banner at the top of these pages. If several photos match a page, the first one is used.",
-              of: [defineArrayMember({ type: "string" })],
-              options: { list: PHOTO_PAGE_OPTIONS },
+                "Upload the photo, then drag the focus point (hotspot) so faces stay in frame when cropped.",
+              validation: (rule) => rule.required().error("Upload a picture before publishing."),
             }),
             defineField({
               name: "featured",
-              title: "Featured on home",
+              title: "Show on the home page",
               type: "boolean",
-              description: "When true, eligible for the home photo board",
+              description:
+                "Turn on to include this photo in the home page strip (when it has a picture).",
               initialValue: true,
+            }),
+            defineField({
+              name: "pages",
+              title: "Also use as page banner",
+              type: "array",
+              description:
+                "Optional. Pick pages that should show this photo at the top. If two photos pick the same page, the first one in this list wins.",
+              of: [defineArrayMember({ type: "string" })],
+              options: { list: PHOTO_PAGE_OPTIONS },
             }),
           ],
           preview: {
@@ -85,11 +90,14 @@ export const photoGallery = defineType({
               featured: "featured",
             },
             prepare({ title, schoolYear, media, hasAsset, featured }) {
-              const status = hasAsset ? "Has image" : "Needed";
-              const home = featured === false ? " · hidden from home" : "";
+              const bits = [
+                schoolYear || "Year not set",
+                hasAsset ? "Ready" : "Needs picture",
+                featured === false ? "Hidden from home" : "On home",
+              ];
               return {
                 title: title || "Photo",
-                subtitle: `${schoolYear || "Year TBD"} · ${status}${home}`,
+                subtitle: bits.join(" · "),
                 media,
               };
             },
@@ -100,7 +108,7 @@ export const photoGallery = defineType({
   ],
   preview: {
     prepare() {
-      return { title: "Photo Gallery" };
+      return { title: "Photos" };
     },
   },
 });
