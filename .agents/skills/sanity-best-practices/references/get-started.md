@@ -1,5 +1,4 @@
 ---
-
 title: Sanity Getting Started Guide
 description: Use these rules when users ask to 'Get started with Sanity' or need help setting up a new Sanity project.
 ---
@@ -16,12 +15,14 @@ Getting started with Sanity follows three phases:
 ## Communication Style
 
 **Keep responses succinct:**
+
 - Tell the user what you did: "Created post schema with title, body, and slug"
 - Ask direct questions: "What kind of content are you building?"
 - Avoid verbose explanations of what you're about to do
 - Don't explain every step unless the user asks
 
 **Examples:**
+
 - **Good**: "Schema deployed. Ready to add some content?"
 - **Bad**: "I'm going to deploy your schema to the Content Lake so that the MCP server can recognize your new document types. This will allow..."
 
@@ -47,6 +48,7 @@ Resume from where they left off.
 ### Step 0: Check Sanity MCP
 
 Check whether Sanity MCP tools are already available before creating files.
+
 - If a local Studio exists, keep it as the source of truth. Update its schema
   files first, then deploy that schema before using MCP content tools.
 - If no local Studio exists and the user wants an MCP-managed setup, first
@@ -91,6 +93,7 @@ npx sanity@latest new "<project name>" --yes
 ```
 
 Choose the setup that fits:
+
 - **New full-stack app:** Use the command above. It creates a project, a Studio
   in `sanity/`, and a Next.js app in `web/`, all connected and ready to run.
 - **Existing frontend:** Run the same command from the app root. The CLI detects
@@ -136,7 +139,6 @@ Keep its output private.
 - When the values are known, run `sanity init` unattended from the repo root —
   **not inside a Next.js app folder**, where the CLI would switch to its
   embedded flow (not recommended):
-
   ```bash
   npx sanity@latest init --yes --project <projectId> --dataset <dataset> --template clean --typescript --output-path studio
   ```
@@ -175,30 +177,30 @@ unless the registered primary type is actually `post`.
 Create a basic blog schema:
 ```typescript
 // schemaTypes/post.ts
-import { defineArrayMember, defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export const post = defineType({
-  name: "post",
-  title: "Post",
-  type: "document",
+  name: 'post',
+  title: 'Post',
+  type: 'document',
   fields: [
-    defineField({ name: "title", type: "string" }),
-    defineField({ name: "slug", type: "slug", options: { source: "title" } }),
+    defineField({ name: 'title', type: 'string' }),
+    defineField({ name: 'slug', type: 'slug', options: { source: 'title' } }),
     defineField({
-      name: "body",
-      type: "array",
-      of: [defineArrayMember({ type: "block" })],
+      name: 'body',
+      type: 'array',
+      of: [defineArrayMember({ type: 'block' })],
     }),
   ],
-});
+})
 ```
 
 Register the type in the schema entry point:
 ```typescript
 // schemaTypes/index.ts
-import { post } from "./post";
+import { post } from './post'
 
-export const schemaTypes = [post];
+export const schemaTypes = [post]
 ```
 
 Creating the file is not enough. Only types included in the array passed to
@@ -329,6 +331,7 @@ claude mcp add Sanity -t http https://mcp.sanity.io --scope user
 React Router, SvelteKit, Astro, and Nuxt all run on Vite. **Any module imported by a client component will be bundled to the browser.** `process.env` doesn't exist there.
 
 For publishable values (`projectId`, `dataset`, `apiVersion`, public studio URL), use the framework's client-safe env mechanism:
+
 - React Router / Remix: `import.meta.env.VITE_*`
 - SvelteKit: `$env/static/public`
 - Astro: `import.meta.env.PUBLIC_*`
@@ -344,13 +347,13 @@ The working directory is often a parent folder with the Studio and the app side 
 
 **Check the app's `package.json` dependencies:**
 
-| Dependency                           | Framework            | Rule File   |
-| ------------------------------------ | -------------------- | ----------- |
-| `next`                               | Next.js              | `nextjs.md` |
-| `@remix-run/react` or `react-router` | React Router / Remix | `remix.md`  |
-| `svelte` or `@sveltejs/kit`          | SvelteKit            | `svelte.md` |
-| `nuxt`                               | Nuxt                 | `nuxt.md`   |
-| `astro`                              | Astro                | `astro.md`  |
+| Dependency | Framework | Rule File |
+|------------|-----------|-----------|
+| `next` | Next.js | `nextjs.md` |
+| `@remix-run/react` or `react-router` | React Router / Remix | `remix.md` |
+| `svelte` or `@sveltejs/kit` | SvelteKit | `svelte.md` |
+| `nuxt` | Nuxt | `nuxt.md` |
+| `astro` | Astro | `astro.md` |
 
 **If NO framework found:**
 - Ask: "Which framework are you using, or would you like to create a new app?"
@@ -364,7 +367,7 @@ The inline implementation below continues the quick **Blog** example. If the
 primary document type is not `post`, adapt the type filter, projection, sample
 document, route, component names, and renderer to the fields selected in Phase
 1. Do not create or query `post` as a fallback for E-commerce or Portfolio
-   setups.
+setups.
 
 **Scaffold a new app (if you don't have one yet):**
 
@@ -510,6 +513,7 @@ Editing, and the standalone Studio architecture—follow `nextjs.md`.
 ### Step 3: Other Frameworks
 
 For non-Next.js frameworks, read the corresponding rule file and follow its integration guide:
+
 - **React Router / Remix:** `remix.md`
 - **SvelteKit:** `svelte.md`
 - **Nuxt:** `nuxt.md`
@@ -520,6 +524,7 @@ Each rule file contains framework-specific patterns for data fetching, Portable 
 ### Step 4: Smoke Test
 
 Before declaring integration done, exercise both render paths:
+
 1. `npm run dev` (in the app folder)
 2. Load the home page (lists the selected content type).
 3. **Click through to a detail page** via the in-app Next.js `<Link>` — do not paste the URL.
@@ -535,6 +540,7 @@ Server-side rendering passing isn't enough. Client-side route transitions pull l
 Once setup is complete, let the user know:
 
 "You're all set! Here are some things I can help with:
+
 - **Visual Editing** — Click-to-edit in the Presentation tool (`visual-editing.md`)
 - **TypeGen** — Type-safe queries with generated types (`typegen.md`)
 - **Studio Structure** — Customize the Studio sidebar (`studio-structure.md`)
@@ -549,13 +555,13 @@ Just ask about any of these!"
 
 ### Framework-Specific Prefixes
 
-| Framework            | Client-Side Prefix | Example                         |
-| -------------------- | ------------------ | ------------------------------- |
-| Next.js              | `NEXT_PUBLIC_`     | `NEXT_PUBLIC_SANITY_PROJECT_ID` |
-| React Router / Remix | `VITE_`            | `VITE_SANITY_PROJECT_ID`        |
-| SvelteKit            | `PUBLIC_`          | `PUBLIC_SANITY_PROJECT_ID`      |
-| Nuxt                 | `NUXT_PUBLIC_`     | `NUXT_PUBLIC_SANITY_PROJECT_ID` |
-| Astro                | `PUBLIC_`          | `PUBLIC_SANITY_PROJECT_ID`      |
+| Framework | Client-Side Prefix | Example |
+|-----------|-------------------|---------|
+| Next.js | `NEXT_PUBLIC_` | `NEXT_PUBLIC_SANITY_PROJECT_ID` |
+| React Router / Remix | `VITE_` | `VITE_SANITY_PROJECT_ID` |
+| SvelteKit | `PUBLIC_` | `PUBLIC_SANITY_PROJECT_ID` |
+| Nuxt | `NUXT_PUBLIC_` | `NUXT_PUBLIC_SANITY_PROJECT_ID` |
+| Astro | `PUBLIC_` | `PUBLIC_SANITY_PROJECT_ID` |
 
 **Secrets** (read tokens, webhook secrets) stay **unprefixed** and are read via `process.env` (or the framework's server-only equivalent) from server-only modules — `*.server.ts`, route handlers, API routes. Never re-export a secret from a module that a route component can import.
 

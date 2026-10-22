@@ -162,7 +162,7 @@ Forms use a consistent pattern:
 
 ## Agent Skills Map
 
-Project skills live in `.agents/skills/` (symlinked into `.claude/skills/`) and are locked in `skills-lock.json`; commit all three. Read the matching `SKILL.md` (and only the needed `references/` files) before doing work in that domain. Do not reinstall, update or broaden the skill set unless explicitly asked; installs do not refresh skills automatically. To change skills, use `bunx skills add|remove|update` and commit the result.
+Project skills live in `.agents/skills/` (symlinked into `.claude/skills/`) and are locked in `skills-lock.json`; commit all three. Read the matching `SKILL.md` (and only the needed `references/` files) before doing work in that domain. Skills refresh automatically on `bun i` (root `postinstall`: `bunx skills update -p -y`), the same way packages do; commit the resulting `.agents/skills/` and `skills-lock.json` changes. Biome ignores `.agents/` and `.claude/` so upstream files stay byte-identical. Do not add, remove or broaden the skill set unless explicitly asked; use `bunx skills add|remove` for that.
 
 | Skill                         | Use when                                                                                                                                                                           |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

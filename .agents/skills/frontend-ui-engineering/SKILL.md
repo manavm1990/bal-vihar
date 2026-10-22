@@ -1,5 +1,4 @@
 ---
-
 name: frontend-ui-engineering
 description: Builds production-quality, accessible, responsive user-facing UIs. Use when building or modifying interfaces and pages, creating components, implementing layouts, meeting WCAG accessibility requirements, managing state, or when the output needs to look and feel production-quality rather than AI-generated.
 ---
@@ -66,7 +65,7 @@ export function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
   return (
     <li className="flex items-center gap-3 p-3">
       <Checkbox checked={task.done} onChange={() => onToggle(task.id)} />
-      <span className={task.done ? "line-through text-muted" : ""}>{task.title}</span>
+      <span className={task.done ? 'line-through text-muted' : ''}>{task.title}</span>
       <Button variant="ghost" size="sm" onClick={() => onDelete(task.id)}>
         <TrashIcon />
       </Button>
@@ -93,9 +92,7 @@ export function TaskListContainer() {
 export function TaskList({ tasks }: { tasks: Task[] }) {
   return (
     <ul role="list" className="divide-y">
-      {tasks.map((task) => (
-        <TaskItem key={task.id} task={task} />
-      ))}
+      {tasks.map(task => <TaskItem key={task.id} task={task} />)}
     </ul>
   );
 }
@@ -121,6 +118,7 @@ Global store (Zustand, Redux)    → Complex client state shared app-wide
 ### Reference-led UI quality
 
 When the product needs a distinct visual direction, collect evidence before choosing a layout:
+
 1. Search a trusted reference catalogue or use references supplied by the product team.
 2. Study two or three relevant screens. Record decisions about hierarchy, density, navigation, controls, responsive behavior, and interaction states.
 3. Turn those decisions into a short design contract before implementation. Name the screen's job, primary action, required states, responsive rules, and patterns to reject.
@@ -132,16 +130,16 @@ Use references as evidence, not as templates. If references are unavailable, doc
 
 AI-generated UI has recognizable patterns. Avoid all of them:
 
-| AI Default                       | Why It Is a Problem                                                                           | Production Quality                                      |
-| -------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| Purple/indigo everything         | Models default to visually "safe" palettes, making every app look identical                   | Use the project's actual color palette                  |
-| Excessive gradients              | Gradients add visual noise and clash with most design systems                                 | Flat or subtle gradients matching the design system     |
-| Rounded everything (rounded-2xl) | Maximum rounding signals "friendly" but ignores the hierarchy of corner radii in real designs | Consistent border-radius from the design system         |
-| Generic hero sections            | Template-driven layout with no connection to the actual content or user need                  | Content-first layouts                                   |
-| Lorem ipsum-style copy           | Placeholder text hides layout problems that real content reveals (length, wrapping, overflow) | Realistic placeholder content                           |
-| Oversized padding everywhere     | Equal generous padding destroys visual hierarchy and wastes screen space                      | Consistent spacing scale                                |
-| Stock card grids                 | Uniform grids are a layout shortcut that ignores information priority and scanning patterns   | Purpose-driven layouts                                  |
-| Shadow-heavy design              | Layered shadows add depth that competes with content and slows rendering on low-end devices   | Subtle or no shadows unless the design system specifies |
+| AI Default | Why It Is a Problem | Production Quality |
+|---|---|---|
+| Purple/indigo everything | Models default to visually "safe" palettes, making every app look identical | Use the project's actual color palette |
+| Excessive gradients | Gradients add visual noise and clash with most design systems | Flat or subtle gradients matching the design system |
+| Rounded everything (rounded-2xl) | Maximum rounding signals "friendly" but ignores the hierarchy of corner radii in real designs | Consistent border-radius from the design system |
+| Generic hero sections | Template-driven layout with no connection to the actual content or user need | Content-first layouts |
+| Lorem ipsum-style copy | Placeholder text hides layout problems that real content reveals (length, wrapping, overflow) | Realistic placeholder content |
+| Oversized padding everywhere | Equal generous padding destroys visual hierarchy and wastes screen space | Consistent spacing scale |
+| Stock card grids | Uniform grids are a layout shortcut that ignores information priority and scanning patterns | Purpose-driven layouts |
+| Shadow-heavy design | Layered shadows add depth that competes with content and slows rendering on low-end devices | Subtle or no shadows unless the design system specifies |
 
 ### Spacing and Layout
 
@@ -225,9 +223,7 @@ function Dialog({ isOpen, onClose }: DialogProps) {
   // Trap focus inside dialog when open
   return (
     <dialog open={isOpen}>
-      <button ref={closeRef} onClick={onClose}>
-        Close
-      </button>
+      <button ref={closeRef} onClick={onClose}>Close</button>
       {/* dialog content */}
     </dialog>
   );
@@ -245,9 +241,7 @@ function TaskList({ tasks }: { tasks: Task[] }) {
         <TasksEmptyIcon className="mx-auto h-12 w-12 text-muted" />
         <h3 className="mt-2 text-sm font-medium">No tasks</h3>
         <p className="mt-1 text-sm text-muted">Get started by creating a new task.</p>
-        <Button className="mt-4" onClick={onCreateTask}>
-          Create Task
-        </Button>
+        <Button className="mt-4" onClick={onCreateTask}>Create Task</Button>
       </div>
     );
   }
@@ -293,17 +287,17 @@ function useToggleTask() {
   return useMutation({
     mutationFn: toggleTask,
     onMutate: async (taskId) => {
-      await queryClient.cancelQueries({ queryKey: ["tasks"] });
-      const previous = queryClient.getQueryData(["tasks"]);
+      await queryClient.cancelQueries({ queryKey: ['tasks'] });
+      const previous = queryClient.getQueryData(['tasks']);
 
-      queryClient.setQueryData(["tasks"], (old: Task[]) =>
-        old.map((t) => (t.id === taskId ? { ...t, done: !t.done } : t)),
+      queryClient.setQueryData(['tasks'], (old: Task[]) =>
+        old.map(t => t.id === taskId ? { ...t, done: !t.done } : t)
       );
 
       return { previous };
     },
     onError: (_err, _taskId, context) => {
-      queryClient.setQueryData(["tasks"], context?.previous);
+      queryClient.setQueryData(['tasks'], context?.previous);
     },
   });
 }
@@ -315,13 +309,13 @@ For detailed accessibility requirements and testing tools, see `../../references
 
 ## Common Rationalizations
 
-| Rationalization                                | Reality                                                                                      |
-| ---------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| "Accessibility is a nice-to-have"              | It's a legal requirement in many jurisdictions and an engineering quality standard.          |
-| "We'll make it responsive later"               | Retrofitting responsive design is 3x harder than building it from the start.                 |
+| Rationalization | Reality |
+|---|---|
+| "Accessibility is a nice-to-have" | It's a legal requirement in many jurisdictions and an engineering quality standard. |
+| "We'll make it responsive later" | Retrofitting responsive design is 3x harder than building it from the start. |
 | "The design isn't final, so I'll skip styling" | Use the design system defaults. Unstyled UI creates a broken first impression for reviewers. |
-| "This is just a prototype"                     | Prototypes become production code. Build the foundation right.                               |
-| "The AI aesthetic is fine for now"             | It signals low quality. Use the project's actual design system from the start.               |
+| "This is just a prototype" | Prototypes become production code. Build the foundation right. |
+| "The AI aesthetic is fine for now" | It signals low quality. Use the project's actual design system from the start. |
 
 ## Red Flags
 
@@ -335,6 +329,7 @@ For detailed accessibility requirements and testing tools, see `../../references
 ## Verification
 
 After building UI:
+
 - [ ] Component renders without console errors
 - [ ] All interactive elements are keyboard accessible (Tab through the page)
 - [ ] Screen reader can convey the page's content and structure

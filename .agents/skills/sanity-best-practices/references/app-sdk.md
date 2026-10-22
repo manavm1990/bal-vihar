@@ -1,5 +1,4 @@
 ---
-
 title: Sanity App SDK
 description: Rules for building custom applications with the Sanity App SDK, including React hooks, document handles, real-time patterns, and Suspense best practices.
 ---
@@ -69,14 +68,14 @@ my-app/
 The classic app config, without `defineApplication`. For Dashboard beta apps and for `app.visibility`, see the `dashboard` rule.
 
 ```typescript
-import { defineCliConfig } from "sanity/cli";
+import { defineCliConfig } from 'sanity/cli'
 
 export default defineCliConfig({
   app: {
-    organizationId: "your-org-id",
-    entry: "./src/App.tsx",
+    organizationId: 'your-org-id',
+    entry: './src/App.tsx',
   },
-});
+})
 ```
 
 ### App Root (`src/App.tsx`)
@@ -149,10 +148,10 @@ Lightweight references to documents. Fetch handles first, then load content as n
 
 ```typescript
 interface DocumentHandle {
-  documentId: string;
-  documentType: string;
-  projectId?: string;
-  dataset?: string;
+  documentId: string
+  documentType: string
+  projectId?: string
+  dataset?: string
 }
 ```
 
@@ -160,33 +159,33 @@ interface DocumentHandle {
 
 ```typescript
 // Best: From useDocuments hook
-const { data: handles } = useDocuments({ documentType: "article" });
+const { data: handles } = useDocuments({ documentType: 'article' })
 
 // Good: With helper (preserves literal types for TypeGen)
-import { createDocumentHandle } from "@sanity/sdk";
+import { createDocumentHandle } from '@sanity/sdk'
 const handle = createDocumentHandle({
-  documentId: "my-doc-id",
-  documentType: "article",
-});
+  documentId: 'my-doc-id',
+  documentType: 'article',
+})
 
 // Good: With as const (preserves literal types)
 const handle = {
-  documentId: "my-doc-id",
-  documentType: "article",
-} as const;
+  documentId: 'my-doc-id',
+  documentType: 'article',
+} as const
 ```
 
 ---
 
 ## Hook Selection
 
-| Hook                    | Use Case                             | Returns                |
-| ----------------------- | ------------------------------------ | ---------------------- |
-| `useDocuments`          | List of documents (infinite scroll)  | Document handles       |
-| `usePaginatedDocuments` | Paginated lists with page controls   | Document handles       |
-| `useDocument`           | Single document, real-time editing   | Full document or field |
-| `useDocumentProjection` | Specific fields, display only        | Projected data         |
-| `useQuery`              | Complex GROQ queries (use sparingly) | Raw query results      |
+| Hook | Use Case | Returns |
+|------|----------|---------|
+| `useDocuments` | List of documents (infinite scroll) | Document handles |
+| `usePaginatedDocuments` | Paginated lists with page controls | Document handles |
+| `useDocument` | Single document, real-time editing | Full document or field |
+| `useDocumentProjection` | Specific fields, display only | Projected data |
+| `useQuery` | Complex GROQ queries (use sparingly) | Raw query results |
 
 ---
 
@@ -362,8 +361,8 @@ function VenuesList() {
 ```typescript
 // Bad: Multiple fetchers in one component
 function BadComponent() {
-  const { data: events } = useDocuments({ documentType: "event" });
-  const { data: venues } = useDocuments({ documentType: "venue" });
+  const { data: events } = useDocuments({ documentType: 'event' })
+  const { data: venues } = useDocuments({ documentType: 'venue' })
   // Both trigger Suspense together, causing unnecessary re-renders
 }
 ```
@@ -395,27 +394,27 @@ function OpenInStudioButton({ handle }: { handle: DocumentHandle }) {
 ## Event Handling
 
 ```typescript
-import { useDocumentEvent, DocumentEvent } from "@sanity/sdk-react";
+import { useDocumentEvent, DocumentEvent } from '@sanity/sdk-react'
 
 function DocumentWatcher(handle: DocumentHandle) {
   useDocumentEvent({
     ...handle,
     onEvent: (event) => {
       switch (event.type) {
-        case "edited":
-          console.log("Edited:", event.documentId);
-          break;
-        case "published":
-          console.log("Published:", event.documentId);
-          break;
-        case "deleted":
-          console.log("Deleted:", event.documentId);
-          break;
+        case 'edited':
+          console.log('Edited:', event.documentId)
+          break
+        case 'published':
+          console.log('Published:', event.documentId)
+          break
+        case 'deleted':
+          console.log('Deleted:', event.documentId)
+          break
       }
     },
-  });
+  })
 
-  return null;
+  return null
 }
 ```
 
@@ -425,17 +424,17 @@ function DocumentWatcher(handle: DocumentHandle) {
 
 ```typescript
 const config: SanityConfig[] = [
-  { projectId: "project-1", dataset: "production" },
-  { projectId: "project-2", dataset: "staging" },
-];
+  { projectId: 'project-1', dataset: 'production' },
+  { projectId: 'project-2', dataset: 'staging' },
+]
 
 // Handles include project/dataset info
 const handle: DocumentHandle = {
-  documentId: "doc-123",
-  documentType: "article",
-  projectId: "project-1",
-  dataset: "production",
-};
+  documentId: 'doc-123',
+  documentType: 'article',
+  projectId: 'project-1',
+  dataset: 'production',
+}
 ```
 
 ---
@@ -461,6 +460,7 @@ function LazyContent(handle: DocumentHandle) {
 ## What's NOT Included
 
 The App SDK provides hooks and data stores. You bring:
+
 - UI components (use Sanity UI or your own)
 - Router
 - Form validation
@@ -470,8 +470,8 @@ The App SDK provides hooks and data stores. You bring:
 
 ## Troubleshooting
 
-| Issue             | Solution                                                                                   |
-| ----------------- | ------------------------------------------------------------------------------------------ |
-| Safari dev issues | Use Chrome or Firefox during development                                                   |
-| Port 3333 in use  | `npm run dev -- --port 3335` (a Dashboard app also takes the next port for the app itself) |
-| Auth errors       | `npx sanity@latest logout && npx sanity@latest login`                                      |
+| Issue | Solution |
+|-------|----------|
+| Safari dev issues | Use Chrome or Firefox during development |
+| Port 3333 in use | `npm run dev -- --port 3335` (a Dashboard app also takes the next port for the app itself) |
+| Auth errors | `npx sanity@latest logout && npx sanity@latest login` |

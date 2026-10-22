@@ -1,5 +1,4 @@
 ---
-
 title: "Sanity + Shopify + Hydrogen Rules"
 description: Integration guide for Sanity with Shopify using the Hydrogen framework (React Router 7).
 ---
@@ -10,12 +9,12 @@ description: Integration guide for Sanity with Shopify using the Hydrogen framew
 
 ## 1. Architecture Overview
 
-| Component          | Purpose                                                             |
-| ------------------ | ------------------------------------------------------------------- |
-| **Shopify**        | Product catalog, inventory, checkout (source of truth for commerce) |
-| **Sanity Connect** | Syncs Shopify data to Sanity in real-time                           |
-| **Sanity Studio**  | Editorial content, rich descriptions, media (enhances Shopify data) |
-| **Hydrogen**       | React Router 7 front-end optimized for Shopify                      |
+| Component | Purpose |
+|-----------|---------|
+| **Shopify** | Product catalog, inventory, checkout (source of truth for commerce) |
+| **Sanity Connect** | Syncs Shopify data to Sanity in real-time |
+| **Sanity Studio** | Editorial content, rich descriptions, media (enhances Shopify data) |
+| **Hydrogen** | React Router 7 front-end optimized for Shopify |
 
 **Project Structure:**
 ```
@@ -43,26 +42,24 @@ SANITY_PREVIEW_TOKEN="your-sanity-viewer-token"  # Viewer token for previews
 ## 3. Sanity Client Setup
 
 ### Vite Config
-
 ```typescript
 // web/vite.config.ts
-import { hydrogen } from "@shopify/hydrogen/vite";
-import { sanity } from "hydrogen-sanity/vite";
+import {hydrogen} from '@shopify/hydrogen/vite'
+import {sanity} from 'hydrogen-sanity/vite'
 
 export default defineConfig({
   plugins: [hydrogen(), sanity()],
-});
+})
 ```
 
 ### Context Setup
-
 ```typescript
 // web/app/lib/context.ts
-import { createSanityContext, type SanityContext } from "hydrogen-sanity";
-import { PreviewSession } from "hydrogen-sanity/preview/session";
-import { isPreviewEnabled } from "hydrogen-sanity/preview";
+import {createSanityContext, type SanityContext} from 'hydrogen-sanity'
+import {PreviewSession} from 'hydrogen-sanity/preview/session'
+import {isPreviewEnabled} from 'hydrogen-sanity/preview'
 
-const previewSession = await PreviewSession.init(request, [env.SESSION_SECRET]);
+const previewSession = await PreviewSession.init(request, [env.SESSION_SECRET])
 
 const sanity = await createSanityContext({
   request,
@@ -71,22 +68,21 @@ const sanity = await createSanityContext({
   client: {
     projectId: env.SANITY_PROJECT_ID,
     dataset: env.SANITY_DATASET,
-    apiVersion: env.SANITY_API_VERSION || "2026-02-01",
+    apiVersion: env.SANITY_API_VERSION || '2026-02-01',
     useCdn: true,
     stega: {
       enabled: isPreviewEnabled(env.SANITY_PROJECT_ID, previewSession),
-      studioUrl: "http://localhost:3333",
-    },
+      studioUrl: 'http://localhost:3333',
+    }
   },
   preview: {
     token: env.SANITY_PREVIEW_TOKEN,
     session: previewSession,
-  },
-});
+  }
+})
 ```
 
 ### Provider Setup (entry.server.tsx)
-
 ```typescript
 const {SanityProvider} = context.sanity
 
@@ -100,7 +96,6 @@ const body = await renderToReadableStream(
 ```
 
 ### Root Layout (root.tsx)
-
 ```typescript
 import {Sanity} from 'hydrogen-sanity'
 
@@ -123,7 +118,6 @@ export function Layout({children}) {
 Fetch from **both** Shopify (GraphQL) and Sanity (GROQ). Use `defineQuery` for TypeGen support.
 
 ### Recommended: `query` + `Query` component
-
 ```typescript
 import {defineQuery} from 'groq'
 import {Query} from 'hydrogen-sanity'
@@ -147,16 +141,14 @@ export default function ProductPage({loaderData}) {
 ```
 
 ### Alternative methods
-
-| Method                     | Use Case                        |
-| -------------------------- | ------------------------------- |
+| Method | Use Case |
+|--------|----------|
 | `sanity.query()` + `Query` | Recommended - auto preview mode |
-| `sanity.loadQuery()`       | Manual loader integration       |
-| `sanity.fetch()`           | No preview needed, lightweight  |
-| `sanity.client`            | Mutations in actions            |
+| `sanity.loadQuery()` | Manual loader integration |
+| `sanity.fetch()` | No preview needed, lightweight |
+| `sanity.client` | Mutations in actions |
 
 ### Images
-
 ```typescript
 import {useImageUrl} from 'hydrogen-sanity'
 
@@ -171,7 +163,6 @@ function Hero({image}) {
 ## 5. Visual Editing Setup
 
 ### Root Layout
-
 ```typescript
 // web/app/root.tsx
 import {usePreviewMode} from 'hydrogen-sanity/preview'
@@ -192,27 +183,28 @@ export function Layout({children}: {children?: React.ReactNode}) {
 ```
 
 ### Preview Route
-
 ```typescript
 // web/app/routes/api.preview.ts
-export { action, loader } from "hydrogen-sanity/preview/route";
+export {action, loader} from 'hydrogen-sanity/preview/route'
 ```
 
 ### Content Security Policy
-
 ```typescript
 // web/entry.server.tsx
-const { nonce, header, NonceProvider } = createContentSecurityPolicy({
+const {nonce, header, NonceProvider} = createContentSecurityPolicy({
   frameAncestors: isPreviewEnabled ? [studioHostname] : [],
-  connectSrc: [`https://${projectId}.api.sanity.io`, `wss://${projectId}.api.sanity.io`],
-});
+  connectSrc: [
+    `https://${projectId}.api.sanity.io`,
+    `wss://${projectId}.api.sanity.io`,
+  ],
+})
 ```
 
 ## 6. Studio: Presentation Tool
 
 ```typescript
 // studio/sanity.config.ts
-import { presentationTool } from "sanity/presentation";
+import {presentationTool} from 'sanity/presentation'
 
 export default defineConfig({
   plugins: [
@@ -220,23 +212,23 @@ export default defineConfig({
       resolve: {
         locations: {
           product: defineLocations({
-            select: { title: "store.title", slug: "store.slug.current" },
+            select: { title: 'store.title', slug: 'store.slug.current' },
             resolve: (doc) => ({
               locations: [
-                { title: doc?.title || "Untitled", href: `/products/${doc?.slug}` },
-                { title: "Products", href: `/collections/all` },
+                { title: doc?.title || 'Untitled', href: `/products/${doc?.slug}` },
+                { title: 'Products', href: `/collections/all` },
               ],
             }),
           }),
         },
       },
       previewUrl: {
-        initial: "http://localhost:3000",
-        previewMode: { enable: "/api/preview" },
+        initial: 'http://localhost:3000',
+        previewMode: { enable: '/api/preview' },
       },
     }),
   ],
-});
+})
 ```
 
 ## 7. Commands

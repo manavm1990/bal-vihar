@@ -7,6 +7,8 @@
       "**",
       "!node_modules",
       "!.next",
+      "!.agents",
+      "!.claude",
       "!dist",
       "!build",
       "!**/sanity.types.ts",
