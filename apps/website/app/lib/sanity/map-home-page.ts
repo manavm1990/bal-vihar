@@ -1,18 +1,47 @@
+import { stegaClean } from "@sanity/client/stega";
+
 import { getSanityArrayKey } from "./sanity-array-key";
 import type { HomeAnnouncement, HomeHeroSlide, HomePageData, SanityImageValue } from "./types";
 
 /** CMS-authored links should resolve to a safe site-relative or absolute URL. */
 type SafeHref = `/${string}` | `http://${string}` | `https://${string}` | `mailto:${string}`;
 
+/**
+ * Normalize a defineLive / client fetch result into our domain HomePageData.
+ * Accepts either the bare document or `{ data: document }`.
+ */
+export const mapHomePage = (input: unknown): HomePageData | null => {
+  if (!isRecord(input)) return null;
+
+  const dataRecord = isRecord(input["data"]) ? input["data"] : input;
+  const id = parseString(dataRecord["_id"]) ?? parseString(dataRecord["id"]);
+  if (!id) return null;
+
+  const announcementsRaw = dataRecord["announcements"];
+  const heroRaw = dataRecord["heroSlides"];
+
+  return {
+    announcements: !Array.isArray(announcementsRaw)
+      ? []
+      : announcementsRaw
+          .map(mapAnnouncement)
+          .filter((item): item is HomeAnnouncement => item !== null),
+    heroSlides: !Array.isArray(heroRaw)
+      ? []
+      : heroRaw.map(mapHeroSlide).filter((slide): slide is HomeHeroSlide => slide !== null),
+    id,
+    title: parseString(dataRecord["title"]),
+    whoWeAre: parseString(dataRecord["whoWeAre"]),
+  };
+};
+
 const isBoolean = (value: unknown): value is boolean => typeof value === "boolean";
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
-const isSafeHref = (value: unknown): value is SafeHref => {
-  if (!isString(value)) return false;
-
-  const href = value.trim();
+/** Type-guard the already stega-cleaned, trimmed href string. */
+const isSafeHref = (href: string): href is SafeHref => {
   if (!href || /\s/.test(href) || href.startsWith("//")) return false;
   if (href.startsWith("mailto:")) return /^mailto:[^\s]+$/i.test(href);
 
@@ -25,8 +54,9 @@ const isSafeHref = (value: unknown): value is SafeHref => {
     }
   }
 
-  const relativeHref = href.startsWith("/") ? href : `/${href}`;
-  return /^\/(?!\/)[^\s]*$/i.test(relativeHref) && !/^\/(?:javascript:|data:)/i.test(relativeHref);
+  return !href.startsWith("/")
+    ? false
+    : /^\/(?!\/)[^\s]*$/i.test(href) && !/^\/(?:javascript:|data:)/i.test(href);
 };
 
 const isString = (value: unknown): value is string => typeof value === "string";
@@ -39,18 +69,20 @@ const mapAnnouncement = (value: unknown, index: number): HomeAnnouncement | null
   if (!title || !body) return null;
 
   const toneRaw = parseString(value["tone"]);
+  // Clean stega before enum compares used for CSS classes.
+  const toneClean = toneRaw ? stegaClean(toneRaw) : null;
   const tone =
-    toneRaw === "default" || toneRaw === "urgent" || toneRaw === "success" ? toneRaw : null;
+    toneClean === "default" || toneClean === "urgent" || toneClean === "success" ? toneClean : null;
 
   return {
-    key: getSanityArrayKey(value, `announcement-${index}`),
-    title,
     body,
     ctaHref: parseSafeHref(value["ctaHref"]),
     ctaLabel: parseString(value["ctaLabel"]),
-    endDate: parseString(value["endDate"]),
+    endDate: parseCleanString(value["endDate"]),
     isActive: parseBoolean(value["isActive"]),
-    startDate: parseString(value["startDate"]),
+    key: getSanityArrayKey(value, `announcement-${index}`),
+    startDate: parseCleanString(value["startDate"]),
+    title,
     tone,
   };
 };
@@ -66,40 +98,31 @@ const mapHeroSlide = (value: unknown, index: number): HomeHeroSlide | null =>
 
 const parseBoolean = (value: unknown): boolean | null => (isBoolean(value) ? value : null);
 
+const parseCleanString = (value: unknown): string | null => {
+  const raw = parseString(value);
+  return !raw ? null : stegaClean(raw);
+};
+
 const parseImage = (value: unknown): SanityImageValue | null =>
+  // Shape-checked as a record; image fields are validated downstream by renderers.
   isRecord(value) ? (value as SanityImageValue) : null;
 
-const parseSafeHref = (value: unknown): SafeHref | null =>
-  isSafeHref(value) ? (value.trim() as SafeHref) : null;
+const parseSafeHref = (value: unknown): SafeHref | null => {
+  if (!isString(value)) return null;
+
+  // Stega encodes edit metadata into strings during draft preview — strip before URL checks.
+  const cleaned = stegaClean(value).trim();
+  if (!cleaned) return null;
+
+  const href =
+    cleaned.startsWith("/") ||
+    cleaned.startsWith("http://") ||
+    cleaned.startsWith("https://") ||
+    cleaned.startsWith("mailto:")
+      ? cleaned
+      : `/${cleaned}`;
+
+  return isSafeHref(href) ? href : null;
+};
 
 const parseString = (value: unknown): string | null => (isString(value) ? value : null);
-
-/**
- * Normalize a defineLive / client fetch result into our domain HomePageData.
- * Accepts either the bare document or `{ data: document }`.
- */
-export const mapHomePage = (input: unknown): HomePageData | null => {
-  const root = isRecord(input) ? input : null;
-  if (!root) return null;
-
-  const dataRecord = isRecord(root["data"]) ? root["data"] : root;
-  const id = parseString(dataRecord["_id"]) ?? parseString(dataRecord["id"]);
-  if (!id) return null;
-
-  const announcementsRaw = dataRecord["announcements"];
-  const heroRaw = dataRecord["heroSlides"];
-
-  return {
-    announcements: Array.isArray(announcementsRaw)
-      ? announcementsRaw
-          .map(mapAnnouncement)
-          .filter((item): item is HomeAnnouncement => item !== null)
-      : [],
-    heroSlides: Array.isArray(heroRaw)
-      ? heroRaw.map(mapHeroSlide).filter((slide): slide is HomeHeroSlide => slide !== null)
-      : [],
-    id,
-    title: parseString(dataRecord["title"]),
-    whoWeAre: parseString(dataRecord["whoWeAre"]),
-  };
-};

@@ -1,5 +1,11 @@
+import { stegaClean } from "@sanity/client/stega";
 import { getSanityArrayKey } from "./sanity-array-key";
 import type { HomePhotoBoardItem, PhotoGalleryData, SanityImageValue } from "./types";
+
+interface MapPhotoGalleryOptions {
+  /** When true, only photos with featured !== false (home board). */
+  featuredOnly?: boolean;
+}
 
 const isBoolean = (value: unknown): value is boolean => typeof value === "boolean";
 
@@ -15,10 +21,11 @@ const parseImage = (value: unknown): SanityImageValue | null =>
 
 const parseString = (value: unknown): string | null => (isString(value) ? value : null);
 
-interface MapPhotoGalleryOptions {
-  /** When true, only photos with featured !== false (home board). */
-  featuredOnly?: boolean;
-}
+const parseStrings = (value: unknown): string[] =>
+  Array.isArray(value)
+    ? // Stega-clean path tags so banner matching still works in draft preview.
+      value.filter(isString).map((entry) => stegaClean(entry))
+    : [];
 
 const mapGalleryPhoto = (
   value: unknown,
@@ -37,6 +44,7 @@ const mapGalleryPhoto = (
     image: parseImage(item["image"]),
     key: getSanityArrayKey(item, `photo-${index}`),
     note: parseString(item["note"]),
+    pages: parseStrings(item["pages"]),
     schoolYear: parseString(item["schoolYear"]),
     title,
   };
@@ -66,5 +74,5 @@ export const mapPhotoGallery = (
     id,
     photos,
     title: parseString(dataRecord["title"]),
-  };
+  } as const;
 };

@@ -1,4 +1,10 @@
+import { stegaClean } from "@sanity/client/stega";
 import type { CalendarEventData } from "./types";
+
+interface UpcomingOptions {
+  limit?: number;
+  now?: Date;
+}
 
 function isBoolean(value: unknown): value is boolean {
   return typeof value === "boolean";
@@ -25,8 +31,6 @@ export function formatCalendarDate(date: string) {
       });
 }
 
-export const formatEventTypeLabel = (eventType: string) => eventType.replaceAll("-", " ");
-
 export const mapCalendarEvents = (input: unknown): CalendarEventData[] =>
   !Array.isArray(input)
     ? []
@@ -35,7 +39,8 @@ export const mapCalendarEvents = (input: unknown): CalendarEventData[] =>
 
         const id = isString(row["_id"]) ? row["_id"] : isString(row["id"]) ? row["id"] : null;
         const title = isString(row["title"]) ? row["title"] : null;
-        const date = isString(row["date"]) ? row["date"] : null;
+        // Clean date for upcoming filters / sort; stega breaks string compares and Date.parse.
+        const date = isString(row["date"]) ? stegaClean(row["date"]) : null;
 
         return !id || !title || !date
           ? []
@@ -54,11 +59,13 @@ export const mapCalendarEvents = (input: unknown): CalendarEventData[] =>
             ];
       });
 
-export const partitionCalendarEvents = (events: CalendarEventData[], now = new Date()) => ({
-  highlighted: events.filter((event) => event.isHighlighted),
-  upcoming: events.filter((event) => {
-    const time = Date.parse(`${event.date}T12:00:00`);
-    return !Number.isNaN(time) && time >= now.getTime() - 24 * 60 * 60 * 1000;
-  }),
-  all: events,
-});
+export const getUpcomingCalendarEvents = (
+  events: CalendarEventData[],
+  { limit = 5, now = new Date() }: UpcomingOptions = {},
+) =>
+  events
+    .filter(
+      (event) => event.date >= now.toLocaleDateString("en-CA", { timeZone: "America/Chicago" }),
+    )
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(0, limit);

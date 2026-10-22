@@ -1,3 +1,4 @@
+import { DisableDraftMode } from "@components/disable-draft-mode.client";
 import Footer from "@components/footer";
 import Header from "@components/header";
 import QuickLinks from "@components/quick-links";
@@ -6,6 +7,8 @@ import { SanityLive } from "@lib/sanity/live";
 import { createJsonLd } from "@lib/utils";
 import type { Metadata } from "next";
 import { Eczar, Poppins } from "next/font/google";
+import { draftMode } from "next/headers";
+import { VisualEditing } from "next-sanity/visual-editing";
 
 import "./globals.css";
 
@@ -30,14 +33,16 @@ export const metadata: Metadata = {
   applicationName: BASE_TITLE,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { isEnabled: isDraftMode } = await draftMode();
+
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${poppins.variable} ${eczar.variable} font-sans`}>
+      <body className={`${poppins.variable} ${eczar.variable} pb-14 font-sans md:pb-0`}>
         <script type="application/ld+json">{JSON.stringify(createJsonLd(TITLE))}</script>
 
         <QuickLinks />
@@ -45,6 +50,12 @@ export default function RootLayout({
         <main className="container py-4">{children}</main>
         <Footer />
         <SanityLive />
+        {isDraftMode ? (
+          <>
+            <DisableDraftMode />
+            <VisualEditing />
+          </>
+        ) : null}
       </body>
     </html>
   );
