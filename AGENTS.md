@@ -32,13 +32,13 @@ bal-vihar/
 
 - `apps/website/app/components/ui/` - Reusable UI components (buttons, forms, typography, etc.)
 - `apps/website/app/lib/` - Utility functions, constants, and type definitions
-- `apps/website/app/(home)/` - Homepage with hero carousel
+- `apps/website/app/(home)/` - Homepage: announcements, intro, upcoming events and photos (Sanity-driven)
 - `apps/studio/` - Sanity Studio for content management
 - `packages/schemas/` - Shared content schemas and TypeScript types
 
 ### Component Architecture
 
-- **Typography System**: Comprehensive typography components in `app/components/ui/typography/`
+- **Typography System**: Typography primitives in `app/components/ui/typography.tsx`
 - **Form Handling**: React Hook Form with Valibot validation
 - **Icons**: Custom icon components in `app/components/ui/icons/`
 - **Navigation**: Multi-level navigation system with mobile/desktop variants
@@ -91,6 +91,8 @@ bal-vihar/
 ### Website component file organization (`apps/website`)
 
 - **One exported component per file** when the file is a page or shared module.
+- **Exception: UI primitive families** (currently `app/components/ui/typography.tsx`) live in one file with named exports, ordered: imports, types, props interfaces, exported components (alphabetical), then private helpers (`cva` variants, helper components, functions; alphabetical).
+- **Every exported primitive gets a one-line TSDoc plus an `@example`** showing real usage. Style differences are typed `variant`s (via `cva`), never an `as` prop; each component fixes its HTML element. Spread the element's native props (`ComponentPropsWithoutRef<"h2">`) and merge `className` with `cn()`.
 - **Colocate private helpers** in the same file below the exported component, in **alphabetical order**, with each helper’s props interface immediately above it.
 - **Constants** (`SCREAMING_SNAKE_CASE`) sit below imports and above the exported component.
 - **Utilities/helpers** (non-components) go below colocated components.
@@ -229,3 +231,14 @@ SEO/AEO work is skill-routed, not improvised.
 4. If SEO fields live in Sanity, add/adjust them in `packages/schemas`, edit them in Studio, query them explicitly, and map them into `generateMetadata` / JSON-LD on the website.
 5. Technical artifacts (`sitemap`, `robots`) should stay generated from the real route inventory where possible—avoid hand-maintained stale path lists.
 6. After SEO changes, sanity-check title/description uniqueness, canonical targets, and that JSON-LD parses as valid structured data.
+
+<!-- BEGIN:turborepo-agent-rules -->
+
+# This is NOT the Turborepo you know
+
+Turborepo configuration, task behavior, and CLI commands can vary between installed versions and may differ from your training data. Resolve the `turbo` package from this file's directory or relevant workspace; in monorepos, it may not be visible from the repository root. For example, run `node -p "require.resolve('turbo/package.json')"` from a workspace that depends on `turbo`.
+
+Read `docs/README.md` inside that installed package first, then read the relevant pages from its `docs/` directory before changing Turborepo configuration or commands. Heed deprecation notices. These bundled docs match the installed package version and are available without network access.
+
+This block is written and re-added by `turbo` before repository-scoped commands when an AI agent is detected. In the Turborepo source repository, its template is defined in `crates/turborepo-cli/src/cli/agent_guidance.rs`. Removing the managed block while updates are enabled means a later qualifying invocation will add it again. Set `"agentGuidance": false` in the root `turbo.json` or `turbo.jsonc` to opt out; this does not remove an existing block. Keep the block committed with your work to avoid an uncommitted change on the next agent invocation.
+<!-- END:turborepo-agent-rules -->

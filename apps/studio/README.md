@@ -17,30 +17,36 @@ Website (separate terminal): `bun run --filter @bv/website dev` → http://local
 
 | Desk item | Document | What it controls |
 | --- | --- | --- |
-| **Home Page** | singleton `homePage` | Hero carousel images, registration/cancellation announcements, optional “Who we are” blurb |
-| **Photo Gallery** | singleton `photoGallery` | Community photos on the home board (`featured` toggle) |
-| **Calendar Events** | `calendarEvent` documents | Class dates and special events on `/calendar` |
+| **Calendar Events** | `calendarEvent` documents | The next events on the home page and the full list on `/calendar` |
+| **Home Page** | singleton `homePage` | Announcements (snow days, registration windows), optional "Who we are" blurb, optional hero photos |
+| **Photo Gallery** | singleton `photoGallery` | The `/photos` page, plus photos marked **Featured** on the home page (only photos with an image show there) |
 | **Site Settings** | singleton `siteSettings` | Registration URL, default OG image, contact email |
 
 Everything else in the desk is optional / legacy and can be ignored.
 
+## Home page priority
+
+1. **Announcements** are for exceptions only. An empty list is correct: the home page then shows nothing there. There is no built-in fallback banner.
+2. **Upcoming events** are the next 5 `calendarEvent` documents dated today or later, in date order. Nothing to configure; publish events and they appear.
+3. **About, numbers and programs** are written into the site and do not need editing here. The "Who we are" blurb on Home Page overrides the intro text if filled in.
+4. **Featured photos** (up to 6, with an image) show under "Around Bal Vihar" from the Photo Gallery.
+5. **Hero photos** show only if you add slides under Home Page. With none, the carousel is hidden.
+
 ## Photo workflow
 
 1. Open **Photo Gallery**
-2. Add a photo → upload image → set **alt** text (required for a11y)
-3. Set title + school year
-4. Leave **Featured on home** on to show it on `/`
-5. **Publish**
-
-Hero images live on **Home Page → Hero photos** (separate from the gallery board).
+2. Add a photo, upload the image and set **alt** text (required for accessibility)
+3. Set title and school year
+4. Leave **Featured on home** on to show it on the home page
+5. Optional: under **Show as banner on pages**, tick the pages where this photo should be the banner at the top (History, Community Outreach, Admissions, Education, Curriculum K-7, Volunteering). If several photos are ticked for a page, the first one in the list is used. A page with no ticked photo shows no banner.
+6. **Publish**
 
 ## Calendar workflow
 
 1. Open **Calendar Events → Create**
 2. Title, date, optional time/location/type
-3. Turn on **Highlight** for featured items
-4. Set academic year (e.g. `2025-26`)
-5. **Publish**
+3. Set academic year (e.g. `2026-27`)
+4. **Publish**: it shows on `/calendar` and, once it is among the next 5, on the home page
 
 ## Announcement windows
 
