@@ -10,8 +10,7 @@ import { H3, P } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
-
-import ContactForm from "./components/form";
+import ContactForm from "./components/form/contact-form.client";
 
 const FAQS = [
   {
@@ -31,7 +30,7 @@ const FAQS = [
   {
     question: "What are the admission criteria?",
     answer:
-      'Your child must be 5 years old on a given July 31st to be admitted. Please visit "Admission Process" for details on older children.',
+      "Your child must be 5 years old on a given July 31st to be admitted. Please see the Admissions Policies under Policies & Procedures for details on older children.",
   },
   {
     question:

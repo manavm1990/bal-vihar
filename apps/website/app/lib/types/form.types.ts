@@ -1,4 +1,5 @@
 import * as v from "valibot";
+import isMobilePhone from "validator/lib/isMobilePhone";
 
 export const BaseFormSchema = v.object({
   email: v.pipe(
@@ -14,3 +15,9 @@ export const BaseFormSchema = v.object({
     v.maxWords("en", 500, "That's a lot of information! Please keep it under 500 words."),
   ),
 });
+
+export const PhoneSchema = v.pipe(
+  v.string(),
+  v.trim(),
+  v.check((input) => isMobilePhone(input), "Please enter a valid phone number."),
+);

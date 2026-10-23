@@ -1,19 +1,39 @@
 "use client";
 
+import { cn } from "@lib/utils";
+
+import { CONTROL_CLASS } from "./field";
 import { Label } from "./label";
 
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
+  error?: string;
   options: { value: string; label: string }[];
 }
 
-export function Select({ label, options, className, id, ...props }: SelectProps) {
+/**
+ * Labelled native select. Native keeps the picker accessible and mobile friendly, and `ref`
+ * is forwarded so it can be spread from React Hook Form's `register`.
+ *
+ * @example
+ * <Select id="interest" label="Interested in" options={OPTIONS} {...register("interest")} />
+ */
+export function Select({ label, error, options, className, id, required, ...props }: SelectProps) {
+  const errorId = id ? `${id}-error` : undefined;
+
   return (
     <div className="space-y-1">
-      {label && <Label htmlFor={id}>{label}</Label>}
+      {label && (
+        <Label htmlFor={id} required={required}>
+          {label}
+        </Label>
+      )}
       <select
         id={id}
-        className={`border-input text-foreground focus:ring-ring h-9 w-full rounded-md border bg-transparent px-3 py-2 text-sm focus:ring-1 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+        className={cn(CONTROL_CLASS, "disabled:cursor-not-allowed disabled:opacity-50", className)}
+        aria-invalid={error ? true : undefined}
+        aria-required={required ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
         {...props}
       >
         {options.map((option) => (
@@ -22,6 +42,11 @@ export function Select({ label, options, className, id, ...props }: SelectProps)
           </option>
         ))}
       </select>
+      {error && (
+        <p id={errorId} className="text-destructive mt-1 text-sm">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
