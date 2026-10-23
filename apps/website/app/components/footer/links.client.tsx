@@ -7,16 +7,12 @@ const LINKS = [
   { href: "/calendar", label: "Calendar" },
   { href: "/photos", label: "Photos" },
   { href: "/news-and-events", label: "News & Events" },
-  { href: "/resources", label: "Resources" },
-  { href: "/education/class-webpages", label: "Class Webpages" },
   { href: "/questions", label: "FAQs & Contact" },
+  { href: "/grievance", label: "File a Grievance" },
+  { href: "/expense-reimbursement", label: "Submit an Expense" },
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms of Use" },
 ];
-
-function filterLinks(currentPath: string) {
-  return LINKS.filter((link) => link.href !== currentPath);
-}
 
 export default function Links() {
   const pathname = usePathname();
@@ -31,3 +27,5 @@ export default function Links() {
     </ul>
   );
 }
+
+const filterLinks = (currentPath: string) => LINKS.filter((link) => link.href !== currentPath);

@@ -16,13 +16,6 @@ export interface StaticPageContent {
   singleColumn?: boolean;
 }
 
-export function createStaticPageMetadata(page: StaticPageContent): Metadata {
-  return {
-    title: `${BASE_TITLE} | ${page.title}`,
-    description: page.description,
-  };
-}
-
 export const STATIC_PAGES = {
   about: {
     title: "About Us",
@@ -79,31 +72,15 @@ export const STATIC_PAGES = {
     title: "Admissions",
     description: "Admissions overview for students ages 5 through 18.",
     content:
-      "Bal Vihar of St. Louis will admit any student aged 5 through 18 regardless of their backgrounds and expect all to abide by the policies and procedures. The admission to regular classes is open for students between the ages 5 and 12 and to the youth group for students aged between 13 and 18.\n\nAdmissions to Bal Vihar is processed through the our registration site. Information to access the site will be published on the home page. The registration usually opens up on April 1 for existing students and May 1 for new students. Regular registration closes on June 30. Registration with late fee is open till July 31. Registration at all grade level is subject to capacity available. Registration may close prior to the published dates if capacity is reached. All admissions will close by July 31st for the upcoming school year and no exceptions will be made.\n\n**Age/Grade Requirement**\n\nBal Vihar admits students based on the grade level they are at regular school. Date of Birth is not considered as the criteria for cut off at grade level.\n\n**Group Assignments**\n\nThe Bal Vihar group assignments for the school year is based on the respective grade at regular school. Children in Kindergarten through grade 7 attend regular Bal Vihar curriculum. Children in grade 8 and above attend Bal Vihar Youth group and follow advanced curriculum.",
+      "Bal Vihar of St. Louis admits any student aged 5 through 18, regardless of their background, and expects all to abide by the [policies and procedures](/about-us/policies-procedures).",
     links: [
       {
-        label: "Admission Process",
-        href: "/admissions/admission-process",
-        description: "Registration timing, fees, grade placement, and enrollment expectations.",
-      },
-      {
-        label: "Refund Policy",
-        href: "/admissions/refund-policy",
-        description: "Refund and credit policy for registration and events.",
+        label: "Admissions Policies",
+        href: "/about-us/policies-procedures#admissions",
+        description:
+          "Eligibility, registration dates, fees, refunds, class allocation, preview, and financial assistance.",
       },
     ],
-  },
-  admissionProcess: {
-    title: "Admission Process",
-    description: "Registration timing, placement, and admission expectations.",
-    content:
-      "Bal Vihar of St. Louis will admit any student aged 5 through 18 based on the grade level they are enrolled at regular school regardless of their backgrounds and expect all to abide by the [policies and procedures](/content.php?page=Policies___Procedures).\n\n---\n\nRegistrations\n\nRegistrations will usually be available on April 1 for existing students on April 1 and for new students on May 1 each year. Link to registration site will be published on the home page of Bal Vihar. Regular registration will close on June 30 each year. Due to COVID-19/pandemic, regular registration has been extended to July 31st. Registration may close prior to the published dates if capacity is reached at that grade level.\n\nDue to capacity, the class room size will be limited to a maximum of 60 for all grades. At grade level 9-12, the capacity may be limited based on previous year's capacity.\n\nFees\n\nThe fees structure is determined by the administration every year. Current registration fee is $**250** for each student, which includes a $**50** volunteer deposit refundable upon completion of volunteer activities. Any changes to fee structure for the following year will be communicated to the existing parents during parents meeting held at least once each year. Based on the feedback, the changes will be implemented for the following school year. The changes will be communicated to all parents via email, updates on the web etc. Students in groups Y5 are charged **$1** as token fee. All fees are paid by credit card or ACH through the secured online registration system; cash and checks are not accepted for registration.\n\nBal Vihar administration reserves the right to increase the fees to cover the increasing costs and additional offerings that may be brought forth. This increase does not include any increases for additional offerings and services that may be brought forth. The increases will be presented to the parents during one of the meetings for the following school year.\n\nRefund of School Fee\n\nRefund may be permitted only if the request is received prior to the opening session for the school year. Any refund will be after deducting registration and credit card (or ACH) charges.\n\nClass Allocation\n\nIn the interest of children exposure to our culture, Bal Vihar school has made changes in its class allocation policy. The Bal Vihar school grades will correspond to the children school grade in their regular school. Thus:\n\n| **Regular School Grade** | **Bal Vihar School Grade** |\n| Grade K | Grade K |\n| Grade 1 | Grade 1 |\n| Grade 2 | Grade 2 |\n| Grade 3 | Grade 3 |\n| Grade 4 | Grade 4 |\n| Grade 5 | Grade 5 |\n| Grade 6 | Grade 6 |\n| Grade 7 | Grade 7 |\n| Grade 8 | Youth Group Y1 |\n| Grade 9 | Youth Group Y2 |\n| Grade 10 | Youth Group Y3 |\n\nNo admission will be made in youth group Y4 and Y5. Only children from Y3 will go to Y4 and children from Y4 will go to Y5.\n\nBal Vihar Preview\n\nFor all new students or parents that want to learn or observe Bal Vihar prior to registration, we will allow class observations on a request basis subject to the availability and scheduling. An observation form will need to be filled out and will be allowed to attend up to 2 classes for no cost. Bal Vihar preview will not be available any other time.\n\nFinancial Assistance\n\nIt is recognized that there may be a condition where parents may not be able to afford the school fee for their child(ren). Under this condition, the following may apply:\n\n* No more than three children will be allowed in a each school year for the waiver of the fee. This will be first come first served basis\n* The request for such condition should be made in May or June for the upcoming year in confidence in writing to the executive committee. This request should explain the reasons to waive the fee with proper supporting documents.\n* These documents can be tax return or other relevant documents. This will allow the executive committee to make appropriate decision\n* Upon acceptance of the waiver by the Bal Vihar school, the parent(s) is required to provide the following service to the Bal Vihar as follows:\n\n+ A firm commitment of parent in offering 40 hours' worth voluntary service to the Bal Vihar. These service hours will be tracked by the school official to ensure that such service is provided. This requirement is in addition to the parent volunteer requirements.\n+ Failure to meet this requirement will be the cause for student to be discontinued from attending Bal Vihar\n+ If the parent’s financial condition improves during the school year, he or she will be required to pay the school fee without any penalty\n+ If the parent’s financial hardship continues in the following year, a copy of filed detailed tax return for the previous year will be required to convince the Bal Vihar executive committee of continuation of such waiver for the school.\n\nIt is realized that this provision is made strictly to offer service to the genuine cases. A confidential independent investigation will also be carried out by the school official to confirm the eligibility.",
-  },
-  refundPolicy: {
-    title: "Refund Policy",
-    description: "Refund policy for Bal Vihar registration and events.",
-    content:
-      "Refund Policy For School Fee\n\nRefund may be requested prior to the opening session (first class) for the school year. Amount refunded will be after subtracting registration fee and ACH/Credit Card charges.",
   },
   education: {
     title: "Education",
@@ -122,19 +99,20 @@ export const STATIC_PAGES = {
         description: "Program goals and expectations for youth group students.",
       },
       {
-        label: "Education Policy",
-        href: "/education/education-policy",
-        description: "Policies that support attendance, homework, and graduation.",
-      },
-      {
-        label: "Class Webpages",
-        href: "/education/class-webpages",
-        description: "Links to class and enrichment webpages.",
+        label: "Education Policies",
+        href: "/about-us/policies-procedures#education",
+        description: "Graduation, promotions, attendance, and youth group expectations.",
       },
       {
         label: "Class Schedule",
         href: "/education/class-schedule",
         description: "Class schedule information.",
+      },
+      {
+        label: "Daily Gita on YouTube",
+        href: "https://youtu.be/5wC1C89AQRA",
+        description:
+          "A YouTube channel for the daily Gita, created by volunteers and Lal Prabhu Ji. Opens YouTube.",
       },
     ],
   },
@@ -149,18 +127,6 @@ export const STATIC_PAGES = {
     description: "Youth group curriculum and program expectations.",
     content:
       '**(Y1 - Y5)**\n\n**OBJECTIVES:**\n\nGuide the students to gain a sense of belonging to the community and to help them associate and identify them confidently and proudly of their Indian cultural and religious roots.  This is proposed to be achieved through various class room activities, workshops, seminars, lectures, hands on community service and volunteering activities.  All sessions will be interactive.\n\nThe Curriculum is divided into five units: Religion, interactive classroom discussion and home work, community and interfaith volunteer activities, field trips to gain knowledge about other cultures/religions and Bal Vihar class room volunteering.  There is also project based learning, other electives and interactive discussion sessions.\n\n* Y1,Y2 and Y3: Students will go through the full curriculum as above (10:00-12:30)\n* Y1,Y2 and Y3: Will learn Bagavad Gita as the basis for religious education. Other religious activities such as reciting Hanuman Chalisa and discussion on Ramayana will be at the discretion of the faculty.\n* Y3: Graduation from the Balvihar program is offered once the student completes Y3\n* Y4: Students will be offered Project based learning and involved in management and planning the community project events. They will be offered leadership guidance. Few of the students may be selected to run the “newsletter” program.\n* Y4: Will also assist in class rooms.\n* Y5: Serve as teachers in the class rooms and lead community project activities. These activities will allow the students to read more and be confident to teach the younger classes to be good role models and to strengthen their own belief.\n* Y5: Will be given a “Farewell” at the completion of the program\n\n**Unit 1: Religious Connection**\n\n* Bhagavad Gita discourse by HG Lal Gopal Das Prabhu, President ISKCON\n* Bhagavad Gita Chapters 2, 12 and 16 in Y3 group by Dr. Hamsa Subramanian\n* Hanuman Chalisa, Ramayana\n* Mahabharata DVD\n\n**Unit 2 – Interactive classroom discussion, Student presentations and home work**\n\n* Differences and similarities between Western (US) and Asian (Indian) cultures.\n* Peer Pressure and Family expectations/ Role of alcohol, drugs/Dating\n* Self Identity and Self Respect.\n* Be proud of who you are.\n* Role Models\n* What does the religion teach you?\n* Santana Dharma\n* Comparison of different world religions (3 lectures)\n* The Three Gunas\n* Asato Ma Sat Gamaya\n* Hindu scriptures\n* Karma Yoga\n* Swami Vivekananda\n* Vedic Math\n* Ancient Indian Science (4 Lectures)\n* Character comparison Krishna and Rama\n\n**Student Presentations:**\n\n* Non-Violence: Is it still relevant in this day and age?\n* Financial Melt Down? What do YOU want to do about it? Is there a difference between “Need and Greed” and could you tie to your "Karmas"?\n* Career Choices: Have you ever thought about it? What should you really look in a career?\n* Laws of Karma: How can the theory of Karma help you lead a positive life? Should we question laws of Karma? Is there a better explanation?\n* Three Guna\'s: Where do I fit in?\n* Vegetarianism: What is your opinion? Is it a personal Choice? How do like to approach people if you want to convince them to be a vegetarian?\n* Role of women in Hindu Religion: Compare with other religion. Do think that women were generally suppressed in the past by each society?\n* Why are there so many disasters in the world in the last few years? Are we near the end of Kal Yug?\n* "Grant me the serenity to accept the things I cannot change, courage to change what I can and wisdom to know the difference." St. Francis of Assisi. What do you think St. Fransis meant by this prayer? Do you think this holds true in what Gita teaches us? Refer to chapter two and make references to slokas that may explain St. Francis\'s prayer.\n* How does practice of Hinduism address protecting environment?\n* Arranged marriages: What do you know about them? Pros and Cons? Address sacrifice, adjustment, patience and respect?\n* Why should we go to temples and attend rituals?\n\n**Unit 3 – Service Oriented – Field and community service activities**\n\nCommunity service projects participation in a more active manner by providing help within Bal Vihar and to the outside community. A calendar of activities would be given. The following activities are proposed\n\n* Food Drive\n* Clothing drive\n* In house community projects with younger classes\n* CANstruction drive\n* Poverty simulation\n* Volunteer at various food banks\n* Volunteer at Hindu Temple\n* Other Interfaith projects\n\n**Unit 4 – Bal Vihar Classroom Volunteers**\n\n* Assist teachers and other volunteers in day-to-day running of a session. This will be done in rotation among the youth.  This activity will enable the youth to become Bal Vihar teachers as they get older. Currently Y5 will teach and Y4 will be assisting.\n* The specific tasks of assisting in Y4 and Y5 will include research and preparing for the classes, some communication to the parents before and after each class and teaching at least 3-5 classes. Some youth may be given the opportunity to take classes on their own.\n* Bal Vihar teaching and youth group coordinators will further redefine these roles\n\n**Unit 5- Field Trips – Subject to change every year**\n\n* Hindu temple Visit on the first day of the class for the Y1 class\n* Sikh Gurdwara\n* Jewish temple\n* ISKCON\n* Buddhist monastery\n* Vedanta Society\n* Bahai Temple\n* Out of town trip to various temples',
-  },
-  educationPolicy: {
-    title: "Education Policy",
-    description: "Education policy information for Bal Vihar students and families.",
-    content:
-      "## Bal Vihar Graduation\n\nThe committee consisting of teacher coordinators and the teachers **from the Group 7 and Y3 group** will finalize the list of graduating students after taking teacher’s inputs and based on the following criteria :-\n\n### Children transferring to Bal Vihar of St. Louis\n\nThis policy is for a child who has attended a school similar in spirit to Bal Vihar of St. Louis for at least two years. In order for a child to graduate whether in regular school or  Bal Vihar youth program the following requirements will need to be fulfilled: -\n\n* Spend at least two years in either program of Bal Vihar school.\n* Provide written evidence of having attended a similar school.\n* At least 70% attendance during the year.\n\n### Children who have attended only Bal Vihar of St. Louis\n\nThis policy is for children who have attended only Bal Vihar of St. Louis. In order to graduate, the child will be required to fulfill the following requirements:-\n\n* Spend at least 2 years overall with Bal Vihar or in youth program.\n* At least 70% attendance during the year.\n* An interview or other testing with the relevant Bal Vihar teachers as deemed necessary by the teacher coordinator committee.\n\n## Youth Group Admission Criteria\n\nIf you would like to register as a new student or continue in the youth group, the following criteria should be met. Please discuss with your parents before future registration: -\n\n* You MUST be able to be present in the class by 10:00 AM.\n* You MUST be available for all classes unless there is a valid reason.\n* All assigned homework NEED to be completed and e-mailed before the next class.\n* All students assigned to various classrooms, writing articles, community projects and other activities MUST be committed and complete those assignments in time\n* Once you have registered and have not met the above mentioned criteria, you may be asked to leave the group and no community credit hours could be claimed.\n\nA completion requirement for this group is set by the youth coordinators. Upon successful completion of the youth curriculum set by the school will provide a certificate with community service hours that were earned by the youth. This certificate may be used by student towards community credit hours requirement for the high school graduation.  Youth is required to sign a completion requirement form provided by the teacher.\n\n## Promotions\n\nBal Vihar students will be promoted to next group if they have met the following criteria: -\n\n* Attended at least 70 % of the classes.\n* Must have met all requirements set by the teachers.\n* Must pass the written/oral and/or tests administered by the teachers.\n* No disciplinary actions taken against the students in the past two years.\n\nAll students that cannot attend a class must notify their class teacher at least one day in advance. This will be considered as excused absence that will not be counted as absent. Teachers will take attendance during every class.\n\n## Community Hours for Youth Group Students\n\nBal Vihar students are involved in many volunteer activities and the school wishes to recognize that by providing community hours certificate. Students who require community credit hours for the high school graduation may also use this certificate.\n\n* Youth may be required to sign a completion requirement form provided by the teacher.\n* The community hours can also be provided to individual students upon completion of any volunteer activity sponsored by the Bal Vihar as soon as the activity is completed, upon request. The community hours awarded will be decided by the youth teachers taking into consideration of the students’ attendance, participation, activities, contribution etc.\n\n## Perfect Attendance Recognition\n\nThese awards can be given within each class by the respective teachers. Two category awards include one category where students have 100% attendance and other at least 90% attendance. Up to two excused absences due to illness will be accepted as an attended class for the purpose of this award.\n\nIf a student is absent for more than 3 consecutive classes without reason or without informing the teacher then the teacher can refer the matter to the teacher coordinators. Teacher coordinators will get in touch with the parents of the student and ascertain the reason for being absent. If it is deemed necessary, the teacher coordinators will make the final recommendation to the President of Bal Vihar that the student be asked to leave Bal Vihar. The case will be documented and the President will communicate the decision to the parents of the child.",
-  },
-  classWebpages: {
-    title: "Class Webpages",
-    description: "Class and enrichment webpage links.",
-    content:
-      "Webpages for each class. Some links may point to older class sites or downloadable classroom materials.\n\n* [K-1](http://k1.balvihar-stlouis.org)\n* [1-A](http://1a.balvihar-stlouis.org)\n* [2-A](http://2a.balvihar-stlouis.org)\n* [3-A](http://3a.balvihar-stlouis.org)\n* [4-A](http://4a.balvihar-stlouis.org)\n* [5-A](http://5a.balvihar-stlouis.org)\n* [6-A](http://6a.balvihar-stlouis.org)\n* [7-A](http://7a.balvihar-stlouis.org)\n* [Y1](http://y1.balvihar-stlouis.org)\n* [Y2](http://y2.balvihar-stlouis.org)\n* [Y3](http://y3.balvihar-stlouis.org)\n* [Y4](http://y4.balvihar-stlouis.org)\n* [Art](http://art.balvihar-stlouis.org)\n* [Bhajan](http://bhajan.balvihar-stlouis.org)\n* [Yoga](http://yoga.balvihar-stlouis.org)\n* [Community Projects](http://communityprojects.balvihar-stlouis.org/contact-teachers)\n* [Feature Articles/Essays](https://sites.google.com/a/balvihar-stlouis.org/feature-articles-essays/introduction)",
   },
   classSchedule: {
     title: "Class Schedule",
@@ -267,7 +233,7 @@ export const STATIC_PAGES = {
       },
       {
         label: "Volunteer Policies",
-        href: "/volunteering/volunteer-policies",
+        href: "/about-us/policies-procedures#volunteer",
         description: "Expectations and policies for volunteers.",
       },
       {
@@ -291,21 +257,22 @@ export const STATIC_PAGES = {
   },
   volunteerApplication: {
     title: "Volunteer Application",
-    description: "How to start the Bal Vihar volunteer application process.",
+    description:
+      "Apply to volunteer with Bal Vihar of St. Louis for teaching, events, and community programs.",
     content:
-      "Bal Vihar is a volunteer-based organization, and volunteer support is essential to education, events, administration, and community programs.\n\nIf you are interested in volunteering, review the current volunteer opportunities and policies first. Then contact the administrative team through the contact page so the team can route your interest to the appropriate volunteer group.\n\n* [Review Volunteer Opportunities](/volunteering/volunteer-opportunities)\n* [Review Volunteer Policies](/volunteering/volunteer-policies)\n* [Contact Bal Vihar](/questions#contact)",
-  },
-  volunteerPolicies: {
-    title: "Volunteer Policies",
-    description: "Volunteer policies and expectations for Bal Vihar families.",
-    content:
-      "Volunteering Requirements\n\nIt is required that every Bal Vihar parent complete a voluntary activity(ies)/ assignment(s) during Bal Vihar school year. Voluntary activity requirement is per child and if more than one child is registered parents are required to volunteer for number of activities that equals the number of kids registered.\n\nIt is the responsibility of the parents to complete the agreed upon voluntary assignment and for personal reasons if any parent cannot meet the commitment, it is his/her  responsibility to delegate the activity to another parent. The volunteer coordinator must be notified at least 2 weeks in advance of any changes.\n\n**Selecting / Assigning Voluntary Activities**\n\nThe Bal Vihar parents can choose the voluntary activities during the registration time and the selection/assignment process is based on first come first serve basis. Bal Vihar events coordinator reserves the right to re-assign activity assignment on as-needed basis.\n\n**What Qualifies for Volunteer Commitments?**\n\nSigning up to be a classroom parent (assist with art projects and other activities in the class) and must work at least 8 classes\n\n* At least 8 hours of volunteer work including participating event related or other meeting will be considered as the completion of the voluntary requirement\n* The event leads will provide the completion of the voluntary requirements for all the events\n* The education leads will certify the class room voluntary requirements\n* Teachers, community projects organizers and administrative team members are classified as volunteers\n\nVolunteer Deposit and Refund\n\nDuring registration process parents are required to deposit $50 per child and choose voluntary activity.\n\nThe Parents can opt out of voluntary activity assignments by choosing the “Buy-out” option thus relieving the parents from work assignments and the $50 deposit per kid will be treated as Bal Vihar fee. Voluntary activities need to be completed in the same academic year and the parents who fail to do so will fore-go the deposit.\n\nUpon satisfactory completion of the voluntary commitment, Bal Vihar will refund voluntary deposit to the parents. However, at the discretion of the Volunteer management and Event coordinating committee voluntary deposit refund policy could be construed as volunteer activity per family based on the volunteer needs.",
+      "Bal Vihar is a volunteer-run organization, and every one of our programs depends on parents and community members who give their time. Tell us where you would like to help and a member of the volunteer team will be in touch.\n\nNot sure where to start? Read about the [volunteer opportunities](/volunteering/volunteer-opportunities) and the [volunteer policies](/about-us/policies-procedures#volunteer) first.",
+    singleColumn: true,
   },
   volunteersList: {
     title: "Volunteers List",
     description: "Volunteers list.",
     content:
-      "**Advisory Board:**\n\n* Sudhir R. Brahmbhatt\n* Subbu Subramanian\n* Kirti Mehrotra\n* Ravi Malhotra\n* Chandrakant Tailor\n* Rajeev Sabherwal\n* Tony Bhalla\n\n**Executive Committee:**\n\n* Sudhir Brahmbhatt\n* Shoba Sekhar\n* Nandita Chickermane\n* Subbu Subramanian\n* Shailee Saran Varanasi\n* Srinivas Rao Pandiri\n* Vishwakant Tripathi\n* Raj Iyer\n* Giri Yanamala\n* Shanthi Krishnan\n* Komal Sabherwal\n\n**Administrative Team:**\n\n* Sudhir Brahmbhatt\n* Subbu Subramanian\n* Srinivas Rao Pandiri\n* Giri Yanamala\n* Ginny Taneja\n* Nayana Deore\n* Kavita Ramkrishnan\n* Vaishali Soneta\n* Nandita Chickermane\n* Jinal Doshi\n* Shanthi Krishnan\n* Komal Sabherwal\n* Sunil Raikhanghar\n* Shoba Sekhar\n* Gururaj Nagarajan\n* Pallavi Rai Sinha\n* Raj Iyer\n* Shailee Saran\n* Vish Tripathi\n* Shuba Bhaskar\n* Manav Misra\n* Shashi Dhar\n* Jwalant Ahir\n* Prashant Rausaria\n* Neeraj Agarwal\n* Suresh Vishwakarma\n* Rajeev Sharma\n* Srinivas Anne",
+      "Meet the volunteers serving on Bal Vihar’s Advisory Board, Executive Committee, and Administrative Team.",
     singleColumn: true,
   },
 } satisfies Record<string, StaticPageContent>;
+
+export const createStaticPageMetadata = (page: StaticPageContent): Metadata => ({
+  title: `${BASE_TITLE} | ${page.title}`,
+  description: page.description,
+});

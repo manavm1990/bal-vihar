@@ -1,94 +1,113 @@
 interface NavigationItem {
   name: string;
   link: string;
+  /** Menus near the right edge open leftward so the dropdown stays on screen. */
+  align?: "right";
   items: NavigationSubItem[];
 }
 
-interface NavigationSubItem {
+export interface NavigationSubItem {
   name: string;
   link: string;
+  /** Consecutive items sharing a group are rendered together under a heading. */
+  group?: string;
 }
 
-export const NAVIGATION = [
+export const NAVIGATION: readonly NavigationItem[] = [
   {
     name: "About Us",
     link: "/about-us",
     items: [
+      { name: "About Bal Vihar", link: "/about-us" },
       { name: "History", link: "/about-us/history" },
       { name: "President's Message", link: "/presidents-message" },
-      { name: "Advisory Board", link: "/about-us/advisory-board" },
       { name: "Administrative Team", link: "/about-us/administrative-team" },
+      { name: "Advisory Board", link: "/about-us/advisory-board" },
       { name: "Policies & Procedures", link: "/about-us/policies-procedures" },
-      { name: "Community Outreach", link: "/about-us/community-outreach" },
     ],
   },
   {
     name: "Admissions",
     link: "/admissions",
     items: [
-      { name: "Admission Process", link: "/admissions/admission-process" },
-      { name: "Refund Policy", link: "/admissions/refund-policy" },
+      { name: "Admissions Overview", link: "/admissions" },
+      { name: "Admissions Policies", link: "/about-us/policies-procedures#admissions" },
     ],
   },
   {
     name: "Education",
     link: "/education",
     items: [
-      { name: "Curriculum  (K - 7)", link: "/education/curriculum-k-7" },
-      { name: "Curriculum - Youth Group", link: "/education/curriculum-youth-group" },
-      { name: "Education Policy", link: "/education/education-policy" },
-      { name: "Class Webpages", link: "/education/class-webpages" },
+      { name: "Education Overview", link: "/education" },
+      { name: "Curriculum (K–7)", link: "/education/curriculum-k-7" },
+      { name: "Curriculum – Youth Group", link: "/education/curriculum-youth-group" },
       { name: "Class Schedule", link: "/education/class-schedule" },
+      { name: "Education Policies", link: "/about-us/policies-procedures#education" },
     ],
   },
   {
-    name: "News & Events",
+    name: "Events & Community",
     link: "/news-and-events",
     items: [
       { name: "News & Events", link: "/news-and-events" },
       { name: "Calendar", link: "/calendar" },
       { name: "Photos", link: "/photos" },
-    ],
-  },
-  {
-    name: "Resources",
-    link: "/resources",
-    items: [
-      { name: "Parents", link: "/resources/parents" },
-      { name: "Students", link: "/resources/students" },
-      { name: "Faculty", link: "/resources/faculty" },
-      { name: "Admin", link: "/resources/admin" },
-    ],
-  },
-  {
-    name: "Giving",
-    link: "/giving",
-    items: [
-      { name: "Welcome Message", link: "/giving/welcome-message" },
-      { name: "Give Online", link: "/giving/give-online" },
-      { name: "Make a Gift", link: "/giving/make-a-gift" },
-      { name: "Matching Gift Program", link: "/giving/matching-gift-program" },
-      { name: "Matching Gift Companies", link: "/giving/matching-gift-companies" },
-      { name: "Event Sponsors", link: "/giving/event-sponsors" },
-    ],
-  },
-  {
-    name: "Volunteering",
-    link: "/volunteering",
-    items: [
-      { name: "Why Volunteer?", link: "/volunteering/why-volunteer" },
-      { name: "Volunteer Opportunities", link: "/volunteering/volunteer-opportunities" },
-      { name: "Volunteer Application", link: "/volunteering/volunteer-application" },
-      { name: "Volunteer Policies", link: "/volunteering/volunteer-policies" },
-      { name: "Volunteers List", link: "/volunteering/volunteers-list" },
-    ],
-  },
-  {
-    name: "Community Projects",
-    link: "/community-projects",
-    items: [
-      { name: "Overview", link: "/community-projects" },
+      { name: "Community Projects", link: "/community-projects" },
       { name: "Community Outreach", link: "/about-us/community-outreach" },
     ],
   },
-] as const satisfies readonly NavigationItem[];
+  {
+    name: "Get Involved",
+    link: "/volunteering",
+    align: "right",
+    items: [
+      { name: "Volunteering Overview", link: "/volunteering", group: "Volunteer" },
+      {
+        name: "Apply to Volunteer",
+        link: "/volunteering/volunteer-application",
+        group: "Volunteer",
+      },
+      { name: "Why Volunteer?", link: "/volunteering/why-volunteer", group: "Volunteer" },
+      {
+        name: "Volunteer Opportunities",
+        link: "/volunteering/volunteer-opportunities",
+        group: "Volunteer",
+      },
+      {
+        name: "Volunteer Policies",
+        link: "/about-us/policies-procedures#volunteer",
+        group: "Volunteer",
+      },
+      { name: "Volunteers List", link: "/volunteering/volunteers-list", group: "Volunteer" },
+      { name: "Giving Overview", link: "/giving", group: "Give" },
+      { name: "Welcome Message", link: "/giving/welcome-message", group: "Give" },
+      { name: "Give Online", link: "/giving/give-online", group: "Give" },
+      { name: "Make a Gift", link: "/giving/make-a-gift", group: "Give" },
+      { name: "Matching Gift Program", link: "/giving/matching-gift-program", group: "Give" },
+      { name: "Matching Gift Companies", link: "/giving/matching-gift-companies", group: "Give" },
+      { name: "Event Sponsors", link: "/giving/event-sponsors", group: "Give" },
+    ],
+  },
+  {
+    name: "Contact",
+    link: "/questions",
+    align: "right",
+    items: [
+      { name: "Questions & FAQs", link: "/questions" },
+      { name: "File a Grievance", link: "/grievance" },
+      { name: "Submit an Expense", link: "/expense-reimbursement" },
+    ],
+  },
+];
+
+export function groupItems(items: readonly NavigationSubItem[]) {
+  const groups: { heading?: string; items: NavigationSubItem[] }[] = [];
+
+  for (const item of items) {
+    const last = groups.at(-1);
+    if (last && last.heading === item.group) last.items.push(item);
+    else groups.push({ heading: item.group, items: [item] });
+  }
+
+  return groups;
+}

@@ -3,28 +3,8 @@
 import { ChevronDownIcon, Cross1Icon as CrossIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
-
-import { NAVIGATION } from "../constants";
+import { groupItems, NAVIGATION } from "../constants";
 import useMobile from "./use-mobile";
-
-const MENU_VARIANTS = {
-  open: {
-    x: 0,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 30,
-    },
-  },
-  closed: {
-    x: "100%",
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 30,
-    },
-  },
-} as const;
 
 const ITEM_VARIANTS = {
   open: {
@@ -43,6 +23,25 @@ const ITEM_VARIANTS = {
     y: 20,
     transition: {
       duration: 0.2,
+    },
+  },
+} as const;
+
+const MENU_VARIANTS = {
+  open: {
+    x: 0,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 30,
+    },
+  },
+  closed: {
+    x: "100%",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 30,
     },
   },
 } as const;
@@ -148,16 +147,30 @@ export default function MobileNav() {
                       variants={ITEM_VARIANTS}
                       className="ml-4 overflow-hidden"
                     >
-                      {section.items.map((item) => (
-                        <motion.li key={item.name} variants={SUB_ITEM_VARIANTS}>
-                          <Link
-                            href={item.link}
-                            className="text-navy-600 hover:text-primary-ink block p-2 text-sm"
-                          >
-                            {item.name}
-                          </Link>
-                        </motion.li>
-                      ))}
+                      {groupItems(section.items).flatMap((group) => [
+                        ...(group.heading
+                          ? [
+                              <motion.li
+                                key={`heading-${group.heading}`}
+                                variants={SUB_ITEM_VARIANTS}
+                              >
+                                <p className="text-muted-foreground px-2 pt-3 pb-1 text-xs font-semibold tracking-wide uppercase">
+                                  {group.heading}
+                                </p>
+                              </motion.li>,
+                            ]
+                          : []),
+                        ...group.items.map((item) => (
+                          <motion.li key={item.link} variants={SUB_ITEM_VARIANTS}>
+                            <Link
+                              href={item.link}
+                              className="text-navy-600 hover:text-primary-ink block p-2 text-sm"
+                            >
+                              {item.name}
+                            </Link>
+                          </motion.li>
+                        )),
+                      ])}
                     </motion.ul>
                   )}
                 </AnimatePresence>
