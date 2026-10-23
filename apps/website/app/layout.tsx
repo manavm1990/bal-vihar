@@ -1,7 +1,6 @@
 import { DisableDraftMode } from "@components/disable-draft-mode.client";
 import Footer from "@components/footer";
 import Header from "@components/header";
-import QuickLinks from "@components/quick-links";
 import { BASE_TITLE, DESCRIPTION, ORGANIZATION_LEGAL_NAME } from "@lib/constants";
 import { SanityLive } from "@lib/sanity/live";
 import { createJsonLd } from "@lib/utils";
@@ -42,10 +41,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
-      <body className={`${poppins.variable} ${eczar.variable} pb-14 font-sans md:pb-0`}>
+      <body className={`${poppins.variable} ${eczar.variable} font-sans`}>
         <script type="application/ld+json">{JSON.stringify(createJsonLd(TITLE))}</script>
 
-        <QuickLinks />
         <Header />
         <main className="container pt-8 pb-4 md:pt-12">{children}</main>
         <Footer />
