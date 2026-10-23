@@ -17,16 +17,28 @@ const nextConfig: NextConfig = {
     { source: "/giving/make-a-gift", destination: "/giving", permanent: true },
     {
       source: "/giving/matching-gift-companies",
-      destination: "/giving/matching-gifts",
+      destination: "/giving#matching-gifts",
       permanent: true,
     },
     {
       source: "/giving/matching-gift-program",
-      destination: "/giving/matching-gifts",
+      destination: "/giving#matching-gifts",
       permanent: true,
     },
+    { source: "/giving/matching-gifts", destination: "/giving#matching-gifts", permanent: true },
     { source: "/giving/welcome-message", destination: "/giving", permanent: true },
     { source: "/news-and-events", destination: "/calendar", permanent: true },
+    {
+      source: "/volunteering/volunteer-application",
+      destination: "/volunteering#apply",
+      permanent: true,
+    },
+    {
+      source: "/volunteering/volunteer-opportunities",
+      destination: "/volunteering",
+      permanent: true,
+    },
+    { source: "/volunteering/why-volunteer", destination: "/volunteering", permanent: true },
   ],
   images: {
     remotePatterns: [

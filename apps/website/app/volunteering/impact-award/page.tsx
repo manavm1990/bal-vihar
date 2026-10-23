@@ -11,7 +11,6 @@ import { H1, H2, H3, LeadP, MutedP, Ol, P, Strong, Table, Ul } from "@components
 import { BASE_TITLE } from "@lib/constants";
 import { cva } from "class-variance-authority";
 import type { Metadata } from "next";
-import Link from "next/link";
 
 import AwardApplicationForm from "./components/form/award-application-form.client";
 import {
@@ -252,7 +251,7 @@ function QuickFacts() {
 
       <div className="flex flex-wrap gap-3">
         <Button asChild size="lg">
-          <Link href="#apply">Apply</Link>
+          <a href="#apply">Apply</a>
         </Button>
         {trackingSheet && (
           <Button asChild size="lg" variant="outline">
@@ -273,12 +272,12 @@ function SectionNav() {
       <ul className="flex flex-wrap gap-2">
         {SECTIONS.map((section) => (
           <li key={section.id}>
-            <Link
+            <a
               href={`#${section.id}`}
               className="border-border text-navy-600 hover:bg-accent hover:text-primary-ink inline-block rounded-full border px-4 py-1.5 text-sm font-medium hover:no-underline"
             >
               {section.label}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>

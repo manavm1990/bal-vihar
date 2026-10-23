@@ -8,14 +8,23 @@ interface ArticleProps extends TextColumnsProps {
   title: string;
   subtitle?: string;
   photoPath?: string;
+  intro?: React.ReactNode;
 }
 
-export default function Article({ title, subtitle, photoPath, children, className }: ArticleProps) {
+export default function Article({
+  title,
+  subtitle,
+  photoPath,
+  intro,
+  children,
+  className,
+}: ArticleProps) {
   return (
     <article className="space-y-4">
       <H1>{title}</H1>
       {subtitle && <LeadP>{subtitle}</LeadP>}
       <PagePhoto path={photoPath} />
+      {intro}
       <TextColumns className={className}>{children}</TextColumns>
     </article>
   );

@@ -55,29 +55,9 @@ export const NAVIGATION: readonly NavigationItem[] = [
     link: "/volunteering",
     align: "right",
     items: [
-      { name: "Volunteering", link: "/volunteering", group: "Volunteer" },
-      {
-        name: "Apply to Volunteer",
-        link: "/volunteering/volunteer-application",
-        group: "Volunteer",
-      },
-      {
-        name: "Volunteer Opportunities",
-        link: "/volunteering/volunteer-opportunities",
-        group: "Volunteer",
-      },
-      {
-        name: "B-VISION Impact Award",
-        link: "/volunteering/impact-award",
-        group: "Volunteer",
-      },
-      {
-        name: "Volunteer Policies",
-        link: "/about-us/policies-procedures#volunteer",
-        group: "Volunteer",
-      },
-      { name: "Giving", link: "/giving", group: "Give" },
-      { name: "Matching Gifts", link: "/giving/matching-gifts", group: "Give" },
+      { name: "Volunteering", link: "/volunteering" },
+      { name: "B-VISION Impact Award", link: "/volunteering/impact-award" },
+      { name: "Giving", link: "/giving" },
     ],
   },
   {

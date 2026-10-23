@@ -18,15 +18,22 @@ interface MarkdownSection {
 interface StaticContentPageProps {
   page: StaticPageContent;
   photoPath?: string;
+  intro?: React.ReactNode;
   children?: React.ReactNode;
 }
 
-export default function StaticContentPage({ page, photoPath, children }: StaticContentPageProps) {
+export default function StaticContentPage({
+  page,
+  photoPath,
+  intro,
+  children,
+}: StaticContentPageProps) {
   return (
     <Article
       title={page.title}
       subtitle={page.subtitle}
       photoPath={photoPath}
+      intro={intro}
       className={page.singleColumn ? "md:columns-1" : undefined}
     >
       <MarkdownContent content={page.content} />
@@ -54,6 +61,8 @@ interface SmartLinkProps {
 }
 
 function SmartLink({ href, children }: SmartLinkProps) {
+  if (href.startsWith("#")) return <a href={href}>{children}</a>;
+
   return href.startsWith("http") ? (
     <a href={href} target="_blank" rel="noopener noreferrer">
       {children}

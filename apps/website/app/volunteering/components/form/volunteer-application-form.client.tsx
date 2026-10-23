@@ -20,7 +20,7 @@ export default function VolunteerApplicationForm() {
 
   if (successMessage)
     return (
-      <Card className="max-w-3xl overflow-hidden">
+      <Card className="overflow-hidden">
         <TricolorBand />
         <div className="p-5 sm:p-8">
           <FormSuccess title="Thank you for volunteering!" message={successMessage} />
@@ -29,7 +29,7 @@ export default function VolunteerApplicationForm() {
     );
 
   return (
-    <Card className="max-w-3xl overflow-hidden">
+    <Card className="overflow-hidden">
       <TricolorBand />
       <form noValidate onSubmit={onSubmit} aria-busy={isPending} className="space-y-8 p-5 sm:p-8">
         <header className="space-y-2">
@@ -45,17 +45,20 @@ export default function VolunteerApplicationForm() {
           </p>
         </header>
 
-        <fieldset disabled={isPending} className="min-w-0 space-y-10">
+        <fieldset
+          disabled={isPending}
+          className="min-w-0 space-y-10 lg:grid lg:grid-cols-2 lg:gap-x-16 lg:space-y-0"
+        >
           <legend className="sr-only">Volunteer application</legend>
 
           <motion.section className="space-y-5" {...getRevealProps(0, shouldReduceMotion)}>
             <StepHeading number="01" title="About you" />
-            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-1">
               <FormField
                 label="Your name"
                 autoComplete="name"
                 required
-                className="sm:col-span-2"
+                className="sm:col-span-2 lg:col-span-1"
                 {...register("name")}
                 error={errors.name?.message}
               />
@@ -116,7 +119,7 @@ function InterestChoices({ register, error }: InterestChoicesProps) {
           *
         </span>
       </legend>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
         {VOLUNTEER_INTERESTS.map((interest) => (
           <label key={interest} className="relative block">
             <input
