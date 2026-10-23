@@ -97,6 +97,8 @@
                 "selector": {
                   "kind": "objectLiteralProperty"
                 },
+                // Sanity's system fields (`_type`, `_key`, `_ref`…) keep their API names.
+                "match": "_(?:createdAt|id|key|ref|rev|type|updatedAt|weak)|(.+)",
                 "formats": ["camelCase", "CONSTANT_CASE", "PascalCase", "snake_case"]
               }
             ]
