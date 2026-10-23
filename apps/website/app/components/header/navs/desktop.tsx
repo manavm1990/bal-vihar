@@ -21,7 +21,7 @@ function Link({ href, ...props }: LinkProps) {
     <NavigationMenu.Link asChild active={isActive}>
       <NextLink
         href={href}
-        className={`hover:bg-accent block rounded-lg p-3 text-sm transition-colors ${
+        className={`hover:bg-accent block rounded-lg px-3 py-2 text-sm transition-colors ${
           isActive ? "text-primary-ink font-medium" : "text-navy-600 hover:text-primary-ink"
         }`}
         {...props}
@@ -66,7 +66,7 @@ interface SubMenuProps {
 function SubMenu({ items, defaultValue = "overview" }: SubMenuProps) {
   return (
     <NavigationMenu.Sub defaultValue={defaultValue}>
-      <NavigationMenu.List className="flex min-w-max gap-x-10 rounded-lg p-4 shadow">
+      <NavigationMenu.List className="flex min-w-max gap-x-8 rounded-lg p-4 shadow">
         {groupItems(items).map((group) => (
           <NavigationMenu.Item key={group.heading ?? "links"} className="min-w-48">
             {group.heading && (
@@ -74,7 +74,7 @@ function SubMenu({ items, defaultValue = "overview" }: SubMenuProps) {
                 {group.heading}
               </p>
             )}
-            <ul className="space-y-1">
+            <ul className="space-y-0.5">
               {group.items.map((item) => (
                 <li key={item.link}>
                   <Link href={item.link}>{item.name}</Link>
