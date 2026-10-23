@@ -28,7 +28,7 @@ export const STATIC_PAGES = {
     title: "Admissions",
     description: "Admissions overview for students ages 5 through 18.",
     content:
-      "Bal Vihar of St. Louis admits any student aged 5 through 18, regardless of their background, and expects all to abide by the [policies and procedures](/about-us/policies-procedures).",
+      "Bal Vihar of St. Louis admits any student aged 5 through 18, regardless of their background, and expects all to abide by the [policies and procedures](/about-us/policies-procedures). New to Bal Vihar? Read the [New Families guide](/new-families).",
     singleColumn: true,
   },
   education: {
