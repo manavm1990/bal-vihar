@@ -293,7 +293,7 @@ function renderBlock(block: MarkdownBlock, blockIndex: number) {
 
 function renderInline(text: string): React.ReactNode {
   const nodes: React.ReactNode[] = [];
-  const pattern = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|\*([^*]+)\*/g;
+  const pattern = /\[([^\]]+)\]\(([^)]+)\)|\*\*\*([^*]+)\*\*\*|\*\*([^*]+)\*\*|\*([^*]+)\*/g;
   let lastIndex = 0;
   let key = 0;
 
@@ -303,8 +303,9 @@ function renderInline(text: string): React.ReactNode {
 
     const label = match[1];
     const href = match[2];
-    const strongText = match[3];
-    const emphasisText = match[4];
+    const strongEmphasisText = match[3];
+    const strongText = match[4];
+    const emphasisText = match[5];
 
     if (label && href) {
       const normalizedHref = normalizeHref(href);
@@ -317,10 +318,16 @@ function renderInline(text: string): React.ReactNode {
           cleanInlineText(label)
         ),
       );
+    } else if (strongEmphasisText) {
+      nodes.push(
+        <Strong key={key}>
+          <Em>{renderInline(strongEmphasisText)}</Em>
+        </Strong>,
+      );
     } else if (strongText) {
-      nodes.push(<Strong key={key}>{cleanInlineText(strongText)}</Strong>);
+      nodes.push(<Strong key={key}>{renderInline(strongText)}</Strong>);
     } else if (emphasisText) {
-      nodes.push(<Em key={key}>{cleanInlineText(emphasisText)}</Em>);
+      nodes.push(<Em key={key}>{renderInline(emphasisText)}</Em>);
     }
 
     key += 1;
