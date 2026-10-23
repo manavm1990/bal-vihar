@@ -2,6 +2,8 @@ import { stegaClean } from "@sanity/client/stega";
 import type { PortableText } from "next-sanity";
 import type { ComponentProps } from "react";
 import type { POLICIES_QUERY_RESULT } from "../../../sanity.types";
+import { sanityFetch } from "./live";
+import { POLICIES_QUERY } from "./queries";
 
 export type PolicyBody = ComponentProps<typeof PortableText>["value"];
 
@@ -29,6 +31,11 @@ export interface PolicySectionView {
 export interface PoliciesView {
   intro: string;
   sections: PolicySectionView[];
+}
+
+export interface NumberedPolicySection {
+  number: number;
+  section: PolicySectionView;
 }
 
 function fromQuery(data: NonNullable<POLICIES_QUERY_RESULT>): PoliciesView {
@@ -64,3 +71,16 @@ export const getPolicies = (data: POLICIES_QUERY_RESULT): PoliciesView =>
 
 const toBody = (value: unknown): PolicyBody =>
   (Array.isArray(value) ? value : []) as unknown as PolicyBody;
+
+/** Loads one policy section by slug with its position among all sections, or null if absent. */
+export async function fetchPolicySection(slug: string): Promise<NumberedPolicySection | null> {
+  const result = await sanityFetch({ query: POLICIES_QUERY }).catch((error: unknown) => {
+    console.error(`Could not load the ${slug} policies`, error);
+    return null;
+  });
+  const { sections } = getPolicies(result?.data ?? null);
+  const index = sections.findIndex((section) => section.slug === slug);
+  const section = sections[index];
+
+  return section ? { number: index + 1, section } : null;
+}
