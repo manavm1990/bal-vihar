@@ -23,7 +23,7 @@ const INTERNAL_LINKS = new Map<string, string>([
   ["FAQs", "/questions"],
   ["Admissions", "/admissions"],
   ["Admission_Process", "/admissions/admission-process"],
-  ["Tuition", "/admissions/tuition"],
+  ["Tuition", "/admissions/admission-process"],
   ["Refund_Policy", "/admissions/refund-policy"],
   ["Education", "/education"],
   ["Curriculum_", "/education/curriculum-k-7"],

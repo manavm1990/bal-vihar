@@ -27,7 +27,6 @@ export const NAVIGATION = [
     link: "/admissions",
     items: [
       { name: "Admission Process", link: "/admissions/admission-process" },
-      { name: "Tuition", link: "/admissions/tuition" },
       { name: "Refund Policy", link: "/admissions/refund-policy" },
     ],
   },
