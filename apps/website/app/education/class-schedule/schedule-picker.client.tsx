@@ -21,6 +21,8 @@ interface Group {
   slots: readonly Slot[];
 }
 
+const PARENTS_LOUNGE_NOTE = "Pick-up is from the Parents’ lounge.";
+
 const slot = (time: string, kind: SlotKind, title: string, where?: string): Slot => ({
   time,
   kind,
@@ -28,16 +30,18 @@ const slot = (time: string, kind: SlotKind, title: string, where?: string): Slot
   where,
 });
 
-const lowerDay = (room: number, later: Slot): Slot[] => [
+// Groups K–3 have class first, then yoga and bhajan in their own area.
+const lowerDay = (room: number, place: string, order: readonly [string, string]): Slot[] => [
   slot("10:00 a.m.", "class", "Arathi", `Room #${room}`),
   slot("10:05 a.m.", "class", "Class instruction", `Room #${room}`),
   slot("10:55 a.m.", "pause", "Break"),
   slot("11:05 a.m.", "pause", "Transition to yoga / bhajan"),
-  slot("11:15 a.m.", "practice", "Bhajan", "Stage Right, Room #6"),
-  later,
+  slot("11:15 a.m.", "practice", order[0], place),
+  slot("11:45 a.m.", "practice", order[1], place),
   slot("12:20 p.m.", "end", "Dismissal"),
 ];
 
+// Groups 4–7 do yoga and bhajan first, then class.
 const upperDay = (
   assembly: string,
   first: readonly [string, string],
@@ -53,58 +57,61 @@ const upperDay = (
   slot("12:30 p.m.", "end", "Dismissal"),
 ];
 
+// TODO: Rooms and times come from the 2022–23 classroom layout and the old orientation booklet.
+// Confirm every placement for the current school year, including whether groups have sections.
 const DEFAULT_GROUP: Group = {
-  id: "K-1",
-  label: "K–1",
-  note: "Pick-up is from the Parents’ lounge.",
-  slots: lowerDay(5, slot("11:45 a.m.", "practice", "Yoga", "Stage Right, Room #6")),
+  id: "K",
+  label: "K",
+  note: PARENTS_LOUNGE_NOTE,
+  slots: lowerDay(5, "Stage Right, Room #6", ["Bhajan", "Yoga"]),
 };
 
 const GROUPS: readonly Group[] = [
   DEFAULT_GROUP,
   {
-    id: "1A",
-    label: "1A",
-    slots: lowerDay(10, slot("11:45 a.m.", "practice", "Bhajan", "Stage Left, Room #9")),
+    id: "1",
+    label: "1",
+    note: PARENTS_LOUNGE_NOTE,
+    slots: lowerDay(10, "Stage Left, Room #9", ["Yoga", "Bhajan"]),
   },
   {
-    id: "2A",
-    label: "2A",
-    slots: lowerDay(11, slot("11:45 a.m.", "practice", "Yoga", "Stage Area Center")),
+    id: "2",
+    label: "2",
+    slots: lowerDay(11, "Stage Area Center, Room #8", ["Bhajan", "Yoga"]),
   },
   {
-    id: "3A",
-    label: "3A",
-    slots: lowerDay(4, slot("11:45 a.m.", "practice", "Bhajan", "Center Hall")),
+    id: "3",
+    label: "3",
+    slots: lowerDay(4, "Center Hall", ["Yoga", "Bhajan"]),
   },
   {
-    id: "4A",
-    label: "4A",
+    id: "4",
+    label: "4",
     slots: upperDay(
       "Stage Area Center (Room #8)",
       ["Bhajan", "Stage Area Center (Room #8)"],
-      ["Yoga", "Stage Area Center (Room #4)"],
+      ["Yoga", "Stage Area Center (Room #8)"],
       "Room #10",
     ),
   },
   {
-    id: "5A",
-    label: "5A",
-    slots: upperDay("Hall Area 1", ["Yoga", "Hall Area 1"], ["Bhajan", "Room #3"], "Room #10"),
+    id: "5",
+    label: "5",
+    slots: upperDay("Hall Area 1", ["Yoga", "Hall Area 1"], ["Bhajan", "Room #3"], "Room #3"),
   },
   {
-    id: "6A",
-    label: "6A",
-    slots: upperDay("Hall Area 2", ["Yoga", "Hall Area 2"], ["Bhajan", "Room #2"], "Room #10"),
+    id: "6",
+    label: "6",
+    slots: upperDay("Hall Area 2", ["Yoga", "Hall Area 2"], ["Bhajan", "Room #2"], "Room #2"),
   },
   {
-    id: "7A",
-    label: "7A",
+    id: "7",
+    label: "7",
     slots: upperDay(
-      "Stage Area Left",
-      ["Bhajan", "Stage Area Left"],
-      ["Yoga", "Stage Area Left"],
-      "Room #10",
+      "Stage Area Left (Room #9)",
+      ["Bhajan", "Stage Area Left (Room #9)"],
+      ["Yoga", "Stage Area Left (Room #9)"],
+      "Room #11",
     ),
   },
 ];
@@ -141,7 +148,7 @@ export default function SchedulePicker() {
       </fieldset>
       <H3 className="text-xl">Group {group.label}</H3>
       {group.note && <MutedP>{group.note}</MutedP>}
-      <Ol variant="unstyled" className="space-y-2">
+      <Ol variant="unstyled" className="max-w-3xl space-y-2">
         {group.slots.map((item) => (
           <li key={item.time} className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-4">
             <span className="text-navy-600 pt-2.5 text-sm font-semibold">{item.time}</span>
