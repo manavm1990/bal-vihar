@@ -47,7 +47,7 @@ export default async function RootLayout({
 
         <QuickLinks />
         <Header />
-        <main className="container py-4">{children}</main>
+        <main className="container pt-8 pb-4 md:pt-12">{children}</main>
         <Footer />
         <SanityLive />
         {isDraftMode ? (
