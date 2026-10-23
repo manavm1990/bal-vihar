@@ -109,6 +109,11 @@ export const STATIC_PAGES = {
         description: "Class schedule information.",
       },
       {
+        label: "Class Webpages",
+        href: "/education/class-webpages",
+        description: "What each class covered, homework and helpful links.",
+      },
+      {
         label: "Daily Gita on YouTube",
         href: "https://youtu.be/5wC1C89AQRA",
         description:

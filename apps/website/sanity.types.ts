@@ -238,6 +238,43 @@ export type SanityImageHotspot = {
   width: number;
 };
 
+export type ClassPage = {
+  _id: string;
+  _type: "classPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  sessions?: Array<{
+    date: string;
+    covered: string;
+    homework?: string;
+    links?: Array<
+      {
+        _key: string;
+      } & ClassLink
+    >;
+    _type: "classSession";
+    _key: string;
+  }>;
+  teachers?: string;
+  pinnedNote?: string;
+  links?: Array<
+    {
+      _key: string;
+    } & ClassLink
+  >;
+  title: string;
+  slug: Slug;
+  group: "grade" | "youth" | "enrichment" | "other";
+  sortOrder: number;
+};
+
+export type ClassLink = {
+  _type: "classLink";
+  label: string;
+  url: string;
+};
+
 export type SanityFileAssetReference = {
   _ref: string;
   _type: "reference";
@@ -391,6 +428,8 @@ export type AllSanitySchemaTypes =
   | Event
   | SanityImageCrop
   | SanityImageHotspot
+  | ClassPage
+  | ClassLink
   | SanityFileAssetReference
   | CalendarImport
   | CalendarEvent
@@ -417,6 +456,45 @@ export type CALENDAR_EVENTS_QUERY_RESULT = Array<{
   description: string | null;
   isHighlighted: boolean | null;
   academicYear: string | null;
+}>;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: CLASS_PAGE_QUERY
+// Query: *[_type == "classPage" && slug.current == $slug][0]{  _id,  title,  "slug": slug.current,  teachers,  pinnedNote,  links[]{    _key,    label,    url  },  "sessions": sessions[] | order(date desc){    _key,    date,    covered,    homework,    links[]{      _key,      label,      url    }  }}
+export type CLASS_PAGE_QUERY_RESULT = {
+  _id: string;
+  title: string;
+  slug: string;
+  teachers: string | null;
+  pinnedNote: string | null;
+  links: Array<{
+    _key: string;
+    label: string;
+    url: string;
+  }> | null;
+  sessions: Array<{
+    _key: string;
+    date: string;
+    covered: string;
+    homework: string | null;
+    links: Array<{
+      _key: string;
+      label: string;
+      url: string;
+    }> | null;
+  }> | null;
+} | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: CLASS_PAGES_QUERY
+// Query: *[_type == "classPage"] | order(sortOrder asc){  _id,  title,  "slug": slug.current,  group,  teachers,  "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)}
+export type CLASS_PAGES_QUERY_RESULT = Array<{
+  _id: string;
+  title: string;
+  slug: string;
+  group: "enrichment" | "grade" | "other" | "youth";
+  teachers: string | null;
+  hasContent: boolean | true | null;
 }>;
 
 // Source: ../website/app/lib/sanity/queries.ts
@@ -713,6 +791,8 @@ export type SITE_SETTINGS_QUERY_RESULT =
 declare global {
   interface SanityQueries {
     '*[_type == "calendarEvent"] | order(date asc) {\n  _id,\n  title,\n  date,\n  location,\n  eventType,\n  time,\n  description,\n  isHighlighted,\n  academicYear\n}': CALENDAR_EVENTS_QUERY_RESULT;
+    '*[_type == "classPage" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  teachers,\n  pinnedNote,\n  links[]{\n    _key,\n    label,\n    url\n  },\n  "sessions": sessions[] | order(date desc){\n    _key,\n    date,\n    covered,\n    homework,\n    links[]{\n      _key,\n      label,\n      url\n    }\n  }\n}': CLASS_PAGE_QUERY_RESULT;
+    '*[_type == "classPage"] | order(sortOrder asc){\n  _id,\n  title,\n  "slug": slug.current,\n  group,\n  teachers,\n  "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)\n}': CLASS_PAGES_QUERY_RESULT;
     '*[_id == "volunteersList"][0]{\n  _id,\n  groups[]{\n    _key,\n    title,\n    members[]{\n      _key,\n      name,\n      email,\n      phone\n    }\n  }\n}': VOLUNTEERS_LIST_QUERY_RESULT;
     '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  heroSlides[]{\n    _key,\n    link,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  },\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  },\n  whoWeAre\n}': HOME_PAGE_QUERY_RESULT;

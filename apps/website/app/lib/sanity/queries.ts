@@ -27,6 +27,39 @@ export const CALENDAR_EVENTS_QUERY = defineQuery(`*[_type == "calendarEvent"] | 
   academicYear
 }`);
 
+export const CLASS_PAGE_QUERY = defineQuery(`*[_type == "classPage" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  teachers,
+  pinnedNote,
+  links[]{
+    _key,
+    label,
+    url
+  },
+  "sessions": sessions[] | order(date desc){
+    _key,
+    date,
+    covered,
+    homework,
+    links[]{
+      _key,
+      label,
+      url
+    }
+  }
+}`);
+
+export const CLASS_PAGES_QUERY = defineQuery(`*[_type == "classPage"] | order(sortOrder asc){
+  _id,
+  title,
+  "slug": slug.current,
+  group,
+  teachers,
+  "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)
+}`);
+
 export const VOLUNTEERS_LIST_QUERY = defineQuery(`*[_id == "volunteersList"][0]{
   _id,
   groups[]{
