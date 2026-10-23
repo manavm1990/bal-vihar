@@ -29,10 +29,6 @@ export const NAVIGATION: readonly NavigationItem[] = [
   {
     name: "Admissions",
     link: "/admissions",
-    items: [
-      { name: "Admissions Overview", link: "/admissions" },
-      { name: "Admissions Policies", link: "/about-us/policies-procedures#admissions" },
-    ],
   },
   {
     name: "Education",
