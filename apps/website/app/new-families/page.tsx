@@ -19,6 +19,7 @@ const SECTIONS = {
   sunday: "Your Sunday",
   arrival: "Arrival and pick-up",
   bring: "What to bring",
+  "ground-rules": "Ground rules",
   support: "Supporting your child",
   health: "Health and special needs",
   learn: "What children learn",
@@ -29,7 +30,10 @@ const SECTIONS = {
 } as const;
 
 const STATS = [
-  { value: "Every other Sunday", label: "August to May. Dates are on the calendar." },
+  {
+    value: "📆❗",
+    label: "August to May, with breaks and some back-to-back Sundays. Check the calendar.",
+  },
   { value: "10:00 a.m.", label: "Assembly begins. Doors open at 9:45." },
   { value: "Groups K–7", label: "Plus a Youth Program from Grade 8." },
 ] as const;
@@ -78,6 +82,38 @@ const YOGA_WEAR_ITEMS = [
   "Loose, comfortable clothes",
   "No jeans, belts, necklaces and the like",
   "Shorts or tights under a skirt or dress",
+] as const;
+
+const GROUND_RULES = [
+  {
+    title: "In class",
+    rules: [
+      "Enter quietly and with a smile.",
+      "No side talk during class.",
+      "Stay for the Aarti and prasad.",
+    ],
+  },
+  {
+    title: "Around the school",
+    rules: [
+      "Move between the classroom and the Yoga room or Gymnasium in an orderly way. No running.",
+      "Keep the hall and classroom clean, and clean up any mess you see.",
+    ],
+  },
+  {
+    title: "Clothing",
+    rules: [
+      "Children sit cross-legged, so girls should preferably wear long dresses.",
+      "No gym clothes or tight clothes.",
+    ],
+  },
+  {
+    title: "Folders and updates",
+    rules: [
+      "Returning students reuse last year’s class folder. New students get a new folder, and everyone gets a student packet at the start of the year.",
+      "Schedule changes are posted on the website by 8 a.m. on class day.",
+    ],
+  },
 ] as const;
 
 const LEARNING_AREAS = [
@@ -206,6 +242,29 @@ export default function NewFamiliesPage() {
             <CheckList items={YOGA_WEAR_ITEMS} />
           </InfoCard>
         </div>
+      </Section>
+
+      <Section id="ground-rules">
+        <P>
+          Parents are asked to help students follow these rules so Bal Vihar stays a truly
+          educational place.
+        </P>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {GROUND_RULES.map((group) => (
+            <InfoCard key={group.title} title={group.title}>
+              <Ul>
+                {group.rules.map((rule) => (
+                  <li key={rule}>{rule}</li>
+                ))}
+              </Ul>
+            </InfoCard>
+          ))}
+        </div>
+        <Button asChild variant="outline">
+          <Link href="/about-us/policies-procedures#school-requirements">
+            Read the full School Requirements policy
+          </Link>
+        </Button>
       </Section>
 
       <Section id="support">
