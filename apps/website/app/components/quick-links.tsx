@@ -4,10 +4,7 @@ import * as motion from "motion/react-client";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 
-import { ExternalIcon } from "./ui/icons";
-
 interface LinkItem {
-  type?: "internal" | "external";
   href: string;
   text: string;
   className?: string;
@@ -19,12 +16,6 @@ const LINKS: LinkItem[] = [
     href: "/",
     text: "Home 🏠",
     desktopOnly: true,
-    className: "bg-primary/80 text-navy hover:bg-primary-600/80",
-  },
-  {
-    type: "external",
-    href: "https://www.paypal.com/donate?token=KqgZfvm9eCAmtzt-y3rla1Ahp-At4bwhJtvmxmnKSfs3xVsO5MCT8286Mkyi0TVh0yr8b69IdBcYk_6-&locale.x=US",
-    text: "Donate",
     className: "bg-primary/80 text-navy hover:bg-primary-600/80",
   },
   {
@@ -103,19 +94,13 @@ export default function QuickLinks() {
   );
 }
 
-function Link({ type = "internal", href, text, className = "" }: LinkItem) {
-  const COMPONENT = type === "internal" ? NextLink : "a";
-  const componentProps =
-    type === "internal" ? {} : { target: "_blank", rel: "noopener noreferrer" };
-
+function Link({ href, text, className = "" }: LinkItem) {
   return (
-    <COMPONENT
+    <NextLink
       href={href}
       className={`${className} rounded-md px-4 py-2 text-sm transition-transform hover:no-underline md:ml-auto md:rounded-none md:py-2 md:pr-4 md:pl-8 md:text-xs md:[clip-path:polygon(100%_4%,100%_96%,8%_100%,0_0)] md:hover:scale-110`}
-      {...componentProps}
     >
       {text}
-      {type === "external" && <ExternalIcon className="relative bottom-1 left-0.5 size-2" />}
-    </COMPONENT>
+    </NextLink>
   );
 }
