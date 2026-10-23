@@ -29,10 +29,6 @@ export const NAVIGATION: readonly NavigationItem[] = [
   {
     name: "Admissions",
     link: "/admissions",
-    items: [
-      { name: "Admissions", link: "/admissions" },
-      { name: "New Families", link: "/new-families" },
-    ],
   },
   {
     name: "Education",
@@ -43,6 +39,7 @@ export const NAVIGATION: readonly NavigationItem[] = [
       { name: "Class Schedule & Rooms", link: "/education/class-schedule" },
       { name: "Teaching Faculty", link: "/education/teaching-faculty" },
       { name: "Class Webpages", link: "/education/class-webpages" },
+      { name: "New Families", link: "/new-families" },
     ],
   },
   {
