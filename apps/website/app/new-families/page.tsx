@@ -33,6 +33,7 @@ const STATS = [
   { value: "Groups K–7", label: "Plus a Youth Program from Grade 8." },
 ] as const;
 
+// TODO: Times and drop-off details come from the old orientation booklet; confirm each year.
 const DAY_STEPS = [
   {
     time: "9:45 a.m.",
@@ -156,12 +157,17 @@ export default function NewFamiliesPage() {
           Every class opens with assembly at 10:00 a.m., then moves through an hour of classroom
           instruction and an hour of yoga and bhajan.
         </P>
-        <Ol variant="unstyled" className="space-y-3">
+        <Ol variant="unstyled" className="max-w-3xl divide-y rounded-lg border px-5">
           {DAY_STEPS.map((step) => (
-            <li key={step.title} className="space-y-1 rounded-lg border p-4">
-              <p className="text-primary-ink text-sm font-semibold">{step.time}</p>
-              <H3 className="text-xl">{step.title}</H3>
-              <P>{step.detail}</P>
+            <li
+              key={step.title}
+              className="grid gap-1 py-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6"
+            >
+              <p className="text-primary-ink text-sm font-semibold sm:pt-1">{step.time}</p>
+              <div className="space-y-1">
+                <H3 className="text-xl">{step.title}</H3>
+                <P>{step.detail}</P>
+              </div>
             </li>
           ))}
         </Ol>
