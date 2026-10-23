@@ -11,6 +11,7 @@ export default defineCliConfig({
    */
   deployment: {
     autoUpdates: true,
+    appId: "no2127udhxxc6mveuqw4iwwy",
   },
   typegen: {
     // Website queries live outside Studio; schemas come from @bv/schemas via sanity.config.
