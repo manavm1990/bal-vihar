@@ -1,7 +1,7 @@
 import Article from "@components/article";
 import EventCard from "@components/event-card";
 import { Card, CardContent } from "@components/ui/card";
-import { MutedP, P } from "@components/ui/typography";
+import { MutedP } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import { fetchSanityData } from "@lib/sanity/fetch";
 import { mapCalendarEvents } from "@lib/sanity/map-calendar-events";
@@ -19,8 +19,6 @@ export default async function CalendarPage() {
 
   return (
     <Article title="Calendar" className="md:columns-1">
-      <P>Class sessions, festivals, and school-wide activities.</P>
-
       {events.length === 0 ? (
         <Card>
           <CardContent className="p-4">
