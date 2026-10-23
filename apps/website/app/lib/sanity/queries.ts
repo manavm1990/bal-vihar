@@ -62,9 +62,10 @@ export const CLASS_PAGES_QUERY = defineQuery(`*[_type == "classPage"] | order(so
 
 export const VOLUNTEERS_LIST_QUERY = defineQuery(`*[_id == "volunteersList"][0]{
   _id,
-  groups[]{
+  teams[]{
     _key,
-    title,
+    name,
+    description,
     members[]{
       _key,
       name,

@@ -2,9 +2,7 @@ import { stegaClean } from "@sanity/client/stega";
 
 import type { VOLUNTEERS_LIST_QUERY_RESULT } from "../../../sanity.types";
 
-export type VolunteerGroup = NonNullable<
-  NonNullable<VOLUNTEERS_LIST_QUERY_RESULT>["groups"]
->[number];
+export type VolunteerTeam = NonNullable<NonNullable<VOLUNTEERS_LIST_QUERY_RESULT>["teams"]>[number];
 
 /** Keep preview metadata and malformed contact values out of mailto/tel links. */
 export function getVolunteerContactLinks(email: string | null, phone: string | null) {

@@ -1,72 +1,91 @@
 import Article from "@components/article";
-import { P, Strong, Ul } from "@components/ui/typography";
+import { H2, MutedP, P, Ul } from "@components/ui/typography";
+import { sanityFetch } from "@lib/sanity/live";
+import { VOLUNTEERS_LIST_QUERY } from "@lib/sanity/queries";
+import { getVolunteerContactLinks, type VolunteerTeam } from "@lib/sanity/volunteers-list";
 import type { Metadata } from "next";
-
+import Link from "next/link";
 import { ABOUT_US_TITLE } from "../constants";
 
 const TITLE = "Administrative Team 👨‍🏫";
 
 export const metadata: Metadata = {
   title: `${ABOUT_US_TITLE} | ${TITLE}`,
-  description: "Learn more about our administrative team and their roles.",
+  description: "Meet the volunteer teams that run Bal Vihar and what each team does.",
 };
 
-export default function AdministrativeTeamPage() {
+export default async function AdministrativeTeamPage() {
+  const result = await sanityFetch({ query: VOLUNTEERS_LIST_QUERY }).catch((error: unknown) => {
+    console.error("Could not load the volunteer roster", error);
+    return null;
+  });
+  const teams = result?.data?.teams ?? [];
+
   return (
-    <Article title={TITLE}>
+    <Article title={TITLE} className="md:columns-1">
       <P>
         Bal Vihar of St. Louis has a well organized structure comprised of different teams working
         together for smooth delivery of education, execution of operations and various events. These
-        individuals are all dedicated volunteers.
+        individuals are all dedicated volunteers. To get in touch with a team,{" "}
+        <Link href="/questions#contact">contact Bal Vihar</Link>.
       </P>
-
-      <P>The Organization consists of: </P>
-
-      <Ul>
-        <li>
-          <Strong>Executive Committee</Strong> - oversees the organization and provide the overall
-          guidance and support.
-        </li>
-        <li>
-          <Strong>Education</Strong> - This team oversees the class room functions, curriculum,
-          student and parent communication.
-        </li>
-        <li>
-          <Strong>Events</Strong> - Planned and newly adopted events are planned and executed by
-          this team.
-        </li>
-        <li>
-          <Strong>Community Projects</Strong> - Community Projects and Service to the community is
-          an integral part of our curriculum for our children in Youth Group.
-        </li>
-        <li>
-          <Strong>Operations</Strong> - This team oversees day to day operations and planning.
-        </li>
-        <li>
-          <Strong>Website</Strong> - This team oversees website activities, e-mails, photos and
-          maintenance.
-        </li>
-        <li>
-          <Strong>Finance</Strong> - This team addresses all operational details of financial
-          transactions, prepares budget, and handles treasury functions.
-        </li>
-        <li>
-          <Strong>Marketing & Communications</Strong> - This team is responsible for publishing
-          newsletters, submitting events related articles to various news agencies, marketing Bal
-          Vihar&apos;s events etc.
-        </li>
-        <li>
-          <Strong>Fundraising</Strong> - This team oversees Fundraising activities both in-house and
-          outside in the community.
-        </li>
-        <li>
-          <Strong>Youth</Strong> - This team oversees the youth class room activity, curriculum,
-          arrange and execute community projects and arrange field trips.
-        </li>
-        <li>
-          <Strong>Legal</Strong> - provides expert legal advice to Bal Vihar.
-        </li>
-      </Ul>
+      {teams.length === 0 ? (
+        <MutedP>Coming soon.</MutedP>
+      ) : (
+        <div className="space-y-8">
+          {teams.map((team) => (
+            <VolunteerTeamSection key={team._key} team={team} />
+          ))}
+        </div>
+      )}
     </Article>
+  );
+}
+
+interface VolunteerContactProps {
+  member: NonNullable<VolunteerTeam["members"]>[number];
+}
+
+function VolunteerContact({ member }: VolunteerContactProps) {
+  const { email, phone } = getVolunteerContactLinks(member.email, member.phone);
+
+  return !member.name ? null : (
+    <li className="min-w-0 space-y-1">
+      <span className="font-semibold">{member.name}</span>
+      {email ? (
+        <a className="block w-fit max-w-full break-all" href={`mailto:${email}`}>
+          {email}
+        </a>
+      ) : null}
+      {phone ? (
+        <a className="block w-fit" href={`tel:${phone.replace(/[ ()-]/g, "")}`}>
+          {phone}
+        </a>
+      ) : null}
+    </li>
+  );
+}
+
+interface VolunteerTeamSectionProps {
+  team: VolunteerTeam;
+}
+
+function VolunteerTeamSection({ team }: VolunteerTeamSectionProps) {
+  const members = team.members ?? [];
+
+  return (
+    <section className="space-y-4">
+      <H2>{team.name}</H2>
+      {team.description ? <P>{team.description}</P> : null}
+      {members.length === 0 ? (
+        <MutedP>Coming soon.</MutedP>
+      ) : (
+        <Ul variant="unstyled" className="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+          {members.map((member) => (
+            <VolunteerContact key={member._key} member={member} />
+          ))}
+        </Ul>
+      )}
+    </section>
   );
 }
