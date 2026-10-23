@@ -56,12 +56,6 @@ export const STATIC_PAGES = {
       },
     ],
   },
-  advisoryBoard: {
-    title: "Advisory Board",
-    description: "Advisory board information for Bal Vihar of St. Louis.",
-    content:
-      "Bal Vihar has an advisory board consistent of prominent people from the community. Board meetings are held quarterly. The board functions as providing future direction and support to the Bal Vihar’s management team.  \n  \nAdvisory board is designed to provide guidance and oversight for: -\n\n* operational improvements.\n* changes to policies and procedures.\n* growth of the organization.",
-  },
   communityOutreach: {
     title: "Community Outreach",
     description: "Community outreach and service project context for Bal Vihar students.",
