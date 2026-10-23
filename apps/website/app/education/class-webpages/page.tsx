@@ -79,9 +79,16 @@ interface ClassCardProps {
 
 function ClassCard({ slug, title, teachers, hasContent }: ClassCardProps) {
   const card = (
-    <Card className={cn("h-full", hasContent && "hover:bg-muted/60 transition-colors")}>
+    <Card
+      className={cn(
+        "h-full",
+        hasContent
+          ? "border-l-primary hover:bg-muted/60 border-l-4 transition-colors"
+          : "border-dashed shadow-none",
+      )}
+    >
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className={cn(!hasContent && "text-muted-foreground")}>{title}</CardTitle>
         {teachers ? <CardDescription>{teachers}</CardDescription> : null}
         {hasContent ? null : <CardDescription>Coming soon</CardDescription>}
       </CardHeader>
