@@ -1,8 +1,10 @@
 import { SINGLETON_IDS } from "@bv/schemas";
 import { CalendarIcon } from "@sanity/icons/Calendar";
 import { CogIcon } from "@sanity/icons/Cog";
+import { DocumentTextIcon } from "@sanity/icons/DocumentText";
 import { HomeIcon } from "@sanity/icons/Home";
 import { ImagesIcon } from "@sanity/icons/Images";
+import { UsersIcon } from "@sanity/icons/Users";
 import type { StructureResolver } from "sanity/structure";
 
 /**
@@ -35,6 +37,24 @@ export const structure: StructureResolver = (S) =>
           S.documentTypeList("calendarEvent")
             .title("Calendar")
             .defaultOrdering([{ field: "date", direction: "asc" }]),
+        ),
+      S.listItem()
+        .title("Policies & Procedures")
+        .icon(DocumentTextIcon)
+        .child(
+          S.document()
+            .schemaType("policies")
+            .documentId(SINGLETON_IDS.policies)
+            .title("Policies & Procedures"),
+        ),
+      S.listItem()
+        .title("Volunteers List")
+        .icon(UsersIcon)
+        .child(
+          S.document()
+            .schemaType("volunteersList")
+            .documentId(SINGLETON_IDS.volunteersList)
+            .title("Volunteers List"),
         ),
       S.divider(),
       S.listItem()

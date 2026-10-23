@@ -15,20 +15,37 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
-export type Event = {
+export type VolunteersList = {
   _id: string;
-  _type: "event";
+  _type: "volunteersList";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   title: string;
-  slug: Slug;
-  publishedAt: string;
-  summary: string;
-  body?: string;
-  image?: MediaImage;
-  externalUrl?: string;
-  isFeatured?: boolean;
+  groups?: Array<{
+    title: string;
+    members?: Array<{
+      name: string;
+      email?: string;
+      phone?: string;
+      _type: "volunteerContact";
+      _key: string;
+    }>;
+    _type: "volunteerGroup";
+    _key: string;
+  }>;
+};
+
+export type SiteSettings = {
+  _id: string;
+  _type: "siteSettings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  registrationUrl?: string;
+  defaultOgImage?: MediaImage;
+  contactEmail?: string;
 };
 
 export type SanityImageAssetReference = {
@@ -48,66 +65,98 @@ export type MediaImage = {
   caption?: string;
 };
 
+export type Policies = {
+  _id: string;
+  _type: "policies";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  intro: string;
+  sections: Array<{
+    title: string;
+    slug: Slug;
+    intro?: Array<
+      | {
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "normal" | "h5";
+          listItem?: "bullet";
+          markDefs?: Array<{
+            href: string;
+            _type: "link";
+            _key: string;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }
+      | {
+          headers: Array<string>;
+          rows: Array<{
+            cells: Array<string>;
+            _type: "policyTableRow";
+            _key: string;
+          }>;
+          footer?: string;
+          _type: "policyTable";
+          _key: string;
+        }
+    >;
+    items: Array<{
+      title: string;
+      body: Array<
+        | {
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal" | "h5";
+            listItem?: "bullet";
+            markDefs?: Array<{
+              href: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }
+        | {
+            headers: Array<string>;
+            rows: Array<{
+              cells: Array<string>;
+              _type: "policyTableRow";
+              _key: string;
+            }>;
+            footer?: string;
+            _type: "policyTable";
+            _key: string;
+          }
+      >;
+      _type: "policyItem";
+      _key: string;
+    }>;
+    callToAction?: {
+      text?: string;
+      label: string;
+      href: string;
+    };
+    _type: "policySection";
+    _key: string;
+  }>;
+};
+
 export type Slug = {
   _type: "slug";
   current: string;
   source?: string;
-};
-
-export type SanityFileAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-};
-
-export type CalendarImport = {
-  _id: string;
-  _type: "calendarImport";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  academicYear: string;
-  uploadedFile: {
-    asset?: SanityFileAssetReference;
-    media?: unknown;
-    _type: "file";
-  };
-  status?: "uploaded" | "processing" | "completed" | "error";
-  uploadedAt?: string;
-  processedAt?: string;
-  eventsCount?: number;
-  notes?: string;
-  errorLog?: string;
-};
-
-export type CalendarEvent = {
-  _id: string;
-  _type: "calendarEvent";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  date: string;
-  time?: string;
-  location?: "HTCC" | "HT/HTCC" | "HTCC/MGC";
-  eventType?: "regular" | "special" | "celebration" | "holiday" | "project";
-  description?: string;
-  isHighlighted?: boolean;
-  academicYear?: string;
-};
-
-export type SiteSettings = {
-  _id: string;
-  _type: "siteSettings";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  registrationUrl?: string;
-  defaultOgImage?: MediaImage;
-  contactEmail?: string;
 };
 
 export type PhotoGallery = {
@@ -157,6 +206,22 @@ export type HomePage = {
   whoWeAre?: string;
 };
 
+export type Event = {
+  _id: string;
+  _type: "event";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  publishedAt: string;
+  summary: string;
+  body?: string;
+  image?: MediaImage;
+  externalUrl?: string;
+  isFeatured?: boolean;
+};
+
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
   top: number;
@@ -171,6 +236,50 @@ export type SanityImageHotspot = {
   y: number;
   height: number;
   width: number;
+};
+
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type CalendarImport = {
+  _id: string;
+  _type: "calendarImport";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  academicYear: string;
+  uploadedFile: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  status?: "uploaded" | "processing" | "completed" | "error";
+  uploadedAt?: string;
+  processedAt?: string;
+  eventsCount?: number;
+  notes?: string;
+  errorLog?: string;
+};
+
+export type CalendarEvent = {
+  _id: string;
+  _type: "calendarEvent";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  date: string;
+  time?: string;
+  location?: "HTCC" | "HT/HTCC" | "HTCC/MGC";
+  eventType?: "regular" | "special" | "celebration" | "holiday" | "project";
+  description?: string;
+  isHighlighted?: boolean;
+  academicYear?: string;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -271,18 +380,20 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
-  | Event
+  | VolunteersList
+  | SiteSettings
   | SanityImageAssetReference
   | MediaImage
+  | Policies
   | Slug
+  | PhotoGallery
+  | HomePage
+  | Event
+  | SanityImageCrop
+  | SanityImageHotspot
   | SanityFileAssetReference
   | CalendarImport
   | CalendarEvent
-  | SiteSettings
-  | PhotoGallery
-  | HomePage
-  | SanityImageCrop
-  | SanityImageHotspot
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -307,6 +418,120 @@ export type CALENDAR_EVENTS_QUERY_RESULT = Array<{
   isHighlighted: boolean | null;
   academicYear: string | null;
 }>;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: VOLUNTEERS_LIST_QUERY
+// Query: *[_id == "volunteersList"][0]{  _id,  groups[]{    _key,    title,    members[]{      _key,      name,      email,      phone    }  }}
+export type VOLUNTEERS_LIST_QUERY_RESULT =
+  | {
+      _id: "volunteersList";
+      groups: null;
+    }
+  | {
+      _id: "volunteersList";
+      groups: Array<{
+        _key: string;
+        title: string;
+        members: Array<{
+          _key: string;
+          name: string;
+          email: string | null;
+          phone: string | null;
+        }> | null;
+      }> | null;
+    }
+  | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: POLICIES_QUERY
+// Query: *[_id == "policies"][0]{  _id,  intro,  sections[]{    _key,    title,    "slug": slug.current,    intro,    callToAction{      text,      label,      href    },    items[]{      _key,      title,      body    }  }}
+export type POLICIES_QUERY_RESULT =
+  | {
+      _id: "policies";
+      intro: null;
+      sections: null;
+    }
+  | {
+      _id: "policies";
+      intro: string;
+      sections: Array<{
+        _key: string;
+        title: string;
+        slug: string;
+        intro: Array<
+          | {
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "h5" | "normal";
+              listItem?: "bullet";
+              markDefs?: Array<{
+                href: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              headers: Array<string>;
+              rows: Array<{
+                cells: Array<string>;
+                _type: "policyTableRow";
+                _key: string;
+              }>;
+              footer?: string;
+              _type: "policyTable";
+              _key: string;
+            }
+        > | null;
+        callToAction: {
+          text: string | null;
+          label: string;
+          href: string;
+        } | null;
+        items: Array<{
+          _key: string;
+          title: string;
+          body: Array<
+            | {
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "h5" | "normal";
+                listItem?: "bullet";
+                markDefs?: Array<{
+                  href: string;
+                  _type: "link";
+                  _key: string;
+                }>;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }
+            | {
+                headers: Array<string>;
+                rows: Array<{
+                  cells: Array<string>;
+                  _type: "policyTableRow";
+                  _key: string;
+                }>;
+                footer?: string;
+                _type: "policyTable";
+                _key: string;
+              }
+          >;
+        }>;
+      }>;
+    }
+  | null;
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: HOME_PAGE_QUERY
@@ -488,6 +713,8 @@ export type SITE_SETTINGS_QUERY_RESULT =
 declare global {
   interface SanityQueries {
     '*[_type == "calendarEvent"] | order(date asc) {\n  _id,\n  title,\n  date,\n  location,\n  eventType,\n  time,\n  description,\n  isHighlighted,\n  academicYear\n}': CALENDAR_EVENTS_QUERY_RESULT;
+    '*[_id == "volunteersList"][0]{\n  _id,\n  groups[]{\n    _key,\n    title,\n    members[]{\n      _key,\n      name,\n      email,\n      phone\n    }\n  }\n}': VOLUNTEERS_LIST_QUERY_RESULT;
+    '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  heroSlides[]{\n    _key,\n    link,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  },\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  },\n  whoWeAre\n}': HOME_PAGE_QUERY_RESULT;
     '*[_type == "event"] | order(publishedAt desc) {\n  _id,\n  title,\n  "slug": slug.current,\n  publishedAt,\n  summary,\n  body,\n  isFeatured,\n  externalUrl,\n  image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': NEWS_EVENTS_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;

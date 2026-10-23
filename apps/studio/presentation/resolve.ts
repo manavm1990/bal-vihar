@@ -18,6 +18,7 @@ export const resolve = {
         ],
       }),
     }),
+
     homePage: defineLocations({
       select: { title: "title" },
       resolve: () => ({
@@ -33,10 +34,22 @@ export const resolve = {
         ],
       }),
     }),
+    policies: defineLocations({
+      select: { title: "title" },
+      resolve: () => ({
+        locations: [{ title: "Policies & Procedures", href: "/about-us/policies-procedures" }],
+      }),
+    }),
     siteSettings: defineLocations({
       select: { title: "title" },
       resolve: () => ({
         locations: [{ title: "Home page", href: "/" }],
+      }),
+    }),
+    volunteersList: defineLocations({
+      select: { title: "title" },
+      resolve: () => ({
+        locations: [{ title: "Volunteers List", href: "/volunteering/volunteers-list" }],
       }),
     }),
   },

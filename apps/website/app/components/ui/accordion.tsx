@@ -22,7 +22,7 @@ function AccordionContent({ className, children, ...props }: AccordionContentPro
       )}
       {...props}
     >
-      <p className="text-base leading-7">{children}</p>
+      <div className="text-base leading-7">{children}</div>
     </AccordionPrimitive.Content>
   );
 }

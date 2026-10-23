@@ -27,6 +27,41 @@ export const CALENDAR_EVENTS_QUERY = defineQuery(`*[_type == "calendarEvent"] | 
   academicYear
 }`);
 
+export const VOLUNTEERS_LIST_QUERY = defineQuery(`*[_id == "volunteersList"][0]{
+  _id,
+  groups[]{
+    _key,
+    title,
+    members[]{
+      _key,
+      name,
+      email,
+      phone
+    }
+  }
+}`);
+
+export const POLICIES_QUERY = defineQuery(`*[_id == "policies"][0]{
+  _id,
+  intro,
+  sections[]{
+    _key,
+    title,
+    "slug": slug.current,
+    intro,
+    callToAction{
+      text,
+      label,
+      href
+    },
+    items[]{
+      _key,
+      title,
+      body
+    }
+  }
+}`);
+
 export const HOME_PAGE_QUERY = defineQuery(`*[_id == "homePage"][0]{
   _id,
   title,

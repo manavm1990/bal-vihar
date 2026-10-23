@@ -1,11 +1,50 @@
-import TextColumns from "@components/text-columns";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@components/ui/accordion";
+import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
-import { Separator } from "@components/ui/separator";
-import { H1, H3, H4, H5, LeadP, P, Strong, Table } from "@components/ui/typography";
+import { Em, H1, H3, H5, LeadP, MutedP, P, Strong, Table, Ul } from "@components/ui/typography";
+import { sanityFetch } from "@lib/sanity/live";
+import { getPolicies, type PolicyBody, type PolicySectionView } from "@lib/sanity/policies";
+import { POLICIES_QUERY } from "@lib/sanity/queries";
+import { stegaClean } from "@sanity/client/stega";
 import type { Metadata } from "next";
-
+import Link from "next/link";
+import { PortableText } from "next-sanity";
+import type { ComponentProps } from "react";
 import { ABOUT_US_TITLE } from "../constants";
-import GrievanceForm from "./form.client";
+
+interface PolicyTableValue {
+  headers?: string[];
+  rows?: { cells?: string[] }[];
+  footer?: string;
+}
+
+const POLICY_TEXT_COMPONENTS: ComponentProps<typeof PortableText>["components"] = {
+  block: {
+    normal: ({ children }) => <P>{children}</P>,
+    h5: ({ children }) => <H5>{children}</H5>,
+  },
+  list: {
+    bullet: ({ children }) => <Ul>{children}</Ul>,
+  },
+  listItem: {
+    bullet: ({ children }) => <li>{children}</li>,
+  },
+  marks: {
+    strong: ({ children }) => <Strong>{children}</Strong>,
+    em: ({ children }) => <Em>{children}</Em>,
+    link: ({ children, value }) => (
+      <PolicyLink href={String(value?.href ?? "")}>{children}</PolicyLink>
+    ),
+  },
+  types: {
+    policyTable: ({ value }) => <PolicyTable table={value as PolicyTableValue} />,
+  },
+};
 
 const TITLE = "Policies & Procedures 📜";
 
@@ -14,629 +53,126 @@ export const metadata: Metadata = {
   description: "Bal Vihar Policies and Procedures",
 };
 
-export default function PoliciesProceduresPage() {
+export default async function PoliciesProceduresPage() {
+  const result = await sanityFetch({ query: POLICIES_QUERY }).catch((error: unknown) => {
+    console.error("Could not load the policies", error);
+    return null;
+  });
+  const { intro, sections } = getPolicies(result?.data ?? null);
+
   return (
-    <div className="[&_h3]:mt-4 [&_h5]:mt-2 [&_ul]:my-2 [&_ul]:list-disc [&>article]:mt-8">
+    <div className="space-y-8 [&_h5]:mt-2 [&_ul]:my-2">
       <H1>{TITLE}</H1>
 
-      <LeadP>
-        Bal Vihar of St Louis is governed by all the policies and procedures listed in this
-        document. However, Bal Vihar administration and management reserves the right to make any
-        exceptions on a case by case basis if it is warranted.
-      </LeadP>
-
-      <section>
-        <H3>1.0 Admissions Policies</H3>
-
-        <TextColumns>
-          <section>
-            <H4>1.1 Registrations</H4>
-
-            <P>
-              Online registration is usually open from May 01 and closes end of July of each year.
-            </P>
-
-            <P>
-              Due to capacity, the class room size will be limited to 30. Additional children will
-              be held on waiting list till the count is 15 students to open up a new class. Thus, if
-              Group 1 has enrollment more than 30 students and waiting list is more than 15
-              students, Class 1 A will be formed and students will be communicated by Bal Vihar and
-              asked to pay school fee.
-            </P>
-          </section>
-
-          <section>
-            <H4>1.2 Fees</H4>
-
-            <P>
-              The fees structure is determined by the administration every year. The administration
-              team will propose any changes to fees structure to the parents during the February
-              parents meeting for the following year. Based on the feedback, the changes will be
-              implemented for the following school year. The changes will be communicated to all
-              parents via email, updates on the web etc. Students in groups Y5 are exempted from the
-              fees and deposits. All payments are collected on line for registrations.
-            </P>
-
-            <P>
-              Bal Vihar administration reserves the right to increase the fees to cover the
-              increasing costs and additional offerings that may be brought forth. This increase
-              does not include any increases for additional offerings and services that may be
-              brought forth. The increases will be presented to the parents during the meeting in
-              February for the following school year.
-            </P>
-          </section>
-
-          <section>
-            <H4>1.3 Refunds</H4>
-
-            <P>
-              No refund will be made once the child is registered with the Bal Vihar and one session
-              has been already held.
-            </P>
-          </section>
-
-          <section>
-            <H4>1.4 Class Allocation</H4>
-            <P>
-              Bal Vihar school grades will correspond to the children school grade in their regular
-              school. Thus:
-            </P>
-            <Table
-              headers={["Regular School Grade", "Bal Vihar School Grade"]}
-              rows={[
-                ["Grade K", "Grade K"],
-                ["Grade 1", "Grade 1"],
-                ["Grade 2", "Grade 2"],
-                ["Grade 3", "Grade 3"],
-                ["Grade 4", "Grade 4"],
-                ["Grade 5", "Grade 5"],
-                ["Grade 6", "Grade 6"],
-                ["Grade 7", "Grade 7"],
-                ["Grade 8", "Youth Group Y1"],
-                ["Grade 9", "Youth Group Y2"],
-                ["Grade 10", "Youth Group Y3"],
-              ]}
-              footer="No admission will be made in youth group Y4 and Y5. Only children from Y3 will go to Y4 and children from Y4 will go to Y5."
-            />
-          </section>
-
-          <section>
-            <H4>1.5 Bal Vihar Preview</H4>
-
-            <P>
-              For all new students or parents that want to learn or observe Bal vihar prior to
-              registration, we will allow class observations during March and April of every year.
-              An observation form will need to be filled out and will be allowed to attend up to 2
-              classes for no cost. Bal Vihar preview will not be available any other time.
-            </P>
-          </section>
-
-          <section>
-            <H4>1.6 Financial Assistance</H4>
-            <P>
-              It is recognized that there may be a condition where parents may not be able to afford
-              the school fee for their child(ren). Under this condition, the following may apply:
-            </P>
-
-            <ul>
-              <li>
-                No more than three children will be allowed in a given school year for the waiver of
-                the fee. This will be first come first served basis
-              </li>
-              <li>
-                The request for such condition should be made in May or June for the upcoming year
-                in confidence in writing to the executive committee. This request should explain the
-                reasons to waive the fee with proper supporting documents.
-              </li>
-              <li>
-                These documents can be tax return or other relevant documents. This will allow the
-                executive committee to make appropriate decision.
-              </li>
-
-              <li>
-                Upon acceptance of the waiver by the Bal Vihar school, the parent(s) is required to
-                provide the following service to the Bal Vihar as follows:
-                <ul>
-                  <li>
-                    A firm commitment of parent in offering 40 hours worth voluntary service to the
-                    Bal Vihar. These service hours will be tracked by the school official to ensure
-                    that such service is provided. This requirement is in addition to the parent
-                    volunteer requirements.
-                  </li>
-                  <li>
-                    Failure to meet this requirement will be the cause for student to be
-                    discontinued from attending Bal Vihar
-                  </li>
-                  <li>
-                    If the parent’s financial condition improves during the school year, he or she
-                    will be required to pay the school fee without any penalty
-                  </li>
-                  <li>
-                    If the parent’s financial hardship continues in the following year, a copy of
-                    filed detailed tax return for the previous year will be required to convince the
-                    Bal Vihar executive committee of continuation of such waiver for the school.
-                  </li>
-                </ul>
-              </li>
-            </ul>
-
-            <footer>
-              It is realized that this provision is made strictly to offer service to the genuine
-              cases. A confidential independent investigation will also be carried out by the school
-              official to confirm the eligibility.
-            </footer>
-          </section>
-        </TextColumns>
-      </section>
-
-      <Separator />
-
-      <section>
-        <H3>2.0 Education Policies</H3>
-
-        <TextColumns>
-          <section>
-            <H4>2.1 Bal Vihar Graduation</H4>
-            <P>
-              The committee consisting of teacher coordinators and the teachers from the{" "}
-              <Strong>Group 7 and Y4 group</Strong> will finalize the list of graduating students
-              after taking teacher’s inputs and based on the following criteria:
-            </P>
-
-            <section>
-              <H5>2.1.A - Children transferring to Bal Vihar of St. Louis:</H5>
-
-              <ul>
-                <li>Spend at least two years in either program of Bal Vihar school.</li>
-                <li>Provide written evidence of having attended a similar school.</li>
-                <li>At least 70% attendance during the year.</li>
-              </ul>
-            </section>
-
-            <section>
-              <H5>2.1.B - Children who have attended only Bal Vihar of St. Louis:</H5>
-              <ul>
-                <li>Spend at least 2 years overall with Bal Vihar or in youth program.</li>
-                <li>At least 70% attendance during the year.</li>
-                <li>
-                  An interview or other testing with the relevant Bal Vihar teachers as deemed
-                  necessary by the teacher coordinator committee.
-                </li>
-                <li>
-                  Failure to meet any of the requirements will automatically require student to
-                  repeat the class.
-                </li>
-                <li>
-                  Students must also demonstrate active participation in class discussions and
-                  activities.
-                </li>
-              </ul>
-            </section>
-          </section>
-
-          <section>
-            <H4>2.2 Youth Group Admission Criteria</H4>
-            <P>
-              If you would like to register as a new student or continue in the youth group, the
-              following criteria should be met. Please discuss with your parents before future
-              registration:
-            </P>
-
-            <ul>
-              <li>
-                You <Strong>must</Strong> be able to be present in the class by 9:45 AM
-              </li>
-              <li>
-                You <Strong>must</Strong> be available for all classes unless there is a valid
-                reason
-              </li>
-              <li>
-                All assigned homework <Strong>needs</Strong> to be completed and emailed by 9:00 PM
-                before the next class
-              </li>
-              <li>
-                All students assigned to various classrooms, writing articles, community projects
-                and other activities <Strong>must</Strong> be committed and complete those
-                assignments in time
-              </li>
-              <li>
-                Once registered, if you have not met the above criteria, you may be asked to leave
-                the group and no community credit hours could be claimed.
-              </li>
-            </ul>
-
-            <P>
-              A completion requirement for this group is set by the youth coordinators. Upon
-              successful completion of the youth curriculum set by the school, a certificate with
-              community service hours that were earned by the youth will be provided. This
-              certificate may be used by the student towards community credit hours requirement for
-              the high school graduation. Youth is required to sign a completion requirement form
-              provided by the teacher.
-            </P>
-          </section>
-
-          <section>
-            <H4>2.3 Community Hours for Youth Group Students</H4>
-            <P>
-              Bal Vihar students are involved in many volunteer activities and the school wishes to
-              recognize that by providing community hours certificate. Students who require
-              community credit hours for the high school graduation may also use this certificate.
-            </P>
-
-            <P>
-              Youth may be required to sign a completion requirement form provided by the teacher.
-              The community hours can also be provided to individual students upon completion of any
-              volunteer activity sponsored by the Bal Vihar as soon as the activity is completed,
-              upon request. The community hours awarded will be decided by the youth teachers taking
-              into consideration of the students’ attendance, participation, activities,
-              contribution etc.
-            </P>
-          </section>
-
-          <section>
-            <H4>2.4 Promotions</H4>
-            <P>
-              Bal Vihar students will be promoted to the next group if they have met the following
-              criteria:
-            </P>
-            <ul>
-              <li>Attended at least 70% of the classes</li>
-              <li>Met all requirements set by the teachers</li>
-              <li>Passed any written/oral tests administered by the teachers</li>
-              <li>No disciplinary actions taken against the student in the past two years</li>
-            </ul>
-            <P>
-              All students that cannot attend a class must notify their class teacher at least one
-              day in advance. This will be considered as an excused absence that will not be counted
-              as absent. Teachers will take attendance during every class.
-            </P>
-          </section>
-
-          <section>
-            <H4>2.5 Perfect Attendance Recognition</H4>
-            <P>
-              These awards can be given within each class by the respective teachers. Two category
-              awards include one category where students have 100% attendance and another at least
-              90% attendance. Up to two excused absences due to illness will be accepted as an
-              attended class for the purpose of this award.
-            </P>
-          </section>
-
-          <section>
-            <H4>2.6 Absenteeism</H4>
-
-            <P>
-              If a student is absent for more than 3 consecutive classes without reason or without
-              informing the teacher, then the teacher can refer the matter to the teacher
-              coordinators. Teacher coordinators will get in touch with the parents of the student
-              and ascertain the reason for being absent. If it is deemed necessary, the teacher
-              coordinators will recommend to the President of Bal Vihar that the student be asked to
-              leave Bal Vihar. The case will be documented and the President will communicate the
-              decision to the parents of the child.
-            </P>
-          </section>
-        </TextColumns>
-      </section>
-
-      <Separator />
-
-      <section>
-        <H3>3.0 School Requirements</H3>
-
-        <TextColumns>
-          <section>
-            <H4>3.1 Class Schedule Time - Late Arrival</H4>
-            <P>
-              All students are expected to be in school 15 minutes prior to the start of Aarthi and
-              prayers. The prayer room doors may be closed during prayers, and students should
-              remain outside the classroom until prayers are completed.
-            </P>
-          </section>
-
-          <section>
-            <H4>3.2 Dress Code</H4>
-            <P>
-              On Bal Vihar day, students are urged to take bath in the morning and put on freshly
-              washed, loosely fitting clothes appropriate for Yoga.
-            </P>
-          </section>
-
-          <section>
-            <H4>3.3 Dropping off / Picking up and Parents Responsibility</H4>
-            <P>
-              During drop-off, parents should accompany students to the assembly area rather than
-              dropping them in the parking lot. After class dispersal, students should be picked up
-              from the school lobby and should not walk to the parking lot unaccompanied.
-            </P>
-            <P>
-              Parents are responsible for transportation arrangements. If a third party will pick up
-              a student, written and dated communication must be sent to the Parent Coordinator and
-              classroom teacher in advance.
-            </P>
-          </section>
-
-          <section>
-            <H4>3.4 Student Responsibilities</H4>
-            <P>
-              Students should not touch or disrupt school items including pencils, papers, crayons,
-              and related materials. Use supplies provided by your Bal Vihar teacher only.
-            </P>
-            <P>Chewing gum, bubble gum, candy, and toys are not allowed in Bal Vihar classes.</P>
-            <ul>
-              <li>
-                Any disruption to school or property will be brought to the attention of parents. A
-                repeat offense may result in the student being expelled from Bal Vihar.
-              </li>
-              <li>
-                Leave classrooms in the same configuration and condition as they were when class
-                started. It is the students’ responsibility to put things back.
-              </li>
-              <li>
-                Students should conform to all applicable school-use requirements and Bal Vihar
-                building and facility expectations.
-              </li>
-              <li>
-                Bal Vihar students should not open school lockers during Bal Vihar schedules,
-                including students who attend regular school on campus.
-              </li>
-              <li>
-                No running inside the school is permitted. Stay within classroom boundaries and
-                designated Bal Vihar spaces. Wandering in other school areas is strictly prohibited.
-              </li>
-              <li>No skating shoes are allowed in school premises. Always practice safe habits.</li>
-            </ul>
-            <P>
-              Failure to adhere to student responsibilities may lead to disciplinary action by the
-              administration, up to and including expulsion.
-            </P>
-          </section>
-
-          <section>
-            <H4>3.5 Cancelled Class</H4>
-            <P>
-              Due to classroom availability limitations, Bal Vihar may not be able to make up
-              classes cancelled because of inclement weather or other uncontrollable circumstances.
-              Parents should check the website for updates on class days.
-            </P>
-          </section>
-        </TextColumns>
-      </section>
-
-      <Separator />
-
-      <section>
-        <H3>4.0 Volunteer Policies</H3>
-
-        <TextColumns>
-          <section>
-            <H4>4.1 Volunteering Requirements</H4>
-            <P>
-              It is required that every Bal Vihar parent complete a voluntary activity(ies) /
-              assignment(s) during Bal Vihar school year. Voluntary activity requirement is per
-              child and if more than one child is registered parents are required to volunteer for
-              number of activities that equals the number of kids registered.
-            </P>
-
-            <P>
-              It is the responsibility of the parents to complete the agreed upon voluntary
-              assignment and for personal reasons if any parent cannot meet the commitment, it is
-              his/her responsibility to delegate the activity to another parent. The volunteer
-              coordinator must be notified at least 2 weeks in advance of any changes.
-            </P>
-
-            <section>
-              <H5>Selecting/Assigning Voluntary Activities</H5>
-
-              <P>
-                The Bal Vihar parents can choose the voluntary activities during the registration
-                time and the selection/assignment process is based on first come first serve basis.
-                Bal Vihar events coordinator reserves the right to re-assign activity assignment on
-                as-needed basis.
-              </P>
-            </section>
-
-            <section>
-              <H5>What Qualifies for Volunteer Commitments?</H5>
-              <P>
-                The following activities are considered as volunteer commitments for Bal Vihar
-                school:
-              </P>
-
-              <ul>
-                <li>
-                  Signing up to be a classroom parent (assist with art projects and other activities
-                  in the class) and must work at least 8 classes
-                </li>
-                <li>
-                  At least 8 hours of volunteer work including participating event related or other
-                  meeting will be considered as the completion of the voluntary requirement
-                </li>
-                <li>
-                  The event leads will provide the completion of the voluntary requirements for all
-                  the events
-                </li>
-                <li>The education leads will certify the class room voluntary requirements</li>
-                <li>
-                  Teachers, community projects organizers and administrative team members are
-                  classified as volunteers.
-                </li>
-              </ul>
-            </section>
-          </section>
-
-          <section>
-            <H4>4.2 Volunteer Deposit and Refund</H4>
-
-            <P>
-              During registration process parents are required to deposit $50 per child and choose
-              voluntary activity. For a family, the volunteer deposit cap is $100.
-            </P>
-
-            <P>
-              The Parents can opt out of voluntary activity assignments by choosing the “Buy-out”
-              option thus relieving the parents from work assignments and the $50 deposit per kid
-              will be treated as Bal Vihar fee. Voluntary activities need to be completed in the
-              same academic year and the parents who fail to do so will fore-go the deposit.
-            </P>
-
-            <P>
-              Upon satisfactory completion of the voluntary commitment, Bal Vihar will refund
-              voluntary deposit to the parents. However, at the discretion of the Volunteer
-              management and Event coordinating committee voluntary deposit refund policy could be
-              construed as volunteer activity per family based on the volunteer needs.
-            </P>
-          </section>
-        </TextColumns>
-      </section>
-
-      <Separator />
-
-      <section>
-        <H3>5.0 Grievance Policy</H3>
-
-        <TextColumns>
-          <P>
-            This grievance policy addresses issues that fall within the framework of the Teacher
-            Coordinator Committee’s role and its responsibility for compliance with overall
-            grievance policies of Bal Vihar. In case of any conflict between Bal Vihar’s overall
-            policy and Teacher Coordinator grievance policy, the former prevails.
-          </P>
-
-          <section>
-            <H4>5.1 Grievances against teacher(s):</H4>
-
-            <P>
-              A formal complaint is filed with the Teacher Coordinator committee in writing. Within
-              two weeks or as early as is reasonably possible after receiving the complaint, teacher
-              coordinator will investigate and call a meeting where all parties concerned are
-              present. Every effort will be made to resolve the issues amicably. In case a
-              satisfactory resolution agreeable to all parties concerned is not reached, the issue
-              will be turned over to the President and Grievance Committee for further deliberation.
-              The resolution is documented and file closed.
-            </P>
-          </section>
-
-          <section>
-            <H4>5.2 Grievances against parent(s) or volunteer(s):</H4>
-
-            <P>
-              A formal complaint is filed with the teacher coordinator in writing. The teacher
-              coordinator will notify the Parent Coordinator. Within two weeks or as early as is
-              reasonably possible, a meeting will be scheduled with the parent concerned, teacher,
-              parent coordinator and teacher coordinator. Every effort will be made to resolve the
-              issue amicably. In case an agreeable resolution is not reached, complaint is forwarded
-              to the President and Bal Vihar Executive Committee members. The outcome is documented
-              and file closed.
-            </P>
-          </section>
-
-          <section>
-            <H4>
-              5.3 Grievance against a member of teacher coordinator committee or any other
-              individual in administrative position:
-            </H4>
-
-            <P>
-              A formal complaint is made to the President directly. Outcome is documented and filed.
-            </P>
-          </section>
-
-          <section>
-            <H4>5.4 Grievance against another student:</H4>
-            <P>
-              A formal complaint is filed with a teacher coordinator in writing. Teacher coordinator
-              notifies parent. Within two weeks, a meeting is scheduled with student’s parent(s),
-              teacher and student. Every effort is made to resolve the issue amicably. In case an
-              agreeable resolution is not reached, complaint is passed to the President and
-              Grievance Committee. The outcome is documented and file closed.
-            </P>
-          </section>
-
-          <Card className="mx-auto w-full max-w-2xl">
-            <CardContent className="space-y-4 p-6">
-              <H4>Grievance Form</H4>
-              <P>
-                If you have a grievance, please fill out the form below. The grievance will be
-                reviewed by the Grievance Committee and appropriate action will be taken.
-              </P>
-
-              <GrievanceForm />
-            </CardContent>
-          </Card>
-        </TextColumns>
-      </section>
-
-      <Separator />
-
-      <section>
-        <H3>6.0 Expense Reimbursement Policies</H3>
-
-        <TextColumns>
-          <P>
-            As part of normal operations, parents and volunteers may incur expenses to buy goods or
-            services for Bal Vihar activities. Legitimate expenses for approved Bal Vihar activities
-            will be reimbursed according to this policy.
-          </P>
-
-          <P>
-            All event-related expenses should be pre-approved by administrative team members before
-            purchase whenever possible.
-          </P>
-
-          <section>
-            <H4>Expense Reimbursement Policy</H4>
-            <P>
-              In general, reimbursement submissions should be made within 90 days of purchase. For
-              purchases made in November and December, claims should be submitted before January 31
-              of the following year.
-            </P>
-          </section>
-
-          <section>
-            <H4>Bal Vihar Issued Check Cashing Policy</H4>
-            <P>
-              If a reimbursement check issued by Bal Vihar is not cashed, it may be cancelled.
-              Cancelled reimbursement checks are generally not re-issued.
-            </P>
-          </section>
-
-          <section>
-            <H4>Expense Submission Resources</H4>
-            <P>
-              Submit expenses online using the{" "}
-              <a
-                href="https://balvihar-stlouis.com/form.php?form_id=19"
-                rel="noopener noreferrer"
-                target="_blank"
+      {intro && <LeadP>{intro}</LeadP>}
+
+      {sections.length === 0 && (
+        <MutedP>The policies are being updated. Please check back soon.</MutedP>
+      )}
+
+      <nav aria-label="Policy sections">
+        <ul className="flex flex-wrap gap-2">
+          {sections.map((section) => (
+            <li key={section.key}>
+              <Link
+                href={`#${section.slug}`}
+                className="border-border text-navy-600 hover:bg-accent hover:text-primary-ink inline-block rounded-full border px-4 py-1.5 text-sm font-medium hover:no-underline"
               >
-                expense submission form
-              </a>
-              .
-            </P>
-          </section>
-        </TextColumns>
-      </section>
+                {section.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-      <Separator />
-
-      <section>
-        <H3>7.0 Administrative Policies</H3>
-
-        <TextColumns>
-          <section>
-            <H4>Education Aid Items</H4>
-            <P>
-              Bal Vihar educational aid items remain Bal Vihar property and should be handled with
-              care. Parents and volunteers are expected to treat them as personal property and
-              return all items to the Operations team at the end of the school year.
-            </P>
-            <P>
-              If an item malfunctions, it should be promptly reported and handed over to the
-              Operations team so it can be repaired or replaced.
-            </P>
-          </section>
-        </TextColumns>
-      </section>
+      {sections.map((section, index) => (
+        <PolicySection key={section.key} number={index + 1} section={section} />
+      ))}
     </div>
   );
+}
+
+interface PolicyLinkProps {
+  href: string;
+  children: React.ReactNode;
+}
+
+function PolicyLink({ href, children }: PolicyLinkProps) {
+  const cleanHref = stegaClean(href);
+
+  return cleanHref.startsWith("/") || cleanHref.startsWith("#") ? (
+    <Link href={cleanHref}>{children}</Link>
+  ) : (
+    <a href={cleanHref} target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  );
+}
+
+interface PolicySectionProps {
+  number: number;
+  section: PolicySectionView;
+}
+
+function PolicySection({ number, section }: PolicySectionProps) {
+  const { callToAction } = section;
+
+  return (
+    <section id={section.slug} className="scroll-mt-6 space-y-4">
+      <H3>{`${number}.0 ${section.title}`}</H3>
+
+      <PolicyText value={section.intro} />
+
+      <Accordion
+        type="single"
+        collapsible
+        className="bg-background divide-y rounded-lg border px-5 py-2 shadow-sm"
+      >
+        {section.items.map((item, index) => (
+          <AccordionItem key={item.key} value={item.key}>
+            <AccordionTrigger>{`${number}.${index + 1} ${item.title}`}</AccordionTrigger>
+            <AccordionContent className="space-y-3 pr-4 sm:pr-12">
+              <PolicyText value={item.body} />
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+
+      {callToAction && (
+        <Card>
+          <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+            {callToAction.text && (
+              <p className="text-foreground font-medium">{callToAction.text}</p>
+            )}
+            <Button asChild>
+              <Link href={callToAction.href}>{callToAction.label}</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+    </section>
+  );
+}
+
+interface PolicyTableProps {
+  table: PolicyTableValue;
+}
+
+function PolicyTable({ table }: PolicyTableProps) {
+  return (
+    <Table
+      headers={table.headers ?? []}
+      rows={(table.rows ?? []).map((row) => row.cells ?? [])}
+      footer={table.footer}
+    />
+  );
+}
+
+interface PolicyTextProps {
+  value: PolicyBody;
+}
+
+/** Renders a policy's Portable Text body with the site's typography primitives. */
+function PolicyText({ value }: PolicyTextProps) {
+  return <PortableText value={value} components={POLICY_TEXT_COMPONENTS} />;
 }
