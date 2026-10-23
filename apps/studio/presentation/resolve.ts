@@ -59,7 +59,7 @@ export const resolve = {
     volunteersList: defineLocations({
       select: { title: "title" },
       resolve: () => ({
-        locations: [{ title: "Volunteers List", href: "/volunteering/volunteers-list" }],
+        locations: [{ title: "Administrative Team", href: "/about-us/administrative-team" }],
       }),
     }),
   },

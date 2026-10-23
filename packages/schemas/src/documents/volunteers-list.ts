@@ -16,28 +16,36 @@ export const volunteersList = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "groups",
-      title: "Volunteer groups",
+      name: "teams",
+      title: "Teams",
       type: "array",
       description:
-        "Review this legacy roster before publishing. Add, remove, or drag groups and members to reorder them. Contact details are optional and public; only include details approved for the website. A person listed in multiple groups must be updated in each group.",
+        'The teams that run Bal Vihar, what each does and who is on it, shown on the Administrative Team page. Drag to reorder. Leave empty to show "Coming soon."',
       of: [
         defineArrayMember({
-          name: "volunteerGroup",
-          title: "Volunteer group",
+          name: "team",
+          title: "Team",
           type: "object",
           icon: UsersIcon,
           fields: [
             defineField({
-              name: "title",
-              title: "Group name",
+              name: "name",
+              title: "Team name",
               type: "string",
               validation: (rule) => rule.required().min(1),
+            }),
+            defineField({
+              name: "description",
+              title: "What this team does",
+              type: "text",
+              rows: 3,
             }),
             defineField({
               name: "members",
               title: "Members",
               type: "array",
+              description:
+                "Drag to reorder. Contact details are optional and public; only include details approved for the website. A person on more than one team is entered on each team.",
               of: [
                 defineArrayMember({
                   name: "volunteerContact",
@@ -74,7 +82,7 @@ export const volunteersList = defineType({
             }),
           ],
           preview: {
-            select: { title: "title" },
+            select: { title: "name", subtitle: "description" },
           },
         }),
       ],

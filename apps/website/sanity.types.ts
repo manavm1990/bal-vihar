@@ -22,8 +22,9 @@ export type VolunteersList = {
   _updatedAt: string;
   _rev: string;
   title: string;
-  groups?: Array<{
-    title: string;
+  teams?: Array<{
+    name: string;
+    description?: string;
     members?: Array<{
       name: string;
       email?: string;
@@ -31,7 +32,7 @@ export type VolunteersList = {
       _type: "volunteerContact";
       _key: string;
     }>;
-    _type: "volunteerGroup";
+    _type: "team";
     _key: string;
   }>;
 };
@@ -499,17 +500,18 @@ export type CLASS_PAGES_QUERY_RESULT = Array<{
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: VOLUNTEERS_LIST_QUERY
-// Query: *[_id == "volunteersList"][0]{  _id,  groups[]{    _key,    title,    members[]{      _key,      name,      email,      phone    }  }}
+// Query: *[_id == "volunteersList"][0]{  _id,  teams[]{    _key,    name,    description,    members[]{      _key,      name,      email,      phone    }  }}
 export type VOLUNTEERS_LIST_QUERY_RESULT =
   | {
       _id: "volunteersList";
-      groups: null;
+      teams: null;
     }
   | {
       _id: "volunteersList";
-      groups: Array<{
+      teams: Array<{
         _key: string;
-        title: string;
+        name: string;
+        description: string | null;
         members: Array<{
           _key: string;
           name: string;
@@ -793,7 +795,7 @@ declare global {
     '*[_type == "calendarEvent"] | order(date asc) {\n  _id,\n  title,\n  date,\n  location,\n  eventType,\n  time,\n  description,\n  isHighlighted,\n  academicYear\n}': CALENDAR_EVENTS_QUERY_RESULT;
     '*[_type == "classPage" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  teachers,\n  pinnedNote,\n  links[]{\n    _key,\n    label,\n    url\n  },\n  "sessions": sessions[] | order(date desc){\n    _key,\n    date,\n    covered,\n    homework,\n    links[]{\n      _key,\n      label,\n      url\n    }\n  }\n}': CLASS_PAGE_QUERY_RESULT;
     '*[_type == "classPage"] | order(sortOrder asc){\n  _id,\n  title,\n  "slug": slug.current,\n  group,\n  teachers,\n  "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)\n}': CLASS_PAGES_QUERY_RESULT;
-    '*[_id == "volunteersList"][0]{\n  _id,\n  groups[]{\n    _key,\n    title,\n    members[]{\n      _key,\n      name,\n      email,\n      phone\n    }\n  }\n}': VOLUNTEERS_LIST_QUERY_RESULT;
+    '*[_id == "volunteersList"][0]{\n  _id,\n  teams[]{\n    _key,\n    name,\n    description,\n    members[]{\n      _key,\n      name,\n      email,\n      phone\n    }\n  }\n}': VOLUNTEERS_LIST_QUERY_RESULT;
     '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  heroSlides[]{\n    _key,\n    link,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  },\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  },\n  whoWeAre\n}': HOME_PAGE_QUERY_RESULT;
     '*[_type == "event"] | order(publishedAt desc) {\n  _id,\n  title,\n  "slug": slug.current,\n  publishedAt,\n  summary,\n  body,\n  isFeatured,\n  externalUrl,\n  image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': NEWS_EVENTS_QUERY_RESULT;

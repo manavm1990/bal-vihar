@@ -41,19 +41,26 @@
         },
         "optional": false
       },
-      "groups": {
+      "teams": {
         "type": "objectAttribute",
         "value": {
           "type": "array",
           "of": {
             "type": "object",
             "attributes": {
-              "title": {
+              "name": {
                 "type": "objectAttribute",
                 "value": {
                   "type": "string"
                 },
                 "optional": false
+              },
+              "description": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                },
+                "optional": true
               },
               "members": {
                 "type": "objectAttribute",
@@ -110,7 +117,7 @@
                 "type": "objectAttribute",
                 "value": {
                   "type": "string",
-                  "value": "volunteerGroup"
+                  "value": "team"
                 }
               }
             },
