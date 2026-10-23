@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "deploy:studio": "turbo run deploy --filter=@bv/studio",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "typecheck": "turbo run typecheck",
