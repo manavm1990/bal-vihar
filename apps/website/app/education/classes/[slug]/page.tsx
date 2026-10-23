@@ -38,7 +38,7 @@ export default async function EducationClassPage({ params }: ClassPageProps) {
         </Card>
       )}
       {page.pinnedNote ? (
-        <aside className="bg-primary-50 border-primary rounded-md border-l-4 px-4 py-3">
+        <aside className="bg-primary-50 border-primary max-w-3xl rounded-md border-l-4 px-4 py-3">
           <Small className="text-primary-ink block uppercase">Pinned note</Small>
           <P className="wrap-break-word whitespace-pre-line">{page.pinnedNote}</P>
         </aside>
@@ -48,7 +48,7 @@ export default async function EducationClassPage({ params }: ClassPageProps) {
           <H2 variant="plain" className="text-2xl tracking-tight">
             Latest sessions
           </H2>
-          <Ul variant="unstyled" className="space-y-4">
+          <Ul variant="unstyled" className="max-w-3xl space-y-4">
             {sessions.map((session) => (
               <li key={session._key}>
                 <SessionCard session={session} />
@@ -98,7 +98,9 @@ function SessionCard({ session }: SessionCardProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">{formatCalendarDate(stegaClean(session.date))}</CardTitle>
+        <CardTitle className="text-secondary text-lg">
+          {formatCalendarDate(stegaClean(session.date))}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         <P className="wrap-break-word whitespace-pre-line">
