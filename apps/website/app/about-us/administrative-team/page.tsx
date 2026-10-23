@@ -1,5 +1,5 @@
 import Article from "@components/article";
-import { P, Strong } from "@components/ui/typography";
+import { P, Strong, Ul } from "@components/ui/typography";
 import type { Metadata } from "next";
 
 import { ABOUT_US_TITLE } from "../constants";
@@ -22,7 +22,7 @@ export default function AdministrativeTeamPage() {
 
       <P>The Organization consists of: </P>
 
-      <ul>
+      <Ul>
         <li>
           <Strong>Executive Committee</Strong> - oversees the organization and provide the overall
           guidance and support.
@@ -66,7 +66,7 @@ export default function AdministrativeTeamPage() {
         <li>
           <Strong>Legal</Strong> - provides expert legal advice to Bal Vihar.
         </li>
-      </ul>
+      </Ul>
     </Article>
   );
 }

@@ -1,5 +1,5 @@
 import Article from "@components/article";
-import { H3, P, Strong } from "@components/ui/typography";
+import { H3, P, Strong, Ul } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import type { Metadata } from "next";
 
@@ -81,7 +81,7 @@ export default function PresidentsMessagePage() {
           exciting activities as follows:
         </P>
 
-        <ul className="list-disc space-y-4">
+        <Ul className="space-y-4">
           <li>
             On September 28, 2025, Bal Vihar children visited St. Louis Buddha temple in Augusta,
             MO. It was an exciting event. During the visit, students participated in a
@@ -125,7 +125,7 @@ export default function PresidentsMessagePage() {
             for St. Patrick Center, Walk for Water, Feed the Needy, and a teachers recycling
             project. We are proud of our youth participating in community projects.
           </li>
-        </ul>
+        </Ul>
       </section>
 
       <P>
