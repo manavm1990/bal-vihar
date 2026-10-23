@@ -1,16 +1,11 @@
 import type { NewsEventData } from "./types";
 
-function isBoolean(value: unknown): value is boolean {
-  return typeof value === "boolean";
-}
+const isBoolean = (value: unknown): value is boolean => typeof value === "boolean";
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
 
-function isString(value: unknown): value is string {
-  return typeof value === "string";
-}
+const isString = (value: unknown): value is string => typeof value === "string";
 
 export const mapNewsEvents = (input: unknown): NewsEventData[] =>
   !Array.isArray(input)

@@ -12,9 +12,7 @@ import {
   SCHOOL_LOCATION,
 } from "./constants";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 export function createJsonLd(name: string, description = DESCRIPTION) {
   const jsonLdDisplayName =
