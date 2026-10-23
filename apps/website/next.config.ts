@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
       permanent: true,
     },
     { source: "/giving/welcome-message", destination: "/giving", permanent: true },
+    { source: "/news-and-events", destination: "/calendar", permanent: true },
   ],
   images: {
     remotePatterns: [

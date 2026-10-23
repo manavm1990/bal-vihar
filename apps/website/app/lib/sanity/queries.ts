@@ -118,18 +118,6 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_id == "homePage"][0]{
   whoWeAre
 }`);
 
-export const NEWS_EVENTS_QUERY = defineQuery(`*[_type == "event"] | order(publishedAt desc) {
-  _id,
-  title,
-  "slug": slug.current,
-  publishedAt,
-  summary,
-  body,
-  isFeatured,
-  externalUrl,
-  image ${mediaImageProjection}
-}`);
-
 export const PHOTO_GALLERY_QUERY = defineQuery(`*[_id == "photoGallery"][0]{
   _id,
   title,

@@ -43,9 +43,8 @@ export const NAVIGATION: readonly NavigationItem[] = [
   },
   {
     name: "Events & Community",
-    link: "/news-and-events",
+    link: "/calendar",
     items: [
-      { name: "News & Events", link: "/news-and-events" },
       { name: "Calendar", link: "/calendar" },
       { name: "Photos", link: "/photos" },
       { name: "Community Projects", link: "/community-projects" },

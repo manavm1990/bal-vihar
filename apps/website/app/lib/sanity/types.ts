@@ -45,18 +45,6 @@ export interface HomePhotoBoardItem {
   image?: SanityImageValue | null;
 }
 
-export interface NewsEventData {
-  id: string;
-  title: string;
-  slug?: string | null;
-  publishedAt: string;
-  summary: string;
-  body?: string | null;
-  isFeatured?: boolean | null;
-  externalUrl?: string | null;
-  image?: SanityImageValue | null;
-}
-
 export interface PhotoGalleryData {
   id: string;
   title?: string | null;
