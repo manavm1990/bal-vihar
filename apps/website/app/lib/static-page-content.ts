@@ -54,31 +54,7 @@ export const STATIC_PAGES = {
   classSchedule: {
     title: "Class Schedule",
     description: "Sunday class schedules for K–7 and youth groups.",
-    content: `## Groups K–3
-
-| Time | K-1 | Group 1A | Group 2A | Group 3A |
-| --- | --- | --- | --- | --- |
-| 10:00 a.m. | Arathi — Room #5 | Arathi — Room #10 | Arathi — Room #11 | Arathi — Room #4 |
-| 10:05 a.m. | Class instruction — Room #5 | Class instruction — Room #10 | Class instruction — Room #11 | Class instruction — Room #4 |
-| 10:55 a.m. | Break | Break | Break | Break |
-| 11:05 a.m. | Transition to yoga / bhajan | Transition to yoga / bhajan | Transition to yoga / bhajan | Transition to yoga / bhajan |
-| 11:15 a.m. | Bhajan — Stage Right, Room #6 | Bhajan — Stage Right, Room #6 | Bhajan — Stage Right, Room #6 | Bhajan — Stage Right, Room #6 |
-| 11:45 a.m. | Yoga — Stage Right, Room #6 | Bhajan — Stage Left, Room #9 | Yoga — Stage Area Center | Bhajan — Center Hall |
-| 12:20 p.m. | Dismissal | Dismissal | Dismissal | Dismissal |
-
-## Groups 4–7
-
-| Time | Group 4A | Group 5A | Group 6A | Group 7A |
-| --- | --- | --- | --- | --- |
-| 10:00 a.m. | Assembly — Stage Area Center (Room #8) | Assembly — Hall Area 1 | Assembly — Hall Area 2 | Assembly — Stage Area Left |
-| 10:05 a.m. | Bhajan — Stage Area Center (Room #8) | Yoga — Hall Area 1 | Yoga — Hall Area 2 | Bhajan — Stage Area Left |
-| 10:35 a.m. | Yoga — Stage Area Center (Room #4) | Bhajan — Room #3 | Bhajan — Room #2 | Yoga — Stage Area Left |
-| 11:05 a.m. | Transition to class | Transition to class | Transition to class | Transition to class |
-| 11:10 a.m. | Break | Break | Break | Break |
-| 11:20 a.m. | Class instruction — Room #10 | Class instruction — Room #10 | Class instruction — Room #10 | Class instruction — Room #10 |
-| 12:30 p.m. | Dismissal | Dismissal | Dismissal | Dismissal |
-
-## Youth Group
+    content: `## Youth Group
 
 ### Y1 Schedule
 
