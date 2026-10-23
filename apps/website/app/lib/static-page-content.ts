@@ -135,9 +135,70 @@ export const STATIC_PAGES = {
   },
   classSchedule: {
     title: "Class Schedule",
-    description: "Class schedule information.",
-    content:
-      "|  |  |  |  |  |\n| --- | --- | --- | --- | --- |\n|  | **K-1** | **Group 1A** | **Group 2A** | **Group 3A** |\n| **10:00 a.m.** | Arathi Class Room # 5 | Arathi Class Room # 10 | Arathi Class Room # 11 | Arathi Class Room # 4 |\n| **10:05 a.m.** | Class Instruction Room # 5 | Class Instruction Room # 10 | Class Instruction Room # 11 | Class Instruction Room # 4 |\n| **10:55 a.m.** | Break | Break | Break | Break |\n| **11:05 a.m.** | Transition to  Yoga/Bhajan | Transition to  Yoga/Bhajan | Transition to  Yoga/Bhajan | Transition to  Yoga/Bhajan |\n| **11.15 a.m.** | Stage Right Room #6   (Bhajan) | Stage Right Room #6   (Bhajan) | Stage Right Room #6   (Bhajan) | Stage Right Room #6   (Bhajan) |\n| **11.45** **a.m** | Stage Right Room # 6 (Yoga) | Stage Left Room # 9 (Bhajan) | Stage Area Center (Yoga) | Center Hall (Bhajan) |\n| **12:20 p.m.** | Dismissal | Dismissal | Dismissal | Dismissal |\n\n|  |  |  |  |  |\n| --- | --- | --- | --- | --- |\n| **Time** | **Group 4A** | **Group 5A** | **Group 6A** | **Group 7A** |\n| **10:00 a.m.** | Assembly Stage Area Center (Room 8) | Assembly Hall Area 1 (Hall) | Assembly Hall Area 2 (Hall) | Assembly Stage Area Left |\n| **10:05 a.m.** | Bhajan Stage Area Center (Room 8) | Yoga Hall Area 1 (Hall) | Yoga Hall Area 2 (Hall) | Bhajan Stage Area Left |\n| **10:35 a.m.** | Yoga Stage Area Center (Room 4) | Bhajan Class Room #3 | Bhajan Class Room #2 | Yoga Stage Area Left |\n| **11:05 a.m.** | Transition to Class | Transition to Class | Transition to Class | Transition to Class |\n| **11.10 a.m.** | Break | Break | Break | Break |\n| **11:20 a.m.** | Class Instruction Room # 10 | Class Instruction Room # 10 | Class Instruction Room # 10 | Class Instruction Room # 10 |\n| **12:30 p.m.** | Dismissal | Dismissal | Dismissal | Dismissal |\n\nY1 Schedule\n\n|  |  |  |\n| --- | --- | --- |\n| **Time** | **Room 13** | **Teachers** |\n| 10.00 a.m.- 10.15 a.m.  10:15 a.m.- 11:15 a.m. | Invocation/Guided Meditation  Bhagavad Gita | Pradeep Singh, Mira Aubuchon, Ravi  Ramphe  Ravi Ramphe |\n| 11:15 a.m.- 11:30 a.m.  11:15 a.m.- 11:30 a.m. | Break  Class Discussion Topics/Speakers etc | Break  Pradeep Singh, Mira Aubuchon |\n\nY2 Schedule\n\n|  |  |  |\n| --- | --- | --- |\n| **Period** | **Room #12** | **Teachers** |\n| **10.00 – 10.45** | Invocation/Guided Meditation | Venu Vennam, Niraj Shah, Padmadisha Das |\n| **10.15 – 11.15**  **11.15 – 11.30** | Bhagavad Gita  Break | Padmadisha  Das |\n| **11.30 - 12.30** | Class Discussion  Topics/Speakers etc | Venu Vennam, Niraj Shah |\n\nY3 Schedule\n\n|  |  |  |\n| --- | --- | --- |\n| **Period** | **Room #1** | **Teachers** |\n| **10.00 – 10:15** | Invocation | Suresh Shaddarsanam, Neelima Swarna, Bhupal Dev |\n| **10.15 – 11:15**    **11.15 – 11.30** | Bhagavad Gita    Break | Bhupal Dev |\n| **11.30 – 12.30** | Class room discussion/Guest speakers | Suresh Shaddarsanam, Neelima Swarna |\n\nY4 Schedule\n\n|  |  |  |\n| --- | --- | --- |\n| **Period** | **Team A**  (Assisting from 10.00 -11.15)  **Room #14** | **Team B**  (Assisting from 11.15 -12.30)  **Room #14** |\n| **10.00 – 10:15** | Assembly in Room #14 | Assembly in Room #14 |\n| **10.15 – 11:05**    **11.20 – 11.30** | Community Service    Meet w Class Room Teachers | Room #14    Meet w Class Room Teachers |\n| **11.30 – 12.30** | Room #14 | Community Service |",
+    description: "Saturday class schedules for K–7 and youth groups.",
+    content: `## Groups K–3
+
+| Time | K-1 | Group 1A | Group 2A | Group 3A |
+| --- | --- | --- | --- | --- |
+| 10:00 a.m. | Arathi — Room #5 | Arathi — Room #10 | Arathi — Room #11 | Arathi — Room #4 |
+| 10:05 a.m. | Class instruction — Room #5 | Class instruction — Room #10 | Class instruction — Room #11 | Class instruction — Room #4 |
+| 10:55 a.m. | Break | Break | Break | Break |
+| 11:05 a.m. | Transition to yoga / bhajan | Transition to yoga / bhajan | Transition to yoga / bhajan | Transition to yoga / bhajan |
+| 11:15 a.m. | Bhajan — Stage Right, Room #6 | Bhajan — Stage Right, Room #6 | Bhajan — Stage Right, Room #6 | Bhajan — Stage Right, Room #6 |
+| 11:45 a.m. | Yoga — Stage Right, Room #6 | Bhajan — Stage Left, Room #9 | Yoga — Stage Area Center | Bhajan — Center Hall |
+| 12:20 p.m. | Dismissal | Dismissal | Dismissal | Dismissal |
+
+## Groups 4–7
+
+| Time | Group 4A | Group 5A | Group 6A | Group 7A |
+| --- | --- | --- | --- | --- |
+| 10:00 a.m. | Assembly — Stage Area Center (Room #8) | Assembly — Hall Area 1 | Assembly — Hall Area 2 | Assembly — Stage Area Left |
+| 10:05 a.m. | Bhajan — Stage Area Center (Room #8) | Yoga — Hall Area 1 | Yoga — Hall Area 2 | Bhajan — Stage Area Left |
+| 10:35 a.m. | Yoga — Stage Area Center (Room #4) | Bhajan — Room #3 | Bhajan — Room #2 | Yoga — Stage Area Left |
+| 11:05 a.m. | Transition to class | Transition to class | Transition to class | Transition to class |
+| 11:10 a.m. | Break | Break | Break | Break |
+| 11:20 a.m. | Class instruction — Room #10 | Class instruction — Room #10 | Class instruction — Room #10 | Class instruction — Room #10 |
+| 12:30 p.m. | Dismissal | Dismissal | Dismissal | Dismissal |
+
+## Youth Group
+
+### Y1 Schedule
+
+| Time | Room #13 | Teachers |
+| --- | --- | --- |
+| 10:00 – 10:15 a.m. | Invocation / guided meditation | Pradeep Singh, Mira Aubuchon, Ravi Ramphe |
+| 10:15 – 11:15 a.m. | Bhagavad Gita | Ravi Ramphe |
+| 11:15 – 11:30 a.m. | Break | |
+| 11:30 a.m. – 12:30 p.m. | Class discussion, topics / speakers | Pradeep Singh, Mira Aubuchon |
+
+### Y2 Schedule
+
+| Time | Room #12 | Teachers |
+| --- | --- | --- |
+| 10:00 – 10:45 a.m. | Invocation / guided meditation | Venu Vennam, Niraj Shah, Padmadisha Das |
+| 10:15 – 11:15 a.m. | Bhagavad Gita | Padmadisha Das |
+| 11:15 – 11:30 a.m. | Break | |
+| 11:30 a.m. – 12:30 p.m. | Class discussion, topics / speakers | Venu Vennam, Niraj Shah |
+
+### Y3 Schedule
+
+| Time | Room #1 | Teachers |
+| --- | --- | --- |
+| 10:00 – 10:15 a.m. | Invocation | Suresh Shaddarsanam, Neelima Swarna, Bhupal Dev |
+| 10:15 – 11:15 a.m. | Bhagavad Gita | Bhupal Dev |
+| 11:15 – 11:30 a.m. | Break | |
+| 11:30 a.m. – 12:30 p.m. | Classroom discussion / guest speakers | Suresh Shaddarsanam, Neelima Swarna |
+
+### Y4 Schedule
+
+Y4 assists in classrooms: **Team A** from 10:00 – 11:15 a.m., **Team B** from 11:15 a.m. – 12:30 p.m. Both meet in Room #14.
+
+| Time | Team A | Team B |
+| --- | --- | --- |
+| 10:00 – 10:15 a.m. | Assembly — Room #14 | Assembly — Room #14 |
+| 10:15 – 11:05 a.m. | Community service | Room #14 |
+| 11:20 – 11:30 a.m. | Meet with classroom teachers | Meet with classroom teachers |
+| 11:30 a.m. – 12:30 p.m. | Room #14 | Community service |`,
     singleColumn: true,
   },
   giving: {

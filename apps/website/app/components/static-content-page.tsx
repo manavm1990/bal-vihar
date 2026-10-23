@@ -196,21 +196,45 @@ function parseMarkdown(content: string): MarkdownBlock[] {
 }
 
 function parseTable(lines: string[]): MarkdownBlock | null {
-  const rows = lines
-    .map((line) =>
-      line
-        .replace(/^\|/, "")
-        .replace(/\|$/, "")
-        .split("|")
-        .map((cell) => cleanInlineText(cell.trim())),
-    )
-    .filter((row) => row.some(Boolean));
+  const rows = lines.map((line) =>
+    line
+      .replace(/^\|/, "")
+      .replace(/\|$/, "")
+      .split("|")
+      .map((cell) => cleanInlineText(cell.trim())),
+  );
 
   if (rows.length < 2) return null;
 
-  const firstBodyRow = rows[1]?.every((cell) => /^:?-{3,}:?$/.test(cell)) ? 2 : 1;
-  const headers = rows[0] ?? [];
-  const body = rows.slice(firstBodyRow).filter((row) => row.some(Boolean));
+  const isSeparatorRow = (row: string[]) =>
+    row.length > 0 && row.every((cell) => /^:?-{3,}:?$/.test(cell));
+
+  const separatorIndex = rows.findIndex(isSeparatorRow);
+  const nonEmpty = (row: string[]) => row.some(Boolean);
+
+  let headers: string[];
+  let body: string[][];
+
+  if (separatorIndex >= 0) {
+    const beforeSeparator = separatorIndex > 0 ? (rows[separatorIndex - 1] ?? []) : [];
+    const afterSeparator = rows.slice(separatorIndex + 1).filter(nonEmpty);
+
+    // Empty placeholder header rows (common in pasted tables) — promote the first body row.
+    if (beforeSeparator.some(Boolean)) {
+      headers = beforeSeparator;
+      body = afterSeparator;
+    } else if (afterSeparator[0]) {
+      headers = afterSeparator[0];
+      body = afterSeparator.slice(1);
+    } else {
+      return null;
+    }
+  } else {
+    const dataRows = rows.filter(nonEmpty);
+    if (dataRows.length < 2) return null;
+    headers = dataRows[0] ?? [];
+    body = dataRows.slice(1);
+  }
 
   if (!headers.some(Boolean) || body.length === 0) return null;
 

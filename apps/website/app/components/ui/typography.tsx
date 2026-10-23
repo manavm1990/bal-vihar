@@ -288,21 +288,25 @@ function Tbody({ rows }: Pick<TableProps, "rows">) {
 }
 
 function Thead({ headers }: Pick<TableProps, "headers">) {
+  const headerKeyCounts = new Map<string, number>();
+
   return (
     <thead>
       <tr className="even:bg-muted m-0 border-t p-0">
-        {headers.map((header) => (
-          <th
-            key={
-              isValidElement(header) && header.key != null
-                ? `header-${header.key}`
-                : `header-${String(header)}`
-            }
-            className="border px-4 py-2 text-left font-bold [[align=center]]:text-center [[align=right]]:text-right"
-          >
-            {header}
-          </th>
-        ))}
+        {headers.map((header) => {
+          const headerSignature = getNodeSignature(header);
+          const headerOccurrence = (headerKeyCounts.get(headerSignature) ?? 0) + 1;
+          headerKeyCounts.set(headerSignature, headerOccurrence);
+
+          return (
+            <th
+              key={`header-${headerSignature}-${headerOccurrence}`}
+              className="border px-4 py-2 text-left font-bold [[align=center]]:text-center [[align=right]]:text-right"
+            >
+              {header}
+            </th>
+          );
+        })}
       </tr>
     </thead>
   );
