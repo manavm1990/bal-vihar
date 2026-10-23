@@ -303,8 +303,8 @@ export default function NewFamiliesPage() {
             </P>
             <Ul>
               <li>
-                The bhajan teacher pre-records the next shloka or bhajan and posts it to the class
-                Google site.
+                The bhajan teacher pre-records the next shloka or bhajan and posts it to your
+                class’s <Link href="/education/class-webpages">webpage</Link>.
               </li>
               <li>
                 Children listen beforehand, learn the meaning in class and sing in small groups for
@@ -357,15 +357,9 @@ export default function NewFamiliesPage() {
       </Section>
 
       <Section id="contact">
-        <div className="grid gap-4 md:grid-cols-3">
-          <InfoCard title="This website">Updates and announcements are posted here first.</InfoCard>
-          <InfoCard title="WhatsApp">
-            Every class has its own group. Ask your child’s teacher to add you.
-          </InfoCard>
-          <InfoCard title="Class Google site">
-            Bhajan and shloka recordings are posted in your class’s folder.
-          </InfoCard>
-        </div>
+        <InfoCard title="WhatsApp">
+          Every class has its own WhatsApp group. Ask your child’s teacher to add you.
+        </InfoCard>
         <P>
           Not sure who to ask? Admin volunteers are in the lobby every class day. You can also
           browse the <Link href="/about-us/administrative-team">administrative team</Link> or read
