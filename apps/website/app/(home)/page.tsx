@@ -154,6 +154,9 @@ function Intro({ text }: IntroProps) {
           <a href={REGISTRATION_URL}>Register a student</a>
         </Button>
         <Button asChild size="lg" variant="outline">
+          <Link href="/new-families">New families</Link>
+        </Button>
+        <Button asChild size="lg" variant="outline">
           <Link href="/about-us/history">Our story</Link>
         </Button>
       </div>
