@@ -103,7 +103,7 @@ function Tile({ area, labels }: TileProps) {
   return (
     <div
       className={cn(
-        "flex min-h-14 flex-col items-center justify-center rounded-md border px-1 py-1.5 text-center text-xs sm:text-sm",
+        "flex min-h-14 flex-col items-center justify-center rounded-md border px-1 py-1.5 text-center text-xs motion-safe:transition-colors motion-safe:duration-300 sm:text-sm",
         isActive
           ? "bg-primary text-primary-foreground border-primary font-semibold"
           : "text-muted-foreground bg-gray-50",

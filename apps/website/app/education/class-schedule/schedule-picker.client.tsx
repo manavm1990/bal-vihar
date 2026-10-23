@@ -2,7 +2,9 @@
 
 import { Button } from "@components/ui/button";
 import { H2, H3, MutedP, Ol } from "@components/ui/typography";
+import { FADE } from "@lib/animations";
 import { cn } from "@lib/utils";
+import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useState } from "react";
 import FloorPlan, { type RoomId, type RoomLabels, type RoomNumber } from "./floor-plan";
@@ -146,7 +148,7 @@ const SLOT_STYLES: Record<SlotKind, string> = {
 
 /** A group picker that shows one K–7 group's Sunday timeline and rooms at a time. */
 export default function SchedulePicker() {
-  const { group, select } = useSelectedGroup();
+  const { group, select, fadeIn } = useSelectedGroup();
 
   return (
     <section aria-labelledby="k7-schedule" className="space-y-4">
@@ -173,19 +175,21 @@ export default function SchedulePicker() {
           Not sure which group your child is in? <Link href="/questions">Ask us</Link>.
         </MutedP>
       </fieldset>
-      <H3 className="text-xl">Group {group.label}</H3>
-      {group.note && <MutedP>{group.note}</MutedP>}
-      <Ol variant="unstyled" className="max-w-3xl space-y-2">
-        {group.slots.map((item) => (
-          <li key={item.time} className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-4">
-            <span className="text-navy-600 pt-2.5 text-sm font-semibold">{item.time}</span>
-            <div className={cn("rounded-lg border px-4 py-2.5", SLOT_STYLES[item.kind])}>
-              <span className="block font-medium">{item.title}</span>
-              {item.spot && <span className="block text-sm opacity-80">{item.spot.where}</span>}
-            </div>
-          </li>
-        ))}
-      </Ol>
+      <motion.div key={group.id} className="space-y-4" {...fadeIn}>
+        <H3 className="text-xl">Group {group.label}</H3>
+        {group.note && <MutedP>{group.note}</MutedP>}
+        <Ol variant="unstyled" className="max-w-3xl space-y-2">
+          {group.slots.map((item) => (
+            <li key={item.time} className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-4">
+              <span className="text-navy-600 pt-2.5 text-sm font-semibold">{item.time}</span>
+              <div className={cn("rounded-lg border px-4 py-2.5", SLOT_STYLES[item.kind])}>
+                <span className="block font-medium">{item.title}</span>
+                {item.spot && <span className="block text-sm opacity-80">{item.spot.where}</span>}
+              </div>
+            </li>
+          ))}
+        </Ol>
+      </motion.div>
       <H3 id="where-to-go" className="scroll-mt-6 pt-4 text-xl">
         Where to go
       </H3>
@@ -211,6 +215,18 @@ function getRoomLabels(slots: readonly Slot[]) {
 function useSelectedGroup() {
   const [selectedId, setSelectedId] = useState(DEFAULT_GROUP.id);
   const group = GROUPS.find((item) => item.id === selectedId) ?? DEFAULT_GROUP;
+  const [hasPicked, setHasPicked] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+  // Fade only after a tap, so the first paint is never hidden while the page hydrates.
+  const fadeIn =
+    shouldReduceMotion || !hasPicked
+      ? {}
+      : { initial: FADE.initial, animate: FADE.animate, transition: FADE.transition };
 
-  return { group, select: setSelectedId };
+  const select = (id: string) => {
+    setSelectedId(id);
+    setHasPicked(true);
+  };
+
+  return { group, select, fadeIn };
 }
