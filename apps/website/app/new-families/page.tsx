@@ -1,3 +1,4 @@
+import SectionNav from "@components/section-nav";
 import { Button } from "@components/ui/button";
 import { Card } from "@components/ui/card";
 import { H1, H2, H3, LeadP, Ol, P, Ul } from "@components/ui/typography";
@@ -137,20 +138,10 @@ export default function NewFamiliesPage() {
         ))}
       </section>
 
-      <nav aria-label="On this page">
-        <ul className="flex flex-wrap gap-2">
-          {Object.entries(SECTIONS).map(([id, title]) => (
-            <li key={id}>
-              <a
-                href={`#${id}`}
-                className="border-border text-navy-600 hover:bg-accent hover:text-primary-ink inline-block rounded-full border px-4 py-1.5 text-sm font-medium hover:no-underline"
-              >
-                {title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <SectionNav
+        label="On this page"
+        links={Object.entries(SECTIONS).map(([id, title]) => ({ href: `#${id}`, title }))}
+      />
 
       <Section id="sunday">
         <P>
