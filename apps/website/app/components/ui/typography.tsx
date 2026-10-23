@@ -3,15 +3,25 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { type ComponentPropsWithoutRef, isValidElement, type ReactNode } from "react";
 
 type H2Variant = NonNullable<VariantProps<typeof h2Variants>["variant"]>;
+type OlVariant = NonNullable<VariantProps<typeof olVariants>["variant"]>;
+type UlVariant = NonNullable<VariantProps<typeof ulVariants>["variant"]>;
 
 interface H2Props extends ComponentPropsWithoutRef<"h2"> {
   variant?: H2Variant;
+}
+
+interface OlProps extends ComponentPropsWithoutRef<"ol"> {
+  variant?: OlVariant;
 }
 
 interface TableProps {
   headers: ReactNode[];
   rows: ReactNode[][];
   footer?: ReactNode;
+}
+
+interface UlProps extends ComponentPropsWithoutRef<"ul"> {
+  variant?: UlVariant;
 }
 
 /**
@@ -27,6 +37,16 @@ export function Bq({ className, ...props }: ComponentPropsWithoutRef<"blockquote
       {...props}
     />
   );
+}
+
+/**
+ * Em — Semantic stress emphasis, rendered in italics.
+ *
+ * @example
+ * <P>Please review the policies <Em>before</Em> registering.</P>
+ */
+export function Em({ className, ...props }: ComponentPropsWithoutRef<"em">) {
+  return <em className={cn("italic", className)} {...props} />;
 }
 
 /**
@@ -111,6 +131,23 @@ export function MutedP({ className, ...props }: ComponentPropsWithoutRef<"p">) {
 }
 
 /**
+ * Ol — Ordered list with prose numbering by default, or an unstyled layout.
+ *
+ * @example
+ * <Ol><li>Review volunteer opportunities.</li><li>Contact Bal Vihar.</li></Ol>
+ */
+export function Ol({ className, variant, ...props }: OlProps) {
+  return (
+    <ol
+      // `list-style: none` makes Safari/VoiceOver drop list semantics, so restore them there.
+      role={variant === "unstyled" ? "list" : undefined}
+      className={cn(olVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
+/**
  * P — Body paragraph, capped at a readable line length.
  *
  * @example
@@ -158,6 +195,23 @@ export function Table({ headers, rows, footer }: TableProps) {
   );
 }
 
+/**
+ * Ul — Unordered list with prose bullets by default, or an unstyled layout.
+ *
+ * @example
+ * <Ul><li>Education / Teaching</li><li>Events</li><li>Administration</li></Ul>
+ */
+export function Ul({ className, variant, ...props }: UlProps) {
+  return (
+    <ul
+      // `list-style: none` makes Safari/VoiceOver drop list semantics, so restore them there.
+      role={variant === "unstyled" ? "list" : undefined}
+      className={cn(ulVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+
 const h2Variants = cva("scroll-m-20 text-3xl font-semibold tracking-wider first:mt-0", {
   variants: {
     variant: {
@@ -182,6 +236,18 @@ function getNodeSignature(node: ReactNode): string {
 
   return typeof node;
 }
+
+const olVariants = cva("", {
+  variants: {
+    variant: {
+      prose: "list-decimal space-y-2 pl-6",
+      unstyled: "list-none p-0",
+    },
+  },
+  defaultVariants: {
+    variant: "prose",
+  },
+});
 
 function Tbody({ rows }: Pick<TableProps, "rows">) {
   const rowKeyCounts = new Map<string, number>();
@@ -241,3 +307,15 @@ function Thead({ headers }: Pick<TableProps, "headers">) {
     </thead>
   );
 }
+
+const ulVariants = cva("", {
+  variants: {
+    variant: {
+      prose: "list-disc space-y-2 pl-6",
+      unstyled: "list-none p-0",
+    },
+  },
+  defaultVariants: {
+    variant: "prose",
+  },
+});

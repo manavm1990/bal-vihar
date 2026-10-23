@@ -1,65 +1,23 @@
-import type { StaticPageContent } from "@lib/static-page-content";
+import type { StaticPageContent, StaticPageLink } from "@lib/static-page-content";
 import Link from "next/link";
 import Article from "./article";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { H2, H3, H4, P, Strong, Table } from "./ui/typography";
+import { Em, H2, H3, H4, Ol, P, Strong, Table, Ul } from "./ui/typography";
 
 type MarkdownBlock =
   | { kind: "heading"; level: number; text: string }
   | { kind: "paragraph"; text: string }
   | { kind: "list"; items: string[] }
+  | { kind: "ordered-list"; start: number; items: string[] }
   | { kind: "table"; headers: string[]; rows: string[][] };
-
-const INTERNAL_LINKS = new Map<string, string>([
-  ["History", "/about-us/history"],
-  ["President___s_Message", "/presidents-message"],
-  ["advboard", "/about-us/advisory-board"],
-  ["board.php", "/about-us/administrative-team"],
-  ["Policies___Procedures", "/about-us/policies-procedures"],
-  ["Community_Outreach", "/about-us/community-outreach"],
-  ["Bal_Vihar", "/about-us"],
-  ["about.php", "/about-us"],
-  ["contact.php", "/questions"],
-  ["FAQs", "/questions"],
-  ["Admissions", "/admissions"],
-  ["Admission_Process", "/admissions/admission-process"],
-  ["Tuition", "/admissions/admission-process"],
-  ["Refund_Policy", "/admissions/refund-policy"],
-  ["Education", "/education"],
-  ["Curriculum_", "/education/curriculum-k-7"],
-  ["Curriculum_Youth_Group", "/education/curriculum-youth-group"],
-  ["Education_Policy", "/education/education-policy"],
-  ["Class_Webpages", "/education/class-webpages"],
-  ["Class_Schedule", "/education/class-schedule"],
-  ["School", "/about-us"],
-  ["Giving", "/giving"],
-  ["Welcome_Message", "/giving/welcome-message"],
-  ["Give_Online", "/giving/give-online"],
-  ["Make_a_Gift_", "/giving/make-a-gift"],
-  ["Matching_Gift_Program", "/giving/matching-gift-program"],
-  ["Matching_Gift_Companies", "/giving/matching-gift-companies"],
-  ["Event_Sponsors", "/giving/event-sponsors"],
-  ["Volunteering", "/volunteering"],
-  ["Why_Volunteer_", "/volunteering/why-volunteer"],
-  ["Volunteer_Opportunities", "/volunteering/volunteer-opportunities"],
-  ["Volunteering_Policies", "/volunteering/volunteer-policies"],
-  ["Volunteers_List", "/volunteering/volunteers-list"],
-  ["form.php?form_id=11", "/volunteering/volunteer-application"],
-  ["Community_Projects", "/community-projects"],
-  ["Calendar", "/calendar"],
-  ["Upcoming_Classes_Events", "/news-and-events"],
-  ["Parents_Resources", "/resources/parents"],
-  ["Student_Resources", "/resources/students"],
-  ["Faculty_Resources", "/resources/faculty"],
-  ["Admin_Resources", "/resources/admin"],
-]);
 
 interface StaticContentPageProps {
   page: StaticPageContent;
   photoPath?: string;
+  children?: React.ReactNode;
 }
 
-export default function StaticContentPage({ page, photoPath }: StaticContentPageProps) {
+export default function StaticContentPage({ page, photoPath, children }: StaticContentPageProps) {
   return (
     <Article
       title={page.title}
@@ -67,81 +25,93 @@ export default function StaticContentPage({ page, photoPath }: StaticContentPage
       className={page.singleColumn ? "md:columns-1" : undefined}
     >
       <MarkdownContent content={page.content} />
+      {children}
       {page.links && <SectionLinks links={page.links} />}
     </Article>
   );
 }
 
-function SectionLinks({ links }: Pick<StaticPageContent, "links">) {
-  if (!links) return null;
+interface MarkdownContentProps {
+  content: string;
+}
 
-  return (
+function MarkdownContent({ content }: MarkdownContentProps) {
+  return parseMarkdown(content).map((block, blockIndex) => renderBlock(block, blockIndex));
+}
+
+interface SectionLinkProps {
+  link: StaticPageLink;
+}
+
+function SectionLink({ link }: SectionLinkProps) {
+  const card = (
+    <Card className="h-full transition-colors hover:bg-muted/60">
+      <CardHeader>
+        <CardTitle>{link.label}</CardTitle>
+        <CardDescription>{link.description}</CardDescription>
+      </CardHeader>
+    </Card>
+  );
+
+  return link.href.startsWith("http") ? (
+    <a href={link.href} target="_blank" rel="noopener noreferrer" className="hover:no-underline">
+      {card}
+    </a>
+  ) : (
+    <Link href={link.href} className="hover:no-underline">
+      {card}
+    </Link>
+  );
+}
+
+type SectionLinksProps = Pick<StaticPageContent, "links">;
+
+function SectionLinks({ links }: SectionLinksProps) {
+  return !links ? null : (
     <section className="break-inside-avoid-column space-y-4 pt-2">
       <H2 variant="plain" className="text-2xl tracking-tight">
         Explore this section
       </H2>
       <div className="grid gap-4 md:grid-cols-2">
         {links.map((link) => (
-          <Link key={link.href} href={link.href} className="hover:no-underline">
-            <Card className="h-full transition-colors hover:bg-muted/60">
-              <CardHeader>
-                <CardTitle>{link.label}</CardTitle>
-                <CardDescription>{link.description}</CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
+          <SectionLink key={link.href} link={link} />
         ))}
       </div>
     </section>
   );
 }
 
-function MarkdownContent({ content }: { content: string }) {
-  return parseMarkdown(content).map((block, blockIndex) => renderBlock(block, blockIndex));
+interface SmartLinkProps {
+  href: string;
+  children: React.ReactNode;
 }
 
-function renderBlock(block: MarkdownBlock, blockIndex: number) {
-  const blockKey = `block-${blockIndex}`;
-  if (block.kind === "heading") {
-    if (block.level <= 2)
-      return (
-        <H2 key={blockKey} variant="plain" className="text-2xl tracking-tight">
-          {renderInline(block.text)}
-        </H2>
-      );
-    if (block.level === 3)
-      return (
-        <H3 key={blockKey} className="text-xl">
-          {renderInline(block.text)}
-        </H3>
-      );
-    return (
-      <H4 key={blockKey} className="text-lg">
-        {renderInline(block.text)}
-      </H4>
-    );
-  }
+function SmartLink({ href, children }: SmartLinkProps) {
+  return href.startsWith("http") ? (
+    <a href={href} target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  ) : (
+    <Link href={href}>{children}</Link>
+  );
+}
 
-  if (block.kind === "list") {
-    return (
-      <ul key={blockKey} className="list-disc space-y-2 pl-6">
-        {block.items.map((item) => (
-          <li key={`${blockKey}-item-${item}`}>{renderInline(item)}</li>
-        ))}
-      </ul>
-    );
-  }
+const cleanInlineText = (text: string) =>
+  text
+    .replace(/\\([*_])/g, "$1")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
-  if (block.kind === "table") {
-    return (
-      <Table
-        key={blockKey}
-        headers={block.headers.map((header) => renderInline(header))}
-        rows={block.rows.map((row) => row.map((cell) => renderInline(cell)))}
-      />
-    );
-  }
-  return <P key={blockKey}>{renderInline(block.text)}</P>;
+const isListLine = (line: string) => /^[-*+]\s+\S/.test(line);
+
+const isOrderedListLine = (line: string) => /^\d{1,9}[.)]\s+\S/.test(line);
+
+const isTableLine = (line: string) => line.startsWith("|") && line.endsWith("|");
+
+function normalizeHref(href: string) {
+  const normalized = href.trim().replace(/\s+"[^"]*"$/, "");
+  return /^(#|\/|https?:\/\/)/.test(normalized) ? normalized : undefined;
 }
 
 function parseMarkdown(content: string): MarkdownBlock[] {
@@ -180,6 +150,17 @@ function parseMarkdown(content: string): MarkdownBlock[] {
       continue;
     }
 
+    if (isOrderedListLine(line)) {
+      const items: string[] = [];
+      const start = Number.parseInt(line, 10);
+      while (index < lines.length && isOrderedListLine(lines[index]?.trim() ?? "")) {
+        items.push(cleanInlineText((lines[index]?.trim() ?? "").replace(/^\d{1,9}[.)]\s+/, "")));
+        index += 1;
+      }
+      blocks.push({ kind: "ordered-list", start, items });
+      continue;
+    }
+
     if (isListLine(line)) {
       const items: string[] = [];
       while (index < lines.length && isListLine(lines[index]?.trim() ?? "")) {
@@ -198,6 +179,7 @@ function parseMarkdown(content: string): MarkdownBlock[] {
         current === "---" ||
         /^(#{2,5})\s+/.test(current) ||
         isListLine(current) ||
+        isOrderedListLine(current) ||
         isTableLine(current)
       ) {
         break;
@@ -211,14 +193,6 @@ function parseMarkdown(content: string): MarkdownBlock[] {
   }
 
   return blocks;
-}
-
-function isListLine(line: string) {
-  return /^[-*+]\s+\S/.test(line);
-}
-
-function isTableLine(line: string) {
-  return line.startsWith("|") && line.endsWith("|");
 }
 
 function parseTable(lines: string[]): MarkdownBlock | null {
@@ -241,6 +215,56 @@ function parseTable(lines: string[]): MarkdownBlock | null {
   if (!headers.some(Boolean) || body.length === 0) return null;
 
   return { kind: "table", headers, rows: body };
+}
+
+function renderBlock(block: MarkdownBlock, blockIndex: number) {
+  const blockKey = `block-${blockIndex}`;
+  if (block.kind === "heading") {
+    if (block.level <= 2)
+      return (
+        <H2 key={blockKey} variant="plain" className="text-2xl tracking-tight">
+          {renderInline(block.text)}
+        </H2>
+      );
+
+    if (block.level === 3)
+      return (
+        <H3 key={blockKey} className="text-xl">
+          {renderInline(block.text)}
+        </H3>
+      );
+
+    return (
+      <H4 key={blockKey} className="text-lg">
+        {renderInline(block.text)}
+      </H4>
+    );
+  }
+
+  if (block.kind === "list" || block.kind === "ordered-list") {
+    const items = block.items.map((item) => (
+      <li key={`${blockKey}-item-${item}`}>{renderInline(item)}</li>
+    ));
+
+    return block.kind === "ordered-list" ? (
+      <Ol key={blockKey} start={block.start}>
+        {items}
+      </Ol>
+    ) : (
+      <Ul key={blockKey}>{items}</Ul>
+    );
+  }
+
+  if (block.kind === "table") {
+    return (
+      <Table
+        key={blockKey}
+        headers={block.headers.map((header) => renderInline(header))}
+        rows={block.rows.map((row) => row.map((cell) => renderInline(cell)))}
+      />
+    );
+  }
+  return <P key={blockKey}>{renderInline(block.text)}</P>;
 }
 
 function renderInline(text: string): React.ReactNode {
@@ -272,11 +296,7 @@ function renderInline(text: string): React.ReactNode {
     } else if (strongText) {
       nodes.push(<Strong key={key}>{cleanInlineText(strongText)}</Strong>);
     } else if (emphasisText) {
-      nodes.push(
-        <em key={key} className="italic">
-          {cleanInlineText(emphasisText)}
-        </em>,
-      );
+      nodes.push(<Em key={key}>{cleanInlineText(emphasisText)}</Em>);
     }
 
     key += 1;
@@ -286,41 +306,4 @@ function renderInline(text: string): React.ReactNode {
   if (lastIndex < text.length) nodes.push(text.slice(lastIndex));
 
   return nodes.length > 0 ? nodes : text;
-}
-
-function SmartLink({ href, children }: { href: string; children: React.ReactNode }) {
-  if (href.startsWith("http")) {
-    return (
-      <a href={href} target="_blank" rel="noopener noreferrer">
-        {children}
-      </a>
-    );
-  }
-
-  return <Link href={href}>{children}</Link>;
-}
-
-function normalizeHref(href: string) {
-  const normalized = href
-    .trim()
-    .replace(/\s+"[^"]*"$/, "")
-    .replace(/^https:\/\/balvihar-stlouis\.com\/?/, "")
-    .replace(/^https:\/\/balvihar-stlouis\.starchapter\.com\/?/, "");
-
-  if (normalized.startsWith("#")) return normalized;
-  if (normalized.startsWith("http")) return normalized;
-
-  const withoutLeadingSlash = normalized.replace(/^\//, "");
-  const contentMatch = withoutLeadingSlash.match(/^content\.php\?page=([^&]+)/);
-  const key = contentMatch?.[1] ?? withoutLeadingSlash;
-
-  return INTERNAL_LINKS.get(key);
-}
-
-function cleanInlineText(text: string) {
-  return text
-    .replace(/\\([*_])/g, "$1")
-    .replace(/&nbsp;/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
 }
