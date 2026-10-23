@@ -1,7 +1,7 @@
 import Article from "@components/article";
 import { PhotoGrid } from "@components/photos/photo-grid";
 import { Card, CardContent } from "@components/ui/card";
-import { MutedP, P } from "@components/ui/typography";
+import { MutedP } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import { fetchSanityData } from "@lib/sanity/fetch";
 import { mapPhotoGallery } from "@lib/sanity/map-photo-gallery";
@@ -20,8 +20,6 @@ export default async function PhotosPage() {
 
   return (
     <Article title="Photos" className="md:columns-1">
-      <P>Photos from Bal Vihar events, celebrations, and service projects.</P>
-
       {photos.length === 0 ? (
         <Card>
           <CardContent className="p-4">
