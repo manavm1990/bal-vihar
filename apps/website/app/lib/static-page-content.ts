@@ -53,7 +53,7 @@ export const STATIC_PAGES = {
   },
   classSchedule: {
     title: "Class Schedule",
-    description: "Saturday class schedules for K–7 and youth groups.",
+    description: "Sunday class schedules for K–7 and youth groups.",
     content: `## Groups K–3
 
 | Time | K-1 | Group 1A | Group 2A | Group 3A |
