@@ -41,7 +41,7 @@ export default async function RootLayout({
   const { isEnabled: isDraftMode } = await draftMode();
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
       <body className={`${poppins.variable} ${eczar.variable} pb-14 font-sans md:pb-0`}>
         <script type="application/ld+json">{JSON.stringify(createJsonLd(TITLE))}</script>
 
