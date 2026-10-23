@@ -28,7 +28,9 @@ export default async function EducationClassPage({ params }: ClassPageProps) {
 
   return (
     <Article title={page.title} className="md:columns-1">
-      <Link href="/education/class-webpages">← All class webpages</Link>
+      <Link href="/education/class-webpages" className="block w-fit">
+        ← All class webpages
+      </Link>
       {page.teachers ? <LeadP>Taught by {page.teachers}</LeadP> : null}
       {page.pinnedNote || sessions.length > 0 || links.length > 0 ? null : (
         <Card>
