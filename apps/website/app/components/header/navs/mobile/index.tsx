@@ -117,29 +117,38 @@ export default function MobileNav() {
           <motion.ul className="space-y-2" variants={ITEM_VARIANTS}>
             {NAVIGATION.map((section) => (
               <motion.li key={section.name} variants={ITEM_VARIANTS}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveSection(activeSection === section.name ? null : section.name);
-                  }}
-                  className={`flex w-full items-center justify-between p-2 text-left font-medium ${
-                    activeSection === section.name
-                      ? "text-primary-ink bg-primary-50"
-                      : "text-navy-700 hover:text-primary-ink"
-                  }`}
-                >
-                  <span>{section.name}</span>
-                  <ChevronDownIcon
-                    className={`text-navy-400 h-4 w-4 transition-transform ${
+                {!section.items ? (
+                  <Link
+                    href={section.link}
+                    className="text-navy-700 hover:text-primary-ink block p-2 font-medium"
+                  >
+                    {section.name}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveSection(activeSection === section.name ? null : section.name);
+                    }}
+                    className={`flex w-full items-center justify-between p-2 text-left font-medium ${
                       activeSection === section.name
-                        ? "text-primary-700 rotate-180"
-                        : "group-hover:text-primary-700"
+                        ? "text-primary-ink bg-primary-50"
+                        : "text-navy-700 hover:text-primary-ink"
                     }`}
-                  />
-                </button>
+                  >
+                    <span>{section.name}</span>
+                    <ChevronDownIcon
+                      className={`text-navy-400 h-4 w-4 transition-transform ${
+                        activeSection === section.name
+                          ? "text-primary-700 rotate-180"
+                          : "group-hover:text-primary-700"
+                      }`}
+                    />
+                  </button>
+                )}
 
                 <AnimatePresence>
-                  {activeSection === section.name && (
+                  {section.items && activeSection === section.name && (
                     <motion.ul
                       initial="closed"
                       animate="open"

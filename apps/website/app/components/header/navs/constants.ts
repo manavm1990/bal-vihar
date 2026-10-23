@@ -3,7 +3,8 @@ interface NavigationItem {
   link: string;
   /** Menus near the right edge open leftward so the dropdown stays on screen. */
   align?: "right";
-  items: NavigationSubItem[];
+  /** Entries without sub-items render as a plain link instead of a dropdown. */
+  items?: NavigationSubItem[];
 }
 
 export interface NavigationSubItem {

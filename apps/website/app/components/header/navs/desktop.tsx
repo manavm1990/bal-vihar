@@ -37,19 +37,32 @@ export default function DesktopNav() {
         <NavigationMenu.List className="flex items-center">
           {NAVIGATION.map((item) => (
             <NavigationMenu.Item key={item.name} className="relative">
-              <NavigationMenu.Trigger className="group text-navy-700 hover:text-primary-ink data-[state=open]:text-primary-ink flex items-center gap-1 px-3 py-4 text-sm font-medium whitespace-nowrap">
-                {item.name}
-                <ChevronDownIcon className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
-              </NavigationMenu.Trigger>
+              {!item.items ? (
+                <NavigationMenu.Link asChild>
+                  <NextLink
+                    href={item.link}
+                    className="text-navy-700 hover:text-primary-ink flex items-center px-3 py-4 text-sm font-medium whitespace-nowrap hover:no-underline"
+                  >
+                    {item.name}
+                  </NextLink>
+                </NavigationMenu.Link>
+              ) : (
+                <>
+                  <NavigationMenu.Trigger className="group text-navy-700 hover:text-primary-ink data-[state=open]:text-primary-ink flex items-center gap-1 px-3 py-4 text-sm font-medium whitespace-nowrap">
+                    {item.name}
+                    <ChevronDownIcon className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
+                  </NavigationMenu.Trigger>
 
-              <NavigationMenu.Content
-                className={cn(
-                  "data-[motion=from-start]:animate-enter-from-left data-[motion=from-end]:animate-enter-from-right data-[motion=to-start]:animate-exit-to-left data-[motion=to-end]:animate-exit-to-right absolute top-full z-10 rounded-lg bg-white",
-                  item.align === "right" ? "right-0" : "left-1/2 -translate-x-1/2",
-                )}
-              >
-                <SubMenu items={item.items} />
-              </NavigationMenu.Content>
+                  <NavigationMenu.Content
+                    className={cn(
+                      "data-[motion=from-start]:animate-enter-from-left data-[motion=from-end]:animate-enter-from-right data-[motion=to-start]:animate-exit-to-left data-[motion=to-end]:animate-exit-to-right absolute top-full z-10 rounded-lg bg-white",
+                      item.align === "right" ? "right-0" : "left-1/2 -translate-x-1/2",
+                    )}
+                  >
+                    <SubMenu items={item.items} />
+                  </NavigationMenu.Content>
+                </>
+              )}
             </NavigationMenu.Item>
           ))}
         </NavigationMenu.List>
