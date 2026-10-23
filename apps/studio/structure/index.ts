@@ -1,4 +1,5 @@
 import { SINGLETON_IDS } from "@bv/schemas";
+import { BookIcon } from "@sanity/icons/Book";
 import { CalendarIcon } from "@sanity/icons/Calendar";
 import { CogIcon } from "@sanity/icons/Cog";
 import { DocumentTextIcon } from "@sanity/icons/DocumentText";
@@ -37,6 +38,14 @@ export const structure: StructureResolver = (S) =>
           S.documentTypeList("calendarEvent")
             .title("Calendar")
             .defaultOrdering([{ field: "date", direction: "asc" }]),
+        ),
+      S.listItem()
+        .title("Classes")
+        .icon(BookIcon)
+        .child(
+          S.documentTypeList("classPage")
+            .title("Classes")
+            .defaultOrdering([{ field: "sortOrder", direction: "asc" }]),
         ),
       S.listItem()
         .title("Policies & Procedures")

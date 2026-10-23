@@ -9,8 +9,9 @@ import { structure } from "./structure";
 
 /** Only calendar events are creatable from “New document”. */
 const CREATABLE_TYPES = new Set(["calendarEvent"]);
-const SINGLETON_TYPE_SET = new Set<string>(SINGLETON_TYPES);
-const SINGLETON_ACTIONS = new Set(["publish", "discardChanges", "restore"]);
+/** Singletons, and class pages (created once by `seed:class-pages`), are edited and published only. */
+const EDIT_ONLY_TYPE_SET = new Set<string>([...SINGLETON_TYPES, "classPage"]);
+const EDIT_ONLY_ACTIONS = new Set(["publish", "discardChanges", "restore"]);
 
 const isDev = process.env["NODE_ENV"] === "development";
 
@@ -48,10 +49,10 @@ export default defineConfig({
   document: {
     // Editors can only create calendar events (singletons and legacy types are blocked).
     newDocumentOptions: (prev) => prev.filter((item) => CREATABLE_TYPES.has(item.templateId)),
-    // Singletons can be edited and published, but not deleted, duplicated or unpublished.
+    // Edit-only types can be edited and published, but not deleted, duplicated or unpublished.
     actions: (prev, { schemaType }) =>
-      SINGLETON_TYPE_SET.has(schemaType)
-        ? prev.filter(({ action }) => action && SINGLETON_ACTIONS.has(action))
+      EDIT_ONLY_TYPE_SET.has(schemaType)
+        ? prev.filter(({ action }) => action && EDIT_ONLY_ACTIONS.has(action))
         : prev,
   },
 });

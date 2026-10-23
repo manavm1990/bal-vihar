@@ -18,7 +18,17 @@ export const resolve = {
         ],
       }),
     }),
-
+    classPage: defineLocations({
+      select: { title: "title", slug: "slug.current" },
+      resolve: (doc) => ({
+        locations: doc?.slug
+          ? [
+              { title: doc.title ?? "Class page", href: `/education/classes/${doc.slug}` },
+              { title: "Class Webpages", href: "/education/class-webpages" },
+            ]
+          : [{ title: "Class Webpages", href: "/education/class-webpages" }],
+      }),
+    }),
     homePage: defineLocations({
       select: { title: "title" },
       resolve: () => ({
