@@ -75,6 +75,34 @@ export const VOLUNTEERS_LIST_QUERY = defineQuery(`*[_id == "volunteersList"][0]{
   }
 }`);
 
+export const TEACHING_FACULTY_QUERY = defineQuery(`*[_id == "teachingFaculty"][0]{
+  _id,
+  schoolYear,
+  groups[]{
+    _key,
+    name,
+    kind,
+    teams[]{
+      _key,
+      subject,
+      section,
+      teachers[]{
+        _key,
+        isBackup,
+        person->{ _id, name, email, phone }
+      },
+      assistants[]{ _key, name, level }
+    }
+  },
+  programs[]{
+    _key,
+    name,
+    coordinators[]->{ _id, name, email, phone },
+    team[]->{ _id, name, email, phone },
+    assistants[]{ _key, name, level }
+  }
+}`);
+
 export const POLICIES_QUERY = defineQuery(`*[_id == "policies"][0]{
   _id,
   intro,

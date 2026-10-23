@@ -15,6 +15,12 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type YouthAssistant = {
+  _type: "youthAssistant";
+  name: string;
+  level: "Y4" | "Y5";
+};
+
 export type VolunteersList = {
   _id: string;
   _type: "volunteersList";
@@ -33,6 +39,65 @@ export type VolunteersList = {
       _key: string;
     }>;
     _type: "team";
+    _key: string;
+  }>;
+};
+
+export type PersonReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "person";
+};
+
+export type TeachingFaculty = {
+  _id: string;
+  _type: "teachingFaculty";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  schoolYear: string;
+  groups?: Array<{
+    name: string;
+    kind: "balVihar" | "youth";
+    teams?: Array<{
+      subject: "Class" | "Bhajan" | "Yoga" | "Teachers";
+      section?: string;
+      teachers?: Array<{
+        person: PersonReference;
+        isBackup?: boolean;
+        _type: "teacher";
+        _key: string;
+      }>;
+      assistants?: Array<
+        {
+          _key: string;
+        } & YouthAssistant
+      >;
+      _type: "teachingTeam";
+      _key: string;
+    }>;
+    _type: "teachingGroup";
+    _key: string;
+  }>;
+  programs?: Array<{
+    name: string;
+    coordinators?: Array<
+      {
+        _key: string;
+      } & PersonReference
+    >;
+    team?: Array<
+      {
+        _key: string;
+      } & PersonReference
+    >;
+    assistants?: Array<
+      {
+        _key: string;
+      } & YouthAssistant
+    >;
+    _type: "teachingProgram";
     _key: string;
   }>;
 };
@@ -177,6 +242,17 @@ export type PhotoGallery = {
     _type: "galleryPhoto";
     _key: string;
   }>;
+};
+
+export type Person = {
+  _id: string;
+  _type: "person";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  email?: string;
+  phone?: string;
 };
 
 export type HomePage = {
@@ -402,13 +478,17 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | YouthAssistant
   | VolunteersList
+  | PersonReference
+  | TeachingFaculty
   | SiteSettings
   | SanityImageAssetReference
   | MediaImage
   | Policies
   | Slug
   | PhotoGallery
+  | Person
   | HomePage
   | SanityImageCrop
   | SanityImageHotspot
@@ -500,6 +580,68 @@ export type VOLUNTEERS_LIST_QUERY_RESULT =
           name: string;
           email: string | null;
           phone: string | null;
+        }> | null;
+      }> | null;
+    }
+  | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: TEACHING_FACULTY_QUERY
+// Query: *[_id == "teachingFaculty"][0]{  _id,  schoolYear,  groups[]{    _key,    name,    kind,    teams[]{      _key,      subject,      section,      teachers[]{        _key,        isBackup,        person->{ _id, name, email, phone }      },      assistants[]{ _key, name, level }    }  },  programs[]{    _key,    name,    coordinators[]->{ _id, name, email, phone },    team[]->{ _id, name, email, phone },    assistants[]{ _key, name, level }  }}
+export type TEACHING_FACULTY_QUERY_RESULT =
+  | {
+      _id: "teachingFaculty";
+      schoolYear: null;
+      groups: null;
+      programs: null;
+    }
+  | {
+      _id: "teachingFaculty";
+      schoolYear: string;
+      groups: Array<{
+        _key: string;
+        name: string;
+        kind: "balVihar" | "youth";
+        teams: Array<{
+          _key: string;
+          subject: "Bhajan" | "Class" | "Teachers" | "Yoga";
+          section: string | null;
+          teachers: Array<{
+            _key: string;
+            isBackup: boolean | null;
+            person: {
+              _id: string;
+              name: string;
+              email: string | null;
+              phone: string | null;
+            };
+          }> | null;
+          assistants: Array<{
+            _key: string;
+            name: string;
+            level: "Y4" | "Y5";
+          }> | null;
+        }> | null;
+      }> | null;
+      programs: Array<{
+        _key: string;
+        name: string;
+        coordinators: Array<{
+          _id: string;
+          name: string;
+          email: string | null;
+          phone: string | null;
+        }> | null;
+        team: Array<{
+          _id: string;
+          name: string;
+          email: string | null;
+          phone: string | null;
+        }> | null;
+        assistants: Array<{
+          _key: string;
+          name: string;
+          level: "Y4" | "Y5";
         }> | null;
       }> | null;
     }
@@ -602,6 +744,13 @@ export type POLICIES_QUERY_RESULT =
 export type HOME_PAGE_QUERY_RESULT =
   | {
       _id: "homePage";
+      title: null;
+      heroSlides: null;
+      announcements: null;
+      whoWeAre: null;
+    }
+  | {
+      _id: "homePage";
       title: string;
       heroSlides: null;
       announcements: null;
@@ -659,6 +808,11 @@ export type HOME_PAGE_QUERY_RESULT =
 export type PHOTO_GALLERY_QUERY_RESULT =
   | {
       _id: "photoGallery";
+      title: null;
+      photos: null;
+    }
+  | {
+      _id: "photoGallery";
       title: string;
       photos: null;
     }
@@ -702,6 +856,13 @@ export type PHOTO_GALLERY_QUERY_RESULT =
 // Variable: SITE_SETTINGS_QUERY
 // Query: *[_id == "siteSettings"][0]{  _id,  title,  registrationUrl,  contactEmail,  defaultOgImage {  asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop}}
 export type SITE_SETTINGS_QUERY_RESULT =
+  | {
+      _id: "siteSettings";
+      title: null;
+      registrationUrl: null;
+      contactEmail: null;
+      defaultOgImage: null;
+    }
   | {
       _id: "siteSettings";
       title: string;
@@ -748,6 +909,7 @@ declare global {
     '*[_type == "classPage" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  teachers,\n  pinnedNote,\n  links[]{\n    _key,\n    label,\n    url\n  },\n  "sessions": sessions[] | order(date desc){\n    _key,\n    date,\n    covered,\n    homework,\n    links[]{\n      _key,\n      label,\n      url\n    }\n  }\n}': CLASS_PAGE_QUERY_RESULT;
     '*[_type == "classPage"] | order(sortOrder asc){\n  _id,\n  title,\n  "slug": slug.current,\n  group,\n  teachers,\n  "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)\n}': CLASS_PAGES_QUERY_RESULT;
     '*[_id == "volunteersList"][0]{\n  _id,\n  teams[]{\n    _key,\n    name,\n    description,\n    members[]{\n      _key,\n      name,\n      email,\n      phone\n    }\n  }\n}': VOLUNTEERS_LIST_QUERY_RESULT;
+    '*[_id == "teachingFaculty"][0]{\n  _id,\n  schoolYear,\n  groups[]{\n    _key,\n    name,\n    kind,\n    teams[]{\n      _key,\n      subject,\n      section,\n      teachers[]{\n        _key,\n        isBackup,\n        person->{ _id, name, email, phone }\n      },\n      assistants[]{ _key, name, level }\n    }\n  },\n  programs[]{\n    _key,\n    name,\n    coordinators[]->{ _id, name, email, phone },\n    team[]->{ _id, name, email, phone },\n    assistants[]{ _key, name, level }\n  }\n}': TEACHING_FACULTY_QUERY_RESULT;
     '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  heroSlides[]{\n    _key,\n    link,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  },\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  },\n  whoWeAre\n}': HOME_PAGE_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;
