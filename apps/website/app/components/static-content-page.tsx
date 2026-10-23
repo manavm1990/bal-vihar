@@ -26,6 +26,7 @@ export default function StaticContentPage({ page, photoPath, children }: StaticC
   return (
     <Article
       title={page.title}
+      subtitle={page.subtitle}
       photoPath={photoPath}
       className={page.singleColumn ? "md:columns-1" : undefined}
     >
