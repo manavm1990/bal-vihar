@@ -9,7 +9,7 @@ import { structure } from "./structure";
 
 /** Only calendar events are creatable from “New document”. */
 const CREATABLE_TYPES = new Set(["calendarEvent"]);
-/** Singletons, and class pages (created once by `seed:class-pages`), are edited and published only. */
+/** Singletons and class pages are edited and published only. */
 const EDIT_ONLY_TYPE_SET = new Set<string>([...SINGLETON_TYPES, "classPage"]);
 const EDIT_ONLY_ACTIONS = new Set(["publish", "discardChanges", "restore"]);
 

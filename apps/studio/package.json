@@ -12,7 +12,6 @@
     "lint:fix": "biome check --write .",
     "typecheck": "tsc --noEmit",
     "typegen": "sanity schema extract --enforce-required-fields --force && sanity typegen generate",
-    "seed:class-pages": "sanity exec scripts/seed-class-pages.ts --with-user-token --",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy"
   },
