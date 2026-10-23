@@ -19,9 +19,8 @@ const LINKS: LinkItem[] = [
     className: "bg-primary/80 text-navy hover:bg-primary-600/80",
   },
   {
-    href: "/presidents-message",
-    text: "President's Message",
-    desktopOnly: true,
+    href: "/new-families",
+    text: "New Families",
     className: "bg-primary/80 text-navy hover:bg-primary-600/80",
   },
   {
