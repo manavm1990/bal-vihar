@@ -201,6 +201,9 @@ export default function NewFamiliesPage() {
             Zoom sessions so classes stay connected.
           </P>
         </Callout>
+        <Button asChild variant="outline">
+          <Link href="/education/class-schedule#where-to-go">Find your group’s rooms</Link>
+        </Button>
       </Section>
 
       <Section id="bring">

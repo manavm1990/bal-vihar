@@ -4,14 +4,20 @@ import { Button } from "@components/ui/button";
 import { H2, H3, MutedP, Ol } from "@components/ui/typography";
 import { cn } from "@lib/utils";
 import { useState } from "react";
+import FloorPlan, { type RoomId, type RoomLabels, type RoomNumber } from "./floor-plan";
 
 type SlotKind = "class" | "end" | "pause" | "practice";
+
+interface Spot {
+  room: RoomId;
+  where: string;
+}
 
 interface Slot {
   time: string;
   kind: SlotKind;
   title: string;
-  where?: string | undefined;
+  spot?: Spot | undefined;
 }
 
 interface Group {
@@ -23,47 +29,65 @@ interface Group {
 
 const PARENTS_LOUNGE_NOTE = "Pick-up is from the Parents’ lounge.";
 
-const slot = (time: string, kind: SlotKind, title: string, where?: string): Slot => ({
+const slot = (time: string, kind: SlotKind, title: string, spot?: Spot): Slot => ({
   time,
   kind,
   title,
-  where,
+  spot,
+});
+
+const classroom = (number: RoomNumber): Spot => ({
+  room: `room-${number}`,
+  where: `Room #${number}`,
 });
 
 // Groups K–3 have class first, then yoga and bhajan in their own area.
-const lowerDay = (room: number, place: string, order: readonly [string, string]): Slot[] => [
-  slot("10:00 a.m.", "class", "Arathi", `Room #${room}`),
-  slot("10:05 a.m.", "class", "Class instruction", `Room #${room}`),
+const lowerDay = (
+  classSpot: Spot,
+  practiceSpot: Spot,
+  order: readonly [string, string],
+): Slot[] => [
+  slot("10:00 a.m.", "class", "Arathi", classSpot),
+  slot("10:05 a.m.", "class", "Class instruction", classSpot),
   slot("10:55 a.m.", "pause", "Break"),
   slot("11:05 a.m.", "pause", "Transition to yoga / bhajan"),
-  slot("11:15 a.m.", "practice", order[0], place),
-  slot("11:45 a.m.", "practice", order[1], place),
+  slot("11:15 a.m.", "practice", order[0], practiceSpot),
+  slot("11:45 a.m.", "practice", order[1], practiceSpot),
   slot("12:20 p.m.", "end", "Dismissal"),
 ];
 
 // Groups 4–7 do yoga and bhajan first, then class.
 const upperDay = (
-  assembly: string,
-  first: readonly [string, string],
-  second: readonly [string, string],
-  room: string,
+  assembly: Spot,
+  first: readonly [string, Spot],
+  second: readonly [string, Spot],
+  classSpot: Spot,
 ): Slot[] => [
   slot("10:00 a.m.", "class", "Assembly", assembly),
   slot("10:05 a.m.", "practice", first[0], first[1]),
   slot("10:35 a.m.", "practice", second[0], second[1]),
   slot("11:05 a.m.", "pause", "Transition to class"),
   slot("11:10 a.m.", "pause", "Break"),
-  slot("11:20 a.m.", "class", "Class instruction", room),
+  slot("11:20 a.m.", "class", "Class instruction", classSpot),
   slot("12:30 p.m.", "end", "Dismissal"),
 ];
 
+const HALL_1: Spot = { room: "hall-1", where: "Hall Area 1" };
+const HALL_2: Spot = { room: "hall-2", where: "Hall Area 2" };
+const STAGE: Spot = { room: "room-8", where: "Stage Area Center (Room #8)" };
+const STAGE_LEFT: Spot = { room: "room-9", where: "Stage Area Left (Room #9)" };
+
 // TODO: Rooms and times come from the 2022–23 classroom layout and the old orientation booklet.
-// Confirm every placement for the current school year, including whether groups have sections.
+// Confirm every placement for the current school year, including whether groups have sections,
+// and whether Group 3's "Center Hall" is Hall Area 1.
 const DEFAULT_GROUP: Group = {
   id: "K",
   label: "K",
   note: PARENTS_LOUNGE_NOTE,
-  slots: lowerDay(5, "Stage Right, Room #6", ["Bhajan", "Yoga"]),
+  slots: lowerDay(classroom(5), { room: "room-6", where: "Stage Right, Room #6" }, [
+    "Bhajan",
+    "Yoga",
+  ]),
 };
 
 const GROUPS: readonly Group[] = [
@@ -72,47 +96,43 @@ const GROUPS: readonly Group[] = [
     id: "1",
     label: "1",
     note: PARENTS_LOUNGE_NOTE,
-    slots: lowerDay(10, "Stage Left, Room #9", ["Yoga", "Bhajan"]),
+    slots: lowerDay(classroom(10), { room: "room-9", where: "Stage Left, Room #9" }, [
+      "Yoga",
+      "Bhajan",
+    ]),
   },
   {
     id: "2",
     label: "2",
-    slots: lowerDay(11, "Stage Area Center, Room #8", ["Bhajan", "Yoga"]),
+    slots: lowerDay(classroom(11), { room: "room-8", where: "Stage Area Center, Room #8" }, [
+      "Bhajan",
+      "Yoga",
+    ]),
   },
   {
     id: "3",
     label: "3",
-    slots: lowerDay(4, "Center Hall", ["Yoga", "Bhajan"]),
+    slots: lowerDay(classroom(4), HALL_1, ["Yoga", "Bhajan"]),
   },
   {
     id: "4",
     label: "4",
-    slots: upperDay(
-      "Stage Area Center (Room #8)",
-      ["Bhajan", "Stage Area Center (Room #8)"],
-      ["Yoga", "Stage Area Center (Room #8)"],
-      "Room #10",
-    ),
+    slots: upperDay(STAGE, ["Bhajan", STAGE], ["Yoga", STAGE], classroom(10)),
   },
   {
     id: "5",
     label: "5",
-    slots: upperDay("Hall Area 1", ["Yoga", "Hall Area 1"], ["Bhajan", "Room #3"], "Room #3"),
+    slots: upperDay(HALL_1, ["Yoga", HALL_1], ["Bhajan", classroom(3)], classroom(3)),
   },
   {
     id: "6",
     label: "6",
-    slots: upperDay("Hall Area 2", ["Yoga", "Hall Area 2"], ["Bhajan", "Room #2"], "Room #2"),
+    slots: upperDay(HALL_2, ["Yoga", HALL_2], ["Bhajan", classroom(2)], classroom(2)),
   },
   {
     id: "7",
     label: "7",
-    slots: upperDay(
-      "Stage Area Left (Room #9)",
-      ["Bhajan", "Stage Area Left (Room #9)"],
-      ["Yoga", "Stage Area Left (Room #9)"],
-      "Room #11",
-    ),
+    slots: upperDay(STAGE_LEFT, ["Bhajan", STAGE_LEFT], ["Yoga", STAGE_LEFT], classroom(11)),
   },
 ];
 
@@ -123,7 +143,7 @@ const SLOT_STYLES: Record<SlotKind, string> = {
   practice: "bg-primary-50 border-primary-300 border-2",
 };
 
-/** A group picker that shows one K–7 group's Sunday timeline at a time. */
+/** A group picker that shows one K–7 group's Sunday timeline and rooms at a time. */
 export default function SchedulePicker() {
   const { group, select } = useSelectedGroup();
 
@@ -154,13 +174,31 @@ export default function SchedulePicker() {
             <span className="text-navy-600 pt-2.5 text-sm font-semibold">{item.time}</span>
             <div className={cn("rounded-lg border px-4 py-2.5", SLOT_STYLES[item.kind])}>
               <span className="block font-medium">{item.title}</span>
-              {item.where && <span className="block text-sm opacity-80">{item.where}</span>}
+              {item.spot && <span className="block text-sm opacity-80">{item.spot.where}</span>}
             </div>
           </li>
         ))}
       </Ol>
+      <H3 id="where-to-go" className="scroll-mt-6 pt-4 text-xl">
+        Where to go
+      </H3>
+      <FloorPlan groupLabel={group.label} labels={getRoomLabels(group.slots)} />
     </section>
   );
+}
+
+function getRoomLabels(slots: readonly Slot[]) {
+  const labels: Record<string, string[]> = {};
+
+  for (const item of slots) {
+    if (!item.spot) continue;
+
+    const label = item.title === "Class instruction" ? "Class" : item.title;
+    const current = labels[item.spot.room] ?? [];
+    if (!current.includes(label)) labels[item.spot.room] = [...current, label];
+  }
+
+  return labels satisfies RoomLabels;
 }
 
 function useSelectedGroup() {
