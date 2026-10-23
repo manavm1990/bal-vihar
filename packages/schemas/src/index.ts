@@ -1,7 +1,6 @@
 import { calendarEvent } from "./documents/calendar-event";
 import { calendarImport } from "./documents/calendar-import";
 import { classPage } from "./documents/class-page";
-import { event } from "./documents/event";
 import { homePage } from "./documents/home-page";
 import { PHOTO_PAGE_OPTIONS, photoGallery } from "./documents/photo-gallery";
 import { policies } from "./documents/policies";
@@ -31,7 +30,6 @@ export const schemaTypes = [
   calendarImport,
   classLink,
   classPage,
-  event,
   homePage,
   mediaImage,
   photoGallery,
@@ -45,7 +43,6 @@ export {
   calendarImport,
   classLink,
   classPage,
-  event,
   homePage,
   mediaImage,
   PHOTO_PAGE_OPTIONS,

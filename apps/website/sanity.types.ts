@@ -207,22 +207,6 @@ export type HomePage = {
   whoWeAre?: string;
 };
 
-export type Event = {
-  _id: string;
-  _type: "event";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  publishedAt: string;
-  summary: string;
-  body?: string;
-  image?: MediaImage;
-  externalUrl?: string;
-  isFeatured?: boolean;
-};
-
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
   top: number;
@@ -426,7 +410,6 @@ export type AllSanitySchemaTypes =
   | Slug
   | PhotoGallery
   | HomePage
-  | Event
   | SanityImageCrop
   | SanityImageHotspot
   | ClassPage
@@ -671,37 +654,6 @@ export type HOME_PAGE_QUERY_RESULT =
   | null;
 
 // Source: ../website/app/lib/sanity/queries.ts
-// Variable: NEWS_EVENTS_QUERY
-// Query: *[_type == "event"] | order(publishedAt desc) {  _id,  title,  "slug": slug.current,  publishedAt,  summary,  body,  isFeatured,  externalUrl,  image {  asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop}}
-export type NEWS_EVENTS_QUERY_RESULT = Array<{
-  _id: string;
-  title: string;
-  slug: string;
-  publishedAt: string;
-  summary: string;
-  body: string | null;
-  isFeatured: boolean | null;
-  externalUrl: string | null;
-  image: {
-    asset: {
-      _id: string;
-      url: string;
-      metadata: {
-        lqip: string | null;
-        dimensions: {
-          width: number;
-          height: number;
-        } | null;
-      } | null;
-    } | null;
-    alt: string;
-    caption: string | null;
-    hotspot: SanityImageHotspot | null;
-    crop: SanityImageCrop | null;
-  } | null;
-}>;
-
-// Source: ../website/app/lib/sanity/queries.ts
 // Variable: PHOTO_GALLERY_QUERY
 // Query: *[_id == "photoGallery"][0]{  _id,  title,  photos[]{    _key,    title,    schoolYear,    note,    featured,    pages,    image {  asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop}  }}
 export type PHOTO_GALLERY_QUERY_RESULT =
@@ -798,7 +750,6 @@ declare global {
     '*[_id == "volunteersList"][0]{\n  _id,\n  teams[]{\n    _key,\n    name,\n    description,\n    members[]{\n      _key,\n      name,\n      email,\n      phone\n    }\n  }\n}': VOLUNTEERS_LIST_QUERY_RESULT;
     '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  heroSlides[]{\n    _key,\n    link,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  },\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  },\n  whoWeAre\n}': HOME_PAGE_QUERY_RESULT;
-    '*[_type == "event"] | order(publishedAt desc) {\n  _id,\n  title,\n  "slug": slug.current,\n  publishedAt,\n  summary,\n  body,\n  isFeatured,\n  externalUrl,\n  image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': NEWS_EVENTS_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;
     '*[_id == "siteSettings"][0]{\n  _id,\n  title,\n  registrationUrl,\n  contactEmail,\n  defaultOgImage {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': SITE_SETTINGS_QUERY_RESULT;
   }
