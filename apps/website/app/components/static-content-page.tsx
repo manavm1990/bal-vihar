@@ -1,4 +1,5 @@
 import type { StaticPageContent } from "@lib/static-page-content";
+import kebabCase from "lodash.kebabcase";
 import Link from "next/link";
 import Article from "./article";
 import { Em, H2, H3, H4, Ol, P, Strong, Table, Ul } from "./ui/typography";
@@ -239,7 +240,12 @@ function renderBlock(block: MarkdownBlock, blockIndex: number) {
   if (block.kind === "heading") {
     if (block.level <= 2)
       return (
-        <H2 key={blockKey} variant="plain" className="text-2xl tracking-tight">
+        <H2
+          key={blockKey}
+          id={kebabCase(block.text)}
+          variant="plain"
+          className="text-2xl tracking-tight"
+        >
           {renderInline(block.text)}
         </H2>
       );
