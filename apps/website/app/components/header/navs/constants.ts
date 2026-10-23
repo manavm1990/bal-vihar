@@ -79,7 +79,6 @@ export const NAVIGATION: readonly NavigationItem[] = [
         link: "/about-us/policies-procedures#volunteer",
         group: "Volunteer",
       },
-      { name: "Volunteers List", link: "/volunteering/volunteers-list", group: "Volunteer" },
       { name: "Giving Overview", link: "/giving", group: "Give" },
       { name: "Welcome Message", link: "/giving/welcome-message", group: "Give" },
       { name: "Give Online", link: "/giving/give-online", group: "Give" },

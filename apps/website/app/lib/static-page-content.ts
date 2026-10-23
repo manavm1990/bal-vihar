@@ -303,9 +303,9 @@ Y4 assists in classrooms: **Team A** from 10:00 – 11:15 a.m., **Team B** from 
         description: "Expectations and policies for volunteers.",
       },
       {
-        label: "Volunteers List",
-        href: "/volunteering/volunteers-list",
-        description: "Volunteer list.",
+        label: "Administrative Team",
+        href: "/about-us/administrative-team",
+        description: "The teams and volunteers who run Bal Vihar.",
       },
     ],
   },
@@ -327,13 +327,6 @@ Y4 assists in classrooms: **Team A** from 10:00 – 11:15 a.m., **Team B** from 
       "Apply to volunteer with Bal Vihar of St. Louis for teaching, events, and community programs.",
     content:
       "Bal Vihar is a volunteer-run organization, and every one of our programs depends on parents and community members who give their time. Tell us where you would like to help and a member of the volunteer team will be in touch.\n\nNot sure where to start? Read about the [volunteer opportunities](/volunteering/volunteer-opportunities) and the [volunteer policies](/about-us/policies-procedures#volunteer) first.",
-    singleColumn: true,
-  },
-  volunteersList: {
-    title: "Volunteers List",
-    description: "Volunteers list.",
-    content:
-      "Meet the volunteers serving on Bal Vihar’s Advisory Board, Executive Committee, and Administrative Team.",
     singleColumn: true,
   },
 } satisfies Record<string, StaticPageContent>;
