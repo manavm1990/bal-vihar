@@ -11,6 +11,11 @@ type MarkdownBlock =
   | { kind: "ordered-list"; start: number; items: string[] }
   | { kind: "table"; headers: string[]; rows: string[][] };
 
+interface MarkdownSection {
+  key: string;
+  blocks: MarkdownBlock[];
+}
+
 interface StaticContentPageProps {
   page: StaticPageContent;
   photoPath?: string;
@@ -36,7 +41,12 @@ interface MarkdownContentProps {
 }
 
 function MarkdownContent({ content }: MarkdownContentProps) {
-  return parseMarkdown(content).map((block, blockIndex) => renderBlock(block, blockIndex));
+  // Each heading travels with its content so the page's CSS columns never strand a heading.
+  return groupBlocks(parseMarkdown(content)).map((section) => (
+    <section key={section.key} className="space-y-3">
+      {section.blocks.map((block, blockIndex) => renderBlock(block, blockIndex))}
+    </section>
+  ));
 }
 
 interface SectionLinkProps {
@@ -102,6 +112,23 @@ const cleanInlineText = (text: string) =>
     .replace(/&nbsp;/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+
+// Consecutive headings ("Social" then "History") stay in one section with the content after them.
+function groupBlocks(blocks: MarkdownBlock[]): MarkdownSection[] {
+  const sections: MarkdownSection[] = [];
+
+  for (const block of blocks) {
+    const current = sections.at(-1);
+    if (
+      current &&
+      !(block.kind === "heading" && current.blocks.some((item) => item.kind !== "heading"))
+    )
+      current.blocks.push(block);
+    else sections.push({ key: `section-${sections.length}`, blocks: [block] });
+  }
+
+  return sections;
+}
 
 const isListLine = (line: string) => /^[-*+]\s+\S/.test(line);
 
