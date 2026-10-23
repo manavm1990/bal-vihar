@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
     },
   },
   redirects: async () => [
+    {
+      source: "/community-projects",
+      destination: "/about-us/community-outreach",
+      permanent: true,
+    },
     { source: "/giving/event-sponsors", destination: "/giving", permanent: true },
     { source: "/giving/give-online", destination: "/giving", permanent: true },
     { source: "/giving/make-a-gift", destination: "/giving", permanent: true },

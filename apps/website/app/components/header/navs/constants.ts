@@ -47,7 +47,6 @@ export const NAVIGATION: readonly NavigationItem[] = [
     items: [
       { name: "Calendar", link: "/calendar" },
       { name: "Photos", link: "/photos" },
-      { name: "Community Projects", link: "/community-projects" },
       { name: "Community Outreach", link: "/about-us/community-outreach" },
     ],
   },
