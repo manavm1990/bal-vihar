@@ -69,6 +69,7 @@ export const STATIC_PAGES = {
     description: "Education philosophy and curriculum overview for Bal Vihar.",
     content:
       'Bal Vihar helps students to learn Indian culture and its application to global multicultural and multifaceted society. With value based teaching, the students learn respect, honesty and good citizenship. They are also taught discipline, tolerance and devotion in their daily routine.\n\nBal Vihar\'s main goal is to integrate Indian cultural values with the mainstream. This organization prepares the future achievers of the United States to be well rounded and apply the learned values for the best of the communities. The ultimate goal is "**to throw the light of cultural knowledge on every child, to make every child an outstanding citizen and to spread the song of peace and harmony around the world**".',
+    singleColumn: true,
     links: [
       {
         label: "Curriculum K–7",
@@ -79,11 +80,6 @@ export const STATIC_PAGES = {
         label: "Youth Group Curriculum",
         href: "/education/curriculum-youth-group",
         description: "Program goals and expectations for youth group students.",
-      },
-      {
-        label: "Education Policies",
-        href: "/about-us/policies-procedures#education",
-        description: "Graduation, promotions, attendance, and youth group expectations.",
       },
       {
         label: "Class Schedule",
