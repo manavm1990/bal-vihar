@@ -24,6 +24,7 @@ Run from the repo root (Turborepo fans out to each workspace):
 - `bun run lint` / `bun run lint:fix` - Biome check / autofix
 - `bun run typecheck` - `tsc --noEmit` in every workspace
 - `bun run typegen` - Sanity `schema.json` + `sanity.types.ts` (studio only); commit the output
+- `bun run deploy:studio` - publish the hosted Studio (needed after schema or desk changes; needs `bunx sanity login`)
 
 Scope a task with `turbo run <task> --filter=@bv/<name>`. Pre-push runs typegen then typecheck, so commit regenerated type files.
 
@@ -44,9 +45,13 @@ Path aliases (`apps/website`): `@components/*` -> `./app/components/*`, `@lib/*`
 - **One exported component per file** when the file is a page or shared module.
 - **Exception: UI primitive families** (currently `app/components/ui/typography.tsx`) live in one file with named exports, ordered: imports, types, props interfaces, exported components (alphabetical), then private helpers (`cva` variants, helper components, functions; alphabetical).
 - **Every exported primitive gets a one-line TSDoc plus an `@example`** showing real usage. Style differences are typed `variant`s (via `cva`), never an `as` prop; each component fixes its HTML element. Spread the element's native props (`ComponentPropsWithoutRef<"h2">`) and merge `className` with `cn()`.
-- **Colocate private helpers** in the same file below the exported component, in **alphabetical order**, with each helper’s props interface immediately above it.
-- **Constants** (`SCREAMING_SNAKE_CASE`) sit below imports and above the exported component.
-- **Utilities/helpers** (non-components) go below colocated components.
+- **File order, top to bottom:** imports; shared types (anything that is not a component's props); constants (`SCREAMING_SNAKE_CASE`); the **exported component first**; other colocated components, alphabetical; then **utility functions (anything that is not a component) below all components**, alphabetical.
+- **A component's props type sits directly above that component.** Only non-props types go under the imports.
+- **Components and hooks are always `function` declarations**, never arrows, and the one a file exists for is `export default function` (`export default function Page() { return (…); }`, `export default function useContact() { return useActionForm({…}); }`), even when the body is a single `return`. Single-use components are colocated below the exported one, not moved to their own file.
+- **Utilities (neither components nor hooks): single-statement functions are implicit-return arrows** (`const isTableLine = (line: string) => …`); multi-statement ones are `function` declarations. `is*` helpers are plain boolean predicates; use a type guard (`x is T`) only when it narrows a union.
+- **Name utilities with verbs** (`createParagraph`, `getPolicies`, `isTableLine`, `parseMarkdown`, `normalizeHref`). Nouns and PascalCase are for components, and hooks start with `use`. A function named like a noun reads as a component.
+- Colocated helpers are only called at render time, so arrows below the component are safe. **Module-level data built while the module loads** (such as schema field definitions) must define its arrow helpers _above_ that data, since arrows are not hoisted.
+- **Sort lists alphabetically** (case-insensitive): barrel `export { … }` blocks and registries such as `schemaTypes`. Generated files (`sanity.types.ts`, `schema.json`) are never hand-edited.
 - **Client components** use the `name.client.tsx` suffix and `"use client"` (opt-in). All other components are server components by default.
 - **Shared/reused UI** gets its own file under `app/components/` (kebab-case). Do not extract a separate file for single-use server presentational pieces.
 - Prefer **omitting braces** on single-statement `if` bodies (including multi-line `return (` … `)`).
@@ -95,6 +100,7 @@ Follow `.agents/skills/sanity-best-practices/SKILL.md` and load only the relevan
 6. **Portable Text and images** — render PT through shared components; use the Sanity image pipeline / Next image patterns from the skill (`references/image.md`, `references/portable-text.md`).
 7. **No production video on Sanity file assets** — use Mux / Media Library / external hosts per the skill’s video rules.
 8. **Validate in both apps** — after schema changes, ensure Studio still loads and website queries/types still build (`turbo` filtered tasks as needed).
+9. **Sanity is the only source of editable content** — the website reads published documents and never substitutes stand-in content in code; an empty result renders an empty state. Editors change content in Studio.
 
 ## SEO
 
