@@ -44,8 +44,8 @@ export default function HistoryPage() {
         rounded and apply the learned values for the best of the communities.
       </P>
       <P>
-        Currently, Bal Vihar school is operating every other Sunday from August through May of the
-        next year at the Hindu Temple Community Center, 2nd floor.
+        Currently, Bal Vihar school meets on select Sundays, usually every other week, from August
+        through May of the next year at the Hindu Temple Community Center, 2nd floor.
       </P>
 
       <Bq>

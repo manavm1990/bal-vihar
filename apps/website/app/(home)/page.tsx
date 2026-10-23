@@ -146,8 +146,9 @@ function Intro({ text }: IntroProps) {
       <H1>Bal Vihar of St. Louis</H1>
       <LeadP className="max-w-prose text-base whitespace-pre-line sm:text-xl">{text}</LeadP>
       <P>
-        Classes meet every other Sunday from August through May at the Hindu Temple Community
-        Center, 2nd floor.
+        Classes meet on select Sundays, usually every other week, from August through May at the
+        Hindu Temple Community Center, 2nd floor. See the <Link href="/calendar">calendar</Link> for
+        dates.
       </P>
       <div className="flex flex-wrap gap-3">
         <Button asChild size="lg">

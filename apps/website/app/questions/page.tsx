@@ -85,7 +85,7 @@ const FAQS = [
   {
     question: "When is the school in session?",
     answer:
-      "Normally from 10:00 am - 12:30 pm every other Sunday throughout the school year from August - May except for the festivals and other celebrations that the school holds. Please refer School Calendar for complete schedule for the rest of the year.",
+      "From 10:00 am - 12:30 pm on select Sundays from August - May, usually every other week. There are breaks, and sometimes classes fall on two Sundays in a row. Please refer to the School Calendar for the complete schedule.",
   },
   {
     question: "Is every parent required to volunteer?",
