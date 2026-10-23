@@ -1,11 +1,14 @@
 /**
- * Creates the class pages that do not exist yet. Safe to re-run: classes are matched by slug,
- * drafts included, and existing documents are never touched.
+ * Creates the class pages that do not exist yet, then gives Art sample content so the pages have
+ * something to show. Safe to re-run: classes are matched by slug, drafts included, existing
+ * documents are never touched, and Art is only filled while it is still empty.
  *
- *   bun run seed:class-pages           # dry run, lists what would be created
- *   bun run seed:class-pages --write   # creates the missing documents
+ *   bun run seed:class-pages           # dry run, lists what would change
+ *   bun run seed:class-pages --write   # makes the changes
  */
 import { getCliClient } from "sanity/cli";
+
+type Client = ReturnType<typeof getCliClient>;
 
 const API_VERSION = "2025-01-01";
 const SHOULD_WRITE = process.argv.includes("--write");
@@ -35,15 +38,66 @@ const CLASSES = [
   },
 ];
 
+/** Sample content, labelled as such, so editors know to replace it. No teacher names on purpose. */
+const ART_SAMPLE = {
+  pinnedNote:
+    "Sample content while this class page is being set up. Teachers will replace it after the next class.",
+  links: [
+    {
+      _key: "calendar",
+      _type: "classLink",
+      label: "Bal Vihar calendar",
+      url: "https://balviharstlouis.org/calendar",
+    },
+  ],
+  sessions: [
+    {
+      _key: "session-2026-10-18",
+      _type: "classSession",
+      date: "2026-10-18",
+      covered:
+        "Warm-up sketching, then we started rangoli patterns: symmetry, repeating shapes and mixing colors.",
+      homework:
+        "Sketch one rangoli design at home using three colors and bring it to the next class.",
+    },
+    {
+      _key: "session-2026-10-04",
+      _type: "classSession",
+      date: "2026-10-04",
+      covered:
+        "A look at this year's art projects and materials. Everyone drew a favorite festival scene.",
+    },
+  ],
+};
+
 main().catch((error: unknown) => {
   console.error(error);
   process.exitCode = 1;
 });
 
-async function main() {
-  // "raw" also sees drafts, so a class a teacher already started is never created twice.
-  const client = getCliClient({ apiVersion: API_VERSION }).withConfig({ perspective: "raw" });
+async function addArtSample(client: Client) {
+  // Published copy only: a draft is a teacher's work in progress.
+  const art = await client.fetch<{ _id: string; hasContent: boolean } | null>(
+    `*[_type == "classPage" && slug.current == "art" && !(_id in path("drafts.**"))][0]{
+      _id,
+      "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)
+    }`,
+  );
 
+  if (!art || art.hasContent) {
+    console.log(
+      `Art sample content: skipped, ${art ? "Art already has content" : "the Art class page does not exist yet"}.`,
+    );
+    return;
+  }
+
+  console.log(
+    `Art sample content: a pinned note, ${ART_SAMPLE.links.length} link and ${ART_SAMPLE.sessions.length} sessions${SHOULD_WRITE ? "" : " (dry run)"}.`,
+  );
+  if (SHOULD_WRITE) await client.patch(art._id).set(ART_SAMPLE).commit();
+}
+
+async function createMissingClasses(client: Client) {
   const existingSlugs = new Set(
     await client.fetch<string[]>(`*[_type == "classPage" && defined(slug.current)].slug.current`),
   );
@@ -71,4 +125,12 @@ async function main() {
 
   await transaction.commit();
   console.log(`Created ${missing.length} class pages.`);
+}
+
+async function main() {
+  // "raw" also sees drafts, so a class a teacher already started is never created twice.
+  const client = getCliClient({ apiVersion: API_VERSION }).withConfig({ perspective: "raw" });
+
+  await createMissingClasses(client);
+  await addArtSample(client);
 }
