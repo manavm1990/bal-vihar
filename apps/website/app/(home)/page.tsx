@@ -26,12 +26,12 @@ const MISSION =
 const PROGRAMS = [
   {
     title: "Curriculum K–7",
-    href: "/education/curriculum-k-7",
+    href: "/education/curriculum#groups-k-7",
     text: "A well-designed curriculum for younger children, with students grouped in classrooms by age.",
   },
   {
     title: "Youth Group",
-    href: "/education/curriculum-youth-group",
+    href: "/education/curriculum#youth-group",
     text: "Value-based teaching for older students: respect, honesty and good citizenship.",
   },
   {

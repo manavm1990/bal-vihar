@@ -7,7 +7,8 @@ export const PHOTO_PAGE_OPTIONS = [
   { title: "About Us → Community Outreach", value: "/about-us/community-outreach" },
   { title: "Admissions", value: "/admissions" },
   { title: "Education", value: "/education" },
-  { title: "Education → Curriculum K–7", value: "/education/curriculum-k-7" },
+  // The value is the key already stored on photos, from when Curriculum K–7 was its own page.
+  { title: "Education → Curriculum", value: "/education/curriculum-k-7" },
   { title: "Volunteering", value: "/volunteering" },
 ];
 

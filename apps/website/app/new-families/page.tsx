@@ -271,10 +271,7 @@ export default function NewFamiliesPage() {
         </InfoCard>
         <div className="flex flex-wrap gap-3">
           <Button asChild variant="outline">
-            <Link href="/education/curriculum-k-7">Curriculum (K–7)</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/education/curriculum-youth-group">Curriculum – Youth Group</Link>
+            <Link href="/education/curriculum">Curriculum</Link>
           </Button>
         </div>
       </Section>

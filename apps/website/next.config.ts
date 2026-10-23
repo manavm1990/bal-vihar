@@ -12,6 +12,16 @@ const nextConfig: NextConfig = {
       destination: "/about-us/community-outreach",
       permanent: true,
     },
+    {
+      source: "/education/curriculum-k-7",
+      destination: "/education/curriculum#groups-k-7",
+      permanent: true,
+    },
+    {
+      source: "/education/curriculum-youth-group",
+      destination: "/education/curriculum#youth-group",
+      permanent: true,
+    },
     { source: "/giving/event-sponsors", destination: "/giving", permanent: true },
     { source: "/giving/give-online", destination: "/giving", permanent: true },
     { source: "/giving/make-a-gift", destination: "/giving", permanent: true },
