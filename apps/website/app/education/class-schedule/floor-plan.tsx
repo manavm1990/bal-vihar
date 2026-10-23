@@ -55,6 +55,7 @@ interface FloorPlanProps {
 export default function FloorPlan({ groupLabel, labels }: FloorPlanProps) {
   return (
     <figure className="max-w-3xl space-y-3">
+      <figcaption className="font-medium">{describe(groupLabel, labels)}</figcaption>
       <div aria-hidden="true" className="grid grid-cols-[1fr_2fr_1fr] gap-x-2 sm:gap-x-6">
         <Column areas={LEFT_COLUMN} labels={labels} />
         <div className="flex flex-col justify-between gap-4">
@@ -71,9 +72,6 @@ export default function FloorPlan({ groupLabel, labels }: FloorPlanProps) {
         </div>
         <Column areas={RIGHT_COLUMN} labels={labels} />
       </div>
-      <figcaption className="text-muted-foreground text-sm">
-        {describe(groupLabel, labels)}
-      </figcaption>
     </figure>
   );
 }
@@ -124,5 +122,5 @@ function describe(groupLabel: string, labels: RoomLabels) {
     return roomLabels?.length ? [`${area.name} (${roomLabels.join(", ")})`] : [];
   });
 
-  return `Group ${groupLabel} uses ${parts.join(", ")}.`;
+  return `Group ${groupLabel} goes to the highlighted rooms: ${parts.join(", ")}.`;
 }

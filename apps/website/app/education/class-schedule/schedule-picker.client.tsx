@@ -3,6 +3,7 @@
 import { Button } from "@components/ui/button";
 import { H2, H3, MutedP, Ol } from "@components/ui/typography";
 import { cn } from "@lib/utils";
+import Link from "next/link";
 import { useState } from "react";
 import FloorPlan, { type RoomId, type RoomLabels, type RoomNumber } from "./floor-plan";
 
@@ -152,19 +153,25 @@ export default function SchedulePicker() {
       <H2 id="k7-schedule" variant="plain" className="text-2xl tracking-tight">
         Groups K–7
       </H2>
-      <fieldset className="flex min-w-0 flex-wrap gap-2">
-        <legend className="sr-only">Choose a group</legend>
-        {GROUPS.map((item) => (
-          <Button
-            key={item.id}
-            type="button"
-            variant={item.id === group.id ? "default" : "outline"}
-            aria-pressed={item.id === group.id}
-            onClick={() => select(item.id)}
-          >
-            {item.label}
-          </Button>
-        ))}
+      <fieldset className="min-w-0 space-y-2">
+        <legend className="mb-2 font-medium">Tap your child’s group</legend>
+        <div className="flex flex-wrap gap-2">
+          {GROUPS.map((item) => (
+            <Button
+              key={item.id}
+              type="button"
+              variant={item.id === group.id ? "default" : "outline"}
+              aria-pressed={item.id === group.id}
+              className="h-12 min-w-12"
+              onClick={() => select(item.id)}
+            >
+              {item.label}
+            </Button>
+          ))}
+        </div>
+        <MutedP>
+          Not sure which group your child is in? <Link href="/questions">Ask us</Link>.
+        </MutedP>
       </fieldset>
       <H3 className="text-xl">Group {group.label}</H3>
       {group.note && <MutedP>{group.note}</MutedP>}
@@ -193,7 +200,7 @@ function getRoomLabels(slots: readonly Slot[]) {
   for (const item of slots) {
     if (!item.spot) continue;
 
-    const label = item.title === "Class instruction" ? "Class" : item.title;
+    const label = item.kind === "class" && item.title !== "Assembly" ? "Class" : item.title;
     const current = labels[item.spot.room] ?? [];
     if (!current.includes(label)) labels[item.spot.room] = [...current, label];
   }
