@@ -1,7 +1,6 @@
-import type { StaticPageContent, StaticPageLink } from "@lib/static-page-content";
+import type { StaticPageContent } from "@lib/static-page-content";
 import Link from "next/link";
 import Article from "./article";
-import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Em, H2, H3, H4, Ol, P, Strong, Table, Ul } from "./ui/typography";
 
 type MarkdownBlock =
@@ -32,7 +31,6 @@ export default function StaticContentPage({ page, photoPath, children }: StaticC
     >
       <MarkdownContent content={page.content} />
       {children}
-      {page.links && <SectionLinks links={page.links} />}
     </Article>
   );
 }
@@ -48,48 +46,6 @@ function MarkdownContent({ content }: MarkdownContentProps) {
       {section.blocks.map((block, blockIndex) => renderBlock(block, blockIndex))}
     </section>
   ));
-}
-
-interface SectionLinkProps {
-  link: StaticPageLink;
-}
-
-function SectionLink({ link }: SectionLinkProps) {
-  const card = (
-    <Card className="h-full transition-colors hover:bg-muted/60">
-      <CardHeader>
-        <CardTitle>{link.label}</CardTitle>
-        <CardDescription>{link.description}</CardDescription>
-      </CardHeader>
-    </Card>
-  );
-
-  return link.href.startsWith("http") ? (
-    <a href={link.href} target="_blank" rel="noopener noreferrer" className="hover:no-underline">
-      {card}
-    </a>
-  ) : (
-    <Link href={link.href} className="hover:no-underline">
-      {card}
-    </Link>
-  );
-}
-
-type SectionLinksProps = Pick<StaticPageContent, "links">;
-
-function SectionLinks({ links }: SectionLinksProps) {
-  return !links ? null : (
-    <section className="break-inside-avoid-column space-y-4 pt-2">
-      <H2 variant="plain" className="text-2xl tracking-tight">
-        Explore this section
-      </H2>
-      <div className="grid gap-4 md:grid-cols-2">
-        {links.map((link) => (
-          <SectionLink key={link.href} link={link} />
-        ))}
-      </div>
-    </section>
-  );
 }
 
 interface SmartLinkProps {

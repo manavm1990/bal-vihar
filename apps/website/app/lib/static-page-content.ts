@@ -2,18 +2,11 @@ import type { Metadata } from "next";
 
 import { BASE_TITLE } from "./constants";
 
-export interface StaticPageLink {
-  label: string;
-  href: string;
-  description: string;
-}
-
 export interface StaticPageContent {
   title: string;
   subtitle?: string;
   description: string;
   content: string;
-  links?: StaticPageLink[];
   singleColumn?: boolean;
 }
 
@@ -23,34 +16,7 @@ export const STATIC_PAGES = {
     description:
       "Vision, mission, nonprofit status, and program overview for Bal Vihar of St. Louis.",
     content:
-      "## Vision\n\nTo foster and preserve Indian cultural values amongst children.\n\n## Mission\n\n*To make Bal Vihar of St. Louis an exciting and encouraging educational environment for children through appropriate activities conducted by committed professional volunteers.*\n\n---\n\n## About Us\n\nFounded in 1992, the Center for Indian Cultural Education was originally supported by Mahatma Gandhi Center till it received its independent status as a non-profit organization with exemption from the Federal Income tax under section **501(c)(3)**. The donations are tax deductible per our organization status. Its detail is as follows:\n\n* IRS Employee ID#: 20-2542002\n* Effective date: March 31, 2005\n* State of MO ID: N00647451\n\nThe cultural school is designed to promote, instill, and foster Indian culture in children of *ages 5 and above*. The children ages 5 through 12 are involved in activities such as prayers, yogasana, teachings of Indian culture, studies of values from the Indian epics Mahabharat, Ramayan and exposure to Hitopadesh, Panchtantra etc. The children also participate in local community activities.   \n  \nFor the youth group (ages 13 years and above), Bal Vihar encourages children to participate in different activities that promote respect and understanding of different cultures. Students have provided practical help to the communities in need. Various in-house community events such as Grand Parents program, Youth Lunch Program and helping at the Blood and Bone Marrow Drives have been a good success in the past few years.\n\nThe school provides **Community Service Hours Certificate** to students to use for high school graduation.  Bal Vihar is not only teaching Indian culture but also exposing the students to other cultures and religions by having our classes visit other places of worship.\n\nThe school meets every other Sunday from August through May from 10 am - 12:30 pm at **Hindu Temple Community Center**, 725 Weidman Road, Ballwin, MO 63011.  \n  \nTo find out more about this school, you can [contact](/questions) any member of the [Administrative Team](/about-us/administrative-team)",
-    links: [
-      {
-        label: "History",
-        href: "/about-us/history",
-        description: "Learn how Bal Vihar has served the St. Louis community since 1992.",
-      },
-      {
-        label: "President's Message",
-        href: "/presidents-message",
-        description: "Read the current message from Bal Vihar leadership.",
-      },
-      {
-        label: "Administrative Team",
-        href: "/about-us/administrative-team",
-        description: "See how volunteer teams support operations, education, and events.",
-      },
-      {
-        label: "Policies & Procedures",
-        href: "/about-us/policies-procedures",
-        description: "Review the policies that guide Bal Vihar families and volunteers.",
-      },
-      {
-        label: "Community Outreach",
-        href: "/about-us/community-outreach",
-        description: "See how service projects are integrated into the program.",
-      },
-    ],
+      "## Vision\n\nTo foster and preserve Indian cultural values amongst children.\n\n## Mission\n\n*To make Bal Vihar of St. Louis an exciting and encouraging educational environment for children through appropriate activities conducted by committed professional volunteers.*\n\n---\n\n## About Us\n\nFounded in 1992, the Center for Indian Cultural Education was originally supported by Mahatma Gandhi Center till it received its independent status as a non-profit organization with exemption from the Federal Income tax under section **501(c)(3)**. The donations are tax deductible per our organization status. Its detail is as follows:\n\n* IRS Employee ID#: 20-2542002\n* Effective date: March 31, 2005\n* State of MO ID: N00647451\n\nThe cultural school is designed to promote, instill, and foster Indian culture in children of *ages 5 and above*. The children ages 5 through 12 are involved in activities such as prayers, yogasana, teachings of Indian culture, studies of values from the Indian epics Mahabharat, Ramayan and exposure to Hitopadesh, Panchtantra etc. The children also participate in [local community activities](/about-us/community-outreach).   \n  \nFor the youth group (ages 13 years and above), Bal Vihar encourages children to participate in different activities that promote respect and understanding of different cultures. Students have provided practical help to the communities in need. Various in-house community events such as Grand Parents program, Youth Lunch Program and helping at the Blood and Bone Marrow Drives have been a good success in the past few years.\n\nThe school provides **Community Service Hours Certificate** to students to use for high school graduation.  Bal Vihar is not only teaching Indian culture but also exposing the students to other cultures and religions by having our classes visit other places of worship.\n\nThe school meets every other Sunday from August through May from 10 am - 12:30 pm at **Hindu Temple Community Center**, 725 Weidman Road, Ballwin, MO 63011.  \n  \nTo find out more about this school, you can [contact](/questions) any member of the [Administrative Team](/about-us/administrative-team)",
   },
   communityOutreach: {
     title: "Community Outreach",
@@ -69,36 +35,8 @@ export const STATIC_PAGES = {
     title: "Education",
     description: "Education philosophy and curriculum overview for Bal Vihar.",
     content:
-      'Bal Vihar helps students to learn Indian culture and its application to global multicultural and multifaceted society. With value based teaching, the students learn respect, honesty and good citizenship. They are also taught discipline, tolerance and devotion in their daily routine.\n\nBal Vihar\'s main goal is to integrate Indian cultural values with the mainstream. This organization prepares the future achievers of the United States to be well rounded and apply the learned values for the best of the communities. The ultimate goal is "**to throw the light of cultural knowledge on every child, to make every child an outstanding citizen and to spread the song of peace and harmony around the world**".',
+      'Bal Vihar helps students to learn Indian culture and its application to global multicultural and multifaceted society. With value based teaching, the students learn respect, honesty and good citizenship. They are also taught discipline, tolerance and devotion in their daily routine.\n\nBal Vihar\'s main goal is to integrate Indian cultural values with the mainstream. This organization prepares the future achievers of the United States to be well rounded and apply the learned values for the best of the communities. The ultimate goal is "**to throw the light of cultural knowledge on every child, to make every child an outstanding citizen and to spread the song of peace and harmony around the world**".\n\nExplore the [K–7 curriculum](/education/curriculum-k-7), the [youth group curriculum](/education/curriculum-youth-group), the [class schedule](/education/class-schedule) and the [class webpages](/education/class-webpages). You can also watch the [Daily Gita on YouTube](https://youtu.be/5wC1C89AQRA), a channel created by volunteers and Lal Prabhu Ji.',
     singleColumn: true,
-    links: [
-      {
-        label: "Curriculum K–7",
-        href: "/education/curriculum-k-7",
-        description: "Objectives, methodology, and assessment for the K–7 curriculum.",
-      },
-      {
-        label: "Youth Group Curriculum",
-        href: "/education/curriculum-youth-group",
-        description: "Program goals and expectations for youth group students.",
-      },
-      {
-        label: "Class Schedule",
-        href: "/education/class-schedule",
-        description: "Class schedule information.",
-      },
-      {
-        label: "Class Webpages",
-        href: "/education/class-webpages",
-        description: "What each class covered, homework and helpful links.",
-      },
-      {
-        label: "Daily Gita on YouTube",
-        href: "https://youtu.be/5wC1C89AQRA",
-        description:
-          "A YouTube channel for the daily Gita, created by volunteers and Lal Prabhu Ji. Opens YouTube.",
-      },
-    ],
   },
   curriculumK7: {
     title: "Curriculum K–7",
@@ -183,42 +121,10 @@ Y4 assists in classrooms: **Team A** from 10:00 – 11:15 a.m., **Team B** from 
   },
   volunteering: {
     title: "Volunteering",
-    description: "Volunteer information and opportunities at Bal Vihar.",
+    description:
+      "Why volunteering matters at Bal Vihar, and how parents and youth can get involved.",
     content:
-      "Explore the volunteering section links below for roles, policies, and how to apply.\n\n## B-VISION Impact Award\n\n* [Guidelines](https://docs.google.com/document/d/1gz5G05b0LYaJ7t61iCeA8Rd_WexuNMhE/edit?usp=sharing&ouid=112480514389048193924&rtpof=true&sd=true)\n* [Tracking Sheet](https://docs.google.com/spreadsheets/d/1Z7_CjWQNsBynD2bwP2TplbfAGVt6MU98/edit?usp=sharing&ouid=112480514389048193924&rtpof=true&sd=true)\n* [Checklist](https://docs.google.com/presentation/d/1756nN0MXCDnFXKoj1NU6Q-6mp2sNMaPE/edit?usp=sharing&ouid=112480514389048193924&rtpof=true&sd=true)\n* [Submission form](https://forms.gle/a5YmconVUQcZy2Wu7)",
-    links: [
-      {
-        label: "Why Volunteer?",
-        href: "/volunteering/why-volunteer",
-        description: "Why volunteer service matters to Bal Vihar.",
-      },
-      {
-        label: "Volunteer Opportunities",
-        href: "/volunteering/volunteer-opportunities",
-        description: "Education, events, and administration volunteer roles.",
-      },
-      {
-        label: "Volunteer Application",
-        href: "/volunteering/volunteer-application",
-        description: "How to start the volunteer application process.",
-      },
-      {
-        label: "Volunteer Policies",
-        href: "/about-us/policies-procedures#volunteer",
-        description: "Expectations and policies for volunteers.",
-      },
-      {
-        label: "Administrative Team",
-        href: "/about-us/administrative-team",
-        description: "The teams and volunteers who run Bal Vihar.",
-      },
-    ],
-  },
-  whyVolunteer: {
-    title: "Why Volunteer?",
-    description: "Why volunteering matters at Bal Vihar.",
-    content:
-      "Bal Vihar is a non-profit educational organization made of community volunteers where all parents are expected to share the workload. This permits us to run the organization effectively and efficiently.\n\nParents volunteer for a wide variety of reasons, especially wanting to help kids learn our culture and celebrate our major eventss. There is a long tradition of seeing ***volunteering as a form of charity***, based on altruism and selflessness. When you volunteer you are giving something back to your community by lending a helping hand to people and organizations.\n\nWhat you may not realize is that volunteering also benefits you as a person. There are many good reasons to get involved in the community, including learning something about yourself.\n\nBal Vihar of St. Louis offers volunteer oppurtunities for both youth group students and parents.",
+      "Bal Vihar is a non-profit educational organization made of community volunteers where all parents are expected to share the workload. This permits us to run the organization effectively and efficiently.\n\nParents volunteer for a wide variety of reasons, especially wanting to help kids learn our culture and celebrate our major events. There is a long tradition of seeing ***volunteering as a form of charity***, based on altruism and selflessness. When you volunteer you are giving something back to your community by lending a helping hand to people and organizations.\n\nWhat you may not realize is that volunteering also benefits you as a person. There are many good reasons to get involved in the community, including learning something about yourself.\n\nBal Vihar of St. Louis offers [volunteer opportunities](/volunteering/volunteer-opportunities) for both youth group students and parents. Ready to help? [Apply to volunteer](/volunteering/volunteer-application), and youth can earn recognition for their hours through the [B-VISION Impact Award](/volunteering/impact-award).",
   },
   volunteerOpportunities: {
     title: "Volunteer Opportunities",

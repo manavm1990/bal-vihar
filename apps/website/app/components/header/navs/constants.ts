@@ -55,16 +55,20 @@ export const NAVIGATION: readonly NavigationItem[] = [
     link: "/volunteering",
     align: "right",
     items: [
-      { name: "Volunteering Overview", link: "/volunteering", group: "Volunteer" },
+      { name: "Volunteering", link: "/volunteering", group: "Volunteer" },
       {
         name: "Apply to Volunteer",
         link: "/volunteering/volunteer-application",
         group: "Volunteer",
       },
-      { name: "Why Volunteer?", link: "/volunteering/why-volunteer", group: "Volunteer" },
       {
         name: "Volunteer Opportunities",
         link: "/volunteering/volunteer-opportunities",
+        group: "Volunteer",
+      },
+      {
+        name: "B-VISION Impact Award",
+        link: "/volunteering/impact-award",
         group: "Volunteer",
       },
       {
