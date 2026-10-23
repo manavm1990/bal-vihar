@@ -203,47 +203,10 @@ Y4 assists in classrooms: **Team A** from 10:00 – 11:15 a.m., **Team B** from 
   },
   giving: {
     title: "Giving",
-    description: "Giving overview and donation options for Bal Vihar of St. Louis.",
+    description:
+      "Greetings from the Bal Vihar of St. Louis fund-raising team and how your gift supports the school.",
     content:
-      "**DEHI SAUBHAAGYAM AAROGYAM DEHIME PARAMAM SUKHAM RUPAM DEHI JAYAM DEHI YASHO DEHI DWISHOJAHI**\n\nUse the section links below for giving options.",
-    links: [
-      {
-        label: "Welcome Message",
-        href: "/giving/welcome-message",
-        description: "A message for donors and supporters.",
-      },
-      {
-        label: "Give Online",
-        href: "/giving/give-online",
-        description: "Tax-deductible donation information and online giving context.",
-      },
-      {
-        label: "Make a Gift",
-        href: "/giving/make-a-gift",
-        description: "Ways to support Bal Vihar through individual gifts.",
-      },
-      {
-        label: "Matching Gift Program",
-        href: "/giving/matching-gift-program",
-        description: "How matching gifts can amplify support.",
-      },
-      {
-        label: "Matching Gift Companies",
-        href: "/giving/matching-gift-companies",
-        description: "Companies with matching-gift programs.",
-      },
-      {
-        label: "Event Sponsors",
-        href: "/giving/event-sponsors",
-        description: "Sponsor recognition information.",
-      },
-    ],
-  },
-  welcomeMessage: {
-    title: "Welcome Message",
-    description: "Welcome message for Bal Vihar supporters and donors.",
-    content:
-      "Greetings from the fund-raising team and thank you for your interest in giving to the Center for Indian Cultural Education - Bal Vihar of St. Louis.   It is our hope that this site will help you learn more about the many ways to support us and the importance of your contributions.\n\nParents, alumni, grandparents, friends and various businesses have supported the school generously in the past.  Our exceptional volunteer faculty and thorough curriculum that constitute the educational experience would not be possible without the generous support of your time and money. The yearly fees support part of the expenses and our future growth depends on your contributions to fulfill our vision and mission. *A donation to Bal Vihar of St. Louis is an investment in the future of our children, to improve our offerings and to build our infrastructure*.  We hope that you will consider making a gift today.  Your **tax-deductable (****IRS Employee ID# : 20-2542002)**donation will make a difference.\n\n## Why Bal Vihar?\n\n## Watch these Videos",
+      "**DEHI SAUBHAAGYAM AAROGYAM DEHIME PARAMAM SUKHAM RUPAM DEHI JAYAM DEHI YASHO DEHI DWISHOJAHI**\n\nGreetings from the fund-raising team and thank you for your interest in giving to the Center for Indian Cultural Education - Bal Vihar of St. Louis.   It is our hope that this site will help you learn more about the many ways to support us and the importance of your contributions.\n\nParents, alumni, grandparents, friends and various businesses have supported the school generously in the past.  Our exceptional volunteer faculty and thorough curriculum that constitute the educational experience would not be possible without the generous support of your time and money. The yearly fees support part of the expenses and our future growth depends on your contributions to fulfill our vision and mission. *A donation to Bal Vihar of St. Louis is an investment in the future of our children, to improve our offerings and to build our infrastructure*.  We hope that you will consider making a gift today.  Your **tax-deductable (****IRS Employee ID# : 20-2542002)**donation will make a difference.",
   },
   giveOnline: {
     title: "Give Online",

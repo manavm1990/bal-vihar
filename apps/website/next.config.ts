@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "4mb",
     },
   },
+  redirects: async () => [
+    { source: "/giving/welcome-message", destination: "/giving", permanent: true },
+  ],
   images: {
     remotePatterns: [
       {
