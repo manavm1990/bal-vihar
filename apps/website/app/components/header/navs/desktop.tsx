@@ -21,7 +21,7 @@ function Link({ href, ...props }: LinkProps) {
     <NavigationMenu.Link asChild active={isActive}>
       <NextLink
         href={href}
-        className={`hover:bg-accent block rounded-lg px-3 py-2 text-sm transition-colors ${
+        className={`hover:bg-accent block rounded-lg px-3 py-2 text-base transition-colors ${
           isActive ? "text-primary-ink font-medium" : "text-navy-600 hover:text-primary-ink"
         }`}
         {...props}
@@ -32,7 +32,7 @@ function Link({ href, ...props }: LinkProps) {
 
 export default function DesktopNav() {
   return (
-    <nav className="ml-auto hidden xl:block xl:pr-4">
+    <nav className="ml-auto hidden xl:block xl:pr-2">
       <NavigationMenu.Root className="relative">
         <NavigationMenu.List className="flex items-center">
           {NAVIGATION.map((item) => (
@@ -41,14 +41,14 @@ export default function DesktopNav() {
                 <NavigationMenu.Link asChild>
                   <NextLink
                     href={item.link}
-                    className="text-navy-700 hover:text-primary-ink flex items-center px-3 py-4 text-sm font-medium whitespace-nowrap hover:no-underline"
+                    className="text-navy-700 hover:text-primary-ink flex items-center px-4 py-4 text-base font-medium whitespace-nowrap hover:no-underline 2xl:text-lg"
                   >
                     {item.name}
                   </NextLink>
                 </NavigationMenu.Link>
               ) : (
                 <>
-                  <NavigationMenu.Trigger className="group text-navy-700 hover:text-primary-ink data-[state=open]:text-primary-ink flex items-center gap-1 px-3 py-4 text-sm font-medium whitespace-nowrap">
+                  <NavigationMenu.Trigger className="group text-navy-700 hover:text-primary-ink data-[state=open]:text-primary-ink flex items-center gap-1.5 px-4 py-4 text-base font-medium whitespace-nowrap 2xl:text-lg">
                     {item.name}
                     <ChevronDownIcon className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
                   </NavigationMenu.Trigger>
