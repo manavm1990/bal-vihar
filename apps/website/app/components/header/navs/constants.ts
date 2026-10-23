@@ -22,7 +22,6 @@ export const NAVIGATION: readonly NavigationItem[] = [
       { name: "History", link: "/about-us/history" },
       { name: "President's Message", link: "/presidents-message" },
       { name: "Administrative Team", link: "/about-us/administrative-team" },
-      { name: "Advisory Board", link: "/about-us/advisory-board" },
       { name: "Policies & Procedures", link: "/about-us/policies-procedures" },
     ],
   },

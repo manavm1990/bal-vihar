@@ -35,11 +35,6 @@ export const STATIC_PAGES = {
         description: "Read the current message from Bal Vihar leadership.",
       },
       {
-        label: "Advisory Board",
-        href: "/about-us/advisory-board",
-        description: "Meet the advisors supporting the organization.",
-      },
-      {
         label: "Administrative Team",
         href: "/about-us/administrative-team",
         description: "See how volunteer teams support operations, education, and events.",
