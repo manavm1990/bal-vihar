@@ -43,6 +43,7 @@ export const NAVIGATION: readonly NavigationItem[] = [
       { name: "Curriculum – Youth Group", link: "/education/curriculum-youth-group" },
       { name: "Class Schedule", link: "/education/class-schedule" },
       { name: "Class Webpages", link: "/education/class-webpages" },
+      { name: "New Families", link: "/new-families" },
     ],
   },
   {
