@@ -74,7 +74,6 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  --font-sans: var(--font-poppins);
   --font-eczar: var(--font-eczar);
 
   --animate-enter-from-right: enterFromRight 250ms ease;
@@ -189,6 +188,10 @@
       height: 0;
     }
   }
+}
+
+@theme inline {
+  --font-sans: var(--font-poppins);
 }
 
 @utility container {
