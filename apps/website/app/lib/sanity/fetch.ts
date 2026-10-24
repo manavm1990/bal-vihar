@@ -1,5 +1,15 @@
 import { sanityFetch } from "./live";
 
+/** Fetches a page's query; a failed fetch is logged and gives null so the page can show its empty state. */
+export const fetchSanityOrNull = <const QueryString extends string>(
+  query: QueryString,
+  label: string,
+) =>
+  sanityFetch({ query }).catch((error: unknown) => {
+    console.error(`Could not load ${label}`, error);
+    return null;
+  });
+
 /**
  * defineLive's sanityFetch returns `{ data }`.
  * Until TypeGen is wired, unwrap

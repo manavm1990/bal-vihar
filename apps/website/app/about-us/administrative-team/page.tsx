@@ -1,6 +1,6 @@
 import Article from "@components/article";
 import { H2, MutedP, P, Ul } from "@components/ui/typography";
-import { sanityFetch } from "@lib/sanity/live";
+import { fetchSanityOrNull } from "@lib/sanity/fetch";
 import { VOLUNTEERS_LIST_QUERY } from "@lib/sanity/queries";
 import { getVolunteerContactLinks, type VolunteerTeam } from "@lib/sanity/volunteers-list";
 import type { Metadata } from "next";
@@ -15,10 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AdministrativeTeamPage() {
-  const result = await sanityFetch({ query: VOLUNTEERS_LIST_QUERY }).catch((error: unknown) => {
-    console.error("Could not load the volunteer roster", error);
-    return null;
-  });
+  const result = await fetchSanityOrNull(VOLUNTEERS_LIST_QUERY, "the volunteer roster");
   const teams = result?.data?.teams ?? [];
 
   return (
