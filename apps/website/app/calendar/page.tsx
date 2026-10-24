@@ -10,8 +10,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: `${BASE_TITLE} | Calendar`,
-  description:
-    "Bal Vihar class dates, celebrations, and special events for the current academic year.",
+  description: "Bal Vihar class dates, celebrations, and special events.",
 };
 
 export default async function CalendarPage() {
@@ -21,8 +20,8 @@ export default async function CalendarPage() {
   return (
     <Article title="Calendar" className="md:columns-1">
       <MutedP className="max-w-prose">
-        Class Sundays and special events for the current year. Use the calendar icon on a card to
-        add it to your own calendar. Special events may include extra notes from the school.
+        Class Sundays and special events. Use the calendar icon on a card to add it to your own
+        calendar. Special events may include extra notes from the school.
       </MutedP>
       {events.length === 0 ? (
         <Card>
