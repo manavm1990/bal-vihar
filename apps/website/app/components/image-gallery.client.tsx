@@ -2,7 +2,7 @@
 
 import useImageGallery from "@lib/hooks/use-image-gallery";
 import type { SanityImageValue } from "@lib/sanity/types";
-import { ChevronLeftIcon, ChevronRightIcon, Cross2Icon } from "@radix-ui/react-icons";
+import { ChevronLeftIcon, ChevronRightIcon, Cross2Icon, Share1Icon } from "@radix-ui/react-icons";
 import Image, { type StaticImageData } from "next/image";
 import { SanityImage } from "./sanity/sanity-image";
 import { Button } from "./ui/button";
@@ -11,6 +11,8 @@ export interface GalleryImage {
   alt: string;
   caption?: string;
   key?: string;
+  /** A link that shares this image, such as a WhatsApp message. Shown in the viewer. */
+  shareHref?: string;
   src?: StaticImageData;
   image?: SanityImageValue;
 }
@@ -81,6 +83,14 @@ export default function ImageGallery({ images, label }: ImageGalleryProps) {
                 <ChevronRightIcon aria-hidden="true" />
                 <span className="sr-only">Next photo</span>
               </Button>
+              {current.shareHref ? (
+                <Button asChild variant="secondary" size="icon">
+                  <a href={current.shareHref} target="_blank" rel="noopener noreferrer">
+                    <Share1Icon aria-hidden="true" />
+                    <span className="sr-only">Share this photo on WhatsApp</span>
+                  </a>
+                </Button>
+              ) : null}
               <Button type="button" variant="secondary" size="icon" onClick={close}>
                 <Cross2Icon aria-hidden="true" />
                 <span className="sr-only">Close</span>

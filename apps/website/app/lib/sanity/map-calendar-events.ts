@@ -1,5 +1,6 @@
 import { stegaClean } from "@sanity/client/stega";
 import { SITE_URL } from "../constants";
+import { createWhatsAppShareUrl } from "../share";
 import type { CalendarEventData } from "./types";
 
 interface UpcomingOptions {
@@ -28,11 +29,11 @@ export function formatCalendarDate(date: string) {
 }
 
 export const createCalendarEventShareUrl = (event: CalendarEventData) =>
-  `https://wa.me/?text=${encodeURIComponent(
-    [event.title, formatCalendarEventMeta(event), `${SITE_URL}/calendar/${event.id}`]
-      .filter(Boolean)
-      .join("\n"),
-  )}`;
+  createWhatsAppShareUrl([
+    event.title,
+    formatCalendarEventMeta(event),
+    `${SITE_URL}/calendar/${event.id}`,
+  ]);
 
 /** One line with the date, time and place, for cards, previews and share messages. */
 export const formatCalendarEventMeta = (event: CalendarEventData) =>

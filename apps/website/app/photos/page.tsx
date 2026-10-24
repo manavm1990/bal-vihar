@@ -5,6 +5,7 @@ import { MutedP, P } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import { fetchSanityData } from "@lib/sanity/fetch";
 import { mapPhotoGallery } from "@lib/sanity/map-photo-gallery";
+import { createPhotoShareUrl } from "@lib/sanity/photos";
 import { PHOTO_GALLERY_QUERY } from "@lib/sanity/queries";
 import type { HomePhotoBoardItem } from "@lib/sanity/types";
 import type { Metadata } from "next";
@@ -47,4 +48,5 @@ const toGalleryImage = (photo: HomePhotoBoardItem): GalleryImage => ({
     .filter(Boolean)
     .join(" · "),
   image: photo.image ?? undefined,
+  shareHref: createPhotoShareUrl(photo),
 });

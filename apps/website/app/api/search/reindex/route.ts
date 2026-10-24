@@ -4,6 +4,7 @@ import {
   CALENDAR_EVENTS_QUERY,
   CLASS_PAGES_QUERY,
   FAQS_QUERY,
+  PHOTO_GALLERY_QUERY,
   POLICIES_QUERY,
 } from "@lib/sanity/queries";
 import { createSanitySearchDocuments } from "@lib/search/sanity-documents";
@@ -75,15 +76,16 @@ interface AlgoliaConfig {
 
 async function rebuildIndex({ appId, writeKey, indexName, configure }: AlgoliaConfig) {
   // Straight from Sanity rather than the cached helper, so an edit is never one step behind.
-  const [events, classes, faqs, policies] = await Promise.all([
+  const [events, classes, faqs, gallery, policies] = await Promise.all([
     client.fetch(CALENDAR_EVENTS_QUERY),
     client.fetch(CLASS_PAGES_QUERY),
     client.fetch(FAQS_QUERY),
+    client.fetch(PHOTO_GALLERY_QUERY),
     client.fetch(POLICIES_QUERY),
   ]);
   const records = [
     ...STATIC_SEARCH_DOCUMENTS,
-    ...createSanitySearchDocuments({ events, classes, faqs, policies }),
+    ...createSanitySearchDocuments({ events, classes, faqs, gallery, policies }),
   ].map(createRecord);
 
   const algolia = algoliasearch(appId, writeKey);

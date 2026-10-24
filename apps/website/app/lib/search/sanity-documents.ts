@@ -3,14 +3,17 @@ import type { POLICIES_QUERY_RESULT } from "sanity.types";
 import { type FaqItemView, getFaqs } from "../sanity/faqs";
 import { fetchSanityOrNull } from "../sanity/fetch";
 import { formatCalendarEventMeta, mapCalendarEvents } from "../sanity/map-calendar-events";
+import { mapPhotoGallery } from "../sanity/map-photo-gallery";
+import { describePhoto } from "../sanity/photos";
 import { getPolicies, type PolicySectionView } from "../sanity/policies";
 import {
   CALENDAR_EVENTS_QUERY,
   CLASS_PAGES_QUERY,
   FAQS_QUERY,
+  PHOTO_GALLERY_QUERY,
   POLICIES_QUERY,
 } from "../sanity/queries";
-import type { CalendarEventData } from "../sanity/types";
+import type { CalendarEventData, HomePhotoBoardItem } from "../sanity/types";
 import type { SearchDocument } from "./search";
 
 /** Only the fields search reads, so cached (stega-typed) and plain query results both fit. */
@@ -24,6 +27,7 @@ interface SearchClassPage {
 interface SanitySearchSource {
   events: unknown;
   faqs: Parameters<typeof getFaqs>[0];
+  gallery: unknown;
   classes: readonly SearchClassPage[] | null | undefined;
   policies: POLICIES_QUERY_RESULT | null | undefined;
 }
@@ -32,16 +36,18 @@ const POLICIES_PATH = "/about-us/policies-procedures";
 
 /** Published events, class webpages and policies, the content editors change in Studio. */
 export async function getSanitySearchDocuments(): Promise<SearchDocument[]> {
-  const [events, classes, faqs, policies] = await Promise.all([
+  const [events, classes, faqs, gallery, policies] = await Promise.all([
     fetchSanityOrNull(CALENDAR_EVENTS_QUERY, "the calendar for search"),
     fetchSanityOrNull(CLASS_PAGES_QUERY, "the class webpages for search"),
     fetchSanityOrNull(FAQS_QUERY, "the FAQs for search"),
+    fetchSanityOrNull(PHOTO_GALLERY_QUERY, "the photos for search"),
     fetchSanityOrNull(POLICIES_QUERY, "the policies for search"),
   ]);
 
   return createSanitySearchDocuments({
     events: events?.data,
     faqs: faqs?.data,
+    gallery: gallery?.data,
     classes: classes?.data,
     policies: policies?.data,
   });
@@ -51,6 +57,7 @@ export async function getSanitySearchDocuments(): Promise<SearchDocument[]> {
 export function createSanitySearchDocuments({
   events,
   faqs,
+  gallery,
   classes,
   policies,
 }: SanitySearchSource): SearchDocument[] {
@@ -70,6 +77,7 @@ export function createSanitySearchDocuments({
         : [],
     ),
     ...getFaqs(faqs).map(createFaqDocument),
+    ...(mapPhotoGallery(gallery)?.photos ?? []).flatMap(createPhotoDocuments),
     ...getPolicies(policies ?? null).sections.flatMap(createPolicyDocuments),
   ];
 }
@@ -91,6 +99,19 @@ const createFaqDocument = ({ key, question, answer }: FaqItemView): SearchDocume
   href: "/questions#faqs",
   text: clean(extractText(answer)),
 });
+
+const createPhotoDocuments = (photo: HomePhotoBoardItem): SearchDocument[] =>
+  photo.image?.asset
+    ? [
+        {
+          id: `photo:${photo.key}`,
+          title: clean(photo.title),
+          section: "Events & Community › Photos",
+          href: `/photos/${photo.key}`,
+          text: clean(describePhoto(photo)),
+        },
+      ]
+    : [];
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
