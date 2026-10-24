@@ -1,10 +1,31 @@
 import { ADMIN_OFFICE, ORGANIZATION_NAME, SCHOOL_LOCATION } from "@lib/constants";
+import Link from "next/link";
+
 import { MutedP, Small } from "../ui/typography";
 import Links from "./links.client";
+
+const PRIMARY_LINKS = [
+  { href: "/about-us", label: "About Us" },
+  { href: "/admissions", label: "Admissions" },
+  { href: "/education", label: "Education" },
+  { href: "/calendar", label: "Events" },
+  { href: "/volunteering", label: "Get Involved" },
+  { href: "/questions", label: "Contact" },
+] as const;
 
 export default function Footer() {
   return (
     <footer className="border-t-secondary bg-gray-50 mt-8 space-y-4 border-t-8 p-6">
+      <nav aria-label="Primary" className="border-border border-b pb-4">
+        <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold">
+          {PRIMARY_LINKS.map((link) => (
+            <li key={link.href}>
+              <Link href={link.href}>{link.label}</Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       <div className="grid gap-4 sm:grid-cols-2">
         <address className="not-italic">
           <Small className="block text-foreground">School Location</Small>

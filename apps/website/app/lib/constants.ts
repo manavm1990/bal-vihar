@@ -14,6 +14,7 @@ export const FEDERAL_TAX_ID = "20-2542002";
 export const FOUNDING_YEAR = "1992";
 export const ORGANIZATION_LEGAL_NAME = "Center for Indian Cultural Education";
 export const ORGANIZATION_NAME = `${ORGANIZATION_LEGAL_NAME} – ${BASE_TITLE}`;
+export const REGISTRATION_URL = "https://registration.balviharstlouis.org/";
 export const SCHOOL_LOCATION = {
   name: "Hindu Temple Community Center",
   streetAddress: "725 Weidman Road",
@@ -22,3 +23,4 @@ export const SCHOOL_LOCATION = {
   postalCode: "63011",
   addressCountry: "US",
 } as const;
+export const SITE_URL = "https://balviharstlouis.org";

@@ -3,6 +3,7 @@ import { SanityImage } from "@components/sanity/sanity-image";
 import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
 import { Bq, H1, H2, H3, LeadP, MutedP, P } from "@components/ui/typography";
+import { REGISTRATION_URL } from "@lib/constants";
 import { isAnnouncementVisible } from "@lib/sanity/announcements";
 import { fetchSanityData } from "@lib/sanity/fetch";
 import { getUpcomingCalendarEvents, mapCalendarEvents } from "@lib/sanity/map-calendar-events";
@@ -41,8 +42,6 @@ const PROGRAMS = [
   },
 ] as const;
 
-const REGISTRATION_URL = "https://registration.balviharstlouis.org/";
-
 const STATS = [
   { value: "1992", label: "Serving Metro St. Louis since" },
   { value: "350+", label: "Students" },
@@ -72,6 +71,7 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col gap-8">
       <Announcements announcements={announcements} />
+      <HeroCarousel slides={heroSlides} />
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <Intro text={home?.whoWeAre ?? WHO_WE_ARE} />
@@ -83,8 +83,6 @@ export default async function HomePage() {
         <Programs />
         <PhotoStrip photos={photos} />
       </div>
-
-      <HeroCarousel slides={heroSlides} />
     </div>
   );
 }
@@ -197,18 +195,24 @@ function PhotoStrip({ photos }: PhotoStripProps) {
       <H2 variant="plain">Around Bal Vihar</H2>
       <ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {photos.map((photo) => (
-          <li key={photo.key} className="relative aspect-4/3 overflow-hidden rounded-lg border">
-            {photo.image ? (
-              <SanityImage
-                value={photo.image}
-                fallbackAlt={photo.title}
-                fill
-                width={480}
-                height={360}
-                sizes="(max-width: 768px) 50vw, 25vw"
-                className="object-cover"
-              />
-            ) : null}
+          <li key={photo.key}>
+            <Link
+              href="/photos"
+              className="group relative block aspect-4/3 overflow-hidden rounded-lg border"
+              aria-label={photo.title ? `View photos: ${photo.title}` : "View photos"}
+            >
+              {photo.image ? (
+                <SanityImage
+                  value={photo.image}
+                  fallbackAlt={photo.title}
+                  fill
+                  width={480}
+                  height={360}
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover transition-opacity group-hover:opacity-90"
+                />
+              ) : null}
+            </Link>
           </li>
         ))}
       </ul>

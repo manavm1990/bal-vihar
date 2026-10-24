@@ -4,7 +4,7 @@ import { Card, CardContent } from "@components/ui/card";
 import { MutedP } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import { fetchSanityData } from "@lib/sanity/fetch";
-import { mapCalendarEvents } from "@lib/sanity/map-calendar-events";
+import { getUpcomingCalendarEvents, mapCalendarEvents } from "@lib/sanity/map-calendar-events";
 import { CALENDAR_EVENTS_QUERY } from "@lib/sanity/queries";
 import type { Metadata } from "next";
 
@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 
 export default async function CalendarPage() {
   const events = mapCalendarEvents(await fetchSanityData(CALENDAR_EVENTS_QUERY));
+  const upcoming = getUpcomingCalendarEvents(events, { limit: Number.POSITIVE_INFINITY });
 
   return (
     <Article title="Calendar" className="md:columns-1">
@@ -25,10 +26,12 @@ export default async function CalendarPage() {
             <MutedP>No calendar events have been published yet. Please check back soon.</MutedP>
           </CardContent>
         </Card>
+      ) : upcoming.length === 0 ? (
+        <MutedP>No upcoming events are scheduled right now.</MutedP>
       ) : (
-        <ul className="space-y-3">
-          {events.map((event) => (
-            <li key={event.id}>
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {upcoming.map((event) => (
+            <li key={event.id} className="min-w-0">
               <EventCard event={event} />
             </li>
           ))}

@@ -54,13 +54,62 @@ export const mapCalendarEvents = (input: unknown): CalendarEventData[] =>
             ];
       });
 
+const chicagoToday = (now = new Date()) =>
+  now.toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
+
+const sortByDateAsc = (events: CalendarEventData[]) =>
+  [...events].sort((a, b) => a.date.localeCompare(b.date));
+
 export const getUpcomingCalendarEvents = (
   events: CalendarEventData[],
   { limit = 5, now = new Date() }: UpcomingOptions = {},
-) =>
-  events
-    .filter(
-      (event) => event.date >= now.toLocaleDateString("en-CA", { timeZone: "America/Chicago" }),
-    )
-    .sort((a, b) => a.date.localeCompare(b.date))
-    .slice(0, limit);
+) => {
+  const today = chicagoToday(now);
+
+  return sortByDateAsc(events.filter((event) => event.date >= today)).slice(0, limit);
+};
+
+export function createCalendarEventIcs(event: CalendarEventData) {
+  const stamp = new Date()
+    .toISOString()
+    .replace(/[-:]/g, "")
+    .replace(/\.\d{3}/, "");
+  const day = event.date.replaceAll("-", "");
+  const summary = escapeIcsText(event.title);
+  const location = escapeIcsText(event.location ?? "");
+  const description = escapeIcsText(
+    [event.time ? `Time: ${event.time}` : null, event.description, event.eventType]
+      .filter(Boolean)
+      .join("\n"),
+  );
+
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Bal Vihar of St. Louis//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "BEGIN:VEVENT",
+    `UID:${event.id}@balviharstlouis.org`,
+    `DTSTAMP:${stamp}`,
+    `DTSTART;VALUE=DATE:${day}`,
+    `SUMMARY:${summary}`,
+    description ? `DESCRIPTION:${description}` : null,
+    location ? `LOCATION:${location}` : null,
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ]
+    .filter((line): line is string => Boolean(line))
+    .join("\r\n");
+}
+
+export function createCalendarEventDownloadHref(event: CalendarEventData) {
+  return `data:text/calendar;charset=utf-8,${encodeURIComponent(createCalendarEventIcs(event))}`;
+}
+
+const escapeIcsText = (value: string) =>
+  value
+    .replaceAll("\\", "\\\\")
+    .replaceAll(";", "\\;")
+    .replaceAll(",", "\\,")
+    .replaceAll("\n", "\\n");

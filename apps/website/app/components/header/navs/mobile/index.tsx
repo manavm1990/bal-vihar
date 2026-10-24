@@ -72,6 +72,9 @@ export default function MobileNav() {
     <>
       <button
         type="button"
+        aria-expanded={isOpen}
+        aria-controls="mobile-navigation"
+        aria-label={isOpen ? "Close menu" : "Open menu"}
         onClick={() => {
           setIsOpen(!isOpen);
         }}
@@ -113,7 +116,7 @@ export default function MobileNav() {
           </button>
         </div>
 
-        <nav className="p-4">
+        <nav id="mobile-navigation" className="p-4" aria-label="Primary">
           <motion.ul className="space-y-2" variants={ITEM_VARIANTS}>
             {NAVIGATION.map((section) => (
               <motion.li key={section.name} variants={ITEM_VARIANTS}>

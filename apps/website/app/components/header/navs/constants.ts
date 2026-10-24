@@ -75,8 +75,9 @@ export const NAVIGATION: readonly NavigationItem[] = [
     link: "/questions",
     align: "right",
     items: [
-      { name: "File a Grievance", link: "/grievance" },
+      { name: "Contact Us", link: "/questions#contact" },
       { name: "Questions & FAQs", link: "/questions" },
+      { name: "File a Grievance", link: "/grievance" },
       { name: "Submit an Expense", link: "/expense-reimbursement" },
     ],
   },

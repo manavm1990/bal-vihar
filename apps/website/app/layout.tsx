@@ -1,7 +1,7 @@
 import { DisableDraftMode } from "@components/disable-draft-mode.client";
 import Footer from "@components/footer";
 import Header from "@components/header";
-import { BASE_TITLE, DESCRIPTION, ORGANIZATION_LEGAL_NAME } from "@lib/constants";
+import { BASE_TITLE, DESCRIPTION, ORGANIZATION_LEGAL_NAME, SITE_URL } from "@lib/constants";
 import { SanityLive } from "@lib/sanity/live";
 import { createJsonLd } from "@lib/utils";
 import type { Metadata } from "next";
@@ -27,9 +27,18 @@ const eczar = Eczar({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: FULL_TITLE,
   description: DESCRIPTION,
   applicationName: BASE_TITLE,
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: SITE_URL,
+    siteName: BASE_TITLE,
+    title: FULL_TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export default async function RootLayout({
@@ -44,8 +53,16 @@ export default async function RootLayout({
       <body className={`${poppins.variable} ${eczar.variable} font-sans`}>
         <script type="application/ld+json">{JSON.stringify(createJsonLd(TITLE))}</script>
 
+        <a
+          href="#main-content"
+          className="bg-background text-foreground focus-visible:ring-ring sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:px-4 focus:py-2 focus:ring-2 focus:outline-none"
+        >
+          Skip to main content
+        </a>
         <Header />
-        <main className="container pt-8 pb-4 md:pt-12">{children}</main>
+        <main id="main-content" className="container pt-8 pb-4 md:pt-12">
+          {children}
+        </main>
         <Footer />
         <SanityLive />
         {isDraftMode ? (
