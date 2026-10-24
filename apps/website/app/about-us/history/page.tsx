@@ -1,5 +1,6 @@
 import Article from "@components/article";
 import { Bq, P, Strong } from "@components/ui/typography";
+import { PAGE_DESCRIPTIONS } from "@lib/page-descriptions";
 import type { Metadata } from "next";
 
 import { ABOUT_US_TITLE } from "../constants";
@@ -8,7 +9,7 @@ const TITLE = "History 📜";
 
 export const metadata: Metadata = {
   title: `${ABOUT_US_TITLE} | ${TITLE}`,
-  description: "Bal Vihar History",
+  description: PAGE_DESCRIPTIONS.history,
 };
 
 export default function HistoryPage() {

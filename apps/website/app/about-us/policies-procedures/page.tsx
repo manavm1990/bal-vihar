@@ -1,6 +1,7 @@
 import PolicySection from "@components/policy-section";
 import SectionNav from "@components/section-nav";
 import { H1, LeadP, MutedP } from "@components/ui/typography";
+import { PAGE_DESCRIPTIONS } from "@lib/page-descriptions";
 import { fetchSanityOrNull } from "@lib/sanity/fetch";
 import { getPolicies } from "@lib/sanity/policies";
 import { POLICIES_QUERY } from "@lib/sanity/queries";
@@ -11,7 +12,7 @@ const TITLE = "Policies & Procedures 📜";
 
 export const metadata: Metadata = {
   title: `${ABOUT_US_TITLE} | ${TITLE}`,
-  description: "Bal Vihar Policies and Procedures",
+  description: PAGE_DESCRIPTIONS.policies,
 };
 
 export default async function PoliciesProceduresPage() {

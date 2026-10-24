@@ -4,6 +4,7 @@ import { ADMIN_DOCUMENTS, ADMIN_FORMS } from "../admin-resources-content";
 import { HINDU_RITUALS, RITUALS } from "../hindu-rituals-content";
 import { INDIA_OVERVIEW } from "../india-overview-content";
 import { INDIAN_HERITAGE, SIGHT_IMAGES } from "../indian-heritage-content";
+import { PAGE_DESCRIPTIONS } from "../page-descriptions";
 import { STATIC_PAGES, type StaticPageContent } from "../static-page-content";
 import { TEMPLE_IMAGES, TEMPLES_OF_INDIA } from "../temples-of-india-content";
 import type { SearchDocument } from "./search";
@@ -127,13 +128,13 @@ const PAGE_ENTRIES: readonly PageEntry[] = [
     href: "/about-us/history",
     title: "History",
     section: "About Us",
-    text: "Bal Vihar History.",
+    text: PAGE_DESCRIPTIONS.history,
   },
   {
     href: "/about-us/policies-procedures",
     title: "Policies & Procedures",
     section: "About Us",
-    text: "Bal Vihar Policies and Procedures.",
+    text: PAGE_DESCRIPTIONS.policies,
   },
   {
     href: "/admin-resources",
@@ -205,13 +206,13 @@ const PAGE_ENTRIES: readonly PageEntry[] = [
     href: "/presidents-message",
     title: "President's message",
     section: "About Us",
-    text: "A message from the president of Bal Vihar of St. Louis.",
+    text: PAGE_DESCRIPTIONS.presidentsMessage,
   },
   {
     href: "/privacy",
     title: "Privacy policy",
     section: "About Us",
-    text: "Privacy policy for the Bal Vihar of St. Louis website.",
+    text: PAGE_DESCRIPTIONS.privacy,
   },
   {
     href: "/questions",
@@ -223,7 +224,7 @@ const PAGE_ENTRIES: readonly PageEntry[] = [
     href: "/terms",
     title: "Terms of use",
     section: "About Us",
-    text: "Terms of use for the Bal Vihar of St. Louis website.",
+    text: PAGE_DESCRIPTIONS.terms,
   },
   {
     href: "/volunteering/impact-award",

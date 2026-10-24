@@ -1,12 +1,14 @@
 import Article from "@components/article";
 import { H3, LeadP, P, Strong } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
+import { PAGE_DESCRIPTIONS } from "@lib/page-descriptions";
 import type { Metadata } from "next";
 
 const TITLE = "Terms of Use";
 
 export const metadata: Metadata = {
   title: `${BASE_TITLE} | ${TITLE}`,
+  description: PAGE_DESCRIPTIONS.terms,
 };
 
 // TODO: Review the verbiage!
