@@ -5,7 +5,7 @@ import { MutedP } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import { urlFor } from "@lib/sanity/image";
 import { sanityFetchStaticParams } from "@lib/sanity/live";
-import { createPhotoShareUrl, describePhoto, fetchPhoto } from "@lib/sanity/photos";
+import { createPhotoShareUrl, describePhoto, fetchPhoto, fetchPhotos } from "@lib/sanity/photos";
 import { PHOTO_GALLERY_QUERY } from "@lib/sanity/queries";
 import type { SanityImageValue } from "@lib/sanity/types";
 import { Share1Icon } from "@radix-ui/react-icons";
@@ -32,10 +32,15 @@ export default function PhotoPage({ params }: PhotoPageProps) {
 }
 
 async function PhotoContent({ params }: PhotoPageProps) {
-  const photo = await fetchPhoto((await params).key);
+  const { key } = await params;
+  const photos = await fetchPhotos();
+  const index = photos.findIndex((item) => item.key === key);
+  const photo = photos[index];
   if (!photo?.image) notFound();
 
   const caption = describePhoto(photo);
+  const previous = photos[index - 1];
+  const next = photos[index + 1];
 
   return (
     <Article title={photo.title} className="md:columns-1">
@@ -62,6 +67,20 @@ async function PhotoContent({ params }: PhotoPageProps) {
           Share on WhatsApp
         </a>
       </Button>
+      <nav aria-label="More photos" className="flex max-w-3xl justify-between gap-3">
+        {previous ? (
+          <Button asChild variant="outline">
+            <Link href={`/photos/${previous.key}`}>← Previous photo</Link>
+          </Button>
+        ) : (
+          <span />
+        )}
+        {next ? (
+          <Button asChild variant="outline">
+            <Link href={`/photos/${next.key}`}>Next photo →</Link>
+          </Button>
+        ) : null}
+      </nav>
     </Article>
   );
 }
