@@ -18,6 +18,10 @@ const MAX_TEXT_LENGTH = 6000;
 /**
  * Rebuilds the whole Algolia index from the site's pages and Sanity content. Call it with
  * `Authorization: Bearer $SEARCH_REINDEX_SECRET` after a deploy and from a Sanity webhook.
+ *
+ * Options: `?wait=true` runs inline and returns the result or the error. `?configure=true` also
+ * sends the index settings and synonyms, which Algolia is slow to apply, so only use it after
+ * changing them.
  */
 export const POST = async (request: Request) => {
   const secret = process.env["SEARCH_REINDEX_SECRET"];
@@ -30,12 +34,29 @@ export const POST = async (request: Request) => {
   if (!appId || !writeKey || !indexName)
     return Response.json({ error: "Algolia is not configured" }, { status: 500 });
 
+  const { searchParams } = new URL(request.url);
+  const config = {
+    appId,
+    writeKey,
+    indexName,
+    configure: searchParams.get("configure") === "true",
+  };
+
+  // `?wait=true` runs the rebuild inline, so a failure shows up in the response (handy with curl).
+  if (searchParams.get("wait") === "true")
+    try {
+      return Response.json({ indexed: await rebuildIndex(config) });
+    } catch (error) {
+      reportFailure(error);
+
+      return Response.json(
+        { error: error instanceof Error ? error.message : "Unknown error" },
+        { status: 500 },
+      );
+    }
+
   // The rebuild takes about 30 seconds, longer than a webhook will wait, so answer straight away.
-  after(() =>
-    rebuildIndex({ appId, writeKey, indexName }).catch((error: unknown) => {
-      console.error("Could not rebuild the search index", error);
-    }),
-  );
+  after(() => rebuildIndex(config).catch(reportFailure));
 
   return Response.json({ started: true }, { status: 202 });
 };
@@ -44,9 +65,10 @@ interface AlgoliaConfig {
   appId: string;
   writeKey: string;
   indexName: string;
+  configure: boolean;
 }
 
-async function rebuildIndex({ appId, writeKey, indexName }: AlgoliaConfig) {
+async function rebuildIndex({ appId, writeKey, indexName, configure }: AlgoliaConfig) {
   // Straight from Sanity rather than the cached helper, so an edit is never one step behind.
   const [events, classes, policies] = await Promise.all([
     client.fetch(CALENDAR_EVENTS_QUERY),
@@ -59,7 +81,15 @@ async function rebuildIndex({ appId, writeKey, indexName }: AlgoliaConfig) {
   ].map(createRecord);
 
   const algolia = algoliasearch(appId, writeKey);
-  // Settings and synonyms go in first: replaceAllObjects copies them onto the new index.
+  if (configure) await configureIndex(algolia, indexName);
+
+  // replaceAllObjects builds a temporary index that inherits the current settings and synonyms.
+  await algolia.replaceAllObjects({ indexName, objects: records });
+
+  return records.length;
+}
+
+async function configureIndex(algolia: ReturnType<typeof algoliasearch>, indexName: string) {
   const settings = await algolia.setSettings({
     indexName,
     indexSettings: {
@@ -72,14 +102,13 @@ async function rebuildIndex({ appId, writeKey, indexName }: AlgoliaConfig) {
     },
   });
   await algolia.waitForTask({ indexName, taskID: settings.taskID });
+
   const synonyms = await algolia.saveSynonyms({
     indexName,
     synonymHit: SYNONYMS,
     replaceExistingSynonyms: true,
   });
   await algolia.waitForTask({ indexName, taskID: synonyms.taskID });
-
-  await algolia.replaceAllObjects({ indexName, objects: records });
 }
 
 function createRecord(document: SearchDocument) {
@@ -100,6 +129,10 @@ function isAuthorized(request: Request, secret: string) {
 
   return given.length === expected.length && timingSafeEqual(given, expected);
 }
+
+const reportFailure = (error: unknown) => {
+  console.error("Could not rebuild the search index", error);
+};
 
 const toRecord = (document: SearchDocument, text: string) => ({
   objectID: document.id,
