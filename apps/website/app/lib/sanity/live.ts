@@ -10,6 +10,9 @@ export interface DynamicFetchOptions {
   stega: boolean;
 }
 
+/** On every cached Sanity fetch, so a publish webhook can expire them all without a visitor online. */
+export const SANITY_CONTENT_TAG = "sanity-content";
+
 const draftToken = sanityReadToken ?? false;
 
 export const { sanityFetch, SanityLive } = defineLive({
@@ -41,7 +44,13 @@ export async function sanityFetchStaticParams<const QueryString extends string>(
 }) {
   "use cache";
 
-  const { data } = await sanityFetch({ query, params, perspective: "published", stega: false });
+  const { data } = await sanityFetch({
+    query,
+    params,
+    perspective: "published",
+    stega: false,
+    tags: [SANITY_CONTENT_TAG],
+  });
 
   return { data };
 }

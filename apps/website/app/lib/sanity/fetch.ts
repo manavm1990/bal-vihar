@@ -1,7 +1,12 @@
 import { draftMode } from "next/headers";
 import type { QueryParams } from "next-sanity";
 
-import { type DynamicFetchOptions, getDynamicFetchOptions, sanityFetch } from "./live";
+import {
+  type DynamicFetchOptions,
+  getDynamicFetchOptions,
+  SANITY_CONTENT_TAG,
+  sanityFetch,
+} from "./live";
 
 interface FetchOptions {
   /** Metadata must never carry stega characters, so it opts out. */
@@ -66,7 +71,7 @@ async function fetchCachedSanity<const QueryString extends string>(
 ) {
   "use cache";
 
-  const { data } = await sanityFetch({ query, params, ...options });
+  const { data } = await sanityFetch({ query, params, tags: [SANITY_CONTENT_TAG], ...options });
 
   return { data };
 }
