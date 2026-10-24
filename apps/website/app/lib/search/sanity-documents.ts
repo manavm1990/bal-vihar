@@ -1,0 +1,112 @@
+import { stegaClean } from "@sanity/client/stega";
+import type { POLICIES_QUERY_RESULT } from "sanity.types";
+
+import { fetchSanityOrNull } from "../sanity/fetch";
+import { formatCalendarEventMeta, mapCalendarEvents } from "../sanity/map-calendar-events";
+import { getPolicies, type PolicySectionView } from "../sanity/policies";
+import { CALENDAR_EVENTS_QUERY, CLASS_PAGES_QUERY, POLICIES_QUERY } from "../sanity/queries";
+import type { CalendarEventData } from "../sanity/types";
+import type { SearchDocument } from "./search";
+
+/** Only the fields search reads, so cached (stega-typed) and plain query results both fit. */
+interface SearchClassPage {
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  teachers: string | null;
+}
+
+interface SanitySearchSource {
+  events: unknown;
+  classes: readonly SearchClassPage[] | null | undefined;
+  policies: POLICIES_QUERY_RESULT | null | undefined;
+}
+
+const POLICIES_PATH = "/about-us/policies-procedures";
+
+/** Published events, class webpages and policies, the content editors change in Studio. */
+export async function getSanitySearchDocuments(): Promise<SearchDocument[]> {
+  const [events, classes, policies] = await Promise.all([
+    fetchSanityOrNull(CALENDAR_EVENTS_QUERY, "the calendar for search"),
+    fetchSanityOrNull(CLASS_PAGES_QUERY, "the class webpages for search"),
+    fetchSanityOrNull(POLICIES_QUERY, "the policies for search"),
+  ]);
+
+  return createSanitySearchDocuments({
+    events: events?.data,
+    classes: classes?.data,
+    policies: policies?.data,
+  });
+}
+
+/** Pure mapping, so the page and the Algolia reindex build identical documents. */
+export function createSanitySearchDocuments({
+  events,
+  classes,
+  policies,
+}: SanitySearchSource): SearchDocument[] {
+  return [
+    ...mapCalendarEvents(events).map(createEventDocument),
+    ...(classes ?? []).flatMap(({ _id, title, slug, teachers }) =>
+      title && slug
+        ? [
+            {
+              id: `class:${_id}`,
+              title: `${clean(title)} class webpage`,
+              section: "Education › Class webpages",
+              href: `/education/classes/${clean(slug)}`,
+              text: teachers ? `Taught by ${clean(teachers)}` : "",
+            },
+          ]
+        : [],
+    ),
+    ...getPolicies(policies ?? null).sections.flatMap(createPolicyDocuments),
+  ];
+}
+
+const clean = (value: string | null | undefined) => stegaClean(value ?? "");
+
+const createEventDocument = (event: CalendarEventData): SearchDocument => ({
+  id: `event:${event.id}`,
+  title: clean(event.title),
+  section: "Events & Community › Calendar",
+  href: `/calendar/${event.id}`,
+  text: clean([formatCalendarEventMeta(event), event.description].filter(Boolean).join(". ")),
+});
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+/** Flattens Portable Text blocks, whose words sit in `children[].text`. */
+function extractText(value: unknown): string {
+  if (Array.isArray(value)) return value.map(extractText).join(" ");
+  if (!isRecord(value)) return "";
+
+  const text = value["text"];
+
+  return [typeof text === "string" ? text : "", extractText(value["children"])]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function createPolicyDocuments(section: PolicySectionView): SearchDocument[] {
+  const href = `${POLICIES_PATH}#${clean(section.slug)}`;
+  const sectionTitle = clean(section.title);
+
+  return [
+    {
+      id: `policy:${section.key}`,
+      title: sectionTitle,
+      section: "About Us › Policies & Procedures",
+      href,
+      text: clean(extractText(section.intro)),
+    },
+    ...section.items.map((item) => ({
+      id: `policy:${section.key}:${item.key}`,
+      title: clean(item.title),
+      section: `Policies & Procedures › ${sectionTitle}`,
+      href,
+      text: clean(extractText(item.body)),
+    })),
+  ];
+}

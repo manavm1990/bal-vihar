@@ -97,8 +97,9 @@
                 "selector": {
                   "kind": "objectLiteralProperty"
                 },
-                // Sanity's system fields (`_type`, `_key`, `_ref`…) keep their API names.
-                "match": "_(?:createdAt|id|key|ref|rev|type|updatedAt|weak)|(.+)",
+                // Sanity's system fields (`_type`, `_key`, `_ref`…) and Algolia's (`objectID`,
+                // `taskID`) keep their API names.
+                "match": "_(?:createdAt|id|key|ref|rev|type|updatedAt|weak)|objectID|taskID|(.+)",
                 "formats": ["camelCase", "CONSTANT_CASE", "PascalCase", "snake_case"]
               }
             ]

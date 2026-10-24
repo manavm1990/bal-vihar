@@ -21,6 +21,7 @@
     "@radix-ui/react-slot": "^1.5.0",
     "@react-email/components": "1.0.12",
     "@sanity/image-url": "^2.1.1",
+    "algoliasearch": "^5.60.0",
     "date-fns": "^4.1.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
