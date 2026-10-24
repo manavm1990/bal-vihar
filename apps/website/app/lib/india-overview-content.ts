@@ -84,5 +84,5 @@ India celebrates festivals of many faiths through the year. See the [calendar](/
 - **Eid al-Fitr (Id-Ul-Fitr):** Celebrates the end of Ramadan, the Muslim month of fasting. It is an occasion of feasting and rejoicing. The faithful gather in mosques to pray, and friends and relatives meet to exchange greetings.
 - **Good Friday and Easter:** Services and recitals of religious music are held in hundreds of churches all over India on Good Friday. The Christian belief in the resurrection of Christ is celebrated with enthusiasm on Easter by members of the community, and processions are taken out in some parts of the country.
 - **Christmas:** Celebrated by Christians and non-Christians with special enthusiasm. The bigger cities like Delhi, Mumbai and Kolkata wear a festive look as Christmas bazaars and festivities are organized.
-- **Khordad Sal:** The birth anniversary of the Prophet Zarathustra (Zoroaster), one of the most important Parsi festivals.`,
+- **Khordad Sal:** The birth anniversary of the Prophet Zarathustra (Zoroaster), who was born at the beginning of the 1st millennium BC. It is one of the most important Parsi festivals.`,
 };

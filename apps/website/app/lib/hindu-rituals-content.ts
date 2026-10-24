@@ -7,11 +7,11 @@ export interface Ritual {
   answer: string;
 }
 
-const INTRODUCTION = `Hinduism is not only a religion but a way of life. It is known as *Sanaathana Dharma*. According to the Bhagavad Geetha, *sanaathana* means that which cannot be destroyed by fire, weapons, water or air, and which is present in all living and non-living beings. *Dharma* is the way of life: the total of all *aachaaraas*, the customs and rituals.
+const INTRODUCTION = `Hinduism is not a religion but a way of life. Unlike other religions, Hindu dharma has many specialties. It is not known as a religion; it is known as the dharma, *Sanaathana Dharma*. According to the Bhagavad Geetha, *sanaathana* means that which cannot be destroyed by fire, weapons, water or air, and which is present in all living and non-living beings. *Dharma* is the way of life: the total of all *aachaaraas*, the customs and rituals.
 
 Sanaathana Dharma has its foundation in scientific spirituality. In ancient Hindu literature, science and spirituality go together. The 40th chapter of the Yajurveda, the Eesaavaasya Upanishad, teaches us to use scientific knowledge to solve the problems of life and spiritual knowledge to attain immortality through a philosophical outlook.
 
-Every *aachaaraa* has a spiritual component, and without spirituality nothing exists in Sanaathana Dharma. Hindu dharma was not created by an individual, prophet or incarnation, so spirituality is part of every custom in the daily life of a Hindu.
+Remember that in each and every *aachaaraa* there is a component of spirituality. Without spirituality, nothing exists in Sanaathana Dharma. Everyone generally has the wrong impression that this spirituality is religion. Spirituality is different in Hindu dharma. Here the question of religion does not exist at all, because Hindu dharma was not created by an individual, prophet or incarnation. Spirituality is a part of every Hindu custom in the normal life of a Hindu.
 
 *Aachaaraas* are to be followed for the merits we find in them from our own experience. You need not follow a teacher blindly or accept advice without reasoning. They are meant for the prosperity of human beings, and that should be the focus of practicing them.
 
@@ -63,7 +63,7 @@ The Lord is also all-pervading. To remind us that He lives in our homes with us,
 
 Each room in a house is dedicated to a function: the bedroom for resting, the drawing room for receiving guests, the kitchen for cooking. The furniture, decor and atmosphere of each room suit its purpose. In the same way, meditation, worship and prayer need a fitting atmosphere, and hence the prayer room.
 
-Sacred thoughts and sound vibrations are believed to fill the place and influence the minds of those who spend time there, gathered through regular meditation, worship and chanting. Even when we are tired or agitated, sitting in the prayer room for a while helps us feel calm, rejuvenated and spiritually uplifted.`,
+Sacred thoughts and sound vibrations pervade the place and influence the minds of those who spend time there. Spiritual thoughts and vibrations accumulated through regular meditation, worship and chanting pervade the prayer room. Even when we are tired or agitated, just sitting in the prayer room for a while makes us feel calm, rejuvenated and spiritually uplifted.`,
   },
   {
     question: "Why do we do Namaste?",
@@ -85,7 +85,7 @@ When we know this significance, our greeting is no longer a superficial gesture 
 
 Man stands on his feet. Touching the feet in prostration is a sign of respect for the age, maturity, nobility and divinity that our elders personify. It symbolizes our recognition of their selfless love for us and the sacrifices they have made for our welfare. It is a way of humbly acknowledging the greatness of another. This tradition reflects the strong family ties that have been one of India's enduring strengths.
 
-The good wishes (*sankalpa*) and blessings (*aashirvaada*) of elders are highly valued in India, and we prostrate to seek them. Good thoughts create positive vibrations, and good wishes from a heart full of love and nobility have great strength. When we prostrate with humility and respect, we invoke the blessings of elders, which are believed to flow to us as positive energy.
+The good wishes (*sankalpa*) and blessings (*aashirvaada*) of elders are highly valued in India, and we prostrate to seek them. Good thoughts create positive vibrations, and good wishes from a heart full of love and nobility have great strength. When we prostrate with humility and respect, we invoke the good wishes and blessings of elders, which flow in the form of positive energy to envelop us. This is why the posture assumed, whether standing or prone, enables the entire body to receive the energy.
 
 The different forms of showing respect are:
 
@@ -99,11 +99,15 @@ The scriptures prescribe who should prostrate to whom. In ascending order of imp
   },
   {
     question: "Why do we wear marks (tilak, pottu and the like) on the forehead?",
-    answer: `The *tilak* or *pottu* invokes a feeling of sanctity in the wearer and in others. It is recognized as a religious mark. Its form and colour vary with the religious sect or the form of the Lord worshipped. Vishnu worshippers apply a *chandan* tilak shaped like a "U," Shiva worshippers a *tripundra* of *bhasma*, and Devi worshippers a red dot of *kumkum*.
+    answer: `The *tilak* or *pottu* invokes a feeling of sanctity in the wearer and in others. It is recognized as a religious mark. Its form and colour vary according to one's caste, religious sect or the form of the Lord worshipped.
 
-The tilak covers the spot between the eyebrows, the seat of memory and thinking, known as the *Aajna Chakra* in the language of Yoga. It is applied with the prayer: "May I remember the Lord. May this pious feeling pervade all my activities. May I be righteous in my deeds." Even when we temporarily forget this prayerful attitude, the mark on another person reminds us of our resolve. The tilak is thus a blessing of the Lord and a protection against wrong tendencies.
+In earlier times, the four castes (based on *varna*, or colour), *Brahmana*, *Kshatriya*, *Vaishya* and *Sudra*, applied marks differently. The *brahmin* applied a white *chandan* mark signifying purity, as his profession was priestly or academic. The *kshatriya* applied a red *kumkum* mark signifying valour, as he belonged to the warrior races. The *vaishya* wore a yellow *kesar* or turmeric mark signifying prosperity, as he was a businessman or trader devoted to creating wealth. The *sudra* applied a black *bhasma*, *kasturi* or charcoal mark signifying service, as he supported the work of the other three divisions.
 
-Traditionally it is said that the forehead, and especially the spot between the eyebrows, is where we feel energy most strongly, and that worry generates heat there and can cause a headache. The cool paste of *chandan* or *bhasma* is believed to soothe the forehead. Sometimes the entire forehead is covered with *chandan* or *bhasma*. Reusable plastic stick bindis serve as decoration but are not applied with this intention.`,
+Also, Vishnu worshippers apply a *chandan* tilak shaped like a "U," Shiva worshippers a *tripundra* of *bhasma*, Devi worshippers a red dot of *kumkum*, and so on.
+
+The tilak covers the spot between the eyebrows, which is the seat of memory and thinking. It is known as the *Aajna Chakra* in the language of Yoga. The tilak is applied with the prayer: "May I remember the Lord. May this pious feeling pervade all my activities. May I be righteous in my deeds." Even when we temporarily forget this prayerful attitude, the mark on another person reminds us of our resolve. The tilak is thus a blessing of the Lord and a protection against wrong tendencies and forces.
+
+The entire body emanates energy in the form of electromagnetic waves, and the forehead and the subtle spot between the eyebrows especially so. That is why worry generates heat and causes a headache. The tilak and pottu cool the forehead, protect us and prevent energy loss. Sometimes the entire forehead is covered with *chandan* or *bhasma*. Using plastic reusable "stick bindis" is not very beneficial, even though it serves the purpose of decoration.`,
   },
   {
     question: "Why do we not touch papers, books and people with the feet?",
@@ -340,7 +344,7 @@ The three marks on the coconut are even thought to represent the three-eyed Lord
   },
   {
     question: "Why do we chant Om?",
-    answer: `*Om* is one of the most chanted sound symbols in India. It is believed to have a profound effect on the body and mind of the one who chants and on the surroundings. Most mantras and Vedic prayers start with *Om*.
+    answer: `*Om* is one of the most chanted sound symbols in India. It has a profound effect on the body and mind of the one who chants and also on the surroundings. Most mantras and Vedic prayers start with *Om*.
 
 All auspicious actions begin with *Om*. It is even used as a greeting, as in "Om" or "Hari Om." It is repeated as a mantra or meditated upon, and its form is worshipped, contemplated and used as an auspicious sign.
 
