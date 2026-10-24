@@ -1,21 +1,19 @@
 "use client";
 
+import Directory from "@components/directory.client";
+import OptionPicker from "@components/option-picker.client";
+import PageSection from "@components/page-section";
+import PersonContact from "@components/person-contact";
 import SectionNav from "@components/section-nav";
-import { Button } from "@components/ui/button";
 import { Card, CardContent, CardHeader } from "@components/ui/card";
-import { H2, H3, H4, MutedP, Ul } from "@components/ui/typography";
-import { FADE } from "@lib/animations";
+import { H3, H4, MutedP, Ul } from "@components/ui/typography";
 import type {
-  DirectoryEntry,
   FacultyAssistant,
   FacultyGroup,
-  FacultyPerson,
   FacultyProgram,
   FacultyTeam,
   TeachingFacultyView,
 } from "@lib/sanity/teaching-faculty";
-import { motion, useReducedMotion } from "motion/react";
-import { useState } from "react";
 
 interface TeachingFacultyProps {
   view: TeachingFacultyView;
@@ -64,85 +62,22 @@ function AssistantList({ assistants }: AssistantListProps) {
   );
 }
 
-interface DirectoryProps {
-  entries: DirectoryEntry[];
-}
-
-function Directory({ entries }: DirectoryProps) {
-  const { query, setQuery, shown } = useDirectorySearch(entries);
-
-  return (
-    <section aria-labelledby="everyone" className="space-y-4">
-      <H2 id="everyone" variant="plain" className="scroll-mt-6 text-2xl tracking-tight">
-        Everyone, A to Z
-      </H2>
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <label htmlFor="faculty-search" className="text-sm font-semibold">
-          Search by name
-        </label>
-        <input
-          id="faculty-search"
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          className="border-input bg-background focus-visible:ring-ring h-11 w-full max-w-sm rounded-md border px-3 text-base focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-        />
-        <MutedP aria-live="polite">
-          {shown.length} {shown.length === 1 ? "person" : "people"}
-        </MutedP>
-      </div>
-      {shown.length === 0 ? (
-        <MutedP>No one matches that name.</MutedP>
-      ) : (
-        <Ul variant="unstyled" className="grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-          {shown.map((entry) => (
-            <li key={entry.id} className="min-w-0 space-y-1">
-              <PersonContact person={entry} />
-              <div className="flex flex-wrap gap-1">
-                {entry.roles.map((role) => (
-                  <span key={role} className="bg-muted rounded px-2 py-0.5 text-xs">
-                    {role}
-                  </span>
-                ))}
-              </div>
-            </li>
-          ))}
-        </Ul>
-      )}
-    </section>
-  );
-}
-
 interface GroupPickerProps {
   groups: FacultyGroup[];
 }
 
 function GroupPicker({ groups }: GroupPickerProps) {
-  const { group, select, fadeIn } = useSelectedGroup(groups);
-  const balViharGroups = groups.filter((item) => item.kind === "balVihar");
-  const youthGroups = groups.filter((item) => item.kind === "youth");
-
   return (
-    <section aria-labelledby="find-your-group" className="space-y-4">
-      <H2 id="find-your-group" variant="plain" className="scroll-mt-6 text-2xl tracking-tight">
-        Find your group
-      </H2>
-      <div className="flex flex-wrap gap-x-12 gap-y-4">
-        <GroupButtons
-          legend="Bal Vihar group"
-          groups={balViharGroups}
-          selectedKey={group?.key}
-          onSelect={select}
-        />
-        <GroupButtons
-          legend="Youth Group"
-          groups={youthGroups}
-          selectedKey={group?.key}
-          onSelect={select}
-        />
-      </div>
-      {group && (
-        <motion.div key={group.key} className="space-y-4" {...fadeIn}>
+    <OptionPicker
+      id="find-your-group"
+      title="Find your group"
+      groups={[
+        { legend: "Bal Vihar group", options: groups.filter((group) => group.kind === "balVihar") },
+        { legend: "Youth Group", options: groups.filter((group) => group.kind === "youth") },
+      ]}
+    >
+      {(group) => (
+        <>
           <H3 className="text-xl">
             {group.kind === "youth" ? `Youth Group ${group.name}` : `Group ${group.name}`}
           </H3>
@@ -155,67 +90,9 @@ function GroupPicker({ groups }: GroupPickerProps) {
               ))}
             </div>
           )}
-        </motion.div>
+        </>
       )}
-    </section>
-  );
-}
-
-interface GroupButtonsProps {
-  legend: string;
-  groups: FacultyGroup[];
-  selectedKey: string | undefined;
-  onSelect: (key: string) => void;
-}
-
-function GroupButtons({ legend, groups, selectedKey, onSelect }: GroupButtonsProps) {
-  return groups.length === 0 ? null : (
-    <fieldset className="min-w-0 space-y-2">
-      <legend className="mb-2 font-medium">{legend}</legend>
-      <div className="flex flex-wrap gap-2">
-        {groups.map((item) => (
-          <Button
-            key={item.key}
-            type="button"
-            variant={item.key === selectedKey ? "default" : "outline"}
-            aria-pressed={item.key === selectedKey}
-            className="h-12 min-w-12"
-            onClick={() => onSelect(item.key)}
-          >
-            {item.name}
-          </Button>
-        ))}
-      </div>
-    </fieldset>
-  );
-}
-
-interface PersonContactProps {
-  person: Pick<FacultyPerson, "email" | "name" | "phone"> & { isBackup?: boolean };
-}
-
-function PersonContact({ person }: PersonContactProps) {
-  return (
-    <div className="min-w-0 space-y-0.5">
-      <p className="font-semibold">
-        {person.name}
-        {person.isBackup && (
-          <span className="bg-muted text-muted-foreground ml-2 rounded px-2 py-0.5 text-xs font-normal">
-            Backup
-          </span>
-        )}
-      </p>
-      {person.email && (
-        <a className="block w-fit max-w-full text-sm break-all" href={`mailto:${person.email}`}>
-          {person.email}
-        </a>
-      )}
-      {person.phone && (
-        <a className="block w-fit text-sm" href={`tel:${toDialable(person.phone)}`}>
-          {person.phone}
-        </a>
-      )}
-    </div>
+    </OptionPicker>
   );
 }
 
@@ -230,10 +107,7 @@ function Programs({ programs }: ProgramsProps) {
   );
 
   return (
-    <section aria-labelledby="programs" className="space-y-4">
-      <H2 id="programs" variant="plain" className="scroll-mt-6 text-2xl tracking-tight">
-        Programs and coordinators
-      </H2>
+    <PageSection id="programs" title="Programs and coordinators">
       <div className="gap-4 sm:columns-2 lg:columns-3">
         {coordinated.length > 0 && (
           <Card className="mb-4 break-inside-avoid">
@@ -270,7 +144,7 @@ function Programs({ programs }: ProgramsProps) {
           </Card>
         ))}
       </div>
-    </section>
+    </PageSection>
   );
 }
 
@@ -299,35 +173,4 @@ function TeamColumn({ team }: TeamColumnProps) {
       <AssistantList assistants={team.assistants} />
     </div>
   );
-}
-
-const toDialable = (phone: string) => phone.replace(/[ ()-]/g, "");
-
-function useDirectorySearch(entries: DirectoryEntry[]) {
-  const [query, setQuery] = useState("");
-  const needle = query.trim().toLowerCase();
-  const shown = needle
-    ? entries.filter((entry) => entry.name.toLowerCase().includes(needle))
-    : entries;
-
-  return { query, setQuery, shown };
-}
-
-function useSelectedGroup(groups: FacultyGroup[]) {
-  const [selectedKey, setSelectedKey] = useState<string | undefined>(groups[0]?.key);
-  const group = groups.find((item) => item.key === selectedKey) ?? groups[0];
-  const [hasPicked, setHasPicked] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
-  // Fade only after a tap, so the first paint is never hidden while the page hydrates.
-  const fadeIn =
-    shouldReduceMotion || !hasPicked
-      ? {}
-      : { initial: FADE.initial, animate: FADE.animate, transition: FADE.transition };
-
-  const select = (key: string) => {
-    setSelectedKey(key);
-    setHasPicked(true);
-  };
-
-  return { group, select, fadeIn };
 }

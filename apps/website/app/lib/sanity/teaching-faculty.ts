@@ -1,6 +1,5 @@
-import { stegaClean } from "@sanity/client/stega";
-
 import type { TEACHING_FACULTY_QUERY_RESULT } from "../../../sanity.types";
+import { cleanText, type DirectoryEntry, type DirectoryPerson, sortDirectory } from "./directory";
 import { getVolunteerContactLinks } from "./volunteers-list";
 
 interface DirectoryAccumulator {
@@ -10,13 +9,6 @@ interface DirectoryAccumulator {
   subjects: Map<string, string[]>;
   assistantLevel: string;
   assistantLabels: string[];
-}
-
-interface DirectoryPerson {
-  id: string;
-  name: string;
-  email: string | null;
-  phone: string | null;
 }
 
 interface RawAssistant {
@@ -30,10 +22,6 @@ interface RawPerson {
   name: string | null;
   email: string | null;
   phone: string | null;
-}
-
-export interface DirectoryEntry extends DirectoryPerson {
-  roles: string[];
 }
 
 export interface FacultyAssistant {
@@ -171,15 +159,10 @@ function buildDirectory(groups: FacultyGroup[], programs: FacultyProgram[]): Dir
     }
   }
 
-  return [...people.values()]
-    .map((person) => ({ ...person.entry, roles: getRoles(person) }))
-    .sort(
-      (a, b) =>
-        getLastName(a.name).localeCompare(getLastName(b.name)) || a.name.localeCompare(b.name),
-    );
+  return sortDirectory(
+    [...people.values()].map((person) => ({ ...person.entry, roles: getRoles(person) })),
+  );
 }
-
-const cleanText = (value: string | null | undefined) => (value ? stegaClean(value).trim() : "");
 
 function getAccumulator(
   people: Map<string, DirectoryAccumulator>,
@@ -201,8 +184,6 @@ function getAccumulator(
 
   return created;
 }
-
-const getLastName = (name: string) => name.split(" ").at(-1)?.toLowerCase() ?? "";
 
 function getRoles(person: DirectoryAccumulator) {
   return [
