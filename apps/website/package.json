@@ -23,7 +23,6 @@
     "@sanity/image-url": "^2.1.1",
     "algoliasearch": "^5.60.0",
     "date-fns": "^4.1.0",
-    "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "lodash.kebabcase": "^4.1.1",
     "motion": "^14.6.0",

@@ -14,6 +14,10 @@ import {
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
+/** Browser only: whether the visitor has asked their device for less motion. */
+export const isReducedMotionPreferred = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 export function createJsonLd(name: string, description = DESCRIPTION) {
   const jsonLdDisplayName =
     name === ORGANIZATION_LEGAL_NAME ? ORGANIZATION_NAME : `${ORGANIZATION_NAME} - ${name}`;

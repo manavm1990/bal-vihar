@@ -191,28 +191,33 @@
 }
 
 @layer components {
-  dialog.event-details[open] {
+  :is(dialog.event-details, dialog.gallery-viewer)[open] {
     animation: scaleIn 200ms ease-out;
   }
 
-  dialog.event-details[open].closing {
+  :is(dialog.event-details, dialog.gallery-viewer)[open].closing {
     animation: scaleOut 150ms ease-in forwards;
   }
 
-  dialog.event-details[open]::backdrop {
+  :is(dialog.event-details, dialog.gallery-viewer)[open]::backdrop {
     animation: fadeIn 200ms ease-out;
     background: rgb(0 0 0 / 0.5);
   }
 
-  dialog.event-details[open].closing::backdrop {
+  :is(dialog.event-details, dialog.gallery-viewer)[open].closing::backdrop {
     animation: fadeOut 150ms ease-in forwards;
   }
 
+  /* A photo needs a darker backdrop than a details card. */
+  dialog.gallery-viewer[open]::backdrop {
+    background: rgb(0 0 0 / 0.9);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    dialog.event-details[open],
-    dialog.event-details[open].closing,
-    dialog.event-details[open]::backdrop,
-    dialog.event-details[open].closing::backdrop {
+    :is(dialog.event-details, dialog.gallery-viewer)[open],
+    :is(dialog.event-details, dialog.gallery-viewer)[open].closing,
+    :is(dialog.event-details, dialog.gallery-viewer)[open]::backdrop,
+    :is(dialog.event-details, dialog.gallery-viewer)[open].closing::backdrop {
       animation: none;
     }
   }

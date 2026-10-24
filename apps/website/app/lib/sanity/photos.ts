@@ -10,13 +10,18 @@ interface FetchPhotoOptions {
   stega?: boolean;
 }
 
-/** One photo by its Studio key, or null if it was removed or has no picture. */
-export async function fetchPhoto(key: string, options?: FetchPhotoOptions) {
+/** The gallery's photos that have a picture, in the order editors set in Studio. */
+export async function fetchPhotos(options?: FetchPhotoOptions) {
   const gallery = mapPhotoGallery(await fetchSanityData(PHOTO_GALLERY_QUERY, options), {
     featuredOnly: false,
   });
 
-  return gallery?.photos?.find((photo) => photo.key === key && photo.image?.asset) ?? null;
+  return (gallery?.photos ?? []).filter((photo) => photo.image?.asset);
+}
+
+/** One photo by its Studio key, or null if it was removed or has no picture. */
+export async function fetchPhoto(key: string, options?: FetchPhotoOptions) {
+  return (await fetchPhotos(options)).find((photo) => photo.key === key) ?? null;
 }
 
 export const createPhotoShareUrl = (photo: HomePhotoBoardItem) =>
