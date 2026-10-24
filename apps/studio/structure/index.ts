@@ -3,6 +3,7 @@ import { BookIcon } from "@sanity/icons/Book";
 import { CalendarIcon } from "@sanity/icons/Calendar";
 import { CogIcon } from "@sanity/icons/Cog";
 import { DocumentTextIcon } from "@sanity/icons/DocumentText";
+import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
 import { HomeIcon } from "@sanity/icons/Home";
 import { ImagesIcon } from "@sanity/icons/Images";
 import { UserIcon } from "@sanity/icons/User";
@@ -73,6 +74,15 @@ export const structure: StructureResolver = (S) =>
             .schemaType("policies")
             .documentId(SINGLETON_IDS.policies)
             .title("Policies & Procedures"),
+        ),
+      S.listItem()
+        .title("Questions & Answers")
+        .icon(HelpCircleIcon)
+        .child(
+          S.document()
+            .schemaType("faqs")
+            .documentId(SINGLETON_IDS.faqs)
+            .title("Questions & Answers"),
         ),
       S.listItem()
         .title("Volunteers List")

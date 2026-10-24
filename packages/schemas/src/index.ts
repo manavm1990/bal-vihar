@@ -1,6 +1,7 @@
 import { calendarEvent } from "./documents/calendar-event";
 import { calendarImport } from "./documents/calendar-import";
 import { classPage } from "./documents/class-page";
+import { faqs } from "./documents/faqs";
 import { homePage } from "./documents/home-page";
 import { person } from "./documents/person";
 import { PHOTO_PAGE_OPTIONS, photoGallery } from "./documents/photo-gallery";
@@ -17,6 +18,7 @@ import { youthAssistant } from "./objects/youth-assistant";
  * Fixed document IDs for Studio singletons.
  */
 export const SINGLETON_IDS = {
+  faqs: "faqs",
   homePage: "homePage",
   photoGallery: "photoGallery",
   policies: "policies",
@@ -36,6 +38,7 @@ export const schemaTypes = [
   calendarImport,
   classLink,
   classPage,
+  faqs,
   homePage,
   mediaImage,
   person,
@@ -53,6 +56,7 @@ export {
   calendarImport,
   classLink,
   classPage,
+  faqs,
   homePage,
   mediaImage,
   PHOTO_PAGE_OPTIONS,

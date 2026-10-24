@@ -113,6 +113,15 @@ export const TEACHING_FACULTY_QUERY = defineQuery(`*[_id == "teachingFaculty"][0
   }
 }`);
 
+export const FAQS_QUERY = defineQuery(`*[_id == "faqs"][0]{
+  _id,
+  items[]{
+    _key,
+    question,
+    answer
+  }
+}`);
+
 export const POLICIES_QUERY = defineQuery(`*[_id == "policies"][0]{
   _id,
   intro,

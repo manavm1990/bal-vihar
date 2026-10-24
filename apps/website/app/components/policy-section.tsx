@@ -135,6 +135,7 @@ interface PolicyTextProps {
 }
 
 /** Renders a policy's Portable Text body with the site's typography primitives. */
-function PolicyText({ value }: PolicyTextProps) {
+/** Renders policy-style Portable Text: paragraphs, lists, bold, italic, links and tables. */
+export function PolicyText({ value }: PolicyTextProps) {
   return <PortableText value={value} components={POLICY_TEXT_COMPONENTS} />;
 }

@@ -314,6 +314,38 @@ export type SanityImageHotspot = {
   width: number;
 };
 
+export type Faqs = {
+  _id: string;
+  _type: "faqs";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  items: Array<{
+    question: string;
+    answer: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: "bullet";
+      markDefs?: Array<{
+        href: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    _type: "faqItem";
+    _key: string;
+  }>;
+};
+
 export type ClassPage = {
   _id: string;
   _type: "classPage";
@@ -508,6 +540,7 @@ export type AllSanitySchemaTypes =
   | HomePage
   | SanityImageCrop
   | SanityImageHotspot
+  | Faqs
   | ClassPage
   | ClassLink
   | SanityFileAssetReference
@@ -691,6 +724,41 @@ export type TEACHING_FACULTY_QUERY_RESULT =
           level: "Y4" | "Y5";
         }> | null;
       }> | null;
+    }
+  | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: FAQS_QUERY
+// Query: *[_id == "faqs"][0]{  _id,  items[]{    _key,    question,    answer  }}
+export type FAQS_QUERY_RESULT =
+  | {
+      _id: "faqs";
+      items: Array<{
+        _key: string;
+        question: string;
+        answer: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "normal";
+          listItem?: "bullet";
+          markDefs?: Array<{
+            href: string;
+            _type: "link";
+            _key: string;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+      }>;
+    }
+  | {
+      _id: "faqs";
+      items: null;
     }
   | null;
 
@@ -958,6 +1026,7 @@ declare global {
     '*[_id == "volunteersList"][0]{\n  _id,\n  teams[]{\n    _key,\n    name,\n    description,\n    members[]{\n      _key,\n      name,\n      email,\n      phone\n    }\n  }\n}': VOLUNTEERS_LIST_QUERY_RESULT;
     '*[_id == "volunteerRoster"][0]{\n  _id,\n  schoolYear,\n  activities[]{\n    _key,\n    name,\n    volunteers\n  }\n}': VOLUNTEER_ROSTER_QUERY_RESULT;
     '*[_id == "teachingFaculty"][0]{\n  _id,\n  schoolYear,\n  groups[]{\n    _key,\n    name,\n    kind,\n    teams[]{\n      _key,\n      subject,\n      section,\n      teachers[]{\n        _key,\n        isBackup,\n        person->{ _id, name, email, phone }\n      },\n      assistants[]{ _key, name, level }\n    }\n  },\n  programs[]{\n    _key,\n    name,\n    coordinators[]->{ _id, name, email, phone },\n    team[]->{ _id, name, email, phone },\n    assistants[]{ _key, name, level }\n  }\n}': TEACHING_FACULTY_QUERY_RESULT;
+    '*[_id == "faqs"][0]{\n  _id,\n  items[]{\n    _key,\n    question,\n    answer\n  }\n}': FAQS_QUERY_RESULT;
     '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  heroSlides[]{\n    _key,\n    link,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  },\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  },\n  whoWeAre\n}': HOME_PAGE_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;

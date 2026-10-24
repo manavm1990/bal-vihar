@@ -1,4 +1,5 @@
 import { algoliasearch } from "algoliasearch";
+import { connection } from "next/server";
 
 import type { HighlightPart, SearchResult } from "./search";
 
@@ -16,6 +17,9 @@ const HIGHLIGHT_START = "⟦";
  * can't be reached, so the page falls back to the built-in search instead of showing an error.
  */
 export async function searchAlgolia(query: string, limit: number): Promise<SearchResult[] | null> {
+  // The Algolia client picks a random host when it is created, which can't happen while prerendering.
+  await connection();
+
   const appId = process.env["ALGOLIA_APP_ID"];
   const searchKey = process.env["ALGOLIA_SEARCH_KEY"];
   const indexName = process.env["ALGOLIA_INDEX_NAME"];
