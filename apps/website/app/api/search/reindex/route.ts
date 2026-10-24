@@ -7,6 +7,7 @@ import {
   PHOTO_GALLERY_QUERY,
   POLICIES_QUERY,
 } from "@lib/sanity/queries";
+import { crawlPageDocuments } from "@lib/search/crawl-pages";
 import { createSanitySearchDocuments } from "@lib/search/sanity-documents";
 import type { SearchDocument } from "@lib/search/search";
 import { STATIC_SEARCH_DOCUMENTS } from "@lib/search/static-documents";
@@ -46,6 +47,7 @@ export const POST = async (request: Request) => {
     writeKey,
     indexName,
     configure: searchParams.get("configure") === "true",
+    origin: new URL(request.url).origin,
   };
 
   // `?wait=true` runs the rebuild inline, so a failure shows up in the response (handy with curl).
@@ -72,9 +74,11 @@ interface AlgoliaConfig {
   writeKey: string;
   indexName: string;
   configure: boolean;
+  /** This site's own address, so pages can be read for search. */
+  origin: string;
 }
 
-async function rebuildIndex({ appId, writeKey, indexName, configure }: AlgoliaConfig) {
+async function rebuildIndex({ appId, writeKey, indexName, configure, origin }: AlgoliaConfig) {
   // Straight from Sanity rather than the cached helper, so an edit is never one step behind.
   const [events, classes, faqs, gallery, policies] = await Promise.all([
     client.fetch(CALENDAR_EVENTS_QUERY),
@@ -85,6 +89,7 @@ async function rebuildIndex({ appId, writeKey, indexName, configure }: AlgoliaCo
   ]);
   const records = [
     ...STATIC_SEARCH_DOCUMENTS,
+    ...(await crawlPageDocuments(origin)),
     ...createSanitySearchDocuments({ events, classes, faqs, gallery, policies }),
   ].map(createRecord);
 
