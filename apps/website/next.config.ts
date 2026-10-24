@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
+import { sanity } from "next-sanity/live/cache-life";
 
 const nextConfig: NextConfig = {
+  cacheComponents: true,
+  // Sanity Live revalidates on demand, so cached Sanity data skips the default time-based expiry.
+  cacheLife: { default: sanity },
+  partialPrefetching: true,
   experimental: {
     serverActions: {
       bodySizeLimit: "4mb",

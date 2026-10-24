@@ -2,7 +2,7 @@ import Article from "@components/article";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
 import { H2, MutedP, P, Ul } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
-import { sanityFetch } from "@lib/sanity/live";
+import { fetchSanityOrNull } from "@lib/sanity/fetch";
 import { CLASS_PAGES_QUERY } from "@lib/sanity/queries";
 import { cn } from "@lib/utils";
 import { stegaClean } from "@sanity/client/stega";
@@ -23,10 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default async function EducationClassWebpagesPage() {
-  const result = await sanityFetch({ query: CLASS_PAGES_QUERY }).catch((error: unknown) => {
-    console.error("Could not load the class webpages", error);
-    return null;
-  });
+  const result = await fetchSanityOrNull(CLASS_PAGES_QUERY, "the class webpages");
   const classes = result?.data ?? [];
 
   return (

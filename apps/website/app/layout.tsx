@@ -64,7 +64,7 @@ export default async function RootLayout({
           {children}
         </main>
         <Footer />
-        <SanityLive />
+        <SanityLive includeDrafts={isDraftMode} />
         {isDraftMode ? (
           <>
             <DisableDraftMode />

@@ -1,11 +1,26 @@
-import { sanityFetch } from "./live";
+import { draftMode } from "next/headers";
+import type { QueryParams } from "next-sanity";
 
-/** Fetches a page's query; a failed fetch is logged and gives null so the page can show its empty state. */
+import { type DynamicFetchOptions, getDynamicFetchOptions, sanityFetch } from "./live";
+
+interface FetchOptions {
+  /** Metadata must never carry stega characters, so it opts out. */
+  stega?: boolean;
+}
+
+const PUBLISHED: DynamicFetchOptions = { perspective: "published", stega: false };
+
+/**
+ * Fetches a page's query; a failed fetch is logged and gives null so the page can show its empty
+ * state.
+ */
 export const fetchSanityOrNull = <const QueryString extends string>(
   query: QueryString,
   label: string,
+  params: QueryParams = {},
+  options: FetchOptions = {},
 ) =>
-  sanityFetch({ query }).catch((error: unknown) => {
+  fetchSanityResult(query, params, options).catch((error: unknown) => {
     console.error(`Could not load ${label}`, error);
     return null;
   });
@@ -17,7 +32,7 @@ export const fetchSanityOrNull = <const QueryString extends string>(
  */
 export async function fetchSanityData(query: string): Promise<unknown> {
   try {
-    const result = await sanityFetch({ query });
+    const result = await fetchSanityResult(query);
     if (typeof result !== "object" || result === null) return null;
 
     // defineLive result shape is { data: T }; read without relying on generated types.
@@ -27,4 +42,31 @@ export async function fetchSanityData(query: string): Promise<unknown> {
     console.error("Sanity fetch failed", error);
     return null;
   }
+}
+
+/**
+ * Outside draft mode the options are constants, so a prerendered page never waits on a request.
+ * In draft mode they come from the request, and only then.
+ */
+async function fetchSanityResult<const QueryString extends string>(
+  query: QueryString,
+  params: QueryParams = {},
+  { stega = true }: FetchOptions = {},
+) {
+  const { isEnabled: isDraftMode } = await draftMode();
+  const dynamic = isDraftMode ? await getDynamicFetchOptions() : PUBLISHED;
+
+  return fetchCachedSanity(query, params, { ...dynamic, stega: dynamic.stega && stega });
+}
+
+async function fetchCachedSanity<const QueryString extends string>(
+  query: QueryString,
+  params: QueryParams,
+  options: DynamicFetchOptions,
+) {
+  "use cache";
+
+  const { data } = await sanityFetch({ query, params, ...options });
+
+  return { data };
 }

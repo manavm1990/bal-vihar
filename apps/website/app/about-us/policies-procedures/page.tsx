@@ -1,7 +1,7 @@
 import PolicySection from "@components/policy-section";
 import SectionNav from "@components/section-nav";
 import { H1, LeadP, MutedP } from "@components/ui/typography";
-import { sanityFetch } from "@lib/sanity/live";
+import { fetchSanityOrNull } from "@lib/sanity/fetch";
 import { getPolicies } from "@lib/sanity/policies";
 import { POLICIES_QUERY } from "@lib/sanity/queries";
 import type { Metadata } from "next";
@@ -15,10 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PoliciesProceduresPage() {
-  const result = await sanityFetch({ query: POLICIES_QUERY }).catch((error: unknown) => {
-    console.error("Could not load the policies", error);
-    return null;
-  });
+  const result = await fetchSanityOrNull(POLICIES_QUERY, "the policies");
   const { intro, sections } = getPolicies(result?.data ?? null);
 
   return (

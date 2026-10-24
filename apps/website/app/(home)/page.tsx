@@ -18,6 +18,8 @@ import type {
 } from "@lib/sanity/types";
 import { cn } from "@lib/utils";
 import Link from "next/link";
+import { connection } from "next/server";
+import { Suspense } from "react";
 
 import { HeroCarousel } from "./hero-carousel.client";
 
@@ -61,8 +63,7 @@ export default async function HomePage() {
 
   const home: HomePageData | null = mapHomePage(homePayload);
   const heroSlides = home?.heroSlides ?? [];
-  const announcements = (home?.announcements ?? []).filter((item) => isAnnouncementVisible(item));
-  const events = getUpcomingCalendarEvents(mapCalendarEvents(calendarPayload));
+  const events = mapCalendarEvents(calendarPayload);
   const photos = (mapPhotoGallery(galleryPayload, { featuredOnly: true })?.photos ?? [])
     .filter((photo) => photo.image?.asset?._id || photo.image?.asset?.url)
     .slice(0, 8);
@@ -70,14 +71,18 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <Announcements announcements={announcements} />
+      <Suspense fallback={null}>
+        <Announcements announcements={home?.announcements ?? []} />
+      </Suspense>
       <HeroCarousel slides={heroSlides} />
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <Intro text={home?.whoWeAre ?? WHO_WE_ARE} />
         <PhotoBanner photo={banner} />
         <aside className="lg:col-start-2 lg:row-span-4 lg:row-start-1">
-          <UpcomingEvents events={events} />
+          <Suspense fallback={<MutedP>Loading upcoming events…</MutedP>}>
+            <UpcomingEvents events={events} />
+          </Suspense>
         </aside>
         <Stats />
         <Programs />
@@ -91,10 +96,14 @@ interface AnnouncementsProps {
   announcements: HomeAnnouncement[];
 }
 
-function Announcements({ announcements }: AnnouncementsProps) {
-  return announcements.length === 0 ? null : (
+async function Announcements({ announcements }: AnnouncementsProps) {
+  // Which announcements are visible depends on the current time, so this renders per request.
+  await connection();
+  const visible = announcements.filter((item) => isAnnouncementVisible(item));
+
+  return visible.length === 0 ? null : (
     <div className="mx-auto flex w-full max-w-prose flex-col gap-4">
-      {announcements.map((announcement) => (
+      {visible.map((announcement) => (
         <AnnouncementCard key={announcement.key} announcement={announcement} />
       ))}
     </div>
@@ -264,17 +273,21 @@ interface UpcomingEventsProps {
   events: CalendarEventData[];
 }
 
-function UpcomingEvents({ events }: UpcomingEventsProps) {
+async function UpcomingEvents({ events }: UpcomingEventsProps) {
+  // Which events are upcoming depends on today's date, so this renders per request.
+  await connection();
+  const upcoming = getUpcomingCalendarEvents(events);
+
   return (
     <section className="bg-gray-50 space-y-4 rounded-lg border p-4 lg:sticky lg:top-4">
       <H2 variant="plain" className="text-2xl">
         Upcoming events
       </H2>
-      {events.length === 0 ? (
+      {upcoming.length === 0 ? (
         <MutedP>No upcoming events are scheduled right now.</MutedP>
       ) : (
         <ul className="space-y-3">
-          {events.map((event) => (
+          {upcoming.map((event) => (
             <li key={event.id}>
               <EventCard event={event} />
             </li>

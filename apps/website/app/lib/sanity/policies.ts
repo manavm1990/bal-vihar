@@ -2,7 +2,7 @@ import { stegaClean } from "@sanity/client/stega";
 import type { PortableText } from "next-sanity";
 import type { ComponentProps } from "react";
 import type { POLICIES_QUERY_RESULT } from "sanity.types";
-import { sanityFetch } from "./live";
+import { fetchSanityOrNull } from "./fetch";
 import { POLICIES_QUERY } from "./queries";
 
 export type PolicyBody = ComponentProps<typeof PortableText>["value"];
@@ -74,10 +74,7 @@ const toBody = (value: unknown): PolicyBody =>
 
 /** Loads one policy section by slug with its position among all sections, or null if absent. */
 export async function fetchPolicySection(slug: string): Promise<NumberedPolicySection | null> {
-  const result = await sanityFetch({ query: POLICIES_QUERY }).catch((error: unknown) => {
-    console.error(`Could not load the ${slug} policies`, error);
-    return null;
-  });
+  const result = await fetchSanityOrNull(POLICIES_QUERY, `the ${slug} policies`);
   const { sections } = getPolicies(result?.data ?? null);
   const index = sections.findIndex((section) => section.slug === slug);
   const section = sections[index];

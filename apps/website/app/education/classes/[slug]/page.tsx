@@ -2,9 +2,10 @@ import Article from "@components/article";
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { H2, LeadP, MutedP, P, Small, Strong, Ul } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
-import { sanityFetch } from "@lib/sanity/live";
+import { fetchSanityOrNull } from "@lib/sanity/fetch";
+import { sanityFetchStaticParams } from "@lib/sanity/live";
 import { formatCalendarDate } from "@lib/sanity/map-calendar-events";
-import { CLASS_PAGE_QUERY } from "@lib/sanity/queries";
+import { CLASS_PAGE_QUERY, CLASS_PAGES_QUERY } from "@lib/sanity/queries";
 import { stegaClean } from "@sanity/client/stega";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -119,19 +120,20 @@ function SessionCard({ session }: SessionCardProps) {
   );
 }
 
-async function fetchClassPage(slug: string) {
-  const result = await sanityFetch({ query: CLASS_PAGE_QUERY, params: { slug } }).catch(
-    (error: unknown) => {
-      console.error("Could not load the class page", error);
-      return null;
-    },
-  );
+async function fetchClassPage(slug: string, options?: { stega?: boolean }) {
+  const result = await fetchSanityOrNull(CLASS_PAGE_QUERY, "the class page", { slug }, options);
 
   return result?.data ?? null;
 }
 
+export async function generateStaticParams() {
+  const { data } = await sanityFetchStaticParams({ query: CLASS_PAGES_QUERY });
+
+  return data.flatMap(({ slug }) => (slug ? [{ slug }] : []));
+}
+
 export async function generateMetadata({ params }: ClassPageProps): Promise<Metadata> {
-  const page = await fetchClassPage((await params).slug);
+  const page = await fetchClassPage((await params).slug, { stega: false });
 
   return !page
     ? {}

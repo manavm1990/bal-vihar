@@ -1,4 +1,5 @@
 import { ADMIN_OFFICE, ORGANIZATION_NAME, SCHOOL_LOCATION } from "@lib/constants";
+import { cacheLife } from "next/cache";
 import Link from "next/link";
 
 import { MutedP, Small } from "../ui/typography";
@@ -13,7 +14,11 @@ const PRIMARY_LINKS = [
   { href: "/questions", label: "Contact" },
 ] as const;
 
-export default function Footer() {
+export default async function Footer() {
+  // The copyright year only needs to be right once a day.
+  "use cache";
+  cacheLife("days");
+
   return (
     <footer className="border-t-secondary bg-gray-50 mt-8 space-y-4 border-t-8 p-6">
       <nav aria-label="Primary" className="border-border border-b pb-4">
