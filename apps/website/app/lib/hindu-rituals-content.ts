@@ -1,16 +1,15 @@
 import kebabCase from "lodash.kebabcase";
 
+import arjunaKrishna from "../assets/hindu-rituals/arjuna-krishna.jpg";
+import vishnuAnantashayana from "../assets/hindu-rituals/vishnu-anantashayana.jpg";
 import type { StaticPageContent } from "./static-page-content";
 
 interface Ritual {
   question: string;
+  /** Short name for the jump-link pill. */
+  label: string;
   answer: string;
 }
-
-const createContents = (rituals: Ritual[]) =>
-  rituals
-    .map(({ question }, index) => `${index + 1}. [${question}](#${kebabCase(question)})`)
-    .join("\n");
 
 const createSection = ({ question, answer }: Ritual) => `## ${question}\n\n${answer}`;
 
@@ -41,6 +40,7 @@ In India, people have followed *aachaaraas* for these psychological, physical, f
 const RITUALS: Ritual[] = [
   {
     question: "Why do we light a lamp?",
+    label: "Lamp",
     answer: `In almost every Indian home a lamp is lit daily before the altar of the Lord. In some houses it is lit at dawn, in some twice a day, at dawn and dusk, and in a few it is kept burning continuously (*Akhanda Deepa*). All auspicious functions begin with the lighting of a lamp, which is often kept burning through the whole occasion.
 
 Light symbolizes knowledge, and darkness, ignorance. The Lord is the "Knowledge Principle" (*Chaitanya*), the source, enlivener and illuminator of all knowledge. Hence light is worshipped as the Lord himself.
@@ -60,6 +60,7 @@ I prostrate to the dawn and dusk lamp, whose light is the Knowledge Principle (t
   },
   {
     question: "Why do we have a prayer room?",
+    label: "Prayer room",
     answer: `Most Indian homes have a prayer room or altar. A lamp is lit and the Lord is worshipped each day. Other spiritual practices such as *japa* (repeating the Lord's name), meditation, *paaraayana* (reading the scriptures), prayers and devotional singing are also done here. Special worship is done on auspicious occasions like birthdays, anniversaries and festivals. Each member of the family, young or old, communes with and worships the Divine here.
 
 The Lord is the entire creation, and so the true owner of the house we live in. The prayer room is the master room of the house, and we are the earthly occupants of His property. This idea rids us of false pride and possessiveness.
@@ -74,6 +75,7 @@ Sacred thoughts and sound vibrations are believed to fill the place and influenc
   },
   {
     question: "Why do we do Namaste?",
+    label: "Namaste",
     answer: `Indians greet each other with *namaste*. The two palms are placed together in front of the chest and the head bows while saying the word. The greeting is for everyone: people younger than us, of our own age, older than us, friends and even strangers.
 
 The *shaastras* describe five forms of formal traditional greeting, of which *namaskaaram* is one. It is often understood as prostration, but it actually means paying homage, as we do today when we greet each other with a *namaste*.
@@ -88,6 +90,7 @@ When we know this significance, our greeting is no longer a superficial gesture 
   },
   {
     question: "Why do we prostrate before parents and elders?",
+    label: "Elders",
     answer: `Indians prostrate before their parents, elders, teachers and noble souls by touching their feet. The elder in turn blesses us by placing a hand on or over our head. Prostration is done daily when we meet elders and especially on important occasions such as the beginning of a new task, birthdays and festivals. In some traditional circles, prostration is accompanied by *abhivaadana*, which introduces oneself and announces one's family and social standing.
 
 Man stands on his feet. Touching the feet in prostration is a sign of respect for the age, maturity, nobility and divinity that our elders personify. It symbolizes our recognition of their selfless love for us and the sacrifices they have made for our welfare. It is a way of humbly acknowledging the greatness of another. This tradition reflects the strong family ties that have been one of India's enduring strengths.
@@ -106,6 +109,7 @@ The scriptures prescribe who should prostrate to whom. In ascending order of imp
   },
   {
     question: "Why do we wear marks (tilak, pottu and the like) on the forehead?",
+    label: "Tilak",
     answer: `The *tilak* or *pottu* invokes a feeling of sanctity in the wearer and in others. It is recognized as a religious mark. Its form and colour vary with the religious sect or the form of the Lord worshipped. Vishnu worshippers apply a *chandan* tilak shaped like a "U," Shiva worshippers a *tripundra* of *bhasma*, and Devi worshippers a red dot of *kumkum*.
 
 The tilak covers the spot between the eyebrows, the seat of memory and thinking, known as the *Aajna Chakra* in the language of Yoga. It is applied with the prayer: "May I remember the Lord. May this pious feeling pervade all my activities. May I be righteous in my deeds." Even when we temporarily forget this prayerful attitude, the mark on another person reminds us of our resolve. The tilak is thus a blessing of the Lord and a protection against wrong tendencies.
@@ -114,6 +118,7 @@ Traditionally it is said that the forehead, and especially the spot between the 
   },
   {
     question: "Why do we not touch papers, books and people with the feet?",
+    label: "Feet",
     answer: `To Indians, knowledge is sacred and divine, so it must be given respect at all times. Nowadays we separate subjects into sacred and secular, but in ancient India every subject, academic or spiritual, was considered divine and was taught by the *guru* in the *gurukula*.
 
 The custom of not stepping on educational tools is a frequent reminder of the high place knowledge holds in Indian culture. From an early age, it builds a deep reverence for books and education. This is also why we worship books, vehicles and instruments once a year on Saraswathi Pooja or Ayudha Pooja day, dedicated to the Goddess of Learning. Each day before starting our studies, we pray:
@@ -131,6 +136,7 @@ Man is regarded as the most beautiful, living, breathing temple of the Lord. Tou
   },
   {
     question: "Why do we apply the holy ash?",
+    label: "Holy ash",
     answer: `The ash of any burnt object is not regarded as holy ash. *Bhasma* (the holy ash) is the ash from the *homa* (sacrificial fire), where special wood is offered along with ghee and other herbs as worship of the Lord. It can also come from pouring ash over the deity as *abhisheka*, after which it is distributed as *bhasma*.
 
 *Bhasma* is generally applied on the forehead. Some apply it on the upper arms, chest and other parts of the body, and some ascetics rub it all over the body. Many people also eat a pinch of it each time they receive it.
@@ -152,6 +158,7 @@ We worship the three-eyed Lord Shiva, who nourishes and spreads fragrance in our
   },
   {
     question: "Why do we offer food to the Lord before eating it?",
+    label: "Food offering",
     answer: `Indians offer food to the Lord and later eat it as *prasaada*, a holy gift from the Lord. In our daily worship (*pooja*) we also offer *naivedyam* (food) to the Lord.
 
 The Lord is omnipotent and omniscient. Man is a part, while the Lord is the totality. All that we do is by His strength and knowledge alone, so what we receive as a result of our actions is really His. We acknowledge this by offering food to Him, as in the Hindi words "tera tujko arpan": I offer what is Yours to You. Afterwards it is like a gift from Him, graced by His divine touch.
@@ -179,6 +186,7 @@ After the offering, the food is eaten as *prasaada*, blessed food.`,
   },
   {
     question: "Why do we fast?",
+    label: "Fasting",
     answer: `Most devout Indians fast regularly or on special occasions such as festivals. On such days they do not eat at all, eat once, or make do with fruits or a special diet of simple food.
 
 Fasting in Sanskrit is *upavaasa*. *Upa* means "near" and *vaasa* means "to stay," so *upavaasa* means staying near the Lord, attaining close mental closeness with Him. What does this have to do with food?
@@ -195,12 +203,14 @@ The Bhagavad Gita urges us to eat appropriately, neither too little nor too much
   },
   {
     question: "Why do we do pradakshina (circumambulate)?",
+    label: "Pradakshina",
     answer: `We cannot draw a circle without a center point. The Lord is the center, source and essence of our lives. Recognizing Him as the focal point of our lives, we go about our daily chores. This is the significance of *pradakshina*.
 
 Every point on the circumference of a circle is also the same distance from the center. This means that wherever or whoever we are, we are equally close to the Lord. His grace flows toward us without partiality.`,
   },
   {
     question: "Why is pradakshina done only in a clockwise manner?",
+    label: "Clockwise",
     answer: `The reason is not, as one person said, to avoid a traffic jam! As we do *pradakshina*, the Lord is always on our right. In India the right side symbolizes auspiciousness. As we walk around the sanctum sanctorum, we remind ourselves to lead an auspicious life of righteousness, with the Lord, the indispensable source of help and strength, as our guide, our "right hand."
 
 The scriptures say *matrudevo bhava, pitrudevo bhava, acharyadevo bhava*: may you consider your parents and teachers as you would the Lord. With this in mind, we also do *pradakshina* around our parents and divine personages.
@@ -209,6 +219,7 @@ After the traditional worship (*pooja*) is complete, we customarily do *pradaksh
   },
   {
     question: "Why do we regard trees and plants as sacred?",
+    label: "Trees",
     answer: `The Lord, the life in us, pervades all living beings, plants and animals alike, and so all of them are regarded as sacred. Human life on earth depends on plants and trees, which give us the vital things that make life possible: food, oxygen, clothing, shelter, medicines and more. Hence in India we are taught to regard trees and plants as sacred.
 
 Indian scriptures tell us to plant ten trees if, for any reason, we have to cut one. We are advised to use parts of trees and plants only as much as is needed for food, fuel, shelter and the like. We are also urged to apologize to a plant or tree before cutting it, to avoid the sin called *soona*.
@@ -217,6 +228,7 @@ Certain trees and plants with tremendous beneficial qualities, such as *tulasi* 
   },
   {
     question: "Why do we ring the bell in a temple?",
+    label: "Temple bell",
     answer: `Is it to wake up the Lord? But the Lord never sleeps. Is it to let the Lord know we have come? He does not need to be told, as He knows all. Is it to ask permission to enter His home? It is a homecoming, so entry needs no permission, and the Lord welcomes us at all times. Then why do we ring the bell?
 
 The ringing of the bell makes an auspicious sound, regarded as the sound *Om*, the universal name of the Lord. There should be auspiciousness within and without, to gain the vision of the Lord, who is all-auspiciousness.
@@ -234,7 +246,10 @@ I ring this bell to invoke divinity, so that virtuous and noble forces enter (my
   },
   {
     question: "Why do we worship the kalasha?",
-    answer: `First of all, what is a *kalasha*? A brass, mud or copper pot is filled with water. Mango leaves are placed in the mouth of the pot and a coconut is placed over it. A red or white thread is tied around its neck, or sometimes all around it in an intricate diamond-shaped pattern. The pot may be decorated with designs. Such a pot is a *kalasha*.
+    label: "Kalasha",
+    answer: `![Lord Vishnu reclining on the serpent Shesha in the milky ocean, with Brahma seated on the lotus that rises from His navel](vishnuAnantashayana)
+
+First of all, what is a *kalasha*? A brass, mud or copper pot is filled with water. Mango leaves are placed in the mouth of the pot and a coconut is placed over it. A red or white thread is tied around its neck, or sometimes all around it in an intricate diamond-shaped pattern. The pot may be decorated with designs. Such a pot is a *kalasha*.
 
 When the pot is filled with water or rice, it is called *purnakumbha*. It represents the inert body which, when filled with the divine life force, gains the power to do all the wonderful things that make life what it is.
 
@@ -250,6 +265,7 @@ Men and women of wisdom are full and complete (*poornatvam*) because they identi
   },
   {
     question: "Why do we consider the lotus as special?",
+    label: "Lotus",
     answer: `The lotus is the symbol of truth, auspiciousness and beauty (*satyam, shivam, sundaram*). The Lord is also of that nature, and so His various aspects are compared to a lotus: lotus eyes, lotus feet, lotus hands, the lotus of the heart and so on.
 
 The lotus blooms with the rising sun and closes at night. In the same way, our minds open and expand with the light of knowledge. The lotus grows even in slushy areas, yet remains beautiful and untainted despite its surroundings. It reminds us that we too can and should strive to stay pure and beautiful within, under all circumstances.
@@ -271,6 +287,7 @@ A lotus emerged from the navel of Lord Vishnu, and Lord Brahma was born from it 
   },
   {
     question: "Why do we worship tulasi?",
+    label: "Tulasi",
     answer: `In Sanskrit, *tulanaa naasti athaiva tulasi*: that which is incomparable in its qualities is the *tulasi*.
 
 For Indians it is one of the most sacred plants. It is the only thing used in worship that, once used, can be washed and used again in *pooja*, because it is regarded as so self-purifying.
@@ -294,6 +311,7 @@ I bow down to the *tulasi*, at whose base are all the holy places, at whose top 
   },
   {
     question: "Why do we blow the conch?",
+    label: "Conch",
     answer: `When the conch is blown, the primordial sound of *Om* comes from it. *Om* is an auspicious sound that the Lord chanted before creating the world. It represents the world and the Truth behind it.
 
 As the story goes, the demon Shankhaasura defeated the *devas* and the Vedas and went to the bottom of the ocean. The *devas* appealed to Lord Vishnu for help. He took the *Matsya Avataara*, the fish incarnation, and killed Shankhaasura. The Lord blew the conch-shaped bone of the demon's ear and head, and the sound of *Om* came out, from which the Vedas emerged.
@@ -315,6 +333,7 @@ Salutations to Panchajanya, the conch born of the ocean, held in the hand of Lor
   },
   {
     question: "Why do we say shaanti thrice?",
+    label: "Shaanti",
     answer: `*Shaanti* means "peace," a natural state of being. Disturbances are created either by others or by us. For example, peace already exists in a place until someone makes noise. Peace therefore underlies all our agitations, and when the agitations end, peace is naturally experienced since it was already there. Where there is peace, there is happiness, and so everyone, without exception, wants peace in their life.
 
 Peace within or without can seem very hard to reach because it is covered by our own agitations. A rare few manage to stay peaceful within even in the midst of external agitation and trouble. To invoke peace, we chant prayers. By chanting prayers, troubles end and peace is experienced within, whatever the external disturbances. All such prayers end by chanting *shaanti* thrice.
@@ -333,6 +352,7 @@ It is chanted aloud the first time, addressing the unseen forces. It is chanted 
   },
   {
     question: "Why do we offer a coconut?",
+    label: "Coconut",
     answer: `In India, one of the most common offerings in a temple is a coconut. It is also offered on occasions like weddings, festivals, and the first use of a new vehicle, bridge or house. It is offered into the sacrificial fire during *homa*. The coconut is broken and placed before the Lord, and is later distributed as *prasaada*.
 
 The fibre covering of the dried coconut is removed except for a tuft on top. The marks on the coconut make it look like a human head. Breaking the coconut symbolizes breaking the ego. The juice inside, representing our inner tendencies (*vaasanas*), is offered along with the white kernel, the mind, to the Lord. A mind purified by the Lord's touch is received as *prasaada*, a holy gift.
@@ -345,6 +365,7 @@ The three marks on the coconut are even thought to represent the three-eyed Lord
   },
   {
     question: "Why do we chant Om?",
+    label: "Om",
     answer: `*Om* is one of the most chanted sound symbols in India. It is believed to have a profound effect on the body and mind of the one who chants and on the surroundings. Most mantras and Vedic prayers start with *Om*.
 
 All auspicious actions begin with *Om*. It is even used as a greeting, as in "Om" or "Hari Om." It is repeated as a mantra or meditated upon, and its form is worshipped, contemplated and used as an auspicious sign.
@@ -359,6 +380,7 @@ The formless, attributeless Lord (*Brahman*) is represented by the silence betwe
   },
   {
     question: "Why do we do aarati?",
+    label: "Aarati",
     answer: `Toward the end of every ritual worship (*pooja* or *bhajan*) of the Lord, or to welcome an honored guest or saint, we perform the *aarati*. It is always accompanied by the ringing of the bell and sometimes by singing, playing musical instruments and clapping.
 
 It is one of the sixteen steps (*shodasha upachaara*) of the *pooja* ritual. It is done with a lighted lamp in the right hand, waved in a clockwise circle to light up the entire form of the Lord. Each part is revealed individually, and also the whole form. As the light is waved, we chant prayers mentally or aloud, or simply behold the beautiful form of the Lord lit by the lamp. At the end of the *aarati* we place our hands over the flame and then gently touch our eyes and the top of the head.
@@ -390,16 +412,20 @@ He is there where the sun does not shine, nor the moon, stars and lightning. Wha
   },
 ];
 
+export const RITUAL_LINKS = RITUALS.map(({ question, label }) => ({
+  href: `#${kebabCase(question)}`,
+  title: label,
+}));
+
 export const HINDU_RITUALS: StaticPageContent = {
   title: "Hindu Rituals & Routines",
   subtitle: "Why do we follow them?",
   description:
     "Why Hindus light a lamp, say namaste, ring the temple bell, chant Om and more: 22 questions about Hindu rituals and routines, answered for Bal Vihar students.",
   content: [
+    "![Krishna shows Arjuna His universal form on the battlefield of Kurukshetra](arjunaKrishna)",
     INTRODUCTION,
-    "## Contents",
-    createContents(RITUALS),
     ...RITUALS.map(createSection),
   ].join("\n\n"),
-  singleColumn: true,
+  images: { arjunaKrishna, vishnuAnantashayana },
 };
