@@ -73,7 +73,8 @@ export const calendarEvent = defineType({
       name: "description",
       title: "Extra notes (optional)",
       type: "text",
-      description: "Only if parents need more detail.",
+      description:
+        "For specials: what the event is, what to bring, dress code, etc. Shown in the event details dialog.",
       group: "details",
     }),
     defineField({

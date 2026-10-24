@@ -1,4 +1,4 @@
-import EventCard from "@components/event-card";
+import EventCard from "@components/event-card.client";
 import { SanityImage } from "@components/sanity/sanity-image";
 import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
