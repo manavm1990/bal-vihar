@@ -10,7 +10,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 const GROUPS = [
-  { value: "grade", heading: "Grades" },
+  { value: "grade", heading: "Grade levels (K–7)" },
   { value: "youth", heading: "Youth" },
   { value: "enrichment", heading: "Enrichment" },
   { value: "other", heading: "Other" },

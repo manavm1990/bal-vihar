@@ -3,7 +3,7 @@ import { CalendarIcon } from "@sanity/icons/Calendar";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 const GROUP_OPTIONS = [
-  { title: "Grades", value: "grade" },
+  { title: "Grade levels (K–7)", value: "grade" },
   { title: "Youth", value: "youth" },
   { title: "Enrichment", value: "enrichment" },
   { title: "Other", value: "other" },
