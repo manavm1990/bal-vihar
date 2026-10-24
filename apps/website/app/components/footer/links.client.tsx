@@ -5,11 +5,12 @@ import { usePathname } from "next/navigation";
 
 const LINKS = [
   { href: "/calendar", label: "Calendar" },
-  { href: "/photos", label: "Photos" },
-  { href: "/questions", label: "FAQs & Contact" },
-  { href: "/grievance", label: "File a Grievance" },
+  { href: "/disclaimer", label: "Disclaimer Form" },
   { href: "/expense-reimbursement", label: "Submit an Expense" },
+  { href: "/grievance", label: "File a Grievance" },
+  { href: "/photos", label: "Photos" },
   { href: "/privacy", label: "Privacy Policy" },
+  { href: "/questions", label: "FAQs & Contact" },
   { href: "/terms", label: "Terms of Use" },
 ];
 

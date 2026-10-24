@@ -1,4 +1,9 @@
-import { BaseFormSchema, PhoneSchema } from "@lib/types/form.types";
+import {
+  BaseFormSchema,
+  createRequiredCheck,
+  createRequiredText,
+  PhoneSchema,
+} from "@lib/types/form.types";
 import * as v from "valibot";
 
 export const AWARD_AGE_GROUPS = ["Teens (11–15)", "Young adults (16–25)"] as const;
@@ -34,10 +39,6 @@ export const MAX_TOTAL_AWARD_FILE_BYTES = 3.5 * 1024 * 1024;
 
 const getTotalFileBytes = (files: (File | undefined)[]) =>
   files.reduce((total, file) => total + (file?.size ?? 0), 0);
-
-const createRequiredText = (message: string) => v.pipe(v.string(), v.trim(), v.nonEmpty(message));
-
-const createRequiredCheck = (message: string) => v.pipe(v.boolean(), v.check(Boolean, message));
 
 const AwardFileSchema = v.pipe(
   v.file("Please attach a file."),

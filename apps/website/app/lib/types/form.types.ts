@@ -16,6 +16,15 @@ export const BaseFormSchema = v.object({
   ),
 });
 
+export const createRequiredCheck = (message: string) =>
+  v.pipe(
+    v.boolean(),
+    v.check((input) => input === true, message),
+  );
+
+export const createRequiredText = (message: string) =>
+  v.pipe(v.string(), v.trim(), v.nonEmpty(message));
+
 export const PhoneSchema = v.pipe(
   v.string(),
   v.trim(),

@@ -1,12 +1,13 @@
 "use client";
 
+import { Checkbox } from "@components/ui/form/checkbox";
 import { FormField } from "@components/ui/form/field";
 import { FileField } from "@components/ui/form/file-field";
 import { FormSubmit } from "@components/ui/form/form-submit";
 import { FormSuccess } from "@components/ui/form/form-success.client";
 import { Select } from "@components/ui/form/select";
 import { H3 } from "@components/ui/typography";
-import { Controller, type UseFormRegisterReturn } from "react-hook-form";
+import { Controller } from "react-hook-form";
 
 import {
   AWARD_AGE_GROUPS,
@@ -248,39 +249,5 @@ export default function AwardApplicationForm() {
         error={errorMessage}
       />
     </form>
-  );
-}
-
-interface CheckboxProps {
-  id: string;
-  label: string;
-  registration: UseFormRegisterReturn;
-  value?: string;
-  error?: string;
-}
-
-function Checkbox({ id, label, registration, value, error }: CheckboxProps) {
-  return (
-    <div className="space-y-1">
-      <div className="flex items-start gap-3">
-        <input
-          id={id}
-          type="checkbox"
-          value={value}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={error ? `${id}-error` : undefined}
-          className="accent-secondary mt-1 size-5 shrink-0"
-          {...registration}
-        />
-        <label htmlFor={id} className="text-foreground text-base">
-          {label}
-        </label>
-      </div>
-      {error && (
-        <p id={`${id}-error`} className="text-destructive text-sm">
-          {error}
-        </p>
-      )}
-    </div>
   );
 }

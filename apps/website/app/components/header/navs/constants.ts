@@ -29,6 +29,10 @@ export const NAVIGATION: readonly NavigationItem[] = [
   {
     name: "Admissions",
     link: "/admissions",
+    items: [
+      { name: "Admissions Overview", link: "/admissions" },
+      { name: "Disclaimer Form", link: "/disclaimer" },
+    ],
   },
   {
     name: "Education",
@@ -67,8 +71,8 @@ export const NAVIGATION: readonly NavigationItem[] = [
     link: "/questions",
     align: "right",
     items: [
-      { name: "Questions & FAQs", link: "/questions" },
       { name: "File a Grievance", link: "/grievance" },
+      { name: "Questions & FAQs", link: "/questions" },
       { name: "Submit an Expense", link: "/expense-reimbursement" },
     ],
   },
