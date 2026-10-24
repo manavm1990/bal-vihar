@@ -1,6 +1,7 @@
 "use client";
 
 import Highlighted from "@components/highlighted";
+import { Button } from "@components/ui/button";
 import type { SearchHit } from "@lib/search/find-results";
 import { SEARCH_SUGGESTIONS } from "@lib/search/suggestions";
 import { cn } from "@lib/utils";
@@ -70,8 +71,16 @@ export default function SearchMenu() {
                         enterKeyHint="search"
                         autoComplete="off"
                         placeholder="Homework, schedule, forms…"
-                        className="bg-muted/60 text-foreground placeholder:text-muted-foreground outline-border focus:bg-background focus:outline-ring h-12 w-full rounded-lg pr-3.5 pl-11 text-base outline-1 -outline-offset-1 transition-colors focus:outline-2 focus:-outline-offset-2"
+                        className="bg-muted/60 text-foreground placeholder:text-muted-foreground outline-border focus:bg-background focus:outline-ring h-12 w-full rounded-lg pr-14 pl-11 text-base outline-1 -outline-offset-1 transition-colors focus:outline-2 focus:-outline-offset-2"
                       />
+                      <Button
+                        type="submit"
+                        size="icon"
+                        aria-label="Search"
+                        className="absolute top-1/2 right-1.5 size-9 -translate-y-1/2"
+                      >
+                        <ArrowRightIcon aria-hidden="true" className="size-5" />
+                      </Button>
                     </div>
                   </form>
 
@@ -145,9 +154,9 @@ function Results({ query, hits, hasFailed, isPending, onSelect }: ResultsProps) 
         className={hits.length === 0 ? "text-muted-foreground px-1 py-2 text-sm" : "sr-only"}
       >
         {hasFailed
-          ? "Search is unavailable right now. Press Enter to try the full search page."
+          ? "Search is unavailable right now. Use the arrow to try the full search page."
           : hits.length === 0
-            ? `No quick results for “${query}”. Press Enter to search the whole site.`
+            ? `No quick results for “${query}”. Use the arrow to search the whole site.`
             : hits.length === 1
               ? "1 result"
               : `${hits.length} results`}
