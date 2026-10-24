@@ -283,16 +283,13 @@ function Programs() {
       <ul className="grid gap-4 md:grid-cols-3">
         {PROGRAMS.map((program) => (
           <li key={program.href}>
-            <Card className="h-full">
-              <CardContent className="space-y-2 p-4">
-                <H3 className="text-xl">
-                  <Link href={program.href} className="text-secondary hover:underline">
-                    {program.title}
-                  </Link>
-                </H3>
-                <MutedP>{program.text}</MutedP>
-              </CardContent>
-            </Card>
+            <Link
+              href={program.href}
+              className="bg-background hover:bg-primary-50 focus-visible:ring-ring block h-full rounded-lg border p-4 shadow-sm hover:no-underline focus-visible:ring-2 focus-visible:outline-none"
+            >
+              <span className="text-secondary block text-xl font-semibold">{program.title}</span>
+              <MutedP className="mt-2">{program.text}</MutedP>
+            </Link>
           </li>
         ))}
       </ul>
