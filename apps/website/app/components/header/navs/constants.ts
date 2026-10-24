@@ -57,6 +57,7 @@ export const NAVIGATION: readonly NavigationItem[] = [
     align: "right",
     items: [
       { name: "Volunteering", link: "/volunteering" },
+      { name: "Our Volunteers", link: "/volunteering/volunteers" },
       { name: "B-VISION Impact Award", link: "/volunteering/impact-award" },
       { name: "Giving", link: "/giving" },
     ],
