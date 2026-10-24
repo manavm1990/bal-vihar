@@ -89,7 +89,7 @@ export default function EventCard({ event }: EventCardProps) {
             <button
               type="button"
               onClick={openDetails}
-              className="text-primary-ink pt-1 text-sm font-semibold"
+              className="text-primary-ink cursor-pointer pt-1 text-sm font-semibold hover:underline"
             >
               Event details
             </button>
@@ -101,7 +101,7 @@ export default function EventCard({ event }: EventCardProps) {
           download={downloadName}
           aria-label={`Add ${event.title} to calendar`}
           title="Add to calendar"
-          className="text-primary-ink hover:bg-primary-50 absolute top-2.5 right-2.5 inline-flex size-8 items-center justify-center rounded-md"
+          className="text-primary-ink hover:bg-primary-50 absolute top-2.5 right-2.5 inline-flex size-8 cursor-pointer items-center justify-center rounded-md"
         >
           <CalendarIcon aria-hidden="true" className="size-4" />
         </a>
@@ -113,7 +113,7 @@ export default function EventCard({ event }: EventCardProps) {
           aria-labelledby={`event-detail-${event.id}`}
           onClick={handleBackdropClick}
           onKeyDown={handleDialogKeyDown}
-          className="border-border bg-background text-foreground m-auto w-[calc(100%-2rem)] max-w-lg rounded-lg border p-0 shadow-lg backdrop:bg-black/50"
+          className="event-details border-border bg-background text-foreground m-auto w-[calc(100%-2rem)] max-w-lg rounded-lg border p-0 shadow-lg"
         >
           <div className="space-y-4 p-5">
             <div className="flex items-start justify-between gap-3">

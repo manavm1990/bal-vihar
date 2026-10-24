@@ -190,6 +190,24 @@
   }
 }
 
+@layer components {
+  dialog.event-details[open] {
+    animation: scaleIn 200ms ease-out;
+  }
+
+  dialog.event-details[open]::backdrop {
+    animation: fadeIn 200ms ease-out;
+    background: rgb(0 0 0 / 0.5);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    dialog.event-details[open],
+    dialog.event-details[open]::backdrop {
+      animation: none;
+    }
+  }
+}
+
 @theme inline {
   --font-sans: var(--font-poppins);
 }
