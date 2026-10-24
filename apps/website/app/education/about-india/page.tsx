@@ -18,7 +18,6 @@ export default function EducationAboutIndiaPage() {
   return (
     <StaticContentPage
       page={INDIA_OVERVIEW}
-      photoPath="/education/about-india"
       intro={<SectionNav label="On this page" links={SECTION_LINKS} />}
     />
   );
