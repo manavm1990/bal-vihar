@@ -1,46 +1,32 @@
+import { readdirSync } from "node:fs";
+import { basename, join, sep } from "node:path";
 import { SITE_URL } from "@lib/constants";
+import { client } from "@lib/sanity/client";
+import { CLASS_PAGES_QUERY } from "@lib/sanity/queries";
 import type { MetadataRoute } from "next";
 
-const ROUTES = [
-  "/",
-  "/about-us",
-  "/about-us/administrative-team",
-  "/about-us/community-outreach",
-  "/about-us/history",
-  "/about-us/policies-procedures",
-  "/admin-resources",
-  "/admin-resources/print-request",
-  "/admissions",
-  "/calendar",
-  "/disclaimer",
-  "/education",
-  "/education/about-india",
-  "/education/class-schedule",
-  "/education/class-webpages",
-  "/education/curriculum",
-  "/education/hindu-rituals",
-  "/education/indian-heritage",
-  "/education/teaching-faculty",
-  "/education/temples-of-india",
-  "/expense-reimbursement",
-  "/giving",
-  "/grievance",
-  "/new-families",
-  "/photos",
-  "/presidents-message",
-  "/privacy",
-  "/questions",
-  "/terms",
-  "/volunteering",
-  "/volunteering/impact-award",
-  "/volunteering/volunteers",
-] as const;
+const APP_DIR = join(process.cwd(), "app");
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const classPages = await client.fetch(CLASS_PAGES_QUERY);
+  const classRoutes = classPages.flatMap(({ slug }) =>
+    slug ? [`/education/classes/${slug}`] : [],
+  );
 
-  return ROUTES.map((route) => ({
+  return [...getStaticRoutes(), ...classRoutes].map((route) => ({
     url: `${SITE_URL}${route === "/" ? "" : route}`,
-    lastModified,
   }));
 }
+
+const getRoutePath = (pageFile: string) =>
+  `/${pageFile
+    .split(sep)
+    .slice(0, -1)
+    .filter((segment) => !/^\(.+\)$/.test(segment))
+    .join("/")}`;
+
+const getStaticRoutes = () =>
+  readdirSync(APP_DIR, { recursive: true })
+    .filter((file) => basename(file) === "page.tsx" && !file.includes("["))
+    .map(getRoutePath)
+    .sort();
