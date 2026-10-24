@@ -26,7 +26,7 @@ const getRoutePath = (pageFile: string) =>
     .join("/")}`;
 
 const getStaticRoutes = () =>
-  readdirSync(APP_DIR, { recursive: true })
+  readdirSync(APP_DIR, { encoding: "utf8", recursive: true })
     .filter((file) => basename(file) === "page.tsx" && !file.includes("["))
     .map(getRoutePath)
     .sort();
