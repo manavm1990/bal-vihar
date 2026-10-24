@@ -20,6 +20,10 @@ export default async function CalendarPage() {
 
   return (
     <Article title="Calendar" className="md:columns-1">
+      <MutedP className="max-w-prose">
+        Class Sundays and special events for the current year. Use the calendar icon on a card to
+        add it to your own calendar. Special events may include extra notes from the school.
+      </MutedP>
       {events.length === 0 ? (
         <Card>
           <CardContent className="p-4">

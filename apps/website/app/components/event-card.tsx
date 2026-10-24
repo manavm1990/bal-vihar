@@ -63,7 +63,9 @@ export default function EventCard({ event }: EventCardProps) {
           ) : null}
         </div>
         {meta ? <MutedP className="text-sm leading-snug">{meta}</MutedP> : null}
-        {note ? <MutedP className="text-sm leading-snug whitespace-pre-line">{note}</MutedP> : null}
+        {note ? (
+          <MutedP className="line-clamp-3 text-sm leading-snug whitespace-pre-line">{note}</MutedP>
+        ) : null}
       </div>
 
       <a
