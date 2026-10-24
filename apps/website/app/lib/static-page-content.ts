@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { StaticImageData } from "next/image";
 
 import { BASE_TITLE } from "./constants";
 
@@ -7,6 +8,8 @@ export interface StaticPageContent {
   subtitle?: string;
   description: string;
   content: string;
+  /** Images the content references as `![alt](key)`. */
+  images?: Record<string, StaticImageData>;
   singleColumn?: boolean;
 }
 

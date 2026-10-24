@@ -1,11 +1,14 @@
 import type { StaticPageContent } from "@lib/static-page-content";
+import { cn } from "@lib/utils";
 import kebabCase from "lodash.kebabcase";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 import Article from "./article";
 import { Bq, Em, H2, H3, H4, Ol, P, Strong, Table, Ul } from "./ui/typography";
 
 type MarkdownBlock =
+  | { kind: "image"; alt: string; key: string }
   | { kind: "heading"; level: number; text: string }
   | { kind: "paragraph"; text: string }
   | { kind: "list"; items: string[] }
@@ -39,7 +42,7 @@ export default function StaticContentPage({
       intro={intro}
       className={page.singleColumn ? "md:columns-1" : undefined}
     >
-      <MarkdownContent content={page.content} />
+      <MarkdownContent content={page.content} images={page.images} />
       {children}
     </Article>
   );
@@ -47,13 +50,14 @@ export default function StaticContentPage({
 
 interface MarkdownContentProps {
   content: string;
+  images?: Record<string, StaticImageData>;
 }
 
-function MarkdownContent({ content }: MarkdownContentProps) {
+function MarkdownContent({ content, images = {} }: MarkdownContentProps) {
   // Each heading travels with its content so the page's CSS columns never strand a heading.
   return groupBlocks(parseMarkdown(content)).map((section) => (
     <section key={section.key} className="space-y-3">
-      {section.blocks.map((block, blockIndex) => renderBlock(block, blockIndex))}
+      {section.blocks.map((block, blockIndex) => renderBlock(block, blockIndex, images))}
     </section>
   ));
 }
@@ -83,6 +87,7 @@ const cleanInlineText = (text: string) =>
     .trim();
 
 // Consecutive headings ("Social" then "History") stay in one section with the content after them.
+// An image that opens the page stands alone, so it never drags the text after it into its column.
 function groupBlocks(blocks: MarkdownBlock[]): MarkdownSection[] {
   const sections: MarkdownSection[] = [];
 
@@ -90,6 +95,7 @@ function groupBlocks(blocks: MarkdownBlock[]): MarkdownSection[] {
     const current = sections.at(-1);
     if (
       current &&
+      !current.blocks.every((item) => item.kind === "image") &&
       !(block.kind === "heading" && current.blocks.some((item) => item.kind !== "heading"))
     )
       current.blocks.push(block);
@@ -98,6 +104,8 @@ function groupBlocks(blocks: MarkdownBlock[]): MarkdownSection[] {
 
   return sections;
 }
+
+const isImageLine = (line: string) => /^!\[[^\]]*\]\([^)\s]+\)$/.test(line);
 
 const isListLine = (line: string) => /^[-*+]\s+\S/.test(line);
 
@@ -133,6 +141,13 @@ function parseMarkdown(content: string): MarkdownBlock[] {
     }
 
     if (line === "---") {
+      index += 1;
+      continue;
+    }
+
+    const image = isImageLine(line) ? line.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/) : null;
+    if (image?.[2]) {
+      blocks.push({ kind: "image", alt: cleanInlineText(image[1] ?? ""), key: image[2] });
       index += 1;
       continue;
     }
@@ -186,6 +201,7 @@ function parseMarkdown(content: string): MarkdownBlock[] {
         !current ||
         current === "---" ||
         /^(#{2,5})\s+/.test(current) ||
+        isImageLine(current) ||
         isListLine(current) ||
         isOrderedListLine(current) ||
         isQuoteLine(current) ||
@@ -250,8 +266,27 @@ function parseTable(lines: string[]): MarkdownBlock | null {
   return { kind: "table", headers, rows: body };
 }
 
-function renderBlock(block: MarkdownBlock, blockIndex: number) {
+function renderBlock(
+  block: MarkdownBlock,
+  blockIndex: number,
+  images: Record<string, StaticImageData>,
+) {
   const blockKey = `block-${blockIndex}`;
+  if (block.kind === "image") {
+    const src = images[block.key];
+
+    return !src ? null : (
+      <figure key={blockKey} className="overflow-hidden rounded-lg border">
+        <Image
+          src={src}
+          alt={block.alt}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          className={cn("mx-auto h-auto w-full", src.height > src.width && "max-w-sm")}
+        />
+      </figure>
+    );
+  }
+
   if (block.kind === "heading") {
     if (block.level <= 2)
       return (
