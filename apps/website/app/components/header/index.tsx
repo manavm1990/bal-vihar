@@ -1,8 +1,8 @@
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 
 import { DesktopNav, MobileNav } from "./navs";
+import SearchMenu from "./search-menu.client";
 
 export default function Header() {
   return (
@@ -22,13 +22,7 @@ export default function Header() {
 
       <DesktopNav />
 
-      <Link
-        href="/search"
-        className="text-navy-600 hover:text-primary-ink hover:bg-accent absolute top-2 right-14 flex items-center gap-1.5 rounded-lg p-2 text-base xl:static xl:px-3"
-      >
-        <MagnifyingGlassIcon aria-hidden="true" className="h-6 w-6 xl:h-5 xl:w-5" />
-        <span className="sr-only xl:not-sr-only">Search</span>
-      </Link>
+      <SearchMenu />
     </header>
   );
 }
