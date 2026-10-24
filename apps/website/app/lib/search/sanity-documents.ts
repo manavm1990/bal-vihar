@@ -6,6 +6,7 @@ import { formatCalendarEventMeta, mapCalendarEvents } from "../sanity/map-calend
 import { mapPhotoGallery } from "../sanity/map-photo-gallery";
 import { describePhoto } from "../sanity/photos";
 import { getPolicies, type PolicySectionView } from "../sanity/policies";
+import { extractText } from "../sanity/portable-text";
 import {
   CALENDAR_EVENTS_QUERY,
   CLASS_PAGES_QUERY,
@@ -112,21 +113,6 @@ const createPhotoDocuments = (photo: HomePhotoBoardItem): SearchDocument[] =>
         },
       ]
     : [];
-
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
-/** Flattens Portable Text blocks, whose words sit in `children[].text`. */
-function extractText(value: unknown): string {
-  if (Array.isArray(value)) return value.map(extractText).join(" ");
-  if (!isRecord(value)) return "";
-
-  const text = value["text"];
-
-  return [typeof text === "string" ? text : "", extractText(value["children"])]
-    .filter(Boolean)
-    .join(" ");
-}
 
 function createPolicyDocuments(section: PolicySectionView): SearchDocument[] {
   const href = `${POLICIES_PATH}#${clean(section.slug)}`;

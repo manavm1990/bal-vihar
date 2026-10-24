@@ -10,8 +10,11 @@ import { BuildingOfficeIcon, PhoneIcon, SchoolIcon } from "@components/ui/icons"
 import { H3, MutedP, P } from "@components/ui/typography";
 import { ADMIN_OFFICE, BASE_TITLE, SCHOOL_LOCATION } from "@lib/constants";
 import { fetchFaqs } from "@lib/sanity/faqs";
+import { extractText } from "@lib/sanity/portable-text";
+import { stegaClean } from "@sanity/client/stega";
 import type { Metadata } from "next";
 import Link from "next/link";
+import type { FAQPage, WithContext } from "schema-dts";
 import ContactForm from "./components/form/contact-form.client";
 
 const TITLE = "Questions & Contact";
@@ -103,9 +106,24 @@ function Contact() {
 
 async function Faq() {
   const faqs = await fetchFaqs();
+  // The same questions and answers the page shows, for search and answer engines to read.
+  const structuredData: WithContext<FAQPage> = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: stegaClean(faq.question),
+      acceptedAnswer: { "@type": "Answer", text: stegaClean(extractText(faq.answer)) },
+    })),
+  };
 
   return (
     <Card id="faqs">
+      {faqs.length > 0 ? (
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData).replaceAll("<", "\\u003c")}
+        </script>
+      ) : null}
       <CardHeader>
         <CardTitle>Frequently Asked Questions</CardTitle>
         <CardDescription>

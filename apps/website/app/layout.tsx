@@ -31,13 +31,14 @@ export const metadata: Metadata = {
   title: FULL_TITLE,
   description: DESCRIPTION,
   applicationName: BASE_TITLE,
+  // Resolves to each page's own address. Without it no page names its canonical URL.
+  alternates: { canonical: "./" },
+  // Only what is the same on every page. A title, description or address here would be copied
+  // onto every page's share preview, so pages fall back to their own title and description.
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: SITE_URL,
     siteName: BASE_TITLE,
-    title: FULL_TITLE,
-    description: DESCRIPTION,
   },
 };
 
