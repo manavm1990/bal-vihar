@@ -61,6 +61,9 @@ export const teachingFaculty = defineType({
               type: "string",
               options: { list: GROUP_KINDS, layout: "radio" },
               initialValue: "balVihar",
+              // The groups are fixed (K–7, then Youth), so editors never change this. The site
+              // still reads it to tell the two apart.
+              hidden: true,
               validation: (rule) => rule.required(),
             }),
             defineField({
