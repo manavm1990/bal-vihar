@@ -1,9 +1,10 @@
 import Article from "@components/article";
 import { Card, CardContent } from "@components/ui/card";
-import { P } from "@components/ui/typography";
+import { MutedP, P } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import ExpenseForm from "./components/form/expense-form.client";
 
@@ -25,7 +26,10 @@ export default function ExpenseReimbursementPage() {
       </P>
       <Card className="w-full max-w-3xl">
         <CardContent className="p-5 sm:p-8">
-          <ExpenseForm />
+          {/* useFieldArray generates ids with crypto.randomUUID(), which can't run during prerender. */}
+          <Suspense fallback={<MutedP>Loading form…</MutedP>}>
+            <ExpenseForm />
+          </Suspense>
         </CardContent>
       </Card>
     </Article>

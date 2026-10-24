@@ -10,6 +10,7 @@ import { stegaClean } from "@sanity/client/stega";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import type { CLASS_PAGE_QUERY_RESULT } from "sanity.types";
 
 type ClassLink = NonNullable<NonNullable<CLASS_PAGE_QUERY_RESULT>["links"]>[number];
@@ -19,7 +20,15 @@ interface ClassPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export default async function EducationClassPage({ params }: ClassPageProps) {
+export default function EducationClassPage({ params }: ClassPageProps) {
+  return (
+    <Suspense fallback={<MutedP>Loading class page…</MutedP>}>
+      <ClassPageContent params={params} />
+    </Suspense>
+  );
+}
+
+async function ClassPageContent({ params }: ClassPageProps) {
   const { slug } = await params;
   const page = await fetchClassPage(slug);
   if (!page) notFound();
