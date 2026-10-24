@@ -46,6 +46,8 @@ export const NAVIGATION: readonly NavigationItem[] = [
       { name: "New Families", link: "/new-families" },
       { name: "About India", link: "/education/about-india", group: "Learn More" },
       { name: "Hindu Rituals & Routines", link: "/education/hindu-rituals", group: "Learn More" },
+      { name: "Indian Heritage", link: "/education/indian-heritage", group: "Learn More" },
+      { name: "Temples of India", link: "/education/temples-of-india", group: "Learn More" },
     ],
   },
   {
