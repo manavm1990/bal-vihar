@@ -7,6 +7,7 @@ import { PHOTO_PAGE_OPTIONS, photoGallery } from "./documents/photo-gallery";
 import { policies } from "./documents/policies";
 import { siteSettings } from "./documents/site-settings";
 import { teachingFaculty } from "./documents/teaching-faculty";
+import { volunteerRoster } from "./documents/volunteer-roster";
 import { volunteersList } from "./documents/volunteers-list";
 import { classLink } from "./objects/class-link";
 import { mediaImage } from "./objects/media-image";
@@ -21,6 +22,7 @@ export const SINGLETON_IDS = {
   policies: "policies",
   siteSettings: "siteSettings",
   teachingFaculty: "teachingFaculty",
+  volunteerRoster: "volunteerRoster",
   volunteersList: "volunteersList",
 } as const;
 
@@ -41,6 +43,7 @@ export const schemaTypes = [
   policies,
   siteSettings,
   teachingFaculty,
+  volunteerRoster,
   volunteersList,
   youthAssistant,
 ];
@@ -58,6 +61,7 @@ export {
   policies,
   siteSettings,
   teachingFaculty,
+  volunteerRoster,
   volunteersList,
   youthAssistant,
 };

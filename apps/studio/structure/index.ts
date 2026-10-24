@@ -83,6 +83,15 @@ export const structure: StructureResolver = (S) =>
             .documentId(SINGLETON_IDS.volunteersList)
             .title("Volunteers List"),
         ),
+      S.listItem()
+        .title("Event Volunteers")
+        .icon(UsersIcon)
+        .child(
+          S.document()
+            .schemaType("volunteerRoster")
+            .documentId(SINGLETON_IDS.volunteerRoster)
+            .title("Event Volunteers"),
+        ),
       S.divider(),
       S.listItem()
         .title("Advanced")

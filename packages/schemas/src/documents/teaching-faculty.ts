@@ -2,18 +2,14 @@ import { UserIcon } from "@sanity/icons/User";
 import { UsersIcon } from "@sanity/icons/Users";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { describeCount } from "../describe-count";
+
 const SUBJECTS = ["Class", "Bhajan", "Yoga", "Teachers"];
 
 const GROUP_KINDS = [
   { title: "Bal Vihar group (K–7)", value: "balVihar" },
   { title: "Youth Group (Y1–Y5)", value: "youth" },
 ];
-
-const describeCount = (items: unknown, singular: string, plural: string) => {
-  const count = Array.isArray(items) ? items.length : 0;
-
-  return count === 0 ? `No ${plural} yet` : `${count} ${count === 1 ? singular : plural}`;
-};
 
 const personReference = () =>
   defineArrayMember({

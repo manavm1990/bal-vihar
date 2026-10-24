@@ -75,6 +75,16 @@ export const VOLUNTEERS_LIST_QUERY = defineQuery(`*[_id == "volunteersList"][0]{
   }
 }`);
 
+export const VOLUNTEER_ROSTER_QUERY = defineQuery(`*[_id == "volunteerRoster"][0]{
+  _id,
+  schoolYear,
+  activities[]{
+    _key,
+    name,
+    volunteers
+  }
+}`);
+
 export const TEACHING_FACULTY_QUERY = defineQuery(`*[_id == "teachingFaculty"][0]{
   _id,
   schoolYear,
