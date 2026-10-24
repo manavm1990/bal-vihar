@@ -270,6 +270,22 @@ export type Person = {
   phone?: string;
 };
 
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+};
+
 export type HomePage = {
   _id: string;
   _type: "homePage";
@@ -289,29 +305,6 @@ export type HomePage = {
     _type: "announcement";
     _key: string;
   }>;
-  heroSlides?: Array<{
-    image: MediaImage;
-    link?: string;
-    _type: "heroSlide";
-    _key: string;
-  }>;
-  whoWeAre?: string;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x: number;
-  y: number;
-  height: number;
-  width: number;
 };
 
 export type Faqs = {
@@ -537,9 +530,9 @@ export type AllSanitySchemaTypes =
   | Slug
   | PhotoGallery
   | Person
-  | HomePage
   | SanityImageCrop
   | SanityImageHotspot
+  | HomePage
   | Faqs
   | ClassPage
   | ClassLink
@@ -855,53 +848,26 @@ export type POLICIES_QUERY_RESULT =
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: HOME_PAGE_QUERY
-// Query: *[_id == "homePage"][0]{  _id,  title,  heroSlides[]{    _key,    link,    image {  asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop}  },  announcements[]{    _key,    title,    body,    ctaLabel,    ctaHref,    isActive,    startDate,    endDate,    tone  },  whoWeAre}
+// Query: *[_id == "homePage"][0]{  _id,  title,  announcements[]{    _key,    title,    body,    ctaLabel,    ctaHref,    isActive,    startDate,    endDate,    tone  }}
 export type HOME_PAGE_QUERY_RESULT =
   | {
       _id: "homePage";
       title: null;
-      heroSlides: null;
       announcements: null;
-      whoWeAre: null;
     }
   | {
       _id: "homePage";
       title: string;
-      heroSlides: null;
       announcements: null;
-      whoWeAre: null;
     }
   | {
       _id: "homePage";
       title: string | null;
-      heroSlides: null;
       announcements: null;
-      whoWeAre: null;
     }
   | {
       _id: "homePage";
       title: string;
-      heroSlides: Array<{
-        _key: string;
-        link: string | null;
-        image: {
-          asset: {
-            _id: string;
-            url: string;
-            metadata: {
-              lqip: string | null;
-              dimensions: {
-                width: number;
-                height: number;
-              } | null;
-            } | null;
-          } | null;
-          alt: string;
-          caption: string | null;
-          hotspot: SanityImageHotspot | null;
-          crop: SanityImageCrop | null;
-        };
-      }> | null;
       announcements: Array<{
         _key: string;
         title: string;
@@ -913,7 +879,6 @@ export type HOME_PAGE_QUERY_RESULT =
         endDate: string | null;
         tone: "default" | "success" | "urgent" | null;
       }> | null;
-      whoWeAre: string | null;
     }
   | null;
 
@@ -1028,7 +993,7 @@ declare global {
     '*[_id == "teachingFaculty"][0]{\n  _id,\n  schoolYear,\n  groups[]{\n    _key,\n    name,\n    kind,\n    teams[]{\n      _key,\n      subject,\n      section,\n      teachers[]{\n        _key,\n        isBackup,\n        person->{ _id, name, email, phone }\n      },\n      assistants[]{ _key, name, level }\n    }\n  },\n  programs[]{\n    _key,\n    name,\n    coordinators[]->{ _id, name, email, phone },\n    team[]->{ _id, name, email, phone },\n    assistants[]{ _key, name, level }\n  }\n}': TEACHING_FACULTY_QUERY_RESULT;
     '*[_id == "faqs"][0]{\n  _id,\n  items[]{\n    _key,\n    question,\n    answer\n  }\n}': FAQS_QUERY_RESULT;
     '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
-    '*[_id == "homePage"][0]{\n  _id,\n  title,\n  heroSlides[]{\n    _key,\n    link,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  },\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  },\n  whoWeAre\n}': HOME_PAGE_QUERY_RESULT;
+    '*[_id == "homePage"][0]{\n  _id,\n  title,\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  }\n}': HOME_PAGE_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;
     '*[_id == "siteSettings"][0]{\n  _id,\n  title,\n  registrationUrl,\n  contactEmail,\n  defaultOgImage {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': SITE_SETTINGS_QUERY_RESULT;
   }

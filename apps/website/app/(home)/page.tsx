@@ -21,8 +21,6 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
 
-import { HeroCarousel } from "./hero-carousel.client";
-
 const MISSION =
   "To throw the light of cultural knowledge on every child, to make every child an outstanding citizen and to spread the song of peace and harmony around the world.";
 
@@ -84,6 +82,8 @@ const STATS = [
   { value: "501(c)(3)", label: "All-volunteer non-profit" },
 ] as const;
 
+const NOTICE_LABELS = { urgent: "Urgent", success: "Good news" } as const;
+
 const WHO_WE_ARE =
   "Center for Indian Cultural Education – Bal Vihar of St. Louis is a non-profit organization that has served the Metro St. Louis Indian community since 1992. Our primary focus is Indian cultural education for students ages 5–18, and its application and integration with the global, multicultural society. Students also learn discipline, tolerance and devotion in their daily routine.";
 
@@ -95,7 +95,6 @@ export default async function HomePage() {
   ]);
 
   const home: HomePageData | null = mapHomePage(homePayload);
-  const heroSlides = home?.heroSlides ?? [];
   const events = mapCalendarEvents(calendarPayload);
   const photos = (mapPhotoGallery(galleryPayload, { featuredOnly: true })?.photos ?? [])
     .filter((photo) => photo.image?.asset?._id || photo.image?.asset?.url)
@@ -107,10 +106,9 @@ export default async function HomePage() {
       <Suspense fallback={null}>
         <Announcements announcements={home?.announcements ?? []} />
       </Suspense>
-      <HeroCarousel slides={heroSlides} />
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
-        <Intro text={home?.whoWeAre ?? WHO_WE_ARE} />
+        <Intro text={WHO_WE_ARE} />
         <QuickLinks />
         <PhotoBanner photo={banner} />
         <aside className="lg:col-start-2 lg:row-span-4 lg:row-start-1">
@@ -154,14 +152,26 @@ function AnnouncementCard({ announcement }: AnnouncementCardProps) {
 
   return (
     <Card
+      // An urgent notice is announced to screen readers as soon as the page loads.
+      role={tone === "urgent" ? "alert" : undefined}
       className={cn(
         "border-2 shadow-none",
-        tone === "urgent" && "border-destructive/40 bg-destructive/5",
-        tone === "success" && "border-success/40 bg-success/5",
+        tone === "urgent" && "border-destructive bg-destructive/10",
+        tone === "success" && "border-success bg-success/10",
         tone === "default" && "border-primary-300 bg-primary-50",
       )}
     >
       <CardContent className="flex flex-col gap-4 p-4">
+        {tone === "default" ? null : (
+          <p
+            className={cn(
+              "text-sm font-bold tracking-wide uppercase",
+              tone === "urgent" ? "text-destructive" : "text-success",
+            )}
+          >
+            {NOTICE_LABELS[tone]}
+          </p>
+        )}
         <H2>{announcement.title}</H2>
         <LeadP className="whitespace-pre-line">{announcement.body}</LeadP>
         {announcement.ctaHref && announcement.ctaLabel ? (

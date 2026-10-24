@@ -22,18 +22,10 @@ export interface HomeAnnouncement {
   tone?: "default" | "urgent" | "success" | null;
 }
 
-export interface HomeHeroSlide {
-  key: string;
-  link?: string | null;
-  image?: SanityImageValue | null;
-}
-
 export interface HomePageData {
   id: string;
   title?: string | null;
-  heroSlides?: HomeHeroSlide[] | null;
   announcements?: HomeAnnouncement[] | null;
-  whoWeAre?: string | null;
 }
 
 export interface HomePhotoBoardItem {

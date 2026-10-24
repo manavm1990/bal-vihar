@@ -146,11 +146,6 @@ export const POLICIES_QUERY = defineQuery(`*[_id == "policies"][0]{
 export const HOME_PAGE_QUERY = defineQuery(`*[_id == "homePage"][0]{
   _id,
   title,
-  heroSlides[]{
-    _key,
-    link,
-    image ${mediaImageProjection}
-  },
   announcements[]{
     _key,
     title,
@@ -161,8 +156,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_id == "homePage"][0]{
     startDate,
     endDate,
     tone
-  },
-  whoWeAre
+  }
 }`);
 
 export const PHOTO_GALLERY_QUERY = defineQuery(`*[_id == "photoGallery"][0]{

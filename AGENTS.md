@@ -100,7 +100,7 @@ Follow `.agents/skills/sanity-best-practices/SKILL.md` and load only the relevan
 6. **Portable Text and images** — render PT through shared components; use the Sanity image pipeline / Next image patterns from the skill (`references/image.md`, `references/portable-text.md`).
 7. **No production video on Sanity file assets** — use Mux / Media Library / external hosts per the skill’s video rules.
 8. **Validate in both apps** — after schema changes, ensure Studio still loads and website queries/types still build (`turbo` filtered tasks as needed).
-9. **Sanity is for dynamic content only** — the home page, classroom pages, photos, the calendar, the FAQs (questions and answers), and lists of names (teachers, volunteers). Everything else (policy-style pages, official documents, forms) is static content in `apps/website/app/lib/*-content.ts` or `apps/website/public/`; do not add Sanity schemas, queries or Studio entries for it unless asked. For Sanity-backed content, the website reads published documents and never substitutes stand-in content in code; an empty result renders an empty state.
+9. **Sanity is for dynamic content only** — urgent home page notices, classroom pages, photos, the calendar, the FAQs (questions and answers), and lists of names (teachers, volunteers). Everything else (policy-style pages, official documents, forms) is static content in `apps/website/app/lib/*-content.ts` or `apps/website/public/`; do not add Sanity schemas, queries or Studio entries for it unless asked. For Sanity-backed content, the website reads published documents and never substitutes stand-in content in code; an empty result renders an empty state.
 
 ## SEO
 

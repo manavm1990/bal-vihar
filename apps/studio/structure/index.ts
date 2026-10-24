@@ -4,10 +4,10 @@ import { CalendarIcon } from "@sanity/icons/Calendar";
 import { CogIcon } from "@sanity/icons/Cog";
 import { DocumentTextIcon } from "@sanity/icons/DocumentText";
 import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
-import { HomeIcon } from "@sanity/icons/Home";
 import { ImagesIcon } from "@sanity/icons/Images";
 import { UserIcon } from "@sanity/icons/User";
 import { UsersIcon } from "@sanity/icons/Users";
+import { WarningOutlineIcon } from "@sanity/icons/WarningOutline";
 import type { StructureResolver } from "sanity/structure";
 
 /**
@@ -19,10 +19,13 @@ export const structure: StructureResolver = (S) =>
     .title("Edit the website")
     .items([
       S.listItem()
-        .title("Home page")
-        .icon(HomeIcon)
+        .title("Urgent notices")
+        .icon(WarningOutlineIcon)
         .child(
-          S.document().schemaType("homePage").documentId(SINGLETON_IDS.homePage).title("Home page"),
+          S.document()
+            .schemaType("homePage")
+            .documentId(SINGLETON_IDS.homePage)
+            .title("Urgent notices"),
         ),
       S.listItem()
         .title("Photos")

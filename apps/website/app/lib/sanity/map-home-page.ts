@@ -1,7 +1,7 @@
 import { stegaClean } from "@sanity/client/stega";
 
 import { getSanityArrayKey } from "./sanity-array-key";
-import type { HomeAnnouncement, HomeHeroSlide, HomePageData, SanityImageValue } from "./types";
+import type { HomeAnnouncement, HomePageData } from "./types";
 
 /** CMS-authored links should resolve to a safe site-relative or absolute URL. */
 type SafeHref = `/${string}` | `http://${string}` | `https://${string}` | `mailto:${string}`;
@@ -18,7 +18,6 @@ export const mapHomePage = (input: unknown): HomePageData | null => {
   if (!id) return null;
 
   const announcementsRaw = dataRecord["announcements"];
-  const heroRaw = dataRecord["heroSlides"];
 
   return {
     announcements: !Array.isArray(announcementsRaw)
@@ -26,12 +25,8 @@ export const mapHomePage = (input: unknown): HomePageData | null => {
       : announcementsRaw
           .map(mapAnnouncement)
           .filter((item): item is HomeAnnouncement => item !== null),
-    heroSlides: !Array.isArray(heroRaw)
-      ? []
-      : heroRaw.map(mapHeroSlide).filter((slide): slide is HomeHeroSlide => slide !== null),
     id,
     title: parseString(dataRecord["title"]),
-    whoWeAre: parseString(dataRecord["whoWeAre"]),
   };
 };
 
@@ -87,25 +82,12 @@ const mapAnnouncement = (value: unknown, index: number): HomeAnnouncement | null
   };
 };
 
-const mapHeroSlide = (value: unknown, index: number): HomeHeroSlide | null =>
-  !isRecord(value)
-    ? null
-    : {
-        image: parseImage(value["image"]),
-        key: getSanityArrayKey(value, `hero-${index}`),
-        link: parseSafeHref(value["link"]),
-      };
-
 const parseBoolean = (value: unknown): boolean | null => (isBoolean(value) ? value : null);
 
 const parseCleanString = (value: unknown): string | null => {
   const raw = parseString(value);
   return !raw ? null : stegaClean(raw);
 };
-
-const parseImage = (value: unknown): SanityImageValue | null =>
-  // Shape-checked as a record; image fields are validated downstream by renderers.
-  isRecord(value) ? (value as SanityImageValue) : null;
 
 const parseSafeHref = (value: unknown): SafeHref | null => {
   if (!isString(value)) return null;

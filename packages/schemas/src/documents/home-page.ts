@@ -1,16 +1,11 @@
-import { HomeIcon } from "@sanity/icons/Home";
+import { WarningOutlineIcon } from "@sanity/icons/WarningOutline";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const homePage = defineType({
   name: "homePage",
-  title: "Home page",
+  title: "Urgent notices",
   type: "document",
-  icon: HomeIcon,
-  groups: [
-    { name: "announcements", title: "Banners", default: true },
-    { name: "hero", title: "Hero photos" },
-    { name: "about", title: "About text" },
-  ],
+  icon: WarningOutlineIcon,
   fields: [
     defineField({
       name: "title",
@@ -22,11 +17,10 @@ export const homePage = defineType({
     }),
     defineField({
       name: "announcements",
-      title: "Home banners",
+      title: "Notices",
       type: "array",
-      group: "announcements",
       description:
-        "Snow days, registration open/close, and other urgent notes. Leave empty if nothing special is going on. Preview on the site before Publish.",
+        "For urgent news only: for example, classes are cancelled because of weather, or registration is now open. Each notice appears in a large card at the very top of the home page. Leave this empty when there is nothing urgent. To take a notice down, turn off “Show on the site” or set “Show until”.",
       of: [
         defineArrayMember({
           type: "object",
@@ -79,7 +73,7 @@ export const homePage = defineType({
               name: "isActive",
               title: "Show on the site",
               type: "boolean",
-              description: "Turn off to keep this banner saved but hidden.",
+              description: "Turn off to keep this notice saved but hidden.",
               initialValue: true,
             }),
             defineField({
@@ -96,14 +90,15 @@ export const homePage = defineType({
             }),
             defineField({
               name: "tone",
-              title: "Banner style",
+              title: "Notice style",
               type: "string",
-              description: "How strong the banner should look.",
+              description:
+                "Pick Urgent for a cancellation. Pick Good news for registration opening.",
               options: {
                 list: [
-                  { title: "Normal", value: "default" },
-                  { title: "Urgent (cancellation / weather)", value: "urgent" },
-                  { title: "Good news", value: "success" },
+                  { title: "Information (orange)", value: "default" },
+                  { title: "Urgent: cancellation or weather (red)", value: "urgent" },
+                  { title: "Good news: registration is open (green)", value: "success" },
                 ],
                 layout: "radio",
               },
@@ -118,9 +113,9 @@ export const homePage = defineType({
             },
             prepare({ title, isActive, tone }) {
               const style =
-                tone === "urgent" ? "Urgent" : tone === "success" ? "Good news" : "Normal";
+                tone === "urgent" ? "Urgent" : tone === "success" ? "Good news" : "Information";
               return {
-                title: title || "Banner",
+                title: title || "Notice",
                 subtitle: `${isActive === false ? "Hidden" : "Visible"} · ${style}`,
               };
             },
@@ -128,64 +123,10 @@ export const homePage = defineType({
         }),
       ],
     }),
-    defineField({
-      name: "heroSlides",
-      title: "Hero photos",
-      type: "array",
-      group: "hero",
-      description:
-        "Optional large photos at the bottom of the home page. Keep it to a few. Empty is fine — the carousel hides itself.",
-      validation: (rule) => rule.max(6).error("Use at most 6 hero photos."),
-      of: [
-        defineArrayMember({
-          type: "object",
-          name: "heroSlide",
-          fields: [
-            defineField({
-              name: "image",
-              title: "Picture",
-              type: "mediaImage",
-              description: "Drag the focus point so important parts are not cropped.",
-              validation: (rule) => rule.required().error("Upload a picture."),
-            }),
-            defineField({
-              name: "link",
-              title: "Optional link when clicked",
-              type: "url",
-              description: "Website path (/calendar) or full https link.",
-              validation: (rule) =>
-                rule.uri({ allowRelative: true, scheme: ["http", "https", "mailto"] }),
-            }),
-          ],
-          preview: {
-            select: {
-              title: "image.caption",
-              alt: "image.alt",
-              media: "image",
-            },
-            prepare({ title, alt, media }) {
-              return {
-                title: title || alt || "Hero photo",
-                media,
-              };
-            },
-          },
-        }),
-      ],
-    }),
-    defineField({
-      name: "whoWeAre",
-      title: "“Who we are” blurb (optional)",
-      type: "text",
-      rows: 5,
-      group: "about",
-      description:
-        "Only fill this in to replace the default intro paragraph on the home page. Most of the time, leave it blank.",
-    }),
   ],
   preview: {
     prepare() {
-      return { title: "Home page" };
+      return { title: "Urgent notices" };
     },
   },
 });
