@@ -118,6 +118,30 @@ export const FAQS_QUERY = defineQuery(`*[_id == "faqs"][0]{
   }
 }`);
 
+export const IMPACT_AWARD_QUERY = defineQuery(`*[_id == "impactAward"][0]{
+  _id,
+  awardYear,
+  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },
+  coordinator{ name, role, email, phone },
+  tiers{
+    bronze{ teens, youngAdults },
+    silver{ teens, youngAdults },
+    gold{ teens, youngAdults }
+  },
+  teachingHours[]{
+    _key,
+    activity,
+    classesY4,
+    classesY5,
+    prepHours,
+    presentingHours,
+    attendedHours
+  },
+  communityIntro,
+  communityProjects[]{ _key, project, participating, onTheTeam, leading },
+  downloads[]{ _key, label, description, url }
+}`);
+
 export const POLICIES_QUERY = defineQuery(`*[_id == "policies"][0]{
   _id,
   intro,

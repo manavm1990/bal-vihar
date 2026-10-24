@@ -274,6 +274,71 @@ export type SanityImageHotspot = {
   width: number;
 };
 
+export type ImpactAward = {
+  _id: string;
+  _type: "impactAward";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  awardYear?: string;
+  dates?: {
+    trackingStart?: string;
+    trackingEnd?: string;
+    intent?: string;
+    touchpointOne?: string;
+    touchpointTwo?: string;
+    apply?: string;
+    awards?: string;
+  };
+  coordinator?: {
+    name: string;
+    role?: string;
+    email?: string;
+    phone?: string;
+  };
+  tiers?: {
+    bronze?: {
+      teens: string;
+      youngAdults: string;
+    };
+    silver?: {
+      teens: string;
+      youngAdults: string;
+    };
+    gold?: {
+      teens: string;
+      youngAdults: string;
+    };
+  };
+  teachingHours?: Array<{
+    activity: string;
+    classesY4: string;
+    classesY5: string;
+    prepHours: string;
+    presentingHours: string;
+    attendedHours: string;
+    _type: "teachingHoursRow";
+    _key: string;
+  }>;
+  communityIntro?: string;
+  communityProjects?: Array<{
+    project: string;
+    participating: string;
+    onTheTeam: string;
+    leading: string;
+    _type: "communityProjectRow";
+    _key: string;
+  }>;
+  downloads?: Array<{
+    label: string;
+    description?: string;
+    url: string;
+    _type: "awardDownload";
+    _key: string;
+  }>;
+};
+
 export type HomePage = {
   _id: string;
   _type: "homePage";
@@ -518,6 +583,7 @@ export type AllSanitySchemaTypes =
   | PhotoGallery
   | SanityImageCrop
   | SanityImageHotspot
+  | ImpactAward
   | HomePage
   | Faqs
   | ClassPage
@@ -735,6 +801,79 @@ export type FAQS_QUERY_RESULT =
   | {
       _id: "faqs";
       items: null;
+    }
+  | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: IMPACT_AWARD_QUERY
+// Query: *[_id == "impactAward"][0]{  _id,  awardYear,  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },  coordinator{ name, role, email, phone },  tiers{    bronze{ teens, youngAdults },    silver{ teens, youngAdults },    gold{ teens, youngAdults }  },  teachingHours[]{    _key,    activity,    classesY4,    classesY5,    prepHours,    presentingHours,    attendedHours  },  communityIntro,  communityProjects[]{ _key, project, participating, onTheTeam, leading },  downloads[]{ _key, label, description, url }}
+export type IMPACT_AWARD_QUERY_RESULT =
+  | {
+      _id: "impactAward";
+      awardYear: null;
+      dates: null;
+      coordinator: null;
+      tiers: null;
+      teachingHours: null;
+      communityIntro: null;
+      communityProjects: null;
+      downloads: null;
+    }
+  | {
+      _id: "impactAward";
+      awardYear: string | null;
+      dates: {
+        trackingStart: string | null;
+        trackingEnd: string | null;
+        intent: string | null;
+        touchpointOne: string | null;
+        touchpointTwo: string | null;
+        apply: string | null;
+        awards: string | null;
+      } | null;
+      coordinator: {
+        name: string;
+        role: string | null;
+        email: string | null;
+        phone: string | null;
+      } | null;
+      tiers: {
+        bronze: {
+          teens: string;
+          youngAdults: string;
+        } | null;
+        silver: {
+          teens: string;
+          youngAdults: string;
+        } | null;
+        gold: {
+          teens: string;
+          youngAdults: string;
+        } | null;
+      } | null;
+      teachingHours: Array<{
+        _key: string;
+        activity: string;
+        classesY4: string;
+        classesY5: string;
+        prepHours: string;
+        presentingHours: string;
+        attendedHours: string;
+      }> | null;
+      communityIntro: string | null;
+      communityProjects: Array<{
+        _key: string;
+        project: string;
+        participating: string;
+        onTheTeam: string;
+        leading: string;
+      }> | null;
+      downloads: Array<{
+        _key: string;
+        label: string;
+        description: string | null;
+        url: string;
+      }> | null;
     }
   | null;
 
@@ -975,6 +1114,7 @@ declare global {
     '*[_id == "volunteerRoster"][0]{\n  _id,\n  schoolYear,\n  activities[]{\n    _key,\n    name,\n    volunteers\n  }\n}': VOLUNTEER_ROSTER_QUERY_RESULT;
     '*[_id == "teachingFaculty"][0]{\n  _id,\n  schoolYear,\n  groups[]{\n    _key,\n    name,\n    kind,\n    teams[]{\n      _key,\n      subject,\n      section,\n      teachers[]{ _key, isBackup, name, email, phone },\n      assistants[]{ _key, name, level }\n    }\n  },\n  programs[]{\n    _key,\n    name,\n    coordinators[]{ _key, name, email, phone },\n    team[]{ _key, name, email, phone },\n    assistants[]{ _key, name, level }\n  }\n}': TEACHING_FACULTY_QUERY_RESULT;
     '*[_id == "faqs"][0]{\n  _id,\n  items[]{\n    _key,\n    question,\n    answer\n  }\n}': FAQS_QUERY_RESULT;
+    '*[_id == "impactAward"][0]{\n  _id,\n  awardYear,\n  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },\n  coordinator{ name, role, email, phone },\n  tiers{\n    bronze{ teens, youngAdults },\n    silver{ teens, youngAdults },\n    gold{ teens, youngAdults }\n  },\n  teachingHours[]{\n    _key,\n    activity,\n    classesY4,\n    classesY5,\n    prepHours,\n    presentingHours,\n    attendedHours\n  },\n  communityIntro,\n  communityProjects[]{ _key, project, participating, onTheTeam, leading },\n  downloads[]{ _key, label, description, url }\n}': IMPACT_AWARD_QUERY_RESULT;
     '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  }\n}': HOME_PAGE_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;

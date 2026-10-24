@@ -9,29 +9,31 @@ import { Card, CardContent } from "@components/ui/card";
 import { ExternalIcon } from "@components/ui/icons";
 import { H1, H2, H3, LeadP, MutedP, Ol, P, Strong, Table, Ul } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
+import {
+  type AwardDates,
+  type AwardDownload,
+  type AwardTier,
+  fetchImpactAward,
+  type ImpactAwardView,
+  TO_BE_ANNOUNCED,
+} from "@lib/sanity/impact-award";
 import { cva } from "class-variance-authority";
 import type { Metadata } from "next";
 
 import AwardApplicationForm from "./components/form/award-application-form.client";
 import {
   AWARD_AGE_GROUP_NOTE,
-  AWARD_CONTACT,
-  AWARD_DATES,
-  AWARD_DOWNLOADS,
-  AWARD_ELIGIBILITY,
-  AWARD_STEPS,
-  AWARD_TIERS,
-  AWARD_YEAR,
   type AwardStep,
-  type AwardTier,
-  COMMUNITY_HOURS_INTRO,
-  COMMUNITY_HOURS_TABLE,
+  COMMUNITY_HOURS_HEADERS,
   EVENT_HOURS_TEXT,
+  getAwardEligibility,
+  getAwardSteps,
+  getWhatHappensNext,
   OUTSIDE_HOURS_TEXT,
-  TEACHING_HOURS_TABLE,
+  TEACHING_HOURS_FOOTER,
+  TEACHING_HOURS_HEADERS,
   TEACHING_REQUIREMENTS,
   VOLUNTEER_IDEAS,
-  WHAT_HAPPENS_NEXT,
 } from "./impact-award-content";
 
 const PAGE_TITLE = "B-VISION Impact Award";
@@ -51,36 +53,44 @@ export const metadata: Metadata = {
     "Bal Vihar's award for youth volunteer hours: who can apply, how hours are counted, the Bronze, Silver and Gold levels, and how to apply.",
 };
 
-export default function ImpactAwardPage() {
+export default async function ImpactAwardPage() {
+  const award = await fetchImpactAward();
+
   return (
     <article className="space-y-12">
       <header className="space-y-6">
         <div className="space-y-2">
           <H1>{PAGE_TITLE}</H1>
           <LeadP>
-            Bal Vihar's award for youth who give their time to the community. {AWARD_YEAR} award
-            year.
+            Bal Vihar's award for youth who give their time to the community.
+            {award.year ? ` ${award.year} award year.` : ""}
           </LeadP>
         </div>
         <P>
           Service to mankind is service to God. Choose work you care about, do it because you
           believe in the cause, and Bal Vihar will recognize your hours.
         </P>
-        <QuickFacts />
-        <SectionNav />
+        <QuickFacts award={award} />
+        <SectionNav hasDownloads={award.downloads.length > 0} />
       </header>
 
-      <Eligibility />
-      <Trail />
-      <Tiers />
-      <HoursDetails />
-      <Downloads />
-      <Apply />
+      <Eligibility dates={award.dates} />
+      <Trail dates={award.dates} />
+      <Tiers tiers={award.tiers} />
+      <HoursDetails award={award} />
+      <Downloads downloads={award.downloads} />
+      <Apply award={award} />
     </article>
   );
 }
 
-function Apply() {
+interface ApplyProps {
+  award: ImpactAwardView;
+}
+
+function Apply({ award }: ApplyProps) {
+  const { contact, dates } = award;
+
   return (
     <section id="apply" aria-labelledby="apply-heading" className="scroll-mt-6 space-y-6">
       <H2 id="apply-heading">Apply</H2>
@@ -88,9 +98,15 @@ function Apply() {
       <Card>
         <CardContent className="space-y-3 p-5">
           <P>
-            Applications are due <Strong>{AWARD_DATES.apply}</Strong>. Upload your tracking log and
-            all proof of service with your application. Nothing is accepted after this date, and
-            there are no exceptions.
+            {dates.apply ? (
+              <>
+                Applications are due <Strong>{dates.apply}</Strong>.{" "}
+              </>
+            ) : (
+              "The application deadline will be announced. "
+            )}
+            Upload your tracking log and all proof of service with your application. Nothing is
+            accepted after the deadline, and there are no exceptions.
           </P>
           <AwardApplicationForm />
         </CardContent>
@@ -99,27 +115,44 @@ function Apply() {
       <div className="space-y-3">
         <H3>What happens next</H3>
         <Ul>
-          {WHAT_HAPPENS_NEXT.map((item) => (
+          {getWhatHappensNext(dates).map((item) => (
             <li key={item}>{item}</li>
           ))}
         </Ul>
       </div>
 
-      <P>
-        Questions? Contact <Strong>{AWARD_CONTACT.name}</Strong>, {AWARD_CONTACT.role}, at{" "}
-        <a href={`mailto:${AWARD_CONTACT.email}`}>{AWARD_CONTACT.email}</a> or{" "}
-        <a href={AWARD_CONTACT.phoneHref}>{AWARD_CONTACT.phone}</a>.
-      </P>
+      {contact ? (
+        <P>
+          Questions? Contact <Strong>{contact.name}</Strong>
+          {contact.role ? `, ${contact.role}` : ""}
+          {contact.email ? (
+            <>
+              , at <a href={`mailto:${contact.email}`}>{contact.email}</a>
+            </>
+          ) : null}
+          {contact.phone && contact.phoneHref ? (
+            <>
+              {contact.email ? " or " : ", at "}
+              <a href={contact.phoneHref}>{contact.phone}</a>
+            </>
+          ) : null}
+          .
+        </P>
+      ) : null}
     </section>
   );
 }
 
-function Downloads() {
-  return (
+interface DownloadsProps {
+  downloads: AwardDownload[];
+}
+
+function Downloads({ downloads }: DownloadsProps) {
+  return downloads.length === 0 ? null : (
     <section id="tools" aria-labelledby="tools-heading" className="scroll-mt-6 space-y-4">
       <H2 id="tools-heading">Tracking sheet and templates</H2>
       <ul className="bg-background divide-y rounded-lg border shadow-sm">
-        {AWARD_DOWNLOADS.map((item) => (
+        {downloads.map((item) => (
           <li key={item.href}>
             <a
               href={item.href}
@@ -129,7 +162,9 @@ function Downloads() {
             >
               <span className="space-y-1">
                 <span className="text-foreground block font-semibold">{item.label}</span>
-                <span className="text-muted-foreground block text-sm">{item.description}</span>
+                {item.description ? (
+                  <span className="text-muted-foreground block text-sm">{item.description}</span>
+                ) : null}
               </span>
               <ExternalIcon className="text-primary-700 mt-1 shrink-0" />
             </a>
@@ -140,7 +175,11 @@ function Downloads() {
   );
 }
 
-function Eligibility() {
+interface EligibilityProps {
+  dates: AwardDates;
+}
+
+function Eligibility({ dates }: EligibilityProps) {
   return (
     <section
       id="who-can-apply"
@@ -149,7 +188,7 @@ function Eligibility() {
     >
       <H2 id="who-can-apply-heading">Who can apply</H2>
       <Ul>
-        {AWARD_ELIGIBILITY.map((item) => (
+        {getAwardEligibility(dates).map((item) => (
           <li key={item}>{item}</li>
         ))}
       </Ul>
@@ -174,7 +213,11 @@ function Fact({ term, detail }: FactProps) {
   );
 }
 
-function HoursDetails() {
+interface HoursDetailsProps {
+  award: ImpactAwardView;
+}
+
+function HoursDetails({ award }: HoursDetailsProps) {
   return (
     <section id="hours" aria-labelledby="hours-heading" className="scroll-mt-6 space-y-4">
       <H2 id="hours-heading">How hours count</H2>
@@ -190,19 +233,27 @@ function HoursDetails() {
                 <li key={item}>{item}</li>
               ))}
             </Ul>
-            <Table
-              headers={TEACHING_HOURS_TABLE.headers}
-              rows={TEACHING_HOURS_TABLE.rows}
-              footer={TEACHING_HOURS_TABLE.footer}
-            />
+            {award.teachingHours.length === 0 ? (
+              <MutedP>The hours for each activity will be announced.</MutedP>
+            ) : (
+              <Table
+                headers={TEACHING_HOURS_HEADERS}
+                rows={award.teachingHours}
+                footer={TEACHING_HOURS_FOOTER}
+              />
+            )}
           </AccordionContent>
         </AccordionItem>
 
         <AccordionItem value="community">
           <AccordionTrigger>Community service projects</AccordionTrigger>
           <AccordionContent className="text-foreground space-y-3 pr-4 sm:pr-12">
-            <P>{COMMUNITY_HOURS_INTRO}</P>
-            <Table headers={COMMUNITY_HOURS_TABLE.headers} rows={COMMUNITY_HOURS_TABLE.rows} />
+            {award.communityIntro ? <P>{award.communityIntro}</P> : null}
+            {award.communityProjects.length === 0 ? (
+              <MutedP>This year's projects and their hours will be announced.</MutedP>
+            ) : (
+              <Table headers={COMMUNITY_HOURS_HEADERS} rows={award.communityProjects} />
+            )}
           </AccordionContent>
         </AccordionItem>
 
@@ -235,8 +286,13 @@ function HoursDetails() {
   );
 }
 
-function QuickFacts() {
-  const [trackingSheet] = AWARD_DOWNLOADS;
+interface QuickFactsProps {
+  award: ImpactAwardView;
+}
+
+function QuickFacts({ award }: QuickFactsProps) {
+  const { dates } = award;
+  const [trackingSheet] = award.downloads;
 
   return (
     <div className="space-y-4">
@@ -244,9 +300,13 @@ function QuickFacts() {
         <Fact term="Open to" detail="Youth in Y1–Y5" />
         <Fact
           term="Hours count from"
-          detail={`${AWARD_DATES.trackingStart} – ${AWARD_DATES.trackingEnd}`}
+          detail={
+            dates.trackingStart && dates.trackingEnd
+              ? `${dates.trackingStart} – ${dates.trackingEnd}`
+              : TO_BE_ANNOUNCED
+          }
         />
-        <Fact term="Apply by" detail={AWARD_DATES.apply} />
+        <Fact term="Apply by" detail={dates.apply ?? TO_BE_ANNOUNCED} />
       </dl>
 
       <div className="flex flex-wrap gap-3">
@@ -266,11 +326,15 @@ function QuickFacts() {
   );
 }
 
-function SectionNav() {
+interface SectionNavProps {
+  hasDownloads: boolean;
+}
+
+function SectionNav({ hasDownloads }: SectionNavProps) {
   return (
     <nav aria-label="On this page">
       <ul className="flex flex-wrap gap-2">
-        {SECTIONS.map((section) => (
+        {SECTIONS.filter((section) => hasDownloads || section.id !== "tools").map((section) => (
           <li key={section.id}>
             <a
               href={`#${section.id}`}
@@ -302,16 +366,24 @@ function TierHours({ label, hours }: TierHoursProps) {
   );
 }
 
-function Tiers() {
+interface TiersProps {
+  tiers: AwardTier[];
+}
+
+function Tiers({ tiers }: TiersProps) {
   return (
     <section id="awards" aria-labelledby="awards-heading" className="scroll-mt-6 space-y-4">
       <H2 id="awards-heading">Hours and awards</H2>
       <P>The hours you earn in the award year add up to a Bronze, Silver or Gold award.</P>
-      <Ol variant="unstyled" className="grid gap-3 sm:grid-cols-3 sm:items-end">
-        {AWARD_TIERS.map((tier) => (
-          <TierStep key={tier.name} tier={tier} />
-        ))}
-      </Ol>
+      {tiers.length === 0 ? (
+        <MutedP>The hours for each level will be announced.</MutedP>
+      ) : (
+        <Ol variant="unstyled" className="grid gap-3 sm:grid-cols-3 sm:items-end">
+          {tiers.map((tier) => (
+            <TierStep key={tier.name} tier={tier} />
+          ))}
+        </Ol>
+      )}
       <MutedP>{AWARD_AGE_GROUP_NOTE}</MutedP>
     </section>
   );
@@ -333,7 +405,11 @@ function TierStep({ tier }: TierStepProps) {
   );
 }
 
-function Trail() {
+interface TrailProps {
+  dates: AwardDates;
+}
+
+function Trail({ dates }: TrailProps) {
   return (
     <section id="your-year" aria-labelledby="your-year-heading" className="scroll-mt-6 space-y-6">
       <H2 id="your-year-heading">Your award year</H2>
@@ -341,7 +417,7 @@ function Trail() {
         variant="unstyled"
         className="before:bg-border relative space-y-8 before:absolute before:top-4 before:bottom-4 before:left-4 before:w-px"
       >
-        {AWARD_STEPS.map((step, index) => (
+        {getAwardSteps(dates).map((step, index) => (
           <TrailStep key={step.key} step={step} number={index + 1} />
         ))}
       </Ol>

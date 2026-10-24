@@ -5,6 +5,7 @@ import { CogIcon } from "@sanity/icons/Cog";
 import { DocumentTextIcon } from "@sanity/icons/DocumentText";
 import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
 import { ImagesIcon } from "@sanity/icons/Images";
+import { StarIcon } from "@sanity/icons/Star";
 import { UsersIcon } from "@sanity/icons/Users";
 import { WarningOutlineIcon } from "@sanity/icons/WarningOutline";
 import type { StructureResolver } from "sanity/structure";
@@ -77,6 +78,15 @@ export const structure: StructureResolver = (S) =>
             .schemaType("faqs")
             .documentId(SINGLETON_IDS.faqs)
             .title("Questions & Answers"),
+        ),
+      S.listItem()
+        .title("Impact Award")
+        .icon(StarIcon)
+        .child(
+          S.document()
+            .schemaType("impactAward")
+            .documentId(SINGLETON_IDS.impactAward)
+            .title("Impact Award"),
         ),
       S.listItem()
         .title("Volunteers List")

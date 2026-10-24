@@ -3,6 +3,7 @@ import { calendarImport } from "./documents/calendar-import";
 import { classPage } from "./documents/class-page";
 import { faqs } from "./documents/faqs";
 import { homePage } from "./documents/home-page";
+import { impactAward } from "./documents/impact-award";
 import { PHOTO_PAGE_OPTIONS, photoGallery } from "./documents/photo-gallery";
 import { policies } from "./documents/policies";
 import { siteSettings } from "./documents/site-settings";
@@ -19,6 +20,7 @@ import { youthAssistant } from "./objects/youth-assistant";
 export const SINGLETON_IDS = {
   faqs: "faqs",
   homePage: "homePage",
+  impactAward: "impactAward",
   photoGallery: "photoGallery",
   policies: "policies",
   siteSettings: "siteSettings",
@@ -39,6 +41,7 @@ export const schemaTypes = [
   classPage,
   faqs,
   homePage,
+  impactAward,
   mediaImage,
   photoGallery,
   policies,
@@ -56,6 +59,7 @@ export {
   classPage,
   faqs,
   homePage,
+  impactAward,
   mediaImage,
   PHOTO_PAGE_OPTIONS,
   photoGallery,
