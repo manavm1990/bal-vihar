@@ -9,7 +9,7 @@ import { stegaClean } from "@sanity/client/stega";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { CLASS_PAGE_QUERY_RESULT } from "../../../../sanity.types";
+import type { CLASS_PAGE_QUERY_RESULT } from "sanity.types";
 
 type ClassLink = NonNullable<NonNullable<CLASS_PAGE_QUERY_RESULT>["links"]>[number];
 type ClassSession = NonNullable<NonNullable<CLASS_PAGE_QUERY_RESULT>["sessions"]>[number];

@@ -10,7 +10,8 @@
     ],
     "paths": {
       "@components/*": ["./app/components/*"],
-      "@lib/*": ["./app/lib/*"]
+      "@lib/*": ["./app/lib/*"],
+      "sanity.types": ["./sanity.types.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

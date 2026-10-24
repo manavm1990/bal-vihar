@@ -1,7 +1,7 @@
 import { stegaClean } from "@sanity/client/stega";
 import type { PortableText } from "next-sanity";
 import type { ComponentProps } from "react";
-import type { POLICIES_QUERY_RESULT } from "../../../sanity.types";
+import type { POLICIES_QUERY_RESULT } from "sanity.types";
 import { sanityFetch } from "./live";
 import { POLICIES_QUERY } from "./queries";
 

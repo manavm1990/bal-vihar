@@ -1,6 +1,6 @@
 import { stegaClean } from "@sanity/client/stega";
 
-import type { VOLUNTEERS_LIST_QUERY_RESULT } from "../../../sanity.types";
+import type { VOLUNTEERS_LIST_QUERY_RESULT } from "sanity.types";
 
 export type VolunteerTeam = NonNullable<NonNullable<VOLUNTEERS_LIST_QUERY_RESULT>["teams"]>[number];
 

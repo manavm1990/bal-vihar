@@ -1,4 +1,4 @@
-import type { VOLUNTEER_ROSTER_QUERY_RESULT } from "../../../sanity.types";
+import type { VOLUNTEER_ROSTER_QUERY_RESULT } from "sanity.types";
 import { cleanText, compareNames, type DirectoryEntry, sortDirectory } from "./directory";
 
 export interface VolunteerActivity {

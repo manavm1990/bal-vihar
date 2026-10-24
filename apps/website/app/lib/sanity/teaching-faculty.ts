@@ -1,4 +1,4 @@
-import type { TEACHING_FACULTY_QUERY_RESULT } from "../../../sanity.types";
+import type { TEACHING_FACULTY_QUERY_RESULT } from "sanity.types";
 import { cleanText, type DirectoryEntry, type DirectoryPerson, sortDirectory } from "./directory";
 import { getVolunteerContactLinks } from "./volunteers-list";
 
