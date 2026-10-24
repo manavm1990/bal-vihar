@@ -1,14 +1,16 @@
 import type { StaticPageContent } from "@lib/static-page-content";
 import kebabCase from "lodash.kebabcase";
 import Link from "next/link";
+import { Fragment } from "react";
 import Article from "./article";
-import { Em, H2, H3, H4, Ol, P, Strong, Table, Ul } from "./ui/typography";
+import { Bq, Em, H2, H3, H4, Ol, P, Strong, Table, Ul } from "./ui/typography";
 
 type MarkdownBlock =
   | { kind: "heading"; level: number; text: string }
   | { kind: "paragraph"; text: string }
   | { kind: "list"; items: string[] }
   | { kind: "ordered-list"; start: number; items: string[] }
+  | { kind: "quote"; lines: string[] }
   | { kind: "table"; headers: string[]; rows: string[][] };
 
 interface MarkdownSection {
@@ -101,6 +103,8 @@ const isListLine = (line: string) => /^[-*+]\s+\S/.test(line);
 
 const isOrderedListLine = (line: string) => /^\d{1,9}[.)]\s+\S/.test(line);
 
+const isQuoteLine = (line: string) => line.startsWith(">");
+
 const isTableLine = (line: string) => line.startsWith("|") && line.endsWith("|");
 
 function normalizeHref(href: string) {
@@ -130,6 +134,16 @@ function parseMarkdown(content: string): MarkdownBlock[] {
 
     if (line === "---") {
       index += 1;
+      continue;
+    }
+
+    if (isQuoteLine(line)) {
+      const quoteLines: string[] = [];
+      while (index < lines.length && isQuoteLine(lines[index]?.trim() ?? "")) {
+        quoteLines.push(cleanInlineText((lines[index]?.trim() ?? "").replace(/^>\s?/, "")));
+        index += 1;
+      }
+      blocks.push({ kind: "quote", lines: quoteLines });
       continue;
     }
 
@@ -174,6 +188,7 @@ function parseMarkdown(content: string): MarkdownBlock[] {
         /^(#{2,5})\s+/.test(current) ||
         isListLine(current) ||
         isOrderedListLine(current) ||
+        isQuoteLine(current) ||
         isTableLine(current)
       ) {
         break;
@@ -277,6 +292,18 @@ function renderBlock(block: MarkdownBlock, blockIndex: number) {
       <Ul key={blockKey}>{items}</Ul>
     );
   }
+
+  if (block.kind === "quote")
+    return (
+      <Bq key={blockKey} className="text-center">
+        {block.lines.map((line, lineIndex) => (
+          <Fragment key={`${blockKey}-line-${line}`}>
+            {lineIndex > 0 && <br />}
+            {renderInline(line)}
+          </Fragment>
+        ))}
+      </Bq>
+    );
 
   if (block.kind === "table") {
     return (
