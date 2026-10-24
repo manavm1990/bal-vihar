@@ -13,6 +13,14 @@ import { Suspense } from "react";
 export const metadata: Metadata = {
   title: `${BASE_TITLE} | Calendar`,
   description: "Bal Vihar class dates, celebrations, and special events.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: BASE_TITLE,
+    url: "/calendar",
+    title: `${BASE_TITLE} | Calendar`,
+    description: "Bal Vihar class dates, celebrations, and special events.",
+  },
 };
 
 export default function CalendarPage() {

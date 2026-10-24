@@ -1,4 +1,5 @@
 import { stegaClean } from "@sanity/client/stega";
+import { SITE_URL } from "../constants";
 import type { CalendarEventData } from "./types";
 
 interface UpcomingOptions {
@@ -25,6 +26,17 @@ export function formatCalendarDate(date: string) {
         year: "numeric",
       });
 }
+
+export const createCalendarEventShareUrl = (event: CalendarEventData) =>
+  `https://wa.me/?text=${encodeURIComponent(
+    [event.title, formatCalendarEventMeta(event), `${SITE_URL}/calendar/${event.id}`]
+      .filter(Boolean)
+      .join("\n"),
+  )}`;
+
+/** One line with the date, time and place, for cards, previews and share messages. */
+export const formatCalendarEventMeta = (event: CalendarEventData) =>
+  [formatCalendarDate(event.date), event.time, event.location].filter(Boolean).join(" · ");
 
 export const mapCalendarEvents = (input: unknown): CalendarEventData[] =>
   !Array.isArray(input)

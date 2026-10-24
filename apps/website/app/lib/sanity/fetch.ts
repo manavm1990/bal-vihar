@@ -30,9 +30,9 @@ export const fetchSanityOrNull = <const QueryString extends string>(
  * Until TypeGen is wired, unwrap
  * safely without scattering casts across pages.
  */
-export async function fetchSanityData(query: string): Promise<unknown> {
+export async function fetchSanityData(query: string, options: FetchOptions = {}): Promise<unknown> {
   try {
-    const result = await fetchSanityResult(query);
+    const result = await fetchSanityResult(query, {}, options);
     if (typeof result !== "object" || result === null) return null;
 
     // defineLive result shape is { data: T }; read without relying on generated types.

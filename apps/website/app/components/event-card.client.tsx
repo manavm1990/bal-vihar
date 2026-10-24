@@ -1,9 +1,14 @@
 "use client";
 
-import { createCalendarEventIcs, formatCalendarDate } from "@lib/sanity/map-calendar-events";
+import {
+  createCalendarEventIcs,
+  createCalendarEventShareUrl,
+  formatCalendarDate,
+  formatCalendarEventMeta,
+} from "@lib/sanity/map-calendar-events";
 import type { CalendarEventData } from "@lib/sanity/types";
 import { cn } from "@lib/utils";
-import { CalendarIcon, Cross2Icon } from "@radix-ui/react-icons";
+import { CalendarIcon, Cross2Icon, Share1Icon } from "@radix-ui/react-icons";
 import { type KeyboardEvent, type MouseEvent, type SyntheticEvent, useRef } from "react";
 
 import { Button } from "./ui/button";
@@ -28,9 +33,7 @@ export default function EventCard({ event }: EventCardProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const parsed = new Date(`${event.date}T12:00:00`);
   const hasDate = !Number.isNaN(parsed.getTime());
-  const meta = [formatCalendarDate(event.date), event.time, event.location]
-    .filter(Boolean)
-    .join(" · ");
+  const meta = formatCalendarEventMeta(event);
   const typeLabel = eventTypeLabel(event.eventType);
   const isSpecial = Boolean(event.eventType && event.eventType !== "regular");
   const showType = typeLabel !== null && isSpecial;
@@ -137,6 +140,22 @@ export default function EventCard({ event }: EventCardProps) {
           className="hover:bg-primary-50 absolute top-2.5 right-2.5 size-8 text-primary-ink"
         >
           <CalendarIcon aria-hidden="true" className="size-4" />
+        </Button>
+        <Button
+          asChild
+          variant="ghost"
+          size="icon"
+          className="hover:bg-primary-50 absolute top-12 right-2.5 size-8 text-primary-ink"
+        >
+          <a
+            href={createCalendarEventShareUrl(event)}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Share ${event.title} on WhatsApp`}
+            title="Share on WhatsApp"
+          >
+            <Share1Icon aria-hidden="true" className="size-4" />
+          </a>
         </Button>
       </Card>
 

@@ -118,6 +118,19 @@
       }
     }
   },
+  "overrides": [
+    {
+      // next/og renders plain <img>; next/image isn't available inside ImageResponse.
+      "includes": ["**/opengraph-image.tsx"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noImgElement": "off"
+          }
+        }
+      }
+    }
+  ],
   "json": {
     "parser": {
       // tsconfig-style files (e.g. packages/typescript-config/base.json) are JSONC
