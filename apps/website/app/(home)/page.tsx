@@ -44,6 +44,39 @@ const PROGRAMS = [
   },
 ] as const;
 
+const QUICK_LINKS = [
+  {
+    title: "Class schedule & rooms",
+    href: "/education/class-schedule",
+    text: "Sunday times and which room each class is in.",
+  },
+  {
+    title: "Class webpages",
+    href: "/education/class-webpages",
+    text: "What your child's class covered, plus homework and links.",
+  },
+  {
+    title: "Calendar",
+    href: "/calendar",
+    text: "Class Sundays, celebrations and special events.",
+  },
+  {
+    title: "Forms & documents",
+    href: "/admin-resources",
+    text: "Official documents and the forms we use.",
+  },
+  {
+    title: "Policies & procedures",
+    href: "/about-us/policies-procedures",
+    text: "How the school runs, step by step.",
+  },
+  {
+    title: "Contact & FAQs",
+    href: "/questions",
+    text: "Quick answers, or send us a question.",
+  },
+] as const;
+
 const STATS = [
   { value: "1992", label: "Serving Metro St. Louis since" },
   { value: "350+", label: "Students" },
@@ -78,6 +111,7 @@ export default async function HomePage() {
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <Intro text={home?.whoWeAre ?? WHO_WE_ARE} />
+        <QuickLinks />
         <PhotoBanner photo={banner} />
         <aside className="lg:col-start-2 lg:row-span-4 lg:row-start-1">
           <Suspense fallback={<MutedP>Loading upcoming events…</MutedP>}>
@@ -249,6 +283,27 @@ function Programs() {
                 <MutedP>{program.text}</MutedP>
               </CardContent>
             </Card>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function QuickLinks() {
+  return (
+    <section className="space-y-4 lg:col-start-1">
+      <H2 variant="plain">Find it fast</H2>
+      <ul className="grid gap-3 sm:grid-cols-2">
+        {QUICK_LINKS.map((link) => (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              className="bg-background hover:bg-primary-50 focus-visible:ring-ring block h-full min-h-14 rounded-lg border p-4 shadow-sm hover:no-underline focus-visible:ring-2 focus-visible:outline-none"
+            >
+              <span className="text-secondary block text-lg font-semibold">{link.title}</span>
+              <MutedP className="text-sm">{link.text}</MutedP>
+            </Link>
           </li>
         ))}
       </ul>
