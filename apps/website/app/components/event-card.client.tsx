@@ -7,7 +7,7 @@ import {
 import type { CalendarEventData } from "@lib/sanity/types";
 import { cn } from "@lib/utils";
 import { CalendarIcon, Cross2Icon } from "@radix-ui/react-icons";
-import { type KeyboardEvent, type MouseEvent, useRef } from "react";
+import { type KeyboardEvent, type MouseEvent, type SyntheticEvent, useRef } from "react";
 
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -40,14 +40,49 @@ export default function EventCard({ event }: EventCardProps) {
   const showType = typeLabel !== null && isSpecial;
   const note = event.description?.trim() || null;
   const highlighted = Boolean(event.isHighlighted);
-  const openDetails = () => dialogRef.current?.showModal();
-  const closeDetails = () => dialogRef.current?.close();
+  const openDetails = () => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    dialog.classList.remove("closing");
+    dialog.showModal();
+  };
+
+  // Native close() drops [open] instantly; play scaleOut first, then dismiss.
+  const closeDetails = () => {
+    const dialog = dialogRef.current;
+    if (!dialog?.open || dialog.classList.contains("closing")) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      dialog.close();
+      return;
+    }
+
+    dialog.classList.add("closing");
+    const finishClose = (animationEvent: AnimationEvent) => {
+      if (animationEvent.target !== dialog) return;
+      dialog.removeEventListener("animationend", finishClose);
+      dialog.classList.remove("closing");
+      dialog.close();
+    };
+    dialog.addEventListener("animationend", finishClose);
+  };
+
   const handleBackdropClick = (click: MouseEvent<HTMLDialogElement>) => {
     if (click.target === click.currentTarget) closeDetails();
   };
 
+  // Stop the browser from closing before the exit animation runs.
+  const handleDialogCancel = (cancelEvent: SyntheticEvent<HTMLDialogElement>) => {
+    cancelEvent.preventDefault();
+    closeDetails();
+  };
+
   const handleDialogKeyDown = (keyEvent: KeyboardEvent<HTMLDialogElement>) => {
-    if (keyEvent.key === "Escape") closeDetails();
+    if (keyEvent.key === "Escape") {
+      keyEvent.preventDefault();
+      closeDetails();
+    }
   };
 
   return (
@@ -112,6 +147,7 @@ export default function EventCard({ event }: EventCardProps) {
           ref={dialogRef}
           aria-labelledby={`event-detail-${event.id}`}
           onClick={handleBackdropClick}
+          onCancel={handleDialogCancel}
           onKeyDown={handleDialogKeyDown}
           className="event-details border-border bg-background text-foreground m-auto w-[calc(100%-2rem)] max-w-lg rounded-lg border p-0 shadow-lg"
         >
