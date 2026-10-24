@@ -4,6 +4,7 @@ import { submitPrintRequest } from "./actions";
 import {
   CUSTOM_PAPER_SIZE,
   type PrintRequestInputs,
+  type PrintRequestOutput,
   PrintRequestSchema,
 } from "./print-request.types";
 import { toPrintRequestFormData } from "./print-request-form-data";
@@ -14,7 +15,6 @@ const DEFAULT_VALUES: DefaultValues<PrintRequestInputs> = {
   dueDate: "",
   copies: "",
   pages: "",
-  paperSize: "",
   customPaperSize: "",
   options: [],
   comments: "",
@@ -25,7 +25,7 @@ const DEFAULT_VALUES: DefaultValues<PrintRequestInputs> = {
  * Print request form state; the file is uploaded with the request via `submitPrintRequest`.
  */
 export default function usePrintRequest() {
-  const form = useActionForm({
+  const form = useActionForm<PrintRequestInputs, PrintRequestOutput>({
     schema: PrintRequestSchema,
     defaultValues: DEFAULT_VALUES,
     action: (values) => submitPrintRequest(toPrintRequestFormData(values)),

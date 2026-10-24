@@ -86,3 +86,4 @@ export const PrintRequestSchema = v.pipe(
 );
 
 export type PrintRequestInputs = v.InferInput<typeof PrintRequestSchema>;
+export type PrintRequestOutput = v.InferOutput<typeof PrintRequestSchema>;
