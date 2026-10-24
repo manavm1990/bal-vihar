@@ -1,11 +1,140 @@
+import type { StaticImageData } from "next/image";
+import diwaliLamps from "../assets/about-india/diwali-lamps.jpg";
+import durgaPuja from "../assets/about-india/durga-puja.jpg";
 import flagOfIndia from "../assets/about-india/flag-of-india.svg";
+import holi from "../assets/about-india/holi.jpg";
+import janmashtami from "../assets/about-india/janmashtami.jpg";
+import lionCapital from "../assets/about-india/lion-capital-sarnath.jpg";
+import onamBoatRace from "../assets/about-india/onam-boat-race.jpg";
+import pongal from "../assets/about-india/pongal.jpg";
+import republicDay from "../assets/about-india/republic-day-parade.jpg";
 import type { StaticPageContent } from "./static-page-content";
+
+interface PhotoCredit {
+  work: string;
+  author: string;
+  license: string;
+  licenseUrl: string;
+  sourceUrl: string;
+}
+
+interface FestivalPhoto {
+  title: string;
+  alt: string;
+  src: StaticImageData;
+  credit: PhotoCredit;
+}
+
+const CC_BY_2 = "https://creativecommons.org/licenses/by/2.0/";
+const CC_BY_SA_3 = "https://creativecommons.org/licenses/by-sa/3.0/";
+const CC_BY_SA_4 = "https://creativecommons.org/licenses/by-sa/4.0/";
+const COMMONS = "https://commons.wikimedia.org/wiki/File:";
+
+const LION_CAPITAL_CREDIT: PhotoCredit = {
+  work: "Lion capital of Ashoka, Sarnath",
+  author: "lisa bat",
+  license: "CC BY 2.0",
+  licenseUrl: CC_BY_2,
+  sourceUrl: `${COMMONS}Lion_capital_of_Ashoka,_Sarnath.jpg`,
+};
+
+export const FESTIVAL_PHOTOS: FestivalPhoto[] = [
+  {
+    title: "Republic Day",
+    alt: "The Karnataka tableau, topped by a craftsman at work, rolling down Rajpath in the 2011 Republic Day parade",
+    src: republicDay,
+    credit: {
+      work: "The Karnataka tableau passes through the Rajpath during the Republic Day Parade, 2011",
+      author: "Ministry of Defence, Government of India",
+      license: "GODL-India",
+      licenseUrl: "https://data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf",
+      sourceUrl: `${COMMONS}The_Karnataka_tableau_passes_through_the_Rajpath_during_the_Republic_Day_Parade,_2011.jpg`,
+    },
+  },
+  {
+    title: "Pongal",
+    alt: "A brass pot of freshly cooked rice for Pongal, beside lemons, turmeric and a banana",
+    src: pongal,
+    credit: {
+      work: "Ponga soru- Kovai- Tamil Nadu",
+      author: "Lohith Aswa M",
+      license: "CC BY-SA 4.0",
+      licenseUrl: CC_BY_SA_4,
+      sourceUrl: `${COMMONS}Ponga_soru-_Kovai-_Tamil_Nadu.jpg`,
+    },
+  },
+  {
+    title: "Holi",
+    alt: "A boy with a pink-colored face holding an orange water pistol during Holi",
+    src: holi,
+    credit: {
+      work: "Holi Festival of Colors",
+      author: "Ramesh Lalwani",
+      license: "CC BY 2.0",
+      licenseUrl: CC_BY_2,
+      sourceUrl: `${COMMONS}Holi_Festival_of_Colors.jpg`,
+    },
+  },
+  {
+    title: "Janmashtami",
+    alt: "A crowd at sunset in front of a temple chariot during Janmashtami celebrations at Udupi",
+    src: janmashtami,
+    credit: {
+      work: "Celebrations of Krishna Janmashtami",
+      author: "KrishnaKumarKarthik (Dharwad)",
+      license: "CC BY-SA 4.0",
+      licenseUrl: CC_BY_SA_4,
+      sourceUrl: `${COMMONS}Celebrations_of_Krishna_Janmashtami.jpg`,
+    },
+  },
+  {
+    title: "Onam",
+    alt: "Long black snake boats with crews of rowers racing on a Kerala river during Onam",
+    src: onamBoatRace,
+    credit: {
+      work: "Aranmula-boat race- Kerala-India-1",
+      author: "Arun Sinha",
+      license: "CC BY 2.0",
+      licenseUrl: CC_BY_2,
+      sourceUrl: `${COMMONS}Aranmula-boat_race-_Kerala-India-1.jpg`,
+    },
+  },
+  {
+    title: "Durga Puja",
+    alt: "Goddess Durga with many arms on her lion, with her children beside her, at a Durga Puja pandal in Kolkata",
+    src: durgaPuja,
+    credit: {
+      work: "2016 Durga Puja Kolkata Shobhabazar Sarbojonin (9)",
+      author: "Sumit Surai",
+      license: "CC BY-SA 3.0",
+      licenseUrl: CC_BY_SA_3,
+      sourceUrl: `${COMMONS}2016_Durga_Puja_Kolkata_Shobhabazar_Sarbojonin_(9).jpg`,
+    },
+  },
+  {
+    title: "Diwali",
+    alt: "Lit clay oil lamps on a bed of rice and coins during Diwali",
+    src: diwaliLamps,
+    credit: {
+      work: "Diwali Oil lamps Darjeeling",
+      author: "Benoy",
+      license: "CC BY-SA 3.0",
+      licenseUrl: CC_BY_SA_3,
+      sourceUrl: `${COMMONS}Diwali_Oil_lamps_Darjeeling.jpg`,
+    },
+  },
+];
+
+export const PHOTO_CREDITS: PhotoCredit[] = [
+  LION_CAPITAL_CREDIT,
+  ...FESTIVAL_PHOTOS.map(({ credit }) => credit),
+];
 
 export const INDIA_OVERVIEW: StaticPageContent = {
   title: "About India",
   description:
     "India's land and people, national emblem, flag and national song, plus the public holidays and religious festivals celebrated across the country.",
-  images: { flagOfIndia },
+  images: { flagOfIndia, lionCapital },
   content: `## India: The Land and Its People
 
 India became an independent nation on August 15, 1947, after a long and historic struggle for freedom led by Mahatma Gandhi, India's apostle of truth and non-violence. The Constitution of the Indian Republic came into force on January 26, 1950.
@@ -21,6 +150,8 @@ The Constitution recognizes 22 languages, and many more dialects are spoken. Lan
 *Adapted from a brief courtesy of the Consulate General of India, Chicago.*
 
 ## The National Emblem
+
+![The Lion Capital of Ashoka in the Sarnath Museum: four lions back to back above a wheel-decorated abacus and a lotus base](lionCapital)
 
 The National Emblem of India is a replica of the Lion Capital of Sarnath, near Varanasi in Uttar Pradesh. The Lion Capital was erected in the third century BC by Emperor Ashoka to mark the spot where Buddha first proclaimed his gospel of peace and emancipation to the four quarters of the universe. The National Emblem is thus symbolic of contemporary India's reaffirmation of its ancient commitment to world peace and good will.
 
