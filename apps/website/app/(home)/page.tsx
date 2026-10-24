@@ -59,9 +59,9 @@ const QUICK_LINKS = [
     text: "Class Sundays, celebrations and special events.",
   },
   {
-    title: "Forms & documents",
-    href: "/admin-resources",
-    text: "Official documents and the forms we use.",
+    title: "Admissions",
+    href: "/admissions",
+    text: "How enrollment works and what we ask of families.",
   },
   {
     title: "Policies & procedures",
