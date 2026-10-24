@@ -1,9 +1,11 @@
+import flagOfIndia from "../assets/about-india/flag-of-india.svg";
 import type { StaticPageContent } from "./static-page-content";
 
 export const INDIA_OVERVIEW: StaticPageContent = {
   title: "About India",
   description:
     "India's land and people, national emblem, flag and national song, plus the public holidays and religious festivals celebrated across the country.",
+  images: { flagOfIndia },
   content: `## India: The Land and Its People
 
 India became an independent nation on August 15, 1947, after a long and historic struggle for freedom led by Mahatma Gandhi, India's apostle of truth and non-violence. The Constitution of the Indian Republic came into force on January 26, 1950.
@@ -25,6 +27,8 @@ The National Emblem of India is a replica of the Lion Capital of Sarnath, near V
 The four lions (one hidden from view) symbolize power, courage and confidence and rest on a circular abacus. The abacus is girded by four smaller animals, the guardians of the four directions: the lion of the North, the elephant of the East, the horse of the South and the bull of the West. In the original capital, the abacus rests on a lotus in full bloom, exemplifying the fountainhead of life and creative inspiration. The motto *Satyameva Jayate*, inscribed below the emblem in Devanagari script, means "Truth Alone Triumphs."
 
 ## The National Flag
+
+![The flag of India: saffron, white and green bands with a navy 24-spoke wheel in the center](flagOfIndia)
 
 The Indian flag was designed as a symbol of freedom. The late Prime Minister Nehru called it a flag not only of freedom for ourselves but a symbol of freedom to all people. Wherever it may go, it will bring a message that India wants to be friends with every country in the world.
 
