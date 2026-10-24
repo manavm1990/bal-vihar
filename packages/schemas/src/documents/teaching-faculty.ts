@@ -3,6 +3,7 @@ import { UsersIcon } from "@sanity/icons/Users";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 import { describeCount } from "../describe-count";
+import { contactFields } from "../objects/contact-fields";
 
 const SUBJECTS = ["Class", "Bhajan", "Yoga", "Teachers"];
 
@@ -11,11 +12,14 @@ const GROUP_KINDS = [
   { title: "Youth Group (Y1–Y5)", value: "youth" },
 ];
 
-const personReference = () =>
+const facultyContact = () =>
   defineArrayMember({
-    type: "reference",
+    name: "facultyContact",
     title: "Person",
-    to: [{ type: "person" }],
+    type: "object",
+    icon: UserIcon,
+    fields: contactFields(),
+    preview: { select: { title: "name", subtitle: "email" } },
   });
 
 export const teachingFaculty = defineType({
@@ -90,7 +94,7 @@ export const teachingFaculty = defineType({
                       title: "Teachers",
                       type: "array",
                       description:
-                        "Pick people from the list, or create a new person right here. Drag to reorder.",
+                        "Type each teacher's name. Email and phone are optional and public, so only add details approved for the website. Drag to reorder.",
                       of: [
                         defineArrayMember({
                           name: "teacher",
@@ -98,13 +102,7 @@ export const teachingFaculty = defineType({
                           type: "object",
                           icon: UserIcon,
                           fields: [
-                            defineField({
-                              name: "person",
-                              title: "Person",
-                              type: "reference",
-                              to: [{ type: "person" }],
-                              validation: (rule) => rule.required(),
-                            }),
+                            ...contactFields(),
                             defineField({
                               name: "isBackup",
                               title: "Backup teacher",
@@ -113,10 +111,10 @@ export const teachingFaculty = defineType({
                             }),
                           ],
                           preview: {
-                            select: { title: "person.name", isBackup: "isBackup" },
-                            prepare: ({ title, isBackup }) => ({
-                              title: title || "Choose a person",
-                              subtitle: isBackup ? "Backup" : undefined,
+                            select: { title: "name", email: "email", isBackup: "isBackup" },
+                            prepare: ({ title, email, isBackup }) => ({
+                              title: title || "New teacher",
+                              subtitle: isBackup ? "Backup" : email,
                             }),
                           },
                         }),
@@ -177,13 +175,13 @@ export const teachingFaculty = defineType({
               name: "coordinators",
               title: "Coordinators",
               type: "array",
-              of: [personReference()],
+              of: [facultyContact()],
             }),
             defineField({
               name: "team",
               title: "Team",
               type: "array",
-              of: [personReference()],
+              of: [facultyContact()],
             }),
             defineField({
               name: "assistants",

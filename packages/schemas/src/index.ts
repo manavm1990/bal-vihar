@@ -3,7 +3,6 @@ import { calendarImport } from "./documents/calendar-import";
 import { classPage } from "./documents/class-page";
 import { faqs } from "./documents/faqs";
 import { homePage } from "./documents/home-page";
-import { person } from "./documents/person";
 import { PHOTO_PAGE_OPTIONS, photoGallery } from "./documents/photo-gallery";
 import { policies } from "./documents/policies";
 import { siteSettings } from "./documents/site-settings";
@@ -41,7 +40,6 @@ export const schemaTypes = [
   faqs,
   homePage,
   mediaImage,
-  person,
   photoGallery,
   policies,
   siteSettings,
@@ -60,7 +58,6 @@ export {
   homePage,
   mediaImage,
   PHOTO_PAGE_OPTIONS,
-  person,
   photoGallery,
   policies,
   siteSettings,

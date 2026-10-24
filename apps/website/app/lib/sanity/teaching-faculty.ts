@@ -18,7 +18,6 @@ interface RawAssistant {
 }
 
 interface RawPerson {
-  _id: string;
   name: string | null;
   email: string | null;
   phone: string | null;
@@ -82,7 +81,7 @@ export function getTeachingFacultyView(
           subject,
           section: cleanText(team.section) || null,
           teachers: (team.teachers ?? []).flatMap((slot) =>
-            toPeople([slot.person], slot.isBackup === true),
+            toPeople([slot], slot.isBackup === true),
           ),
           assistants: toAssistants(team.assistants),
         },
@@ -204,7 +203,10 @@ function toAssistants(list: RawAssistant[] | null | undefined): FacultyAssistant
   });
 }
 
-/** A reference that was deleted or never published comes back null, so it is skipped. */
+/**
+ * People are typed in place, so the same name in several roles is one person in the directory,
+ * matched ignoring case. Entries with no name are skipped.
+ */
 function toPeople(
   list: (RawPerson | null)[] | null | undefined,
   isBackup = false,
@@ -214,7 +216,12 @@ function toPeople(
     if (!person || !name) return [];
 
     return [
-      { id: person._id, name, isBackup, ...getVolunteerContactLinks(person.email, person.phone) },
+      {
+        id: name.toLowerCase(),
+        name,
+        isBackup,
+        ...getVolunteerContactLinks(person.email, person.phone),
+      },
     ];
   });
 }

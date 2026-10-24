@@ -5,7 +5,6 @@ import { CogIcon } from "@sanity/icons/Cog";
 import { DocumentTextIcon } from "@sanity/icons/DocumentText";
 import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
 import { ImagesIcon } from "@sanity/icons/Images";
-import { UserIcon } from "@sanity/icons/User";
 import { UsersIcon } from "@sanity/icons/Users";
 import { WarningOutlineIcon } from "@sanity/icons/WarningOutline";
 import type { StructureResolver } from "sanity/structure";
@@ -60,14 +59,6 @@ export const structure: StructureResolver = (S) =>
             .schemaType("teachingFaculty")
             .documentId(SINGLETON_IDS.teachingFaculty)
             .title("Teaching Faculty"),
-        ),
-      S.listItem()
-        .title("Teachers & volunteers")
-        .icon(UserIcon)
-        .child(
-          S.documentTypeList("person")
-            .title("Teachers & volunteers")
-            .defaultOrdering([{ field: "name", direction: "asc" }]),
         ),
       S.listItem()
         .title("Policies & Procedures")

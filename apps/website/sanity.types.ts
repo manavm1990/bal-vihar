@@ -58,13 +58,6 @@ export type VolunteerRoster = {
   }>;
 };
 
-export type PersonReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "person";
-};
-
 export type TeachingFaculty = {
   _id: string;
   _type: "teachingFaculty";
@@ -79,7 +72,9 @@ export type TeachingFaculty = {
       subject: "Class" | "Bhajan" | "Yoga" | "Teachers";
       section?: string;
       teachers?: Array<{
-        person: PersonReference;
+        name: string;
+        email?: string;
+        phone?: string;
         isBackup?: boolean;
         _type: "teacher";
         _key: string;
@@ -97,16 +92,20 @@ export type TeachingFaculty = {
   }>;
   programs?: Array<{
     name: string;
-    coordinators?: Array<
-      {
-        _key: string;
-      } & PersonReference
-    >;
-    team?: Array<
-      {
-        _key: string;
-      } & PersonReference
-    >;
+    coordinators?: Array<{
+      name: string;
+      email?: string;
+      phone?: string;
+      _type: "facultyContact";
+      _key: string;
+    }>;
+    team?: Array<{
+      name: string;
+      email?: string;
+      phone?: string;
+      _type: "facultyContact";
+      _key: string;
+    }>;
     assistants?: Array<
       {
         _key: string;
@@ -257,17 +256,6 @@ export type PhotoGallery = {
     _type: "galleryPhoto";
     _key: string;
   }>;
-};
-
-export type Person = {
-  _id: string;
-  _type: "person";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name: string;
-  email?: string;
-  phone?: string;
 };
 
 export type SanityImageCrop = {
@@ -521,7 +509,6 @@ export type AllSanitySchemaTypes =
   | YouthAssistant
   | VolunteersList
   | VolunteerRoster
-  | PersonReference
   | TeachingFaculty
   | SiteSettings
   | SanityImageAssetReference
@@ -529,7 +516,6 @@ export type AllSanitySchemaTypes =
   | Policies
   | Slug
   | PhotoGallery
-  | Person
   | SanityImageCrop
   | SanityImageHotspot
   | HomePage
@@ -654,7 +640,7 @@ export type VOLUNTEER_ROSTER_QUERY_RESULT =
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: TEACHING_FACULTY_QUERY
-// Query: *[_id == "teachingFaculty"][0]{  _id,  schoolYear,  groups[]{    _key,    name,    kind,    teams[]{      _key,      subject,      section,      teachers[]{        _key,        isBackup,        person->{ _id, name, email, phone }      },      assistants[]{ _key, name, level }    }  },  programs[]{    _key,    name,    coordinators[]->{ _id, name, email, phone },    team[]->{ _id, name, email, phone },    assistants[]{ _key, name, level }  }}
+// Query: *[_id == "teachingFaculty"][0]{  _id,  schoolYear,  groups[]{    _key,    name,    kind,    teams[]{      _key,      subject,      section,      teachers[]{ _key, isBackup, name, email, phone },      assistants[]{ _key, name, level }    }  },  programs[]{    _key,    name,    coordinators[]{ _key, name, email, phone },    team[]{ _key, name, email, phone },    assistants[]{ _key, name, level }  }}
 export type TEACHING_FACULTY_QUERY_RESULT =
   | {
       _id: "teachingFaculty";
@@ -682,12 +668,9 @@ export type TEACHING_FACULTY_QUERY_RESULT =
           teachers: Array<{
             _key: string;
             isBackup: boolean | null;
-            person: {
-              _id: string;
-              name: string;
-              email: string | null;
-              phone: string | null;
-            };
+            name: string;
+            email: string | null;
+            phone: string | null;
           }> | null;
           assistants: Array<{
             _key: string;
@@ -700,13 +683,13 @@ export type TEACHING_FACULTY_QUERY_RESULT =
         _key: string;
         name: string;
         coordinators: Array<{
-          _id: string;
+          _key: string;
           name: string;
           email: string | null;
           phone: string | null;
         }> | null;
         team: Array<{
-          _id: string;
+          _key: string;
           name: string;
           email: string | null;
           phone: string | null;
@@ -990,7 +973,7 @@ declare global {
     '*[_type == "classPage"] | order(sortOrder asc){\n  _id,\n  title,\n  "slug": slug.current,\n  group,\n  teachers,\n  "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)\n}': CLASS_PAGES_QUERY_RESULT;
     '*[_id == "volunteersList"][0]{\n  _id,\n  teams[]{\n    _key,\n    name,\n    description,\n    members[]{\n      _key,\n      name,\n      email,\n      phone\n    }\n  }\n}': VOLUNTEERS_LIST_QUERY_RESULT;
     '*[_id == "volunteerRoster"][0]{\n  _id,\n  schoolYear,\n  activities[]{\n    _key,\n    name,\n    volunteers\n  }\n}': VOLUNTEER_ROSTER_QUERY_RESULT;
-    '*[_id == "teachingFaculty"][0]{\n  _id,\n  schoolYear,\n  groups[]{\n    _key,\n    name,\n    kind,\n    teams[]{\n      _key,\n      subject,\n      section,\n      teachers[]{\n        _key,\n        isBackup,\n        person->{ _id, name, email, phone }\n      },\n      assistants[]{ _key, name, level }\n    }\n  },\n  programs[]{\n    _key,\n    name,\n    coordinators[]->{ _id, name, email, phone },\n    team[]->{ _id, name, email, phone },\n    assistants[]{ _key, name, level }\n  }\n}': TEACHING_FACULTY_QUERY_RESULT;
+    '*[_id == "teachingFaculty"][0]{\n  _id,\n  schoolYear,\n  groups[]{\n    _key,\n    name,\n    kind,\n    teams[]{\n      _key,\n      subject,\n      section,\n      teachers[]{ _key, isBackup, name, email, phone },\n      assistants[]{ _key, name, level }\n    }\n  },\n  programs[]{\n    _key,\n    name,\n    coordinators[]{ _key, name, email, phone },\n    team[]{ _key, name, email, phone },\n    assistants[]{ _key, name, level }\n  }\n}': TEACHING_FACULTY_QUERY_RESULT;
     '*[_id == "faqs"][0]{\n  _id,\n  items[]{\n    _key,\n    question,\n    answer\n  }\n}': FAQS_QUERY_RESULT;
     '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  }\n}': HOME_PAGE_QUERY_RESULT;
