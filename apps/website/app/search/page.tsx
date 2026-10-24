@@ -1,25 +1,18 @@
 import Article from "@components/article";
+import Highlighted from "@components/highlighted";
 import { Button } from "@components/ui/button";
 import { CONTROL_CLASS } from "@components/ui/form/field";
 import { Label } from "@components/ui/form/label";
 import { MutedP, P } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
-import { searchAlgolia } from "@lib/search/algolia";
-import { getSanitySearchDocuments } from "@lib/search/sanity-documents";
-import {
-  type HighlightPart,
-  parseSearchQuery,
-  type SearchResult,
-  searchDocuments,
-} from "@lib/search/search";
-import { STATIC_SEARCH_DOCUMENTS } from "@lib/search/static-documents";
+import { findResults } from "@lib/search/find-results";
+import { parseSearchQuery } from "@lib/search/search";
+import { SEARCH_SUGGESTIONS } from "@lib/search/suggestions";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
 const RESULT_LIMIT = 20;
-
-const SUGGESTIONS = ["homework", "schedule", "registration", "forms", "volunteer", "teachers"];
 
 export const metadata: Metadata = {
   title: `${BASE_TITLE} | Search`,
@@ -39,32 +32,6 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
         <SearchResults searchParams={searchParams} />
       </Suspense>
     </Article>
-  );
-}
-
-interface HighlightedProps {
-  parts: HighlightPart[];
-}
-
-function Highlighted({ parts }: HighlightedProps) {
-  // Each part's key is where it starts in the text, which is unique and stable.
-  let offset = 0;
-
-  return (
-    <>
-      {parts.map((part) => {
-        const key = offset;
-        offset += part.text.length;
-
-        return part.isMatch ? (
-          <mark key={key} className="bg-primary-200 text-foreground rounded-sm px-0.5">
-            {part.text}
-          </mark>
-        ) : (
-          <span key={key}>{part.text}</span>
-        );
-      })}
-    </>
   );
 }
 
@@ -99,7 +66,7 @@ function SearchForm({ query }: SearchFormProps) {
 
 async function SearchResults({ searchParams }: SearchPageProps) {
   const query = parseSearchQuery((await searchParams)["q"]);
-  const results = query ? await findResults(query) : [];
+  const results = query ? await findResults(query, RESULT_LIMIT) : [];
 
   return (
     <div className="space-y-6">
@@ -152,7 +119,7 @@ function SearchSuggestions() {
     <div className="space-y-2">
       <MutedP>Not sure what to type? Try one of these:</MutedP>
       <ul className="flex flex-wrap gap-2">
-        {SUGGESTIONS.map((suggestion) => (
+        {SEARCH_SUGGESTIONS.map((suggestion) => (
           <li key={suggestion}>
             <Button asChild variant="outline" size="sm">
               <Link href={`/search?q=${encodeURIComponent(suggestion)}`}>{suggestion}</Link>
@@ -161,19 +128,5 @@ function SearchSuggestions() {
         ))}
       </ul>
     </div>
-  );
-}
-
-/** Algolia first, which forgives typos. The built-in search takes over if Algolia is unavailable. */
-async function findResults(query: string): Promise<SearchResult[]> {
-  const fromAlgolia = await searchAlgolia(query, RESULT_LIMIT);
-  if (fromAlgolia) return fromAlgolia;
-
-  return searchDocuments(
-    [...STATIC_SEARCH_DOCUMENTS, ...(await getSanitySearchDocuments())],
-    query,
-    {
-      limit: RESULT_LIMIT,
-    },
   );
 }
