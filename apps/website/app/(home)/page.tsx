@@ -287,7 +287,7 @@ function Programs() {
               href={program.href}
               className="bg-background hover:bg-primary-50 focus-visible:ring-ring block h-full rounded-lg border p-4 shadow-sm hover:no-underline focus-visible:ring-2 focus-visible:outline-none"
             >
-              <span className="text-secondary block text-xl font-semibold">{program.title}</span>
+              <H3 className="text-secondary text-xl">{program.title}</H3>
               <MutedP className="mt-2">{program.text}</MutedP>
             </Link>
           </li>
