@@ -6,7 +6,7 @@ import { describeCount } from "../describe-count";
 
 export const volunteerRoster = defineType({
   name: "volunteerRoster",
-  title: "Event Volunteers",
+  title: "Thank-you list (event volunteers)",
   type: "document",
   icon: UsersIcon,
   fields: [
@@ -61,7 +61,7 @@ export const volunteerRoster = defineType({
   preview: {
     select: { schoolYear: "schoolYear" },
     prepare: ({ schoolYear }) => ({
-      title: "Event Volunteers",
+      title: "Thank-you list (event volunteers)",
       subtitle: schoolYear,
     }),
   },

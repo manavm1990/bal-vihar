@@ -89,22 +89,22 @@ export const structure: StructureResolver = (S) =>
             .title("Impact Award"),
         ),
       S.listItem()
-        .title("Volunteers List")
+        .title("Administrative Team")
         .icon(UsersIcon)
         .child(
           S.document()
             .schemaType("volunteersList")
             .documentId(SINGLETON_IDS.volunteersList)
-            .title("Volunteers List"),
+            .title("Administrative Team"),
         ),
       S.listItem()
-        .title("Event Volunteers")
+        .title("Thank-you list (event volunteers)")
         .icon(UsersIcon)
         .child(
           S.document()
             .schemaType("volunteerRoster")
             .documentId(SINGLETON_IDS.volunteerRoster)
-            .title("Event Volunteers"),
+            .title("Thank-you list (event volunteers)"),
         ),
       S.divider(),
       S.listItem()

@@ -4,7 +4,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const volunteersList = defineType({
   name: "volunteersList",
-  title: "Volunteers List",
+  title: "Administrative Team",
   type: "document",
   icon: UsersIcon,
   fields: [
@@ -90,7 +90,7 @@ export const volunteersList = defineType({
   ],
   preview: {
     prepare() {
-      return { title: "Volunteers List" };
+      return { title: "Administrative Team" };
     },
   },
 });
