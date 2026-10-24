@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
+  { href: "/admin-resources", label: "Admin Resources" },
   { href: "/calendar", label: "Calendar" },
   { href: "/disclaimer", label: "Disclaimer Form" },
   { href: "/expense-reimbursement", label: "Submit an Expense" },
