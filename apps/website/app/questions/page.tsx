@@ -10,16 +10,12 @@ import { H3, P } from "@components/ui/typography";
 import { ADMIN_OFFICE, BASE_TITLE, SCHOOL_LOCATION } from "@lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
-import type { ReactNode } from "react";
-
 import ContactForm from "./components/form/contact-form.client";
 
-interface FaqItem {
-  question: string;
-  answer: ReactNode;
-}
+const SCHOOL_ADDRESS = `${SCHOOL_LOCATION.streetAddress}, ${SCHOOL_LOCATION.addressLocality}, ${SCHOOL_LOCATION.addressRegion} ${SCHOOL_LOCATION.postalCode}`;
+const SCHOOL_MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${SCHOOL_LOCATION.name}, ${SCHOOL_ADDRESS}`)}`;
 
-const FAQS: FaqItem[] = [
+const FAQS = [
   {
     question: "What is Bal Vihar of St. Louis?",
     answer:
@@ -27,7 +23,20 @@ const FAQS: FaqItem[] = [
   },
   {
     question: "Where does Bal Vihar of St. Louis meet?",
-    answer: `${SCHOOL_LOCATION.name}, ${SCHOOL_LOCATION.streetAddress}, ${SCHOOL_LOCATION.addressLocality}, ${SCHOOL_LOCATION.addressRegion} ${SCHOOL_LOCATION.postalCode}.`,
+    answer: (
+      <>
+        {SCHOOL_LOCATION.name},{" "}
+        <a
+          href={SCHOOL_MAPS_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary-ink underline"
+        >
+          {SCHOOL_ADDRESS}
+        </a>
+        .
+      </>
+    ),
   },
   {
     question: "Can anyone be admitted to Bal Vihar School?",
@@ -36,24 +45,17 @@ const FAQS: FaqItem[] = [
   },
   {
     question: "What are the admission criteria?",
-    answer: (
-      <>
-        Your child must be 5 years old on a given July 31st to be admitted. See the{" "}
-        <Link href="/admissions">Admissions</Link> page and{" "}
-        <Link href="/about-us/policies-procedures">Policies & Procedures</Link> for details on older
-        children.
-      </>
-    ),
+    answer:
+      "Your child must be 5 years old on a given July 31st to be admitted. Please see the Admissions Policies under Policies & Procedures for details on older children.",
   },
   {
     question:
       "We just moved to St. Louis and my child was attending Bal Vihar previously. Can he / she join Bal Vihar in middle of the school year.",
-    answer:
-      "No. Mid-year transfers are not accepted, even when a child attended another Bal Vihar previously.",
+    answer: "No.",
   },
   {
     question: "My child is 14 years old. Can he/she join Bal Vihar?",
-    answer: "Yes. Students through age 18 may join when they meet the program criteria.",
+    answer: "Yes, he / she can join Bal Vihar.",
   },
   {
     question:
@@ -69,18 +71,12 @@ const FAQS: FaqItem[] = [
   {
     question: "Is the registration fee refundable if my child does not attend?",
     answer:
-      "Once you register, fees are not returned after school classes begin. You can still get the volunteer deposit back if you complete the volunteer obligation.",
+      "Once you register, no fees are returned once the school classes begin. You can get the volunteer deposit back.",
   },
   {
     question:
       "If I am unable to afford the registration fees for Bal Vihar and my child/children wish to attend what should I do?",
-    answer: (
-      <>
-        Please review the financial assistance guidance in{" "}
-        <Link href="/about-us/policies-procedures">Policies & Procedures</Link>, or{" "}
-        <Link href="#contact">contact us</Link>.
-      </>
-    ),
+    answer: "Please refer to the policy.",
   },
   {
     question:
@@ -91,7 +87,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Why Bal Vihar charges a registration fee?",
     answer:
-      "Operational expenses, school rental, supplies, and events are the major costs. Bal Vihar is all-volunteer and has no payroll expense, and registration generally helps the school break even.",
+      "Operational expenses, school rental, supplies and events are our major expense items and we generally break even. Bal Vihar is an all volunteer organization and it has no payroll expense.",
   },
   {
     question: "When can I register my child/children?",
@@ -104,13 +100,8 @@ const FAQS: FaqItem[] = [
   },
   {
     question: "When is the school in session?",
-    answer: (
-      <>
-        From 10:00 a.m. to 12:30 p.m. on select Sundays from August through May, usually every other
-        week. There are breaks, and sometimes classes fall on two Sundays in a row. See the{" "}
-        <Link href="/calendar">school calendar</Link> for the complete schedule.
-      </>
-    ),
+    answer:
+      "From 10:00 am - 12:30 pm on select Sundays from August - May, usually every other week. There are breaks, and sometimes classes fall on two Sundays in a row. Please refer to the School Calendar for the complete schedule.",
   },
   {
     question: "Is every parent required to volunteer?",
@@ -119,35 +110,18 @@ const FAQS: FaqItem[] = [
   },
   {
     question: "How do I volunteer?",
-    answer: (
-      <>
-        At registration, pick an event activity from the menu. To join the administration team,
-        contact a member of the{" "}
-        <Link href="/about-us/administrative-team">Administrative Team</Link>, or use the{" "}
-        <Link href="/volunteering">volunteering</Link> page.
-      </>
-    ),
+    answer:
+      "At the time of registration, please pick the event activity from the menu. If you would like to be part of the administration team please contact one of the administrative team members.",
   },
   {
     question: "I missed my volunteer obligation, what are my options?",
-    answer: (
-      <>
-        If it is the end of the school year and all volunteer activities are finished, the deposit
-        is forfeited. Earlier in the year, the volunteering team may reassign you to an upcoming
-        activity if a spot is available. <Link href="#contact">Contact us</Link> or see{" "}
-        <Link href="/volunteering">Volunteering</Link>.
-      </>
-    ),
+    answer:
+      "If it is the end of the school year and you missed the volunteer obligation and if all volunteer activities are done, you have to forfeit the volunteer deposit. If it is in the beginning or middle of the school year then we may assign you to volunteer in any upcoming activity provided a spot is available. Please contact one of the volunteering team members.",
   },
   {
     question: "What is Bal Vihar’s primary mode of communication?",
-    answer: (
-      <>
-        Email from administration or teachers for announcements and activities. You can also check
-        this website and your child’s <Link href="/education/class-webpages">class webpage</Link>{" "}
-        for the day’s activity or homework.
-      </>
-    ),
+    answer:
+      "Via the e-mail, administration or the teacher will contact you for all the announcements or activities. You can also visit the website or your child/children’s webpage for the day’s activity or class homework.",
   },
   {
     question: "Can I send a mass e-mail to parents?",
@@ -155,23 +129,13 @@ const FAQS: FaqItem[] = [
   },
   {
     question: "Do Bal Vihar children celebrate any festivals?",
-    answer: (
-      <>
-        Yes. Diwali, Holi, Republic Day, and the picnic are the main events. See{" "}
-        <Link href="/photos">photos</Link> from previous years and the{" "}
-        <Link href="/calendar">calendar</Link> for upcoming dates.
-      </>
-    ),
+    answer:
+      "Yes, Diwali, Holi, Republic day, picnic are the main events. Please click here for photos from previous years.",
   },
   {
     question: "Does Bal Vihar have a designated curriculum?",
-    answer: (
-      <>
-        Yes. The regular curriculum includes religious, social, and cultural units plus dedicated
-        yoga and bhajan. See the <Link href="/education/curriculum">curriculum</Link> page for
-        Groups K–7 and the Youth Group.
-      </>
-    ),
+    answer:
+      "Yes, regular Bal Vihar curriculum includes religious, social and cultural units besides dedicated yoga and Bhajan curriculum. For details, please click here. For youth group curriculum, click here.",
   },
   {
     question:
@@ -180,12 +144,7 @@ const FAQS: FaqItem[] = [
   },
   {
     question: "I would like to advertise my business on Bal Vihar’s website. How do I do it?",
-    answer: (
-      <>
-        Please discuss rates with the fundraising team via the{" "}
-        <Link href="#contact">contact form</Link>.
-      </>
-    ),
+    answer: "Please discuss the rates with the fundraising team.",
   },
   {
     question:
@@ -195,15 +154,10 @@ const FAQS: FaqItem[] = [
   {
     question:
       "Are there any policies and procedure to follow in case of any grievance against a teacher or member of administration?",
-    answer: (
-      <>
-        Yes. Bal Vihar follows a national code of ethics and conduct. See{" "}
-        <Link href="/about-us/policies-procedures">Policies & Procedures</Link> and the{" "}
-        <Link href="/grievance">grievance form</Link>.
-      </>
-    ),
+    answer:
+      "Yes, Bal Vihar follows a strict National code of ethics and conduct. Policies and Procedures are in place if there are any complaints. Please click here for details.",
   },
-];
+] as const;
 
 const TITLE = "Questions & Contact";
 
