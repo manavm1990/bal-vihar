@@ -103,10 +103,6 @@ export function createCalendarEventIcs(event: CalendarEventData) {
     .join("\r\n");
 }
 
-export function createCalendarEventDownloadHref(event: CalendarEventData) {
-  return `data:text/calendar;charset=utf-8,${encodeURIComponent(createCalendarEventIcs(event))}`;
-}
-
 const escapeIcsText = (value: string) =>
   value
     .replaceAll("\\", "\\\\")

@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  createCalendarEventDownloadHref,
-  formatCalendarDate,
-} from "@lib/sanity/map-calendar-events";
+import { createCalendarEventIcs, formatCalendarDate } from "@lib/sanity/map-calendar-events";
 import type { CalendarEventData } from "@lib/sanity/types";
 import { cn } from "@lib/utils";
 import { CalendarIcon, Cross2Icon } from "@radix-ui/react-icons";
@@ -31,7 +28,6 @@ export default function EventCard({ event }: EventCardProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const parsed = new Date(`${event.date}T12:00:00`);
   const hasDate = !Number.isNaN(parsed.getTime());
-  const downloadName = `${event.date}-${event.title.replaceAll(/[^a-z0-9]+/gi, "-").toLowerCase()}.ics`;
   const meta = [formatCalendarDate(event.date), event.time, event.location]
     .filter(Boolean)
     .join(" · ");
@@ -47,7 +43,6 @@ export default function EventCard({ event }: EventCardProps) {
     dialog.showModal();
   };
 
-  // Native close() drops [open] instantly; play scaleOut first, then dismiss.
   const closeDetails = () => {
     const dialog = dialogRef.current;
     if (!dialog?.open || dialog.classList.contains("closing")) return;
@@ -121,25 +116,28 @@ export default function EventCard({ event }: EventCardProps) {
             </MutedP>
           ) : null}
           {isSpecial ? (
-            <button
+            <Button
               type="button"
+              variant="link"
               onClick={openDetails}
-              className="text-primary-ink cursor-pointer pt-1 text-sm font-semibold hover:underline"
+              className="h-auto p-0 pt-1 font-semibold text-primary-ink"
             >
               Event details
-            </button>
+            </Button>
           ) : null}
         </div>
 
-        <a
-          href={createCalendarEventDownloadHref(event)}
-          download={downloadName}
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          onClick={() => downloadCalendarEvent(event)}
           aria-label={`Add ${event.title} to calendar`}
           title="Add to calendar"
-          className="text-primary-ink hover:bg-primary-50 absolute top-2.5 right-2.5 inline-flex size-8 cursor-pointer items-center justify-center rounded-md"
+          className="hover:bg-primary-50 absolute top-2.5 right-2.5 size-8 text-primary-ink"
         >
           <CalendarIcon aria-hidden="true" className="size-4" />
-        </a>
+        </Button>
       </Card>
 
       {isSpecial ? (
@@ -195,19 +193,32 @@ export default function EventCard({ event }: EventCardProps) {
               <MutedP>More details will be posted here when the school adds them in Studio.</MutedP>
             )}
 
-            <a
-              href={createCalendarEventDownloadHref(event)}
-              download={downloadName}
-              className="text-primary-ink inline-flex items-center gap-1.5 text-sm font-semibold"
+            <Button
+              type="button"
+              variant="link"
+              onClick={() => downloadCalendarEvent(event)}
+              className="h-auto gap-1.5 p-0 font-semibold text-primary-ink"
             >
               <CalendarIcon aria-hidden="true" className="size-4" />
               Add to calendar
-            </a>
+            </Button>
           </div>
         </dialog>
       ) : null}
     </>
   );
+}
+
+function downloadCalendarEvent(event: CalendarEventData) {
+  const url = URL.createObjectURL(
+    new Blob([createCalendarEventIcs(event)], { type: "text/calendar;charset=utf-8" }),
+  );
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${event.date}-${event.title.replaceAll(/[^a-z0-9]+/gi, "-").toLowerCase()}.ics`;
+  link.click();
+  // Revoke after the click has started the download.
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 const eventTypeLabel = (value: string | null | undefined) => {
