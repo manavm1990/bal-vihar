@@ -1,6 +1,7 @@
 import { algoliasearch } from "algoliasearch";
 import { connection } from "next/server";
 
+import { ALGOLIA_SEARCH_PARAMS, HIGHLIGHT_END, HIGHLIGHT_START } from "./algolia-config";
 import type { HighlightPart, SearchResult } from "./search";
 
 interface AlgoliaRecord {
@@ -8,9 +9,6 @@ interface AlgoliaRecord {
   section: string;
   href: string;
 }
-
-const HIGHLIGHT_END = "⟧";
-const HIGHLIGHT_START = "⟦";
 
 /**
  * Searches the Algolia index with the search-only key. Gives null when Algolia isn't set up or
@@ -29,12 +27,9 @@ export async function searchAlgolia(query: string, limit: number): Promise<Searc
     const { hits } = await algoliasearch(appId, searchKey).searchSingleIndex<AlgoliaRecord>({
       indexName,
       searchParams: {
+        ...ALGOLIA_SEARCH_PARAMS,
         query,
         hitsPerPage: limit,
-        attributesToHighlight: ["title"],
-        attributesToSnippet: ["text:30"],
-        highlightPreTag: HIGHLIGHT_START,
-        highlightPostTag: HIGHLIGHT_END,
       },
     });
 
