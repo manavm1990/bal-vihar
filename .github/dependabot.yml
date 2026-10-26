@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: bun
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
       day: friday
       time: "20:00"
       timezone: America/Chicago
