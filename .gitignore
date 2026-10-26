@@ -52,6 +52,7 @@ logs
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+apps/website/image-modules.d.ts
 
 
 # Vercel

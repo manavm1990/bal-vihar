@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "typecheck": "tsc --noEmit"
+    "typegen:images": "bun scripts/generate-image-module-types.ts",
+    "typecheck": "bun run typegen:images && tsc --noEmit"
   },
   "dependencies": {
     "@hookform/resolvers": "^6.0.0",

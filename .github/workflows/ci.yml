@@ -35,6 +35,9 @@ jobs:
             exit 1
           fi
 
+      - name: Generate website image module types
+        run: bun run --filter @bv/website typegen:images
+
       - name: Typecheck
         run: bun run typecheck
 
