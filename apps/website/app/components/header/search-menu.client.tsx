@@ -8,6 +8,7 @@ import { cn } from "@lib/utils";
 import { ArrowRightIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import * as Popover from "@radix-ui/react-popover";
 import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import useMeasuredHeight from "./use-measured-height";
@@ -83,6 +84,23 @@ export default function SearchMenu() {
                       </Button>
                     </div>
                   </form>
+
+                  <a
+                    href="https://www.algolia.com/?utm_medium=AOS-referral"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground focus-visible:ring-ring ml-auto flex w-fit items-center gap-1.5 rounded text-xs hover:no-underline focus-visible:ring-2 focus-visible:outline-none"
+                  >
+                    Search by
+                    <Image
+                      src="/algolia-logo-blue.svg"
+                      alt="Algolia"
+                      width={2196}
+                      height={500}
+                      className="h-4 w-auto"
+                    />
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
 
                   <AnimatedHeight shouldReduceMotion={shouldReduceMotion}>
                     {!trimmed ? (
