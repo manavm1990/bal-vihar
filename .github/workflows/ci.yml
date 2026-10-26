@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+        env:
+          HUSKY: "0"
+
+      - name: Typegen drift check
+        run: |
+          bun run typegen
+          if ! git diff --quiet -- apps/studio/schema.json apps/website/sanity.types.ts; then
+            echo "Sanity typegen produced changes. Commit schema.json / sanity.types.ts."
+            git diff -- apps/studio/schema.json apps/website/sanity.types.ts
+            exit 1
+          fi
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Lint
+        run: bun run lint
