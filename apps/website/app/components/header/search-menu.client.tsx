@@ -89,7 +89,7 @@ export default function SearchMenu() {
                     href="https://www.algolia.com/?utm_medium=AOS-referral"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground focus-visible:ring-ring ml-auto flex w-fit items-center gap-1.5 rounded text-xs hover:no-underline focus-visible:ring-2 focus-visible:outline-none"
+                    className="text-muted-foreground hover:text-foreground focus-visible:ring-ring ml-auto flex min-h-11 w-fit items-center gap-1.5 rounded text-xs hover:no-underline focus-visible:ring-2 focus-visible:outline-none"
                   >
                     Search by
                     <Image
