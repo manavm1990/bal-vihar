@@ -48,12 +48,12 @@ export interface SanityImageValue {
     _id?: string;
     url?: string;
     metadata?: {
-      lqip?: string;
+      lqip?: string | null;
       dimensions?: {
         width?: number;
         height?: number;
-      };
-    };
+      } | null;
+    } | null;
   } | null;
   alt?: string | null;
   caption?: string | null;

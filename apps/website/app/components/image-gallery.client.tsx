@@ -142,7 +142,7 @@ function GalleryPicture({
       fill
       sizes={sizes}
       placeholder={lqip ? "blur" : "empty"}
-      blurDataURL={lqip}
+      blurDataURL={lqip ?? undefined}
       className={className}
     />
   );

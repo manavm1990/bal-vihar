@@ -42,7 +42,7 @@ export function SanityImage({
       sizes={sizes}
       priority={priority}
       placeholder={lqip ? "blur" : "empty"}
-      blurDataURL={lqip}
+      blurDataURL={lqip ?? undefined}
     />
   );
 }

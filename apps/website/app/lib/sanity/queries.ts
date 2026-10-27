@@ -15,6 +15,23 @@ const mediaImageProjection = /* groq */ `{
   crop
 }`;
 
+/** A gallery photo is itself the image, so its `_key` sits beside the image fields. */
+const albumPhotoProjection = /* groq */ `{
+  _key,
+  asset->{
+    _id,
+    url,
+    metadata {
+      lqip,
+      dimensions { width, height }
+    }
+  },
+  alt,
+  caption,
+  hotspot,
+  crop
+}`;
+
 export const CALENDAR_EVENTS_QUERY = defineQuery(`*[_type == "calendarEvent"] | order(date asc) {
   _id,
   title,
@@ -177,6 +194,26 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_id == "homePage"][0]{
     endDate,
     tone
   }
+}`);
+
+export const PHOTO_ALBUM_QUERY = defineQuery(`*[_type == "photoAlbum" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  schoolYear,
+  "photos": photos[defined(asset)] ${albumPhotoProjection}
+}`);
+
+export const PHOTO_ALBUMS_QUERY = defineQuery(`*[
+  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0
+] | order(schoolYear desc, _createdAt desc){
+  _id,
+  title,
+  "slug": slug.current,
+  schoolYear,
+  "photoCount": count(photos[defined(asset)]),
+  "photoKeys": photos[defined(asset)]._key,
+  "cover": photos[defined(asset)][0] ${albumPhotoProjection}
 }`);
 
 export const PHOTO_GALLERY_QUERY = defineQuery(`*[_id == "photoGallery"][0]{
