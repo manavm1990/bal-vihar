@@ -3,11 +3,15 @@ import type { PHOTO_ALBUM_QUERY_RESULT, PHOTO_ALBUMS_QUERY_RESULT } from "sanity
 import { SITE_URL } from "../constants";
 import { createWhatsAppShareUrl } from "../share";
 import { fetchSanityOrNull } from "./fetch";
+import { urlFor } from "./image";
 import { PHOTO_ALBUM_QUERY, PHOTO_ALBUMS_QUERY } from "./queries";
 
 export type PhotoAlbum = NonNullable<PHOTO_ALBUM_QUERY_RESULT>;
 export type PhotoAlbumSummary = PHOTO_ALBUMS_QUERY_RESULT[number];
 export type AlbumPhoto = PhotoAlbum["photos"][number];
+
+// 1.91:1 is the shape link previews are cropped to.
+export const PREVIEW_SIZE = { width: 1200, height: 630 };
 
 interface FetchPhotoAlbumOptions {
   /** Metadata must never carry stega characters, so it opts out. */
@@ -60,3 +64,13 @@ export const getPhotoAlt = (photo: Pick<AlbumPhoto, "alt">, albumTitle: string, 
 
 export const getPhotoPath = (slug: string, key: string) =>
   `${getAlbumPath(slug)}/${stegaClean(key)}`;
+
+/** JPEG, cropped to the preview shape and kept small, which chat apps load most reliably. */
+export const getPreviewImageUrl = (photo: AlbumPhoto) =>
+  urlFor(photo)
+    .width(PREVIEW_SIZE.width)
+    .height(PREVIEW_SIZE.height)
+    .fit("crop")
+    .format("jpg")
+    .quality(75)
+    .url();
