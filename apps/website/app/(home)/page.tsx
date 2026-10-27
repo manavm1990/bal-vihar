@@ -3,6 +3,7 @@ import { SanityImage } from "@components/sanity/sanity-image";
 import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
 import { Bq, H1, H2, H3, LeadP, MutedP, P } from "@components/ui/typography";
+import { getCachedNow } from "@lib/clock";
 import { REGISTRATION_URL } from "@lib/constants";
 import { isAnnouncementVisible } from "@lib/sanity/announcements";
 import { fetchSanityData } from "@lib/sanity/fetch";
@@ -18,8 +19,6 @@ import type {
 } from "@lib/sanity/types";
 import { cn } from "@lib/utils";
 import Link from "next/link";
-import { connection } from "next/server";
-import { Suspense } from "react";
 
 const MISSION =
   "To throw the light of cultural knowledge on every child, to make every child an outstanding citizen and to spread the song of peace and harmony around the world.";
@@ -88,14 +87,18 @@ const WHO_WE_ARE =
   "Center for Indian Cultural Education – Bal Vihar of St. Louis is a non-profit organization that has served the Metro St. Louis Indian community since 1992. Our primary focus is Indian cultural education for students ages 5–18, and its application and integration with the global, multicultural society. Students also learn discipline, tolerance and devotion in their daily routine.";
 
 export default async function HomePage() {
-  const [homePayload, calendarPayload, galleryPayload] = await Promise.all([
+  const [homePayload, calendarPayload, galleryPayload, now] = await Promise.all([
     fetchSanityData(HOME_PAGE_QUERY),
     fetchSanityData(CALENDAR_EVENTS_QUERY),
     fetchSanityData(PHOTO_GALLERY_QUERY),
+    getCachedNow(),
   ]);
 
   const home: HomePageData | null = mapHomePage(homePayload);
-  const events = mapCalendarEvents(calendarPayload);
+  const announcements = (home?.announcements ?? []).filter((item) =>
+    isAnnouncementVisible(item, now),
+  );
+  const events = getUpcomingCalendarEvents(mapCalendarEvents(calendarPayload), { now });
   const photos = (mapPhotoGallery(galleryPayload, { featuredOnly: true })?.photos ?? [])
     .filter((photo) => photo.image?.asset?._id || photo.image?.asset?.url)
     .slice(0, 8);
@@ -103,18 +106,14 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <Suspense fallback={null}>
-        <Announcements announcements={home?.announcements ?? []} />
-      </Suspense>
+      <Announcements announcements={announcements} />
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <Intro text={WHO_WE_ARE} />
         <QuickLinks />
         <PhotoBanner photo={banner} />
         <aside className="lg:col-start-2 lg:row-span-4 lg:row-start-1">
-          <Suspense fallback={<MutedP>Loading upcoming events…</MutedP>}>
-            <UpcomingEvents events={events} />
-          </Suspense>
+          <UpcomingEvents events={events} />
         </aside>
         <Stats />
         <Programs />
@@ -128,14 +127,10 @@ interface AnnouncementsProps {
   announcements: HomeAnnouncement[];
 }
 
-async function Announcements({ announcements }: AnnouncementsProps) {
-  // Which announcements are visible depends on the current time, so this renders per request.
-  await connection();
-  const visible = announcements.filter((item) => isAnnouncementVisible(item));
-
-  return visible.length === 0 ? null : (
+function Announcements({ announcements }: AnnouncementsProps) {
+  return announcements.length === 0 ? null : (
     <div className="mx-auto flex w-full max-w-prose flex-col gap-4">
-      {visible.map((announcement) => (
+      {announcements.map((announcement) => (
         <AnnouncementCard key={announcement.key} announcement={announcement} />
       ))}
     </div>
@@ -335,21 +330,17 @@ interface UpcomingEventsProps {
   events: CalendarEventData[];
 }
 
-async function UpcomingEvents({ events }: UpcomingEventsProps) {
-  // Which events are upcoming depends on today's date, so this renders per request.
-  await connection();
-  const upcoming = getUpcomingCalendarEvents(events);
-
+function UpcomingEvents({ events }: UpcomingEventsProps) {
   return (
     <section className="bg-gray-50 space-y-4 rounded-lg border p-4 lg:sticky lg:top-4">
       <H2 variant="plain" className="text-2xl">
         Upcoming events
       </H2>
-      {upcoming.length === 0 ? (
+      {events.length === 0 ? (
         <MutedP>No upcoming events are scheduled right now.</MutedP>
       ) : (
         <ul className="space-y-3">
-          {upcoming.map((event) => (
+          {events.map((event) => (
             <li key={event.id}>
               <EventCard event={event} />
             </li>

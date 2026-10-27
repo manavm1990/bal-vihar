@@ -2,13 +2,12 @@ import Article from "@components/article";
 import EventCard from "@components/event-card.client";
 import { Card, CardContent } from "@components/ui/card";
 import { MutedP } from "@components/ui/typography";
+import { getCachedNow } from "@lib/clock";
 import { BASE_TITLE } from "@lib/constants";
 import { fetchSanityData } from "@lib/sanity/fetch";
 import { getUpcomingCalendarEvents, mapCalendarEvents } from "@lib/sanity/map-calendar-events";
 import { CALENDAR_EVENTS_QUERY } from "@lib/sanity/queries";
 import type { Metadata } from "next";
-import { connection } from "next/server";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: `${BASE_TITLE} | Calendar`,
@@ -30,18 +29,18 @@ export default function CalendarPage() {
         Class Sundays and special events. Use the calendar icon on a card to add it to your own
         calendar. Special events may include extra notes from the school.
       </MutedP>
-      <Suspense fallback={<MutedP>Loading events…</MutedP>}>
-        <CalendarEvents />
-      </Suspense>
+      <CalendarEvents />
     </Article>
   );
 }
 
 async function CalendarEvents() {
-  // Which events are upcoming depends on today's date, so this renders per request.
-  await connection();
-  const events = mapCalendarEvents(await fetchSanityData(CALENDAR_EVENTS_QUERY));
-  const upcoming = getUpcomingCalendarEvents(events, { limit: Number.POSITIVE_INFINITY });
+  const [payload, now] = await Promise.all([
+    fetchSanityData(CALENDAR_EVENTS_QUERY),
+    getCachedNow(),
+  ]);
+  const events = mapCalendarEvents(payload);
+  const upcoming = getUpcomingCalendarEvents(events, { limit: Number.POSITIVE_INFINITY, now });
 
   return events.length === 0 ? (
     <Card>
