@@ -58,6 +58,10 @@ apps/website/image-modules.d.ts
 # Vercel
 .vercel
 
+# Sanity Functions: the Stack link for this machine and the bundled Function from a deploy
+/.sanity/
+functions/*/.build/
+
 # Temporary folders
 tmp/
 temp/
