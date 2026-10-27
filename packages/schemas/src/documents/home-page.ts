@@ -1,6 +1,8 @@
 import { WarningOutlineIcon } from "@sanity/icons/WarningOutline";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+const NOTICE_LIFETIME_MS = 24 * 60 * 60 * 1000;
+
 export const homePage = defineType({
   name: "homePage",
   title: "Urgent notices",
@@ -86,7 +88,9 @@ export const homePage = defineType({
               name: "endDate",
               title: "Show until (optional)",
               type: "datetime",
-              description: "Leave empty to keep showing until you turn it off.",
+              description:
+                "Filled in as 24 hours from when you add the notice. Change it if you publish later, or clear it to keep showing until you turn it off.",
+              initialValue: () => new Date(Date.now() + NOTICE_LIFETIME_MS).toISOString(),
             }),
             defineField({
               name: "tone",
