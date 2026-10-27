@@ -158,20 +158,29 @@ function isPublicWebLink(value: string) {
   return (protocol === "http:" || protocol === "https:") && !isPrivateHost(hostname);
 }
 
-/** One link per line, but any whitespace works. Anything that isn't a public web link is reported. */
+/** One link per line. A line that isn't made only of links is reported once, as written. */
 function parseLinks(text: string) {
   const rejected: Failed[] = [];
   const links: string[] = [];
+  const lines = new Set(
+    text
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean),
+  );
 
-  for (const token of new Set(text.split(/\s+/).filter(Boolean))) {
-    if (!isPublicWebLink(token))
-      rejected.push({ link: token, reason: "it is not a public web link" });
-    else if (links.length < MAX_LINKS) links.push(token);
-    else
-      rejected.push({
-        link: token,
-        reason: `only the first ${MAX_LINKS} links are imported at once`,
-      });
+  for (const line of lines) {
+    const words = line.split(/\s+/);
+
+    for (const link of words.every((word) => URL.canParse(word)) ? words : [line]) {
+      if (!isPublicWebLink(link)) rejected.push({ link, reason: "it is not a public web link" });
+      else if (links.length < MAX_LINKS) links.push(link);
+      else
+        rejected.push({
+          link,
+          reason: `only the first ${MAX_LINKS} links are imported at once`,
+        });
+    }
   }
 
   return { links, rejected };
