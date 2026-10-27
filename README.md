@@ -4,7 +4,7 @@ A modern Turborepo monorepo for the Center for Indian Cultural Education, contai
 
 ## 🏗️ Monorepo Architecture
 
-```
+```sh
 bal-vihar/
 ├── apps/
 │   ├── website/          # Next.js 16 public website (localhost:3000)
@@ -19,6 +19,7 @@ bal-vihar/
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - **Node.js** 20.9+
 - **Bun** 1.0+ (package manager)
 
@@ -69,6 +70,7 @@ turbo build --filter=@bv/website
 ## 🛠️ Tech Stack
 
 ### Core Technologies
+
 - **Turborepo** - Monorepo build system with intelligent caching
 - **Next.js 16** - React framework with App Router and Turbopack
 - **Sanity Studio** - Headless CMS for content management
@@ -76,6 +78,7 @@ turbo build --filter=@bv/website
 - **Bun** - Fast package manager and workspace support
 
 ### Development Tools
+
 - **Biome** - Unified linting and formatting
 - **Husky** - Git hooks for code quality
 - **lint-staged** - Pre-commit linting and formatting
@@ -91,15 +94,15 @@ turbo build --filter=@bv/website
 
 ## 🔧 Development Commands
 
-| Command | Description |
-|---------|-------------|
-| `turbo dev` | Start both website and studio |
-| `turbo dev --filter=@bv/website` | Start only Next.js website |
-| `turbo dev --filter=@bv/studio` | Start only Sanity Studio |
-| `turbo build` | Build all packages |
-| `turbo lint` | Lint all packages |
-| `turbo lint:fix` | Lint and auto-fix all packages |
-| `bun install` | Install dependencies |
+| Command                          | Description                    |
+| -------------------------------- | ------------------------------ |
+| `turbo dev`                      | Start both website and studio  |
+| `turbo dev --filter=@bv/website` | Start only Next.js website     |
+| `turbo dev --filter=@bv/studio`  | Start only Sanity Studio       |
+| `turbo build`                    | Build all packages             |
+| `turbo lint`                     | Lint all packages              |
+| `turbo lint:fix`                 | Lint and auto-fix all packages |
+| `bun install`                    | Install dependencies           |
 
 ## 🌐 Local Development
 
@@ -118,7 +121,3 @@ turbo build --filter=@bv/website
 2. Start development: `turbo dev`
 3. Make changes and ensure `turbo lint` passes
 4. Pre-commit hooks will automatically lint and format your code
-
-## 📄 License
-
-Private repository for Bal Vihar of St. Louis.
