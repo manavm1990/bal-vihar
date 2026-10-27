@@ -1,17 +1,8 @@
 import Article from "@components/article";
-import ImageGallery, { type GalleryPhoto } from "@components/image-gallery.client";
+import ImageGallery from "@components/image-gallery.client";
 import { MutedP } from "@components/ui/typography";
-import { BASE_TITLE } from "@lib/constants";
 import { sanityFetchStaticParams } from "@lib/sanity/live";
-import {
-  createPhotoShareUrl,
-  describeAlbum,
-  fetchPhotoAlbum,
-  getAlbumPath,
-  getPhotoAlt,
-  getPreviewImageUrl,
-  PREVIEW_SIZE,
-} from "@lib/sanity/photo-albums";
+import { createAlbumMetadata, fetchPhotoAlbum } from "@lib/sanity/photo-albums";
 import { PHOTO_ALBUMS_QUERY } from "@lib/sanity/queries";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -35,25 +26,16 @@ async function GalleryContent({ params }: GalleryPageProps) {
   const album = await fetchPhotoAlbum(slug);
   if (!album) notFound();
 
-  const images = album.photos.flatMap((photo, index): GalleryPhoto[] =>
-    photo.asset
-      ? [
-          {
-            alt: getPhotoAlt(photo, album.title, index),
-            caption: photo.caption?.trim() || undefined,
-            image: photo,
-            shareHref: createPhotoShareUrl(album, photo),
-          },
-        ]
-      : [],
-  );
+  const images = album.photos.map((photo) => ({
+    alt: photo.alt,
+    caption: photo.caption?.trim() || undefined,
+    id: photo._key,
+    image: photo,
+    shareHref: photo.shareHref,
+  }));
 
   return (
-    <Article
-      title={album.title}
-      subtitle={describeAlbum({ schoolYear: album.schoolYear, photoCount: images.length })}
-      className="md:columns-1"
-    >
+    <Article title={album.title} subtitle={album.description} className="md:columns-1">
       <Link href="/photos" className="block w-fit">
         ← All galleries
       </Link>
@@ -69,32 +51,5 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: GalleryPageProps): Promise<Metadata> {
-  const album = await fetchPhotoAlbum((await params).slug, { stega: false });
-  const cover = album?.photos[0];
-  if (!album || !cover) return {};
-
-  const title = `${album.title} | ${BASE_TITLE}`;
-  const description = `Photos from ${album.title} at ${BASE_TITLE}${
-    album.schoolYear ? ` (school year ${album.schoolYear})` : ""
-  }.`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      type: "website",
-      locale: "en_US",
-      siteName: BASE_TITLE,
-      url: getAlbumPath(album.slug),
-      title,
-      description,
-      images: [
-        {
-          url: getPreviewImageUrl(cover),
-          ...PREVIEW_SIZE,
-          alt: getPhotoAlt(cover, album.title, 0),
-        },
-      ],
-    },
-  };
+  return createAlbumMetadata(await fetchPhotoAlbum((await params).slug, { stega: false }));
 }

@@ -20,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const eventRoutes = events.map(({ _id }) => `/calendar/${_id}`);
   const photoRoutes = albums.flatMap(({ slug, photoKeys }) => [
     `/photos/${slug}`,
-    ...photoKeys.map((key) => `/photos/${slug}/${key}`),
+    ...(photoKeys ?? []).map((key) => `/photos/${slug}/${key}`),
   ]);
 
   return [...getStaticRoutes(), ...classRoutes, ...eventRoutes, ...photoRoutes].map((route) => ({

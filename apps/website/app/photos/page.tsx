@@ -3,12 +3,7 @@ import { SanityImage } from "@components/sanity/sanity-image";
 import { Card, CardContent } from "@components/ui/card";
 import { MutedP, P } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
-import {
-  describeAlbum,
-  fetchPhotoAlbums,
-  getAlbumPath,
-  type PhotoAlbumSummary,
-} from "@lib/sanity/photo-albums";
+import { fetchPhotoAlbums, type PhotoAlbumSummary } from "@lib/sanity/photo-albums";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -54,14 +49,14 @@ interface AlbumCardProps {
 function AlbumCard({ album }: AlbumCardProps) {
   return (
     <Link
-      href={getAlbumPath(album.slug)}
+      href={album.path}
       className="group focus-visible:ring-ring block space-y-1.5 focus-visible:ring-2 focus-visible:outline-none"
     >
       <span className="relative block aspect-4/3 overflow-hidden rounded-lg border">
         {album.cover ? (
+          // The title below names the link, so the picture itself has no description.
           <SanityImage
-            value={album.cover}
-            fallbackAlt={album.title}
+            value={{ ...album.cover, alt: null }}
             fill
             width={800}
             height={600}
@@ -71,7 +66,7 @@ function AlbumCard({ album }: AlbumCardProps) {
         ) : null}
       </span>
       <span className="block text-lg font-semibold">{album.title}</span>
-      <span className="text-muted-foreground block text-sm">{describeAlbum(album)}</span>
+      <span className="text-muted-foreground block text-sm">{album.description}</span>
     </Link>
   );
 }

@@ -22,7 +22,7 @@ interface SearchAlbum {
   title: string;
   slug: string;
   schoolYear: string | null;
-  photoCount: number;
+  photoCount: number | null;
 }
 
 /** Only the fields search reads, so cached (stega-typed) and plain query results both fit. */

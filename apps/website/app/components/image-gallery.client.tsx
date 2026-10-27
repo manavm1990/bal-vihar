@@ -13,6 +13,8 @@ import { Button } from "./ui/button";
 interface GalleryImageBase {
   alt: string;
   caption?: string;
+  /** Unique within the gallery. The picture's own id repeats when the same photo is added twice. */
+  id?: string;
   /** A link that shares this photo, such as a WhatsApp message. Shown in the viewer. */
   shareHref?: string;
 }
@@ -263,7 +265,7 @@ function ViewerButton({ label, position, onClick, children }: ViewerButtonProps)
 }
 
 const getImageKey = (image: AnyGalleryImage) =>
-  "src" in image ? image.src.src : (image.image.asset?._id ?? image.alt);
+  image.id ?? ("src" in image ? image.src.src : (image.image.asset?._id ?? image.alt));
 
 /** The carousel loops, so the distance between two photos can go either way round. */
 const isNear = (position: number, selected: number, count: number) => {

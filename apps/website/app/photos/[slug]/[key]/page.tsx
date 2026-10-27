@@ -2,17 +2,8 @@ import Article from "@components/article";
 import { SanityImage } from "@components/sanity/sanity-image";
 import { Button } from "@components/ui/button";
 import { MutedP } from "@components/ui/typography";
-import { BASE_TITLE } from "@lib/constants";
 import { sanityFetchStaticParams } from "@lib/sanity/live";
-import {
-  createPhotoShareUrl,
-  fetchPhotoAlbum,
-  getAlbumPath,
-  getPhotoAlt,
-  getPhotoPath,
-  getPreviewImageUrl,
-  PREVIEW_SIZE,
-} from "@lib/sanity/photo-albums";
+import { createPhotoMetadata, fetchPhotoAlbum, findAlbumPhoto } from "@lib/sanity/photo-albums";
 import { PHOTO_ALBUMS_QUERY } from "@lib/sanity/queries";
 import type { SanityImageValue } from "@lib/sanity/types";
 import { Share1Icon } from "@radix-ui/react-icons";
@@ -38,9 +29,8 @@ export default function PhotoPage({ params }: PhotoPageProps) {
 async function PhotoContent({ params }: PhotoPageProps) {
   const { slug, key } = await params;
   const album = await fetchPhotoAlbum(slug);
-  const index = album?.photos.findIndex((item) => item._key === key) ?? -1;
-  const photo = album?.photos[index];
-  if (!album || !photo?.asset) notFound();
+  const { index, photo } = findAlbumPhoto(album, key);
+  if (!album || !photo) notFound();
 
   const caption = photo.caption?.trim();
   const previous = album.photos[index - 1];
@@ -52,13 +42,12 @@ async function PhotoContent({ params }: PhotoPageProps) {
       subtitle={`Photo ${index + 1} of ${album.photos.length}`}
       className="md:columns-1"
     >
-      <Link href={getAlbumPath(album.slug)} className="block w-fit">
+      <Link href={album.path} className="block w-fit">
         ← Back to {album.title}
       </Link>
       <figure className="max-w-3xl space-y-3">
         <SanityImage
           value={photo}
-          fallbackAlt={getPhotoAlt(photo, album.title, index)}
           width={IMAGE_WIDTH}
           height={getImageHeight(photo)}
           sizes="(min-width: 768px) 48rem, 100vw"
@@ -70,7 +59,7 @@ async function PhotoContent({ params }: PhotoPageProps) {
         ) : null}
       </figure>
       <Button asChild variant="outline" className="w-fit">
-        <a href={createPhotoShareUrl(album, photo)} target="_blank" rel="noopener noreferrer">
+        <a href={photo.shareHref} target="_blank" rel="noopener noreferrer">
           <Share1Icon aria-hidden="true" className="mr-2 size-4" />
           Share on WhatsApp
         </a>
@@ -78,14 +67,14 @@ async function PhotoContent({ params }: PhotoPageProps) {
       <nav aria-label="More photos" className="flex max-w-3xl justify-between gap-3">
         {previous ? (
           <Button asChild variant="outline">
-            <Link href={getPhotoPath(album.slug, previous._key)}>← Previous photo</Link>
+            <Link href={previous.path}>← Previous photo</Link>
           </Button>
         ) : (
           <span />
         )}
         {next ? (
           <Button asChild variant="outline">
-            <Link href={getPhotoPath(album.slug, next._key)}>Next photo →</Link>
+            <Link href={next.path}>Next photo →</Link>
           </Button>
         ) : null}
       </nav>
@@ -96,39 +85,14 @@ async function PhotoContent({ params }: PhotoPageProps) {
 export async function generateStaticParams() {
   const { data } = await sanityFetchStaticParams({ query: PHOTO_ALBUMS_QUERY });
 
-  return data.flatMap(({ slug, photoKeys }) => photoKeys.map((key) => ({ slug, key })));
+  return data.flatMap(({ slug, photoKeys }) => (photoKeys ?? []).map((key) => ({ slug, key })));
 }
 
 export async function generateMetadata({ params }: PhotoPageProps): Promise<Metadata> {
   const { slug, key } = await params;
   const album = await fetchPhotoAlbum(slug, { stega: false });
-  const index = album?.photos.findIndex((item) => item._key === key) ?? -1;
-  const photo = album?.photos[index];
-  if (!album || !photo) return {};
 
-  const title = `${album.title}, photo ${index + 1} | ${BASE_TITLE}`;
-  const description =
-    photo.caption?.trim() || `Photo ${index + 1} of ${album.photos.length} from ${album.title}.`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      type: "website",
-      locale: "en_US",
-      siteName: BASE_TITLE,
-      url: getPhotoPath(album.slug, photo._key),
-      title,
-      description,
-      images: [
-        {
-          url: getPreviewImageUrl(photo),
-          ...PREVIEW_SIZE,
-          alt: getPhotoAlt(photo, album.title, index),
-        },
-      ],
-    },
-  };
+  return createPhotoMetadata(album, findAlbumPhoto(album, key).index);
 }
 
 /** Keeps the picture's own proportions, so tall photos aren't cropped on the page. */
