@@ -272,6 +272,8 @@ export type PhotoAlbum = {
       _key: string;
     } & AlbumPhoto
   >;
+  pasteLinks?: string;
+  importReport?: string;
 };
 
 export type SanityImageCrop = {

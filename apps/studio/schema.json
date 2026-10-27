@@ -1690,6 +1690,20 @@
           }
         },
         "optional": false
+      },
+      "pasteLinks": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "importReport": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
       }
     }
   },

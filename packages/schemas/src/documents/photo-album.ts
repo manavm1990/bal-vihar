@@ -7,6 +7,10 @@ const describePhotoCount = (photos: unknown) => {
   return `${count} ${count === 1 ? "photo" : "photos"}`;
 };
 
+const hasLinks = (value: unknown) => typeof value === "string" && value.trim().length > 0;
+
+const hasPhotos = (value: unknown) => Array.isArray(value) && value.length > 0;
+
 export const photoAlbum = defineType({
   name: "photoAlbum",
   title: "Gallery",
@@ -42,7 +46,34 @@ export const photoAlbum = defineType({
         "Select all the photos for this gallery and drag them onto this list at once. The first photo is the cover. Drag a photo to move it.",
       of: [defineArrayMember({ type: "albumPhoto" })],
       options: { layout: "grid" },
-      validation: (rule) => rule.required().min(1).error("Add at least one photo."),
+      // Starts empty (not missing) so a gallery made only from pasted links can still publish.
+      initialValue: [],
+      validation: (rule) =>
+        rule
+          .required()
+          .error("Add at least one photo, or paste some photo links below.")
+          .custom((photos, { document }) =>
+            hasPhotos(photos) || hasLinks(document?.["pasteLinks"])
+              ? true
+              : "Add at least one photo, or paste some photo links below.",
+          ),
+    }),
+    defineField({
+      name: "pasteLinks",
+      title: "Add photos from links",
+      type: "text",
+      rows: 4,
+      description:
+        "Paste one photo link per line, then click Publish. A minute or so later the photos appear in the list above. Each link must go straight to a picture: right-click the photo on a website and choose Copy image address.",
+    }),
+    defineField({
+      name: "importReport",
+      title: "Last link import",
+      type: "text",
+      rows: 3,
+      readOnly: true,
+      hidden: ({ value }) => !value,
+      description: "What happened to the links you last pasted. Filled in automatically.",
     }),
   ],
   orderings: [
