@@ -7,9 +7,11 @@ import { fetchSanityOrNull } from "./fetch";
 import { urlFor } from "./image";
 import { PHOTO_ALBUM_QUERY, PHOTO_ALBUMS_QUERY } from "./queries";
 
-type AlbumResult = NonNullable<PHOTO_ALBUM_QUERY_RESULT>;
+type AlbumResult = WithSchoolYear<NonNullable<PHOTO_ALBUM_QUERY_RESULT>>;
 type RawPhoto = NonNullable<AlbumResult["photos"]>[number];
-type SummaryResult = PHOTO_ALBUMS_QUERY_RESULT[number];
+type SummaryResult = WithSchoolYear<PHOTO_ALBUMS_QUERY_RESULT[number]>;
+/** The dropdown's years are typed as a fixed list, but a page only treats the year as text. */
+type WithSchoolYear<T> = Omit<T, "schoolYear"> & { schoolYear: string };
 
 /** A photo with what a page needs: a description, its own page and a share link. */
 export type AlbumPhoto = Omit<RawPhoto, "alt"> & { alt: string; path: string; shareHref: string };
