@@ -4,6 +4,7 @@ import { CalendarIcon } from "@sanity/icons/Calendar";
 import { CogIcon } from "@sanity/icons/Cog";
 import { DocumentTextIcon } from "@sanity/icons/DocumentText";
 import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
+import { ImageIcon } from "@sanity/icons/Image";
 import { ImagesIcon } from "@sanity/icons/Images";
 import { StarIcon } from "@sanity/icons/Star";
 import { UsersIcon } from "@sanity/icons/Users";
@@ -28,13 +29,24 @@ export const structure: StructureResolver = (S) =>
             .title("Urgent notices"),
         ),
       S.listItem()
-        .title("Photos")
+        .title("Photo galleries")
         .icon(ImagesIcon)
+        .child(
+          S.documentTypeList("photoAlbum")
+            .title("Photo galleries")
+            .defaultOrdering([
+              { field: "schoolYear", direction: "desc" },
+              { field: "_createdAt", direction: "desc" },
+            ]),
+        ),
+      S.listItem()
+        .title("Home & page photos")
+        .icon(ImageIcon)
         .child(
           S.document()
             .schemaType("photoGallery")
             .documentId(SINGLETON_IDS.photoGallery)
-            .title("Photos"),
+            .title("Home & page photos"),
         ),
       S.listItem()
         .title("Calendar")

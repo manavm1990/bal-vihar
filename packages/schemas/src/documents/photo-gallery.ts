@@ -14,7 +14,7 @@ export const PHOTO_PAGE_OPTIONS = [
 
 export const photoGallery = defineType({
   name: "photoGallery",
-  title: "Photos",
+  title: "Home & page photos",
   type: "document",
   icon: ImagesIcon,
   fields: [
@@ -31,7 +31,7 @@ export const photoGallery = defineType({
       title: "Photos",
       type: "array",
       description:
-        "Add photos one at a time. Every photo needs a picture and a short description. Use Preview to check crop before Publish.",
+        "These photos feed the home page strip and the banner at the top of some pages. The Photos page is made from Photo galleries instead. Every photo needs a picture and a short description. Use Preview to check crop before Publish.",
       of: [
         defineArrayMember({
           type: "object",
@@ -109,7 +109,7 @@ export const photoGallery = defineType({
   ],
   preview: {
     prepare() {
-      return { title: "Photos" };
+      return { title: "Home & page photos" };
     },
   },
 });

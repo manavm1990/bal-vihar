@@ -35,13 +35,21 @@ export const resolve = {
         locations: [{ title: "Home page", href: "/" }],
       }),
     }),
+    photoAlbum: defineLocations({
+      select: { title: "title", slug: "slug.current" },
+      resolve: (doc) => ({
+        locations: doc?.slug
+          ? [
+              { title: doc.title ?? "Gallery", href: `/photos/${doc.slug}` },
+              { title: "Photos page", href: "/photos" },
+            ]
+          : [{ title: "Photos page", href: "/photos" }],
+      }),
+    }),
     photoGallery: defineLocations({
       select: { title: "title" },
       resolve: () => ({
-        locations: [
-          { title: "Photos page", href: "/photos" },
-          { title: "Home · photo strip", href: "/" },
-        ],
+        locations: [{ title: "Home · photo strip", href: "/" }],
       }),
     }),
     policies: defineLocations({
