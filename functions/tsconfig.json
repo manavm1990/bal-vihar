@@ -1,0 +1,5 @@
+{
+  "extends": "@bv/typescript-config/base.json",
+  "include": ["**/*.ts", "../sanity.blueprint.ts"],
+  "exclude": ["node_modules"]
+}
