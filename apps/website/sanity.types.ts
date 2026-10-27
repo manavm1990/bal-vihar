@@ -267,7 +267,7 @@ export type PhotoAlbum = {
   title: string;
   slug: Slug;
   schoolYear?: string;
-  photos: Array<
+  photos?: Array<
     {
       _key: string;
     } & AlbumPhoto
@@ -1070,7 +1070,7 @@ export type PHOTO_ALBUM_QUERY_RESULT = {
     caption: string | null;
     hotspot: SanityImageHotspot | null;
     crop: SanityImageCrop | null;
-  }>;
+  }> | null;
 } | null;
 
 // Source: ../website/app/lib/sanity/queries.ts
@@ -1081,8 +1081,8 @@ export type PHOTO_ALBUMS_QUERY_RESULT = Array<{
   title: string;
   slug: string;
   schoolYear: string | null;
-  photoCount: number;
-  photoKeys: Array<string>;
+  photoCount: number | null;
+  photoKeys: Array<string> | null;
   cover: {
     _key: string;
     asset: {
@@ -1109,19 +1109,6 @@ export type PHOTO_ALBUMS_QUERY_RESULT = Array<{
 export type PHOTO_GALLERY_QUERY_RESULT =
   | {
       _id: "photoGallery";
-      title: string;
-      photos: Array<{
-        _key: string;
-        title: null;
-        schoolYear: null;
-        note: null;
-        featured: null;
-        pages: null;
-        image: null;
-      }>;
-    }
-  | {
-      _id: "photoGallery";
       title: null;
       photos: null;
     }
@@ -1134,6 +1121,19 @@ export type PHOTO_GALLERY_QUERY_RESULT =
       _id: "photoGallery";
       title: string | null;
       photos: null;
+    }
+  | {
+      _id: "photoGallery";
+      title: string;
+      photos: Array<{
+        _key: string;
+        title: null;
+        schoolYear: null;
+        note: null;
+        featured: null;
+        pages: null;
+        image: null;
+      }> | null;
     }
   | {
       _id: "photoGallery";

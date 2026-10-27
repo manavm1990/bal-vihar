@@ -11,6 +11,9 @@ const hasLinks = (value: unknown) => typeof value === "string" && value.trim().l
 
 const hasPhotos = (value: unknown) => Array.isArray(value) && value.length > 0;
 
+const hasSlug = (value: unknown) =>
+  typeof value === "object" && value !== null && "current" in value && Boolean(value.current);
+
 export const photoAlbum = defineType({
   name: "photoAlbum",
   title: "Gallery",
@@ -28,8 +31,10 @@ export const photoAlbum = defineType({
       name: "slug",
       title: "Web address",
       type: "slug",
-      description: "Click Generate. It becomes the end of the gallery's web address.",
+      description:
+        "Click Generate once. After that it is locked, so links people already shared keep working.",
       options: { source: "title", maxLength: 80 },
+      readOnly: ({ value }) => hasSlug(value),
       validation: (rule) => rule.required().error("Click Generate to make the web address."),
     }),
     defineField({
@@ -46,17 +51,12 @@ export const photoAlbum = defineType({
         "Select all the photos for this gallery and drag them onto this list at once. The first photo is the cover. Drag a photo to move it.",
       of: [defineArrayMember({ type: "albumPhoto" })],
       options: { layout: "grid" },
-      // Starts empty (not missing) so a gallery made only from pasted links can still publish.
-      initialValue: [],
       validation: (rule) =>
-        rule
-          .required()
-          .error("Add at least one photo, or paste some photo links below.")
-          .custom((photos, { document }) =>
-            hasPhotos(photos) || hasLinks(document?.["pasteLinks"])
-              ? true
-              : "Add at least one photo, or paste some photo links below.",
-          ),
+        rule.custom((photos, { document }) =>
+          hasPhotos(photos) || hasLinks(document?.["pasteLinks"])
+            ? true
+            : "Add at least one photo, or paste some photo links below.",
+        ),
     }),
     defineField({
       name: "pasteLinks",
