@@ -258,6 +258,22 @@ export type PhotoGallery = {
   }>;
 };
 
+export type PhotoAlbum = {
+  _id: string;
+  _type: "photoAlbum";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  schoolYear?: string;
+  photos: Array<
+    {
+      _key: string;
+    } & AlbumPhoto
+  >;
+};
+
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
   top: number;
@@ -473,6 +489,16 @@ export type CalendarEvent = {
   academicYear?: string;
 };
 
+export type AlbumPhoto = {
+  _type: "albumPhoto";
+  asset?: SanityImageAssetReference;
+  media?: unknown;
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  caption?: string;
+};
+
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
   background?: string;
@@ -581,6 +607,7 @@ export type AllSanitySchemaTypes =
   | Policies
   | Slug
   | PhotoGallery
+  | PhotoAlbum
   | SanityImageCrop
   | SanityImageHotspot
   | ImpactAward
@@ -591,6 +618,7 @@ export type AllSanitySchemaTypes =
   | SanityFileAssetReference
   | CalendarImport
   | CalendarEvent
+  | AlbumPhoto
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -695,6 +723,11 @@ export type VOLUNTEER_ROSTER_QUERY_RESULT =
     }
   | {
       _id: "volunteerRoster";
+      schoolYear: string | null;
+      activities: null;
+    }
+  | {
+      _id: "volunteerRoster";
       schoolYear: string;
       activities: Array<{
         _key: string;
@@ -717,6 +750,12 @@ export type TEACHING_FACULTY_QUERY_RESULT =
   | {
       _id: "teachingFaculty";
       schoolYear: string;
+      groups: null;
+      programs: null;
+    }
+  | {
+      _id: "teachingFaculty";
+      schoolYear: string | null;
       groups: null;
       programs: null;
     }
@@ -1008,6 +1047,19 @@ export type HOME_PAGE_QUERY_RESULT =
 // Variable: PHOTO_GALLERY_QUERY
 // Query: *[_id == "photoGallery"][0]{  _id,  title,  photos[]{    _key,    title,    schoolYear,    note,    featured,    pages,    image {  asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop}  }}
 export type PHOTO_GALLERY_QUERY_RESULT =
+  | {
+      _id: "photoGallery";
+      title: string;
+      photos: Array<{
+        _key: string;
+        title: null;
+        schoolYear: null;
+        note: null;
+        featured: null;
+        pages: null;
+        image: null;
+      }>;
+    }
   | {
       _id: "photoGallery";
       title: null;

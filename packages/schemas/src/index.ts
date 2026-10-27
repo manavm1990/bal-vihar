@@ -4,12 +4,14 @@ import { classPage } from "./documents/class-page";
 import { faqs } from "./documents/faqs";
 import { homePage } from "./documents/home-page";
 import { impactAward } from "./documents/impact-award";
+import { photoAlbum } from "./documents/photo-album";
 import { PHOTO_PAGE_OPTIONS, photoGallery } from "./documents/photo-gallery";
 import { policies } from "./documents/policies";
 import { siteSettings } from "./documents/site-settings";
 import { teachingFaculty } from "./documents/teaching-faculty";
 import { volunteerRoster } from "./documents/volunteer-roster";
 import { volunteersList } from "./documents/volunteers-list";
+import { albumPhoto } from "./objects/album-photo";
 import { classLink } from "./objects/class-link";
 import { mediaImage } from "./objects/media-image";
 import { youthAssistant } from "./objects/youth-assistant";
@@ -35,6 +37,7 @@ export const SINGLETON_TYPES = Object.keys(SINGLETON_IDS) as (keyof typeof SINGL
  * All Sanity schema types shared by Studio (and typed consumers).
  */
 export const schemaTypes = [
+  albumPhoto,
   calendarEvent,
   calendarImport,
   classLink,
@@ -43,6 +46,7 @@ export const schemaTypes = [
   homePage,
   impactAward,
   mediaImage,
+  photoAlbum,
   photoGallery,
   policies,
   siteSettings,
@@ -53,6 +57,7 @@ export const schemaTypes = [
 ];
 
 export {
+  albumPhoto,
   calendarEvent,
   calendarImport,
   classLink,
@@ -62,6 +67,7 @@ export {
   impactAward,
   mediaImage,
   PHOTO_PAGE_OPTIONS,
+  photoAlbum,
   photoGallery,
   policies,
   siteSettings,
