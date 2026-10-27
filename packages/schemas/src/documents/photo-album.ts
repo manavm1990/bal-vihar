@@ -1,6 +1,7 @@
 import { ImagesIcon } from "@sanity/icons/Images";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+const AUGUST = 8;
 const FIRST_SCHOOL_YEAR = 2014;
 // The dropdown stops here, so raise it when the newest school year is missing.
 const LAST_SCHOOL_YEAR = 2035;
@@ -12,6 +13,15 @@ const describePhotoCount = (photos: unknown) => {
 };
 
 const formatSchoolYear = (start: number) => `${start}-${String(start + 1).slice(2)}`;
+
+/** The school year running today, wherever the editor is, counting from August. */
+function getCurrentSchoolYear() {
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
+  const year = Number(today.slice(0, 4));
+  const month = Number(today.slice(5, 7));
+
+  return formatSchoolYear(month >= AUGUST ? year : year - 1);
+}
 
 const hasLinks = (value: unknown) => typeof value === "string" && value.trim().length > 0;
 
@@ -51,8 +61,10 @@ export const photoAlbum = defineType({
       name: "schoolYear",
       title: "School year",
       type: "string",
-      description: "Pick the school year. The newest year is listed first on the Photos page.",
+      description:
+        "Starts as the current school year. Change it only for older photos. The newest year is listed first on the Photos page.",
       options: { list: SCHOOL_YEARS, layout: "dropdown" },
+      initialValue: getCurrentSchoolYear,
       validation: (rule) => rule.required().error("Pick the school year."),
     }),
     defineField({
