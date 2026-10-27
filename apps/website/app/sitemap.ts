@@ -2,25 +2,26 @@ import { readdirSync } from "node:fs";
 import { basename, join, sep } from "node:path";
 import { SITE_URL } from "@lib/constants";
 import { client } from "@lib/sanity/client";
-import { CALENDAR_EVENTS_QUERY, CLASS_PAGES_QUERY, PHOTO_GALLERY_QUERY } from "@lib/sanity/queries";
+import { CALENDAR_EVENTS_QUERY, CLASS_PAGES_QUERY, PHOTO_ALBUMS_QUERY } from "@lib/sanity/queries";
 import type { MetadataRoute } from "next";
 
 const APP_DIR = join(process.cwd(), "app");
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [classPages, events, gallery] = await Promise.all([
+  const [classPages, events, albums] = await Promise.all([
     client.fetch(CLASS_PAGES_QUERY),
     client.fetch(CALENDAR_EVENTS_QUERY),
-    client.fetch(PHOTO_GALLERY_QUERY),
+    client.fetch(PHOTO_ALBUMS_QUERY),
   ]);
   const classRoutes = classPages.flatMap(({ slug }) =>
     slug ? [`/education/classes/${slug}`] : [],
   );
 
   const eventRoutes = events.map(({ _id }) => `/calendar/${_id}`);
-  const photoRoutes = (gallery?.photos ?? []).flatMap((photo) =>
-    photo.image?.asset ? [`/photos/${photo._key}`] : [],
-  );
+  const photoRoutes = albums.flatMap(({ slug, photoKeys }) => [
+    `/photos/${slug}`,
+    ...photoKeys.map((key) => `/photos/${slug}/${key}`),
+  ]);
 
   return [...getStaticRoutes(), ...classRoutes, ...eventRoutes, ...photoRoutes].map((route) => ({
     url: `${SITE_URL}${route === "/" ? "" : route}`,

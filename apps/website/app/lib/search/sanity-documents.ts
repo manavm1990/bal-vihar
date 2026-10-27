@@ -3,19 +3,27 @@ import type { POLICIES_QUERY_RESULT } from "sanity.types";
 import { type FaqItemView, getFaqs } from "../sanity/faqs";
 import { fetchSanityOrNull } from "../sanity/fetch";
 import { formatCalendarEventMeta, mapCalendarEvents } from "../sanity/map-calendar-events";
-import { mapPhotoGallery } from "../sanity/map-photo-gallery";
-import { describePhoto } from "../sanity/photos";
+import { describeAlbum } from "../sanity/photo-albums";
 import { getPolicies, type PolicySectionView } from "../sanity/policies";
 import { extractText } from "../sanity/portable-text";
 import {
   CALENDAR_EVENTS_QUERY,
   CLASS_PAGES_QUERY,
   FAQS_QUERY,
-  PHOTO_GALLERY_QUERY,
+  PHOTO_ALBUMS_QUERY,
   POLICIES_QUERY,
 } from "../sanity/queries";
-import type { CalendarEventData, HomePhotoBoardItem } from "../sanity/types";
+import type { CalendarEventData } from "../sanity/types";
 import type { SearchDocument } from "./search";
+
+/** Only the fields search reads from a photo gallery. */
+interface SearchAlbum {
+  _id: string;
+  title: string;
+  slug: string;
+  schoolYear: string | null;
+  photoCount: number;
+}
 
 /** Only the fields search reads, so cached (stega-typed) and plain query results both fit. */
 interface SearchClassPage {
@@ -26,9 +34,9 @@ interface SearchClassPage {
 }
 
 interface SanitySearchSource {
+  albums: readonly SearchAlbum[] | null | undefined;
   events: unknown;
   faqs: Parameters<typeof getFaqs>[0];
-  gallery: unknown;
   classes: readonly SearchClassPage[] | null | undefined;
   policies: POLICIES_QUERY_RESULT | null | undefined;
 }
@@ -37,18 +45,18 @@ const POLICIES_PATH = "/about-us/policies-procedures";
 
 /** Published events, class webpages and policies, the content editors change in Studio. */
 export async function getSanitySearchDocuments(): Promise<SearchDocument[]> {
-  const [events, classes, faqs, gallery, policies] = await Promise.all([
+  const [events, classes, faqs, albums, policies] = await Promise.all([
     fetchSanityOrNull(CALENDAR_EVENTS_QUERY, "the calendar for search"),
     fetchSanityOrNull(CLASS_PAGES_QUERY, "the class webpages for search"),
     fetchSanityOrNull(FAQS_QUERY, "the FAQs for search"),
-    fetchSanityOrNull(PHOTO_GALLERY_QUERY, "the photos for search"),
+    fetchSanityOrNull(PHOTO_ALBUMS_QUERY, "the photo galleries for search"),
     fetchSanityOrNull(POLICIES_QUERY, "the policies for search"),
   ]);
 
   return createSanitySearchDocuments({
+    albums: albums?.data,
     events: events?.data,
     faqs: faqs?.data,
-    gallery: gallery?.data,
     classes: classes?.data,
     policies: policies?.data,
   });
@@ -56,9 +64,9 @@ export async function getSanitySearchDocuments(): Promise<SearchDocument[]> {
 
 /** Pure mapping, so the page and the Algolia reindex build identical documents. */
 export function createSanitySearchDocuments({
+  albums,
   events,
   faqs,
-  gallery,
   classes,
   policies,
 }: SanitySearchSource): SearchDocument[] {
@@ -78,12 +86,20 @@ export function createSanitySearchDocuments({
         : [],
     ),
     ...getFaqs(faqs).map(createFaqDocument),
-    ...(mapPhotoGallery(gallery)?.photos ?? []).flatMap(createPhotoDocuments),
+    ...(albums ?? []).map(createAlbumDocument),
     ...getPolicies(policies ?? null).sections.flatMap(createPolicyDocuments),
   ];
 }
 
 const clean = (value: string | null | undefined) => stegaClean(value ?? "");
+
+const createAlbumDocument = (album: SearchAlbum): SearchDocument => ({
+  id: `album:${album._id}`,
+  title: clean(album.title),
+  section: "Events & Community › Photos",
+  href: `/photos/${clean(album.slug)}`,
+  text: clean(describeAlbum(album)),
+});
 
 const createEventDocument = (event: CalendarEventData): SearchDocument => ({
   id: `event:${event.id}`,
@@ -100,19 +116,6 @@ const createFaqDocument = ({ key, question, answer }: FaqItemView): SearchDocume
   href: "/questions#faqs",
   text: clean(extractText(answer)),
 });
-
-const createPhotoDocuments = (photo: HomePhotoBoardItem): SearchDocument[] =>
-  photo.image?.asset
-    ? [
-        {
-          id: `photo:${photo.key}`,
-          title: clean(photo.title),
-          section: "Events & Community › Photos",
-          href: `/photos/${photo.key}`,
-          text: clean(describePhoto(photo)),
-        },
-      ]
-    : [];
 
 function createPolicyDocuments(section: PolicySectionView): SearchDocument[] {
   const href = `${POLICIES_PATH}#${clean(section.slug)}`;

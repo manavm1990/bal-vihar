@@ -4,7 +4,7 @@ import {
   CALENDAR_EVENTS_QUERY,
   CLASS_PAGES_QUERY,
   FAQS_QUERY,
-  PHOTO_GALLERY_QUERY,
+  PHOTO_ALBUMS_QUERY,
   POLICIES_QUERY,
 } from "@lib/sanity/queries";
 import { ALGOLIA_INDEX_SETTINGS } from "@lib/search/algolia-config";
@@ -97,11 +97,11 @@ async function rebuildIndex({ appId, writeKey, indexName, configure, origin }: A
 /** Sanity content and crawled pages load together so the serverless reindex stays under maxDuration. */
 async function collectSearchDocuments(origin: string) {
   // Straight from Sanity rather than the cached helper, so an edit is never one step behind.
-  const [events, classes, faqs, gallery, policies, crawled] = await Promise.all([
+  const [events, classes, faqs, albums, policies, crawled] = await Promise.all([
     client.fetch(CALENDAR_EVENTS_QUERY),
     client.fetch(CLASS_PAGES_QUERY),
     client.fetch(FAQS_QUERY),
-    client.fetch(PHOTO_GALLERY_QUERY),
+    client.fetch(PHOTO_ALBUMS_QUERY),
     client.fetch(POLICIES_QUERY),
     crawlPageDocuments(origin),
   ]);
@@ -109,7 +109,7 @@ async function collectSearchDocuments(origin: string) {
   return [
     ...STATIC_SEARCH_DOCUMENTS,
     ...crawled,
-    ...createSanitySearchDocuments({ events, classes, faqs, gallery, policies }),
+    ...createSanitySearchDocuments({ events, classes, faqs, albums, policies }),
   ];
 }
 
