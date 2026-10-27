@@ -40,15 +40,6 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
       S.listItem()
-        .title("Home & page photos")
-        .icon(ImageIcon)
-        .child(
-          S.document()
-            .schemaType("photoGallery")
-            .documentId(SINGLETON_IDS.photoGallery)
-            .title("Home & page photos"),
-        ),
-      S.listItem()
         .title("Calendar")
         .icon(CalendarIcon)
         .child(
@@ -126,6 +117,15 @@ export const structure: StructureResolver = (S) =>
           S.list()
             .title("Advanced")
             .items([
+              S.listItem()
+                .title("Home & page photos")
+                .icon(ImageIcon)
+                .child(
+                  S.document()
+                    .schemaType("photoGallery")
+                    .documentId(SINGLETON_IDS.photoGallery)
+                    .title("Home & page photos"),
+                ),
               S.listItem()
                 .title("Site settings")
                 .icon(CogIcon)

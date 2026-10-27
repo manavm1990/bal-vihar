@@ -63,7 +63,10 @@ export function createPhotoMetadata(album: PhotoAlbum | null, index: number): Me
 export const describeAlbum = ({
   schoolYear,
   photoCount,
-}: Pick<SummaryResult, "schoolYear" | "photoCount">) =>
+}: {
+  schoolYear: string | null;
+  photoCount: number | null;
+}) =>
   [
     schoolYear ? `School year ${schoolYear}` : null,
     `${photoCount ?? 0} ${photoCount === 1 ? "photo" : "photos"}`,

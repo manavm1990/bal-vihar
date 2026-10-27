@@ -1,11 +1,17 @@
 import { ImagesIcon } from "@sanity/icons/Images";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+const FIRST_SCHOOL_YEAR = 2014;
+// The dropdown stops here, so raise it when the newest school year is missing.
+const LAST_SCHOOL_YEAR = 2035;
+
 const describePhotoCount = (photos: unknown) => {
   const count = Array.isArray(photos) ? photos.length : 0;
 
   return `${count} ${count === 1 ? "photo" : "photos"}`;
 };
+
+const formatSchoolYear = (start: number) => `${start}-${String(start + 1).slice(2)}`;
 
 const hasLinks = (value: unknown) => typeof value === "string" && value.trim().length > 0;
 
@@ -13,6 +19,10 @@ const hasPhotos = (value: unknown) => Array.isArray(value) && value.length > 0;
 
 const hasSlug = (value: unknown) =>
   typeof value === "object" && value !== null && "current" in value && Boolean(value.current);
+
+const SCHOOL_YEARS = Array.from({ length: LAST_SCHOOL_YEAR - FIRST_SCHOOL_YEAR + 1 }, (_, index) =>
+  formatSchoolYear(LAST_SCHOOL_YEAR - index),
+);
 
 export const photoAlbum = defineType({
   name: "photoAlbum",
@@ -41,14 +51,16 @@ export const photoAlbum = defineType({
       name: "schoolYear",
       title: "School year",
       type: "string",
-      description: 'e.g. "2026-27". The newest school year is listed first.',
+      description: "Pick the school year. The newest year is listed first on the Photos page.",
+      options: { list: SCHOOL_YEARS, layout: "dropdown" },
+      validation: (rule) => rule.required().error("Pick the school year."),
     }),
     defineField({
       name: "photos",
       title: "Photos",
       type: "array",
       description:
-        "Select all the photos for this gallery and drag them onto this list at once. The first photo is the cover. Drag a photo to move it.",
+        "Select all the photos for this gallery and drag them onto this list at once. Use JPEG or PNG files. The first photo is the cover, so drag the one you want to the front. If a face is cut off, open that photo and move its focus point.",
       of: [defineArrayMember({ type: "albumPhoto" })],
       options: { layout: "grid" },
       validation: (rule) =>
