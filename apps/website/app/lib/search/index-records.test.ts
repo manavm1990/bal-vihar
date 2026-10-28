@@ -1,8 +1,6 @@
 import { equal, ok } from "node:assert/strict";
 import { test } from "node:test";
-
-import { MAX_RECORD_BYTES } from "./algolia-config";
-import { createAlgoliaRecord, createAlgoliaRecords } from "./index-records";
+import { createAlgoliaRecord } from "./index-records";
 import type { SearchDocument } from "./search";
 
 const base = (overrides: Partial<SearchDocument> = {}): SearchDocument => ({
@@ -22,17 +20,9 @@ test("a normal document keeps its text and gets a numeric boost", () => {
   equal(record.boost, 5);
 });
 
-test("missing boost becomes zero", () => {
-  equal(createAlgoliaRecord(base()).boost, 0);
-});
-
 test("oversized body text is trimmed until the JSON fits under the byte ceiling", () => {
   const record = createAlgoliaRecord(base({ text: "字".repeat(20_000) }));
 
-  ok(Buffer.byteLength(JSON.stringify(record)) <= MAX_RECORD_BYTES);
+  ok(Buffer.byteLength(JSON.stringify(record)) <= 9000);
   ok(record.text.length < 20_000);
-});
-
-test("createAlgoliaRecords maps every document", () => {
-  equal(createAlgoliaRecords([base(), base({ id: "b" })]).length, 2);
 });

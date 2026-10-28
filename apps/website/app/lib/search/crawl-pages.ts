@@ -6,28 +6,44 @@ interface CrawledPage {
   section: string;
 }
 
-/**
- * Pages whose copy is woven into their layout. The index reads what they render instead of
- * keeping a second copy of the text, so it can't drift from the page.
- */
-const CRAWLED_PAGES: readonly CrawledPage[] = [
-  { path: "/giving", title: "Giving", section: "Get Involved" },
-  { path: "/new-families", title: "New families", section: "Education" },
-];
+function decodeEntities(value: string) {
+  const named: Record<string, string> = {
+    amp: "&",
+    apos: "'",
+    gt: ">",
+    lt: "<",
+    nbsp: " ",
+    quot: '"',
+  } as const;
 
-const HTML_ENTITIES: Record<string, string> = {
-  amp: "&",
-  apos: "'",
-  gt: ">",
-  lt: "<",
-  nbsp: " ",
-  quot: '"',
-};
+  return value.replaceAll(/&(#x[\da-f]+|#\d+|[a-z]+);/gi, (match, code: string) => {
+    if (code.startsWith("#x")) return String.fromCodePoint(Number.parseInt(code.slice(2), 16));
 
-/** Reads each page from this same site, one search document per section heading. */
+    if (code.startsWith("#")) return String.fromCodePoint(Number.parseInt(code.slice(1), 10));
+
+    return named[code.toLowerCase()] ?? match;
+  });
+}
+
+const stripHtml = (html: string) =>
+  decodeEntities(
+    html
+      .replaceAll(/<(script|style|svg|template|noscript)\b[\s\S]*?<\/\1>/gi, " ")
+      .replaceAll(/<!--[\s\S]*?-->/g, "")
+      .replaceAll(/<\/(?:p|div|li|h[1-6]|section|article|tr|ul|ol|dt|dd)>|<br\s*\/?>/gi, " ")
+      .replaceAll(/<[^>]+>/g, ""),
+  )
+    .replaceAll(/\s+/g, " ")
+    .trim();
+
 export async function crawlPageDocuments(origin: string): Promise<SearchDocument[]> {
+  const pages = [
+    { path: "/giving", title: "Giving", section: "Get Involved" },
+    { path: "/new-families", title: "New families", section: "Education" },
+  ] as const;
+
   const documents = await Promise.all(
-    CRAWLED_PAGES.map(async (page) => {
+    pages.map(async (page) => {
       try {
         const response = await fetch(`${origin}${page.path}`, { cache: "no-store" });
         if (!response.ok) throw new Error(`${page.path} answered ${response.status}`);
@@ -44,7 +60,6 @@ export async function crawlPageDocuments(origin: string): Promise<SearchDocument
   return documents.flat();
 }
 
-/** Splits a page's main content at each h2, linking to the heading's anchor when it has one. */
 export function createPageDocuments(page: CrawledPage, html: string): SearchDocument[] {
   const main = html.match(/<main[\s\S]*?<\/main>/i)?.[0] ?? html;
 
@@ -54,7 +69,6 @@ export function createPageDocuments(page: CrawledPage, html: string): SearchDocu
     const text = stripHtml(heading ? (heading[3] ?? "") : chunk);
     if (!title || !text) return [];
 
-    // Headings are labelled `<id>-heading`, and the section itself carries `<id>`.
     const anchor = heading?.[1]?.match(/\bid="([^"]+)"/)?.[1]?.replace(/-heading$/, "");
 
     return [
@@ -65,25 +79,6 @@ export function createPageDocuments(page: CrawledPage, html: string): SearchDocu
         href: anchor ? `${page.path}#${anchor}` : page.path,
         text,
       },
-    ];
+    ] as const;
   });
 }
-
-const decodeEntities = (value: string) =>
-  value.replaceAll(/&(#x[\da-f]+|#\d+|[a-z]+);/gi, (match, code: string) => {
-    if (code.startsWith("#x")) return String.fromCodePoint(Number.parseInt(code.slice(2), 16));
-    if (code.startsWith("#")) return String.fromCodePoint(Number.parseInt(code.slice(1), 10));
-
-    return HTML_ENTITIES[code.toLowerCase()] ?? match;
-  });
-
-const stripHtml = (html: string) =>
-  decodeEntities(
-    html
-      .replaceAll(/<(script|style|svg|template|noscript)\b[\s\S]*?<\/\1>/gi, " ")
-      .replaceAll(/<!--[\s\S]*?-->/g, "")
-      .replaceAll(/<\/(?:p|div|li|h[1-6]|section|article|tr|ul|ol|dt|dd)>|<br\s*\/?>/gi, " ")
-      .replaceAll(/<[^>]+>/g, ""),
-  )
-    .replaceAll(/\s+/g, " ")
-    .trim();

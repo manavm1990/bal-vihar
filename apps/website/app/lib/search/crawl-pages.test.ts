@@ -1,6 +1,5 @@
 import { deepStrictEqual, equal } from "node:assert/strict";
 import { test } from "node:test";
-
 import { createPageDocuments } from "./crawl-pages";
 
 const PAGE = { path: "/new-families", title: "New families", section: "Education" };

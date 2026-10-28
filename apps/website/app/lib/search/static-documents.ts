@@ -1,5 +1,4 @@
 import kebabCase from "lodash.kebabcase";
-
 import { ADMIN_DOCUMENTS, ADMIN_FORMS } from "../admin-resources-content";
 import { HINDU_RITUALS, RITUALS } from "../hindu-rituals-content";
 import { INDIA_OVERVIEW } from "../india-overview-content";
@@ -13,12 +12,10 @@ interface ContentPage {
   page: StaticPageContent;
   href: string;
   section: string;
-  /** False when headings repeat across the page, so `#heading` links would be ambiguous. */
   hasAnchors?: boolean;
   extraText?: string;
 }
 
-/** Pages whose text lives in JSX, so only a summary and keywords are searchable. */
 interface PageEntry {
   href: string;
   title: string;
@@ -247,7 +244,6 @@ export const STATIC_SEARCH_DOCUMENTS: readonly SearchDocument[] = [
   ...[...ADMIN_DOCUMENTS, ...ADMIN_FORMS].map(createResourceDocument),
 ];
 
-/** One document for the page's opening text, then one per heading so a result can link to it. */
 function createContentDocuments({
   page,
   href,

@@ -1,8 +1,7 @@
 import Article from "@components/article";
 import Highlighted from "@components/highlighted";
 import { Button } from "@components/ui/button";
-import { CONTROL_CLASS } from "@components/ui/form/field";
-import { Label } from "@components/ui/form/label";
+import { CONTROL_CLASS, Label } from "@components/ui/fields";
 import { MutedP, P } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import { findResults } from "@lib/search/find-results";
@@ -12,12 +11,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
-const RESULT_LIMIT = 20;
+const RESULT_LIMIT = 10;
 
 export const metadata: Metadata = {
   title: `${BASE_TITLE} | Search`,
   description: "Search Bal Vihar of St. Louis for classes, events, policies and forms.",
-  // Results pages only duplicate the content they point to.
   robots: { index: false },
 };
 
