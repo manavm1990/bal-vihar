@@ -21,16 +21,21 @@ type Outcome = Added | Failed;
 
 class PhotoError extends Error {}
 
+const API_VERSION = "2025-05-08";
+const CONCURRENCY = 4;
+const FETCH_TIMEOUT_MS = 20_000;
+const IPV4_ADDRESS = /^\d{1,3}(\.\d{1,3}){3}$/;
 const MAX_BYTES = 20 * 1024 * 1024;
 const MAX_LINKS = 40;
+const MAX_REDIRECTS = 3;
+const PRIVATE_IPV4 = /^(0|10|127)\.|^169\.254\.|^192\.168\.|^172\.(1[6-9]|2\d|3[01])\./;
+const PRIVATE_IPV6 = /^\[(::1?\]|::ffff:|f[cd][0-9a-f]{2}:|fe[89ab][0-9a-f]:)/;
+const PRIVATE_NAME = /^localhost$|\.(local|internal)$/;
+const TOO_BIG = "the picture is over 20 MB";
 
 export const handler = documentEventHandler<PhotoAlbumEvent>(async ({ context, event }) => {
   const { _id, _rev, pasteLinks } = event.data;
-  const client = createClient({
-    ...context.clientOptions,
-    apiVersion: "2025-05-08",
-    useCdn: false,
-  });
+  const client = createClient({ ...context.clientOptions, apiVersion: API_VERSION, useCdn: false });
   const isDryRun = context.local === true;
 
   const { links, rejected } = parseLinks(pasteLinks ?? "");
@@ -42,6 +47,8 @@ export const handler = documentEventHandler<PhotoAlbumEvent>(async ({ context, e
   console.info(importReport);
   if (isDryRun) return;
 
+  // Fails if the gallery was edited meanwhile, rather than erasing links pasted since this run
+  // began. That edit was published, so it runs the import again with the links it holds.
   const patch = client.patch(_id).ifRevisionId(_rev).unset(["pasteLinks"]).set({ importReport });
   await (added.length === 0
     ? patch
@@ -67,7 +74,7 @@ function describeError(error: unknown) {
 }
 
 async function downloadPhoto(link: string) {
-  const response = await fetch(link, { signal: AbortSignal.timeout(20_000) });
+  const response = await fetchPublic(link);
   if (!response.ok) throw new PhotoError(`the site answered ${response.status}`);
 
   const header = response.headers.get("content-type") ?? "";
@@ -75,6 +82,22 @@ async function downloadPhoto(link: string) {
   if (!type.startsWith("image/")) throw new PhotoError("it is a web page, not a picture");
 
   return { photo: await readPhoto(response, type), type };
+}
+
+/** Follows redirects by hand, so every stop is checked and not only the link that was pasted. */
+async function fetchPublic(link: string, redirectsLeft = MAX_REDIRECTS): Promise<Response> {
+  const response = await fetch(link, {
+    redirect: "manual",
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+  });
+  const location = response.headers.get("location");
+  if (response.status < 300 || response.status > 399 || !location) return response;
+
+  const next = new URL(location, link).href;
+  if (redirectsLeft === 0 || !isPublicWebLink(next))
+    throw new PhotoError("it sends you somewhere that is not a public web page");
+
+  return fetchPublic(next, redirectsLeft - 1);
 }
 
 const formatNow = () =>
@@ -105,6 +128,7 @@ async function importLink(client: SanityClient, link: string, isDryRun: boolean)
   }
 }
 
+/** Keeps a few downloads going at once, starting the next link as soon as one finishes. */
 async function importLinks(client: SanityClient, links: string[], isDryRun: boolean) {
   const outcomes: Outcome[] = [];
   const queue = links.entries();
@@ -112,7 +136,7 @@ async function importLinks(client: SanityClient, links: string[], isDryRun: bool
     for (const [index, link] of queue) outcomes[index] = await importLink(client, link, isDryRun);
   };
 
-  await Promise.all(Array.from({ length: 4 }, work));
+  await Promise.all(Array.from({ length: CONCURRENCY }, work));
 
   return outcomes;
 }
@@ -121,14 +145,20 @@ const isAdded = (outcome: Outcome): outcome is Added => "assetId" in outcome;
 
 const isFailed = (outcome: Outcome): outcome is Failed => "reason" in outcome;
 
-function isWebLink(value: string) {
+const isPrivateHost = (hostname: string) =>
+  PRIVATE_NAME.test(hostname) ||
+  (IPV4_ADDRESS.test(hostname) && PRIVATE_IPV4.test(hostname)) ||
+  PRIVATE_IPV6.test(hostname);
+
+function isPublicWebLink(value: string) {
   if (!URL.canParse(value)) return false;
 
-  const { protocol } = new URL(value);
+  const { hostname, protocol } = new URL(value);
 
-  return protocol === "http:" || protocol === "https:";
+  return (protocol === "http:" || protocol === "https:") && !isPrivateHost(hostname);
 }
 
+/** One link per line. A line that isn't made only of links is reported once, as written. */
 function parseLinks(text: string) {
   const rejected: Failed[] = [];
   const links: string[] = [];
@@ -143,7 +173,7 @@ function parseLinks(text: string) {
     const words = line.split(/\s+/);
 
     for (const link of words.every((word) => URL.canParse(word)) ? words : [line]) {
-      if (!isWebLink(link)) rejected.push({ link, reason: "it is not a web link" });
+      if (!isPublicWebLink(link)) rejected.push({ link, reason: "it is not a public web link" });
       else if (links.length < MAX_LINKS) links.push(link);
       else
         rejected.push({
@@ -153,12 +183,12 @@ function parseLinks(text: string) {
     }
   }
 
-  return { links, rejected } as const;
+  return { links, rejected };
 }
 
+/** Reads the picture in pieces, so one that is too big is dropped without being downloaded whole. */
 async function readPhoto(response: Response, type: string) {
-  if (Number(response.headers.get("content-length")) > MAX_BYTES)
-    throw new PhotoError("the picture is over 20 MB");
+  if (Number(response.headers.get("content-length")) > MAX_BYTES) throw new PhotoError(TOO_BIG);
 
   const reader = response.body?.getReader();
   if (!reader) throw new PhotoError("the site sent no picture");
@@ -170,7 +200,7 @@ async function readPhoto(response: Response, type: string) {
     size += chunk.value.byteLength;
     if (size > MAX_BYTES) {
       await reader.cancel();
-      throw new PhotoError("the picture is over 20 MB");
+      throw new PhotoError(TOO_BIG);
     }
     chunks.push(chunk.value);
   }
