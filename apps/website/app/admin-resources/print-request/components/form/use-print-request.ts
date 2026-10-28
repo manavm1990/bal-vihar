@@ -1,13 +1,13 @@
 import useActionForm from "@lib/hooks/use-action-form";
 import { type DefaultValues, useWatch } from "react-hook-form";
 import { submitPrintRequest } from "./actions";
+import { createPrintRequestFormData } from "./data";
 import {
   CUSTOM_PAPER_SIZE,
   type PrintRequestInputs,
   type PrintRequestOutput,
   PrintRequestSchema,
-} from "./print-request.types";
-import { toPrintRequestFormData } from "./print-request-form-data";
+} from "./types";
 
 const DEFAULT_VALUES: DefaultValues<PrintRequestInputs> = {
   name: "",
@@ -19,16 +19,13 @@ const DEFAULT_VALUES: DefaultValues<PrintRequestInputs> = {
   options: [],
   comments: "",
   website: "",
-};
+} as const;
 
-/**
- * Print request form state; the file is uploaded with the request via `submitPrintRequest`.
- */
 export default function usePrintRequest() {
   const form = useActionForm<PrintRequestInputs, PrintRequestOutput>({
     schema: PrintRequestSchema,
     defaultValues: DEFAULT_VALUES,
-    action: (values) => submitPrintRequest(toPrintRequestFormData(values)),
+    action: (values) => submitPrintRequest(createPrintRequestFormData(values)),
   });
   const paperSize = useWatch({ control: form.control, name: "paperSize" });
 

@@ -1,25 +1,19 @@
 "use client";
 
-import { Checkbox } from "@components/ui/form/checkbox";
-import { FormField } from "@components/ui/form/field";
-import { FileField } from "@components/ui/form/file-field";
-import { FormSubmit } from "@components/ui/form/form-submit";
-import { FormSuccess } from "@components/ui/form/form-success.client";
-import { Select } from "@components/ui/form/select";
+import { Checkbox, FileField, FormField, FormSubmit, Select } from "@components/ui/fields";
+import { FormSuccess } from "@components/ui/form-success.client";
 import { H2 } from "@components/ui/typography";
 import { cn } from "@lib/utils";
 import { Controller, type UseFormRegister } from "react-hook-form";
-
 import {
   COLOR_OPTIONS,
-  MAX_PRINT_FILE_BYTES,
   PAPER_LAYOUTS,
   PAPER_SIZES,
   PRINT_FILE_TYPES,
   PRINT_OPTIONS,
   type PrintRequestInputs,
   REQUESTER_ROLES,
-} from "./print-request.types";
+} from "./types";
 import usePrintRequest from "./use-print-request";
 
 type ChoiceName = "color" | "layout" | "role";
@@ -163,7 +157,7 @@ export default function PrintRequestForm() {
                   accept={FILE_ACCEPT}
                   required
                   className="sm:col-span-2"
-                  hint={`PDF, Word, PowerPoint, JPG or PNG, under ${MAX_PRINT_FILE_BYTES / 1024 / 1024} MB.`}
+                  hint="PDF, Word, PowerPoint, JPG or PNG, under 3.5 MB."
                   error={fieldState.error?.message}
                   ref={field.ref}
                   onBlur={field.onBlur}

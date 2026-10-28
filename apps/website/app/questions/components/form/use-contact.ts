@@ -1,6 +1,6 @@
 import useActionForm from "@lib/hooks/use-action-form";
 import { sendEmail } from "./actions";
-import { ContactFormSchema } from "./contact.types";
+import { ContactFormSchema } from "./types";
 
 const DEFAULT_VALUES = {
   firstName: "",
@@ -10,7 +10,6 @@ const DEFAULT_VALUES = {
   message: "",
 } as const;
 
-/** Contact form state; submission goes to the `sendEmail` server action. */
 export default function useContact() {
   return useActionForm({
     schema: ContactFormSchema,

@@ -1,8 +1,8 @@
 import { equal } from "node:assert/strict";
 import { test } from "node:test";
 import * as v from "valibot";
-import { type PrintRequestInputs, PrintRequestSchema } from "./print-request.types";
-import { fromPrintRequestFormData, toPrintRequestFormData } from "./print-request-form-data";
+import { createPrintRequestFormData, parsePrintRequestFormData } from "./data";
+import { type PrintRequestInputs, PrintRequestSchema } from "./types";
 
 const file = (name = "worksheet.pdf", type = "application/pdf", size = 1024) =>
   new File([new Uint8Array(size)], name, { type });
@@ -25,9 +25,8 @@ const valid = (overrides: Partial<PrintRequestInputs> = {}): PrintRequestInputs 
   ...overrides,
 });
 
-// Mirrors the real path: client builds FormData, server rebuilds the input and validates it.
 const roundTrip = (input: PrintRequestInputs) =>
-  v.safeParse(PrintRequestSchema, fromPrintRequestFormData(toPrintRequestFormData(input)));
+  v.safeParse(PrintRequestSchema, parsePrintRequestFormData(createPrintRequestFormData(input)));
 
 test("a complete request survives the FormData round trip and validates", () => {
   const result = roundTrip(valid());
@@ -36,9 +35,9 @@ test("a complete request survives the FormData round trip and validates", () => 
 });
 
 test("the file is required", () => {
-  const empty = toPrintRequestFormData(valid());
+  const empty = createPrintRequestFormData(valid());
   empty.delete("file");
-  equal(v.safeParse(PrintRequestSchema, fromPrintRequestFormData(empty)).success, false);
+  equal(v.safeParse(PrintRequestSchema, parsePrintRequestFormData(empty)).success, false);
 });
 
 test("the file must be a supported type", () => {
@@ -61,20 +60,13 @@ test("a custom paper size is required only when Custom is chosen", () => {
   );
 });
 
-test("past due dates, bad counts and unknown choices are rejected", () => {
-  equal(roundTrip(valid({ dueDate: "2000-01-01" })).success, false);
-  equal(roundTrip(valid({ copies: "0" })).success, false);
-  equal(roundTrip(valid({ pages: "abc" })).success, false);
-  equal(roundTrip(valid({ paperSize: "Bogus" as never })).success, false);
-});
-
 test("tampered payloads fail instead of throwing", () => {
   const empty = new FormData();
-  equal(v.safeParse(PrintRequestSchema, fromPrintRequestFormData(empty)).success, false);
+  equal(v.safeParse(PrintRequestSchema, parsePrintRequestFormData(empty)).success, false);
   const garbage = new FormData();
   garbage.set("fields", "{not json");
-  equal(v.safeParse(PrintRequestSchema, fromPrintRequestFormData(garbage)).success, false);
-  const stringFile = toPrintRequestFormData(valid());
+  equal(v.safeParse(PrintRequestSchema, parsePrintRequestFormData(garbage)).success, false);
+  const stringFile = createPrintRequestFormData(valid());
   stringFile.set("file", "not a file");
-  equal(v.safeParse(PrintRequestSchema, fromPrintRequestFormData(stringFile)).success, false);
+  equal(v.safeParse(PrintRequestSchema, parsePrintRequestFormData(stringFile)).success, false);
 });

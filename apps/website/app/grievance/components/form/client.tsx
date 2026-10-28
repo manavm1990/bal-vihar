@@ -1,10 +1,8 @@
 "use client";
 
-import { FormField } from "@components/ui/form/field";
-import { FormSubmit } from "@components/ui/form/form-submit";
-import { FormSuccess } from "@components/ui/form/form-success.client";
-import { Select } from "@components/ui/form/select";
-import { GRIEVANCE_ASSOCIATIONS } from "./grievance.types";
+import { FormField, FormSubmit, Select } from "@components/ui/fields";
+import { FormSuccess } from "@components/ui/form-success.client";
+import { GRIEVANCE_ASSOCIATIONS } from "./types";
 import useGrievance from "./use-grievance";
 
 const ASSOCIATION_OPTIONS = [

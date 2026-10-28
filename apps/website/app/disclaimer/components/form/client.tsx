@@ -1,11 +1,8 @@
 "use client";
 
-import { Checkbox } from "@components/ui/form/checkbox";
-import { FormField } from "@components/ui/form/field";
-import { FormSubmit } from "@components/ui/form/form-submit";
-import { FormSuccess } from "@components/ui/form/form-success.client";
+import { Checkbox, FormField, FormSubmit } from "@components/ui/fields";
+import { FormSuccess } from "@components/ui/form-success.client";
 import { P } from "@components/ui/typography";
-
 import useDisclaimer from "./use-disclaimer";
 
 export default function DisclaimerForm() {
@@ -28,6 +25,7 @@ export default function DisclaimerForm() {
           {...register("parentsName")}
           error={errors.parentsName?.message}
         />
+
         <FormField
           label="Full address"
           isTextArea
@@ -37,6 +35,7 @@ export default function DisclaimerForm() {
           {...register("address")}
           error={errors.address?.message}
         />
+
         <FormField
           label="Phone number"
           type="tel"
@@ -45,6 +44,7 @@ export default function DisclaimerForm() {
           {...register("phone")}
           error={errors.phone?.message}
         />
+
         <FormField
           label="Date"
           type="date"
@@ -52,6 +52,7 @@ export default function DisclaimerForm() {
           {...register("signedDate")}
           error={errors.signedDate?.message}
         />
+
         <FormField
           label="Child(ren) name"
           isTextArea
@@ -61,10 +62,12 @@ export default function DisclaimerForm() {
           {...register("childrenNames")}
           error={errors.childrenNames?.message}
         />
+
         <P className="text-muted-foreground sm:col-span-2 text-sm">
           Parents are held responsible for the safety of participants and will promote safety of
           others too.
         </P>
+
         <FormField
           label="Print parent/guardian name"
           autoComplete="name"

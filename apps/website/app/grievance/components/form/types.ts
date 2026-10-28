@@ -1,4 +1,4 @@
-import { BaseFormSchema } from "@lib/types/form.types";
+import { BaseFormSchema } from "@lib/form";
 import * as v from "valibot";
 
 export const GRIEVANCE_ASSOCIATIONS = ["Teacher", "Parent", "Volunteer", "Other"] as const;

@@ -1,9 +1,7 @@
 "use client";
 
-import { FormField } from "@components/ui/form/field";
-import { FormSubmit } from "@components/ui/form/form-submit";
-import { FormSuccess } from "@components/ui/form/form-success.client";
-
+import { FormField, FormSubmit } from "@components/ui/fields";
+import { FormSuccess } from "@components/ui/form-success.client";
 import useContact from "./use-contact";
 
 export default function ContactForm() {

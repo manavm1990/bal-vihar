@@ -1,17 +1,13 @@
 "use client";
 
 import { Card } from "@components/ui/card";
-import { FormField } from "@components/ui/form/field";
-import { FormSubmit } from "@components/ui/form/form-submit";
-import { FormSuccess } from "@components/ui/form/form-success.client";
+import { FormField, FormSubmit } from "@components/ui/fields";
+import { FormSuccess } from "@components/ui/form-success.client";
 import { H2, H3 } from "@components/ui/typography";
 import { motion, useReducedMotion } from "motion/react";
 import type { UseFormRegister } from "react-hook-form";
+import { VOLUNTEER_INTERESTS, type VolunteerApplicationInputs } from "./types";
 import useVolunteerApplication from "./use-volunteer-application";
-import {
-  VOLUNTEER_INTERESTS,
-  type VolunteerApplicationInputs,
-} from "./volunteer-application.types";
 
 export default function VolunteerApplicationForm() {
   const { register, errors, onSubmit, isPending, successMessage, errorMessage } =

@@ -1,35 +1,22 @@
 "use client";
 
-import { Checkbox } from "@components/ui/form/checkbox";
-import { FormField } from "@components/ui/form/field";
-import { FileField } from "@components/ui/form/file-field";
-import { FormSubmit } from "@components/ui/form/form-submit";
-import { FormSuccess } from "@components/ui/form/form-success.client";
-import { Select } from "@components/ui/form/select";
+import { Checkbox, FileField, FormField, FormSubmit, Select } from "@components/ui/fields";
+import { FormSuccess } from "@components/ui/form-success.client";
 import { H3 } from "@components/ui/typography";
 import { Controller } from "react-hook-form";
-
-import {
-  AWARD_AGE_GROUPS,
-  AWARD_FILE_TYPES,
-  AWARD_GRADES,
-  AWARD_WORK_AREAS,
-} from "./award-application.types";
+import { AWARD_AGE_GROUPS, AWARD_FILE_TYPES, AWARD_GRADES, AWARD_WORK_AREAS } from "./types";
 import useAwardApplication from "./use-award-application";
-
-const FILE_ACCEPT = AWARD_FILE_TYPES.join(",");
-
-const FILE_HINT = "PDF, JPG, PNG or Excel. All files together must be under 3.5 MB.";
 
 const AGE_GROUP_OPTIONS = [
   { value: "", label: "Select an age group…" },
   ...AWARD_AGE_GROUPS.map((group) => ({ value: group, label: group })),
-];
-
+] as const;
+const FILE_ACCEPT = AWARD_FILE_TYPES.join(",");
+const FILE_HINT = "PDF, JPG, PNG or Excel. All files together must be under 3.5 MB.";
 const GRADE_OPTIONS = [
   { value: "", label: "Select a grade…" },
   ...AWARD_GRADES.map((grade) => ({ value: grade, label: grade })),
-];
+] as const;
 
 export default function AwardApplicationForm() {
   const { register, control, errors, onSubmit, isPending, successMessage, errorMessage } =

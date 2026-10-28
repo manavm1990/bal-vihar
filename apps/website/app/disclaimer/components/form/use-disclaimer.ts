@@ -1,7 +1,6 @@
 import useActionForm from "@lib/hooks/use-action-form";
-
 import { submitDisclaimer } from "./actions";
-import { DisclaimerFormSchema } from "./disclaimer.types";
+import { DisclaimerFormSchema } from "./types";
 
 const DEFAULT_VALUES = {
   address: "",
@@ -13,7 +12,6 @@ const DEFAULT_VALUES = {
   signedDate: "",
 } as const;
 
-/** Disclaimer form state; submission goes to `submitDisclaimer`. */
 export default function useDisclaimer() {
   return useActionForm({
     schema: DisclaimerFormSchema,

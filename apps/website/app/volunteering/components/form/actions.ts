@@ -1,24 +1,16 @@
 "use server";
 
-import type { ActionResponse } from "@lib/types/action.types";
 import * as v from "valibot";
-import {
-  type VolunteerApplicationInputs,
-  VolunteerApplicationSchema,
-} from "./volunteer-application.types";
+import { type VolunteerApplicationInputs, VolunteerApplicationSchema } from "./types";
 
-export async function submitVolunteerApplication(
-  input: VolunteerApplicationInputs,
-): Promise<ActionResponse> {
+export async function submitVolunteerApplication(input: VolunteerApplicationInputs) {
   const validatedFields = v.safeParse(VolunteerApplicationSchema, input);
 
   if (!validatedFields.success)
     return {
       success: false,
       message: "Please check the highlighted fields and try again.",
-    };
-
-  // TODO: Send ✉️ to the volunteer team with Resend (`validatedFields.output`) once the domain is added.
+    } as const;
 
   return {
     success: true,

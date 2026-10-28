@@ -1,11 +1,9 @@
 "use server";
 
-import type { ActionResponse } from "@lib/types/action.types";
 import * as v from "valibot";
+import { type DisclaimerFormInputs, DisclaimerFormSchema } from "./types";
 
-import { type DisclaimerFormInputs, DisclaimerFormSchema } from "./disclaimer.types";
-
-export async function submitDisclaimer(input: DisclaimerFormInputs): Promise<ActionResponse> {
+export async function submitDisclaimer(input: DisclaimerFormInputs) {
   const validatedFields = v.safeParse(DisclaimerFormSchema, input);
 
   if (!validatedFields.success)
@@ -13,8 +11,6 @@ export async function submitDisclaimer(input: DisclaimerFormInputs): Promise<Act
       success: false,
       message: "Please check the highlighted fields and try again.",
     };
-
-  // TODO: Send ✉️ with Resend (`validatedFields.output`) once the domain is added.
 
   return {
     success: true,

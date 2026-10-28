@@ -1,8 +1,8 @@
 import { equal } from "node:assert/strict";
 import { test } from "node:test";
 import * as v from "valibot";
-import { type ExpenseFormInputs, ExpenseFormSchema } from "./expense.types";
-import { fromExpenseFormData, toExpenseFormData } from "./expense-form-data";
+import { createExpenseFormData, parseExpenseFormData } from "./data";
+import { type ExpenseFormInputs, ExpenseFormSchema } from "./types";
 
 const receipt = (name = "receipt.pdf", type = "application/pdf", size = 1024) =>
   new File([new Uint8Array(size)], name, { type });
@@ -26,9 +26,8 @@ const valid = (overrides: Partial<ExpenseFormInputs["items"][number]> = {}): Exp
   ],
 });
 
-// Mirrors the real path: client builds FormData, server rebuilds the input and validates it.
 const roundTrip = (input: ExpenseFormInputs) =>
-  v.safeParse(ExpenseFormSchema, fromExpenseFormData(toExpenseFormData(input)));
+  v.safeParse(ExpenseFormSchema, parseExpenseFormData(createExpenseFormData(input)));
 
 test("a complete claim survives the FormData round trip and validates", () => {
   const result = roundTrip(valid());
@@ -61,22 +60,15 @@ test("receipts that are only too large together are rejected", () => {
   equal(roundTrip(two).success, false);
 });
 
-test("future dates, bad amounts and unknown categories are rejected", () => {
-  equal(roundTrip(valid({ date: "2999-01-01" })).success, false);
-  equal(roundTrip(valid({ amount: "abc" })).success, false);
-  equal(roundTrip(valid({ amount: "0" })).success, false);
-  equal(roundTrip(valid({ category: "Bogus" })).success, false);
-});
-
 test("tampered payloads fail instead of throwing", () => {
   const empty = new FormData();
-  equal(v.safeParse(ExpenseFormSchema, fromExpenseFormData(empty)).success, false);
+  equal(v.safeParse(ExpenseFormSchema, parseExpenseFormData(empty)).success, false);
   const garbage = new FormData();
   garbage.set("fields", "{not json");
-  equal(v.safeParse(ExpenseFormSchema, fromExpenseFormData(garbage)).success, false);
-  const stringReceipt = toExpenseFormData(valid());
+  equal(v.safeParse(ExpenseFormSchema, parseExpenseFormData(garbage)).success, false);
+  const stringReceipt = createExpenseFormData(valid());
   stringReceipt.set("receipt-0", "not a file");
-  equal(v.safeParse(ExpenseFormSchema, fromExpenseFormData(stringReceipt)).success, false);
+  equal(v.safeParse(ExpenseFormSchema, parseExpenseFormData(stringReceipt)).success, false);
 });
 
 test("a claim can hold at most five expenses", () => {

@@ -1,12 +1,9 @@
 "use server";
 
-import type { ActionResponse } from "@lib/types/action.types";
-
 import * as v from "valibot";
+import { type GrievanceFormInputs, GrievanceFormSchema } from "./types";
 
-import { type GrievanceFormInputs, GrievanceFormSchema } from "./grievance.types";
-
-export async function submitGrievance(input: GrievanceFormInputs): Promise<ActionResponse> {
+export async function submitGrievance(input: GrievanceFormInputs) {
   const validatedFields = v.safeParse(GrievanceFormSchema, input);
 
   if (!validatedFields.success)
@@ -14,9 +11,6 @@ export async function submitGrievance(input: GrievanceFormInputs): Promise<Actio
       success: false,
       message: "Please check the highlighted fields and try again.",
     };
-
-  // TODO: Send ✉️ to the Grievance Committee with Resend (`validatedFields.output`, stamped with
-  // the filing date) once the domain is added.
 
   return {
     success: true,

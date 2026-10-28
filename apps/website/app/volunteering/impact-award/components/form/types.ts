@@ -1,13 +1,7 @@
-import {
-  BaseFormSchema,
-  createRequiredCheck,
-  createRequiredText,
-  PhoneSchema,
-} from "@lib/types/form.types";
+import { BaseFormSchema, createRequiredCheck, createRequiredText, PhoneSchema } from "@lib/form";
 import * as v from "valibot";
 
 export const AWARD_AGE_GROUPS = ["Teens (11–15)", "Young adults (16–25)"] as const;
-
 export const AWARD_GRADES = [
   "Middle school",
   "High school freshman",
@@ -15,7 +9,6 @@ export const AWARD_GRADES = [
   "High school junior",
   "High school senior",
 ] as const;
-
 export const AWARD_WORK_AREAS = [
   "Student teacher",
   "Community service",
@@ -23,7 +16,6 @@ export const AWARD_WORK_AREAS = [
   "Technology",
   "Event volunteer",
 ] as const;
-
 export const AWARD_FILE_TYPES = [
   "application/pdf",
   "image/jpeg",
@@ -31,10 +23,6 @@ export const AWARD_FILE_TYPES = [
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 ] as const;
 
-/**
- * All files in one application must fit in a single request. This stays below the 4 MB server
- * action limit in next.config.ts (and Vercel's ~4.5 MB request cap) with room for the form fields.
- */
 export const MAX_TOTAL_AWARD_FILE_BYTES = 3.5 * 1024 * 1024;
 
 const getTotalFileBytes = (files: (File | undefined)[]) =>

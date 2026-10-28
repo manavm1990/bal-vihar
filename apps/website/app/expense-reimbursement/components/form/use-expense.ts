@@ -1,7 +1,7 @@
 import useActionForm from "@lib/hooks/use-action-form";
 import { submitExpense } from "./actions";
-import { type ExpenseFormInputs, ExpenseFormSchema } from "./expense.types";
-import { toExpenseFormData } from "./expense-form-data";
+import { createExpenseFormData } from "./data";
+import { type ExpenseFormInputs, ExpenseFormSchema } from "./types";
 
 export const EMPTY_EXPENSE = {
   date: "",
@@ -19,14 +19,10 @@ const DEFAULT_VALUES: ExpenseFormInputs = {
   items: [EMPTY_EXPENSE],
 } as const;
 
-/**
- * Expense reimbursement form state; receipts are uploaded with
- *  the claim via `submitExpense`.
- */
 export default function useExpense() {
   return useActionForm({
     schema: ExpenseFormSchema,
     defaultValues: DEFAULT_VALUES,
-    action: (values) => submitExpense(toExpenseFormData(values)),
+    action: (values) => submitExpense(createExpenseFormData(values)),
   });
 }

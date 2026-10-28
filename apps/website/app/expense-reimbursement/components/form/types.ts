@@ -1,4 +1,4 @@
-import { BaseFormSchema, PhoneSchema } from "@lib/types/form.types";
+import { BaseFormSchema, PhoneSchema } from "@lib/form";
 import * as v from "valibot";
 
 export const EXPENSE_CATEGORIES = [
@@ -27,10 +27,6 @@ export const MAX_EXPENSES = 5;
 
 export const RECEIPT_TYPES = ["image/jpeg", "image/png", "application/pdf"] as const;
 
-/**
- * All receipts in one claim must fit in a single request. This stays below the 4 MB server action
- * limit in next.config.ts (and Vercel's ~4.5 MB request cap) with room for the form fields.
- */
 export const MAX_TOTAL_RECEIPT_BYTES = 3.5 * 1024 * 1024;
 
 const ReceiptSchema = v.pipe(

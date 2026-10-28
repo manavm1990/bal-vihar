@@ -1,4 +1,4 @@
-import { BaseFormSchema, PhoneSchema } from "@lib/types/form.types";
+import { BaseFormSchema, PhoneSchema } from "@lib/form";
 import * as v from "valibot";
 
 const ContactFieldsSchema = v.object({

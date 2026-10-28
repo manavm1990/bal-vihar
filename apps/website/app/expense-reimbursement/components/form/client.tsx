@@ -1,22 +1,17 @@
 "use client";
 
 import { Button } from "@components/ui/button";
-import { FormField } from "@components/ui/form/field";
-import { FileField } from "@components/ui/form/file-field";
-import { FormSubmit } from "@components/ui/form/form-submit";
-import { FormSuccess } from "@components/ui/form/form-success.client";
-import { Select } from "@components/ui/form/select";
+import { FileField, FormField, FormSubmit, Select } from "@components/ui/fields";
+import { FormSuccess } from "@components/ui/form-success.client";
 import { H2 } from "@components/ui/typography";
 import { Controller, useFieldArray } from "react-hook-form";
-
-import { EXPENSE_CATEGORIES, MAX_EXPENSES, RECEIPT_TYPES } from "./expense.types";
+import { EXPENSE_CATEGORIES, MAX_EXPENSES, RECEIPT_TYPES } from "./types";
 import useExpense, { EMPTY_EXPENSE } from "./use-expense";
 
 const CATEGORY_OPTIONS = [
   { value: "", label: "Select a category…" },
   ...EXPENSE_CATEGORIES.map((category) => ({ value: category, label: category })),
 ];
-
 const RECEIPT_ACCEPT = RECEIPT_TYPES.join(",");
 
 export default function ExpenseForm() {
@@ -46,6 +41,7 @@ export default function ExpenseForm() {
               {...register("name")}
               error={errors.name?.message}
             />
+
             <FormField
               label="Email address"
               type="email"
@@ -54,6 +50,7 @@ export default function ExpenseForm() {
               {...register("email")}
               error={errors.email?.message}
             />
+
             <FormField
               label="Phone number"
               type="tel"
@@ -62,6 +59,7 @@ export default function ExpenseForm() {
               {...register("phone")}
               error={errors.phone?.message}
             />
+
             <FormField
               label="Street address"
               autoComplete="street-address"
@@ -70,6 +68,7 @@ export default function ExpenseForm() {
               {...register("address")}
               error={errors.address?.message}
             />
+
             <FormField
               label="City, state and zip"
               autoComplete="off"
@@ -105,6 +104,7 @@ export default function ExpenseForm() {
                     {...register(`items.${index}.date`)}
                     error={itemErrors?.date?.message}
                   />
+
                   <FormField
                     label="Amount (USD)"
                     placeholder="0.00"
@@ -113,6 +113,7 @@ export default function ExpenseForm() {
                     {...register(`items.${index}.amount`)}
                     error={itemErrors?.amount?.message}
                   />
+
                   <FormField
                     label="Description"
                     required
@@ -120,6 +121,7 @@ export default function ExpenseForm() {
                     {...register(`items.${index}.description`)}
                     error={itemErrors?.description?.message}
                   />
+
                   <Select
                     id={`items-${index}-category`}
                     label="Category"
@@ -128,11 +130,13 @@ export default function ExpenseForm() {
                     {...register(`items.${index}.category`)}
                     error={itemErrors?.category?.message}
                   />
+
                   <FormField
                     label="Comments (optional)"
                     {...register(`items.${index}.comments`)}
                     error={itemErrors?.comments?.message}
                   />
+
                   <Controller
                     control={control}
                     name={`items.${index}.receipt`}

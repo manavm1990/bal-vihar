@@ -1,6 +1,6 @@
 import useActionForm from "@lib/hooks/use-action-form";
 import { submitGrievance } from "./actions";
-import { GrievanceFormSchema } from "./grievance.types";
+import { GrievanceFormSchema } from "./types";
 
 const DEFAULT_VALUES = {
   fullName: "",
@@ -10,9 +10,6 @@ const DEFAULT_VALUES = {
   message: "",
 } as const;
 
-/**
- * Grievance form state; submission goes to `submitGrievance`.
- */
 export default function useGrievance() {
   return useActionForm({
     schema: GrievanceFormSchema,

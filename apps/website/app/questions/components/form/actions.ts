@@ -1,10 +1,9 @@
 "use server";
 
-import type { ActionResponse } from "@lib/types/action.types";
 import * as v from "valibot";
-import { type ContactFormInputs, ContactFormSchema } from "./contact.types";
+import { type ContactFormInputs, ContactFormSchema } from "./types";
 
-export async function sendEmail(input: ContactFormInputs): Promise<ActionResponse> {
+export async function sendEmail(input: ContactFormInputs) {
   const validatedFields = v.safeParse(ContactFormSchema, input);
 
   if (!validatedFields.success)
@@ -12,8 +11,6 @@ export async function sendEmail(input: ContactFormInputs): Promise<ActionRespons
       success: false,
       message: "Please check the highlighted fields and try again.",
     };
-
-  // TODO: Send ✉️ (`validatedFields.output`) once domain is added to Resend.
 
   return {
     success: true,

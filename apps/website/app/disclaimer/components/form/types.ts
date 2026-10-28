@@ -1,4 +1,4 @@
-import { createRequiredCheck, createRequiredText, PhoneSchema } from "@lib/types/form.types";
+import { createRequiredCheck, createRequiredText, PhoneSchema } from "@lib/form";
 import * as v from "valibot";
 
 export const DisclaimerFormSchema = v.object({
