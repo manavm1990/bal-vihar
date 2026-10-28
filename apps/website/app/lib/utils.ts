@@ -1,6 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-
 import {
   ADMIN_OFFICE,
   BASE_TITLE,
@@ -14,13 +13,13 @@ import {
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
-/** Browser only: whether the visitor has asked their device for less motion. */
 export const isReducedMotionPreferred = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export function createJsonLd(name: string, description = DESCRIPTION) {
   const jsonLdDisplayName =
     name === ORGANIZATION_LEGAL_NAME ? ORGANIZATION_NAME : `${ORGANIZATION_NAME} - ${name}`;
+
   return {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
@@ -60,5 +59,5 @@ export function createJsonLd(name: string, description = DESCRIPTION) {
       areaServed: "Metro St. Louis",
       availableLanguage: "English",
     },
-  };
+  } as const;
 }

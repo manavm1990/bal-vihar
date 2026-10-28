@@ -1,5 +1,5 @@
 import Article from "@components/article";
-import EventCard from "@components/event-card.client";
+import EventCard from "@components/event-card";
 import { MutedP } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import { fetchSanityData } from "@lib/sanity/fetch";
@@ -15,36 +15,6 @@ const MAX_NOTE_LENGTH = 120;
 
 interface CalendarEventPageProps {
   params: Promise<{ id: string }>;
-}
-
-export default function CalendarEventPage({ params }: CalendarEventPageProps) {
-  return (
-    <Suspense fallback={<MutedP>Loading event…</MutedP>}>
-      <CalendarEventContent params={params} />
-    </Suspense>
-  );
-}
-
-async function CalendarEventContent({ params }: CalendarEventPageProps) {
-  const event = await fetchCalendarEvent((await params).id);
-  if (!event) notFound();
-
-  return (
-    <Article title={event.title} className="md:columns-1">
-      <Link href="/calendar" className="block w-fit">
-        ← All events
-      </Link>
-      <div className="max-w-xl">
-        <EventCard event={event} />
-      </div>
-    </Article>
-  );
-}
-
-export async function generateStaticParams() {
-  const { data } = await sanityFetchStaticParams({ query: CALENDAR_EVENTS_QUERY });
-
-  return data.map(({ _id }) => ({ id: _id }));
 }
 
 export async function generateMetadata({ params }: CalendarEventPageProps): Promise<Metadata> {
@@ -71,11 +41,40 @@ export async function generateMetadata({ params }: CalendarEventPageProps): Prom
       title,
       description,
     },
-  };
+  } as const;
 }
 
-async function fetchCalendarEvent(id: string, options?: { stega?: boolean }) {
-  const events = mapCalendarEvents(await fetchSanityData(CALENDAR_EVENTS_QUERY, options));
+export async function generateStaticParams() {
+  const { data } = await sanityFetchStaticParams({ query: CALENDAR_EVENTS_QUERY });
 
-  return events.find((event) => event.id === id) ?? null;
+  return data.map(({ _id }) => ({ id: _id }));
 }
+
+export default function CalendarEventPage({ params }: CalendarEventPageProps) {
+  return (
+    <Suspense fallback={<MutedP>Loading event…</MutedP>}>
+      <CalendarEventContent params={params} />
+    </Suspense>
+  );
+}
+
+async function CalendarEventContent({ params }: CalendarEventPageProps) {
+  const event = await fetchCalendarEvent((await params).id);
+  if (!event) notFound();
+
+  return (
+    <Article title={event.title} className="md:columns-1">
+      <Link href="/calendar" className="block w-fit">
+        ← All events
+      </Link>
+      <div className="max-w-xl">
+        <EventCard event={event} />
+      </div>
+    </Article>
+  );
+}
+
+const fetchCalendarEvent = async (id: string, options?: { stega?: boolean }) =>
+  mapCalendarEvents(await fetchSanityData(CALENDAR_EVENTS_QUERY, options)).find(
+    (event) => event.id === id,
+  ) ?? null;

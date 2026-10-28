@@ -31,10 +31,8 @@ import temple032 from "../assets/temples-of-india/temple-032.jpg";
 import temple033 from "../assets/temples-of-india/temple-033.jpg";
 import temple034 from "../assets/temples-of-india/temple-034.jpg";
 import temple035 from "../assets/temples-of-india/temple-035.jpg";
-import type { GalleryImage } from "../components/image-gallery.client";
-import type { StaticPageContent } from "./static-page-content";
 
-export const TEMPLE_IMAGES: GalleryImage[] = [
+export const TEMPLE_IMAGES = [
   {
     src: temple002,
     alt: "Temple spires rising out of morning mist across a wide plain",
@@ -181,9 +179,9 @@ export const TEMPLE_IMAGES: GalleryImage[] = [
     src: temple035,
     alt: "Tall blue and grey gateway tower with rows of carved figures",
   },
-];
+] as const;
 
-export const TEMPLES_OF_INDIA: StaticPageContent = {
+export const TEMPLES_OF_INDIA = {
   title: "Temples of India",
   subtitle: "Sacred architecture from India and the lands her traditions reached",
   description:
@@ -191,4 +189,4 @@ export const TEMPLES_OF_INDIA: StaticPageContent = {
   singleColumn: true,
   content:
     "Temples are the heart of Indian community life: places of worship, learning, music and celebration. These photographs show Hindu, Jain, Sikh and Buddhist places of worship, including a few in Cambodia and Myanmar, where Indian religious and architectural traditions spread. Select a photo to see it larger.",
-};
+} as const;

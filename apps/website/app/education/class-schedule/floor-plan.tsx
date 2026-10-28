@@ -4,7 +4,6 @@ export type RoomNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
 
 export type RoomId = `room-${RoomNumber}` | "hall-1" | "hall-2";
 
-/** What a group does in each room, for example `{ "room-5": ["Class"] }`. */
 export type RoomLabels = Partial<Record<RoomId, readonly string[]>>;
 
 interface Area {
@@ -13,7 +12,6 @@ interface Area {
   note?: string;
 }
 
-// TODO: Matches the 2022–23 classroom layout; confirm the building has not changed.
 const LEFT_COLUMN: readonly Area[] = [
   { id: "room-6", name: "Room 6" },
   { id: "room-5", name: "Room 5" },
@@ -51,7 +49,6 @@ interface FloorPlanProps {
   labels: RoomLabels;
 }
 
-/** A schematic of the classrooms, with the rooms a group uses highlighted and labeled. */
 export default function FloorPlan({ groupLabel, labels }: FloorPlanProps) {
   return (
     <figure className="max-w-3xl space-y-3">

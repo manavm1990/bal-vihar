@@ -1,7 +1,3 @@
-/**
- * Page descriptions written once, for the search results shown by Google and for this site's own
- * search. Each says what the page contains.
- */
 export const PAGE_DESCRIPTIONS = {
   history:
     "How Bal Vihar of St. Louis is run: an all-volunteer organization with 350+ students, over 70 volunteer teachers and assistants, by-laws and a board of advisors.",

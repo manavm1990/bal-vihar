@@ -38,9 +38,8 @@ export interface NumberedPolicySection {
   section: PolicySectionView;
 }
 
-function fromQuery(data: NonNullable<POLICIES_QUERY_RESULT>): PoliciesView {
+function createPolicies(data: NonNullable<POLICIES_QUERY_RESULT>): PoliciesView {
   const sections = (data.sections ?? []).flatMap((section): PolicySectionView[] => {
-    // The slug becomes an element id and a #anchor, so keep Visual Editing metadata out of it.
     const slug = section.slug ? stegaClean(section.slug) : "";
     if (!section.title || !slug) return [];
 
@@ -51,33 +50,31 @@ function fromQuery(data: NonNullable<POLICIES_QUERY_RESULT>): PoliciesView {
         key: section._key,
         slug,
         title: section.title,
-        intro: toBody(section.intro),
+        intro: parseBody(section.intro),
         callToAction:
           cta?.label && cta.href
             ? { text: cta.text ?? null, label: cta.label, href: stegaClean(cta.href) }
             : null,
         items: (section.items ?? []).flatMap((item): PolicyItemView[] =>
-          item.title ? [{ key: item._key, title: item.title, body: toBody(item.body) }] : [],
+          item.title ? [{ key: item._key, title: item.title, body: parseBody(item.body) }] : [],
         ),
       },
-    ];
+    ] as const;
   });
 
-  return { intro: data.intro ?? "", sections };
+  return { intro: data.intro ?? "", sections } as const;
 }
 
-export const getPolicies = (data: POLICIES_QUERY_RESULT): PoliciesView =>
-  data ? fromQuery(data) : { intro: "", sections: [] };
+export const getPolicies = (data: POLICIES_QUERY_RESULT) =>
+  data ? createPolicies(data) : { intro: "", sections: [] };
 
-const toBody = (value: unknown): PolicyBody =>
-  (Array.isArray(value) ? value : []) as unknown as PolicyBody;
+export const parseBody = (value: PolicyBody | null) => value ?? [];
 
-/** Loads one policy section by slug with its position among all sections, or null if absent. */
-export async function fetchPolicySection(slug: string): Promise<NumberedPolicySection | null> {
+export async function fetchPolicySection(slug: string) {
   const result = await fetchSanityOrNull(POLICIES_QUERY, `the ${slug} policies`);
   const { sections } = getPolicies(result?.data ?? null);
   const index = sections.findIndex((section) => section.slug === slug);
   const section = sections[index];
 
-  return section ? { number: index + 1, section } : null;
+  return section ? ({ number: index + 1, section } as const) : null;
 }

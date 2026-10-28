@@ -1,4 +1,3 @@
-import type { StaticImageData } from "next/image";
 import diwaliLamps from "../assets/about-india/diwali-lamps.jpg";
 import durgaPuja from "../assets/about-india/durga-puja.jpg";
 import flagOfIndia from "../assets/about-india/flag-of-india.svg";
@@ -8,37 +7,21 @@ import lionCapital from "../assets/about-india/lion-capital-sarnath.jpg";
 import onamBoatRace from "../assets/about-india/onam-boat-race.jpg";
 import pongal from "../assets/about-india/pongal.jpg";
 import republicDay from "../assets/about-india/republic-day-parade.jpg";
-import type { StaticPageContent } from "./static-page-content";
-
-interface PhotoCredit {
-  work: string;
-  author: string;
-  license: string;
-  licenseUrl: string;
-  sourceUrl: string;
-}
-
-interface FestivalPhoto {
-  title: string;
-  alt: string;
-  src: StaticImageData;
-  credit: PhotoCredit;
-}
 
 const CC_BY_2 = "https://creativecommons.org/licenses/by/2.0/";
 const CC_BY_SA_3 = "https://creativecommons.org/licenses/by-sa/3.0/";
 const CC_BY_SA_4 = "https://creativecommons.org/licenses/by-sa/4.0/";
 const COMMONS = "https://commons.wikimedia.org/wiki/File:";
 
-const LION_CAPITAL_CREDIT: PhotoCredit = {
+const LION_CAPITAL_CREDIT = {
   work: "Lion capital of Ashoka, Sarnath",
   author: "lisa bat",
   license: "CC BY 2.0",
   licenseUrl: CC_BY_2,
   sourceUrl: `${COMMONS}Lion_capital_of_Ashoka,_Sarnath.jpg`,
-};
+} as const;
 
-export const FESTIVAL_PHOTOS: FestivalPhoto[] = [
+export const FESTIVAL_PHOTOS = [
   {
     title: "Republic Day",
     alt: "The Karnataka tableau, topped by a craftsman at work, rolling down Rajpath in the 2011 Republic Day parade",
@@ -123,14 +106,14 @@ export const FESTIVAL_PHOTOS: FestivalPhoto[] = [
       sourceUrl: `${COMMONS}Diwali_Oil_lamps_Darjeeling.jpg`,
     },
   },
-];
+] as const;
 
-export const PHOTO_CREDITS: PhotoCredit[] = [
+export const PHOTO_CREDITS = [
   LION_CAPITAL_CREDIT,
   ...FESTIVAL_PHOTOS.map(({ credit }) => credit),
-];
+] as const;
 
-export const INDIA_OVERVIEW: StaticPageContent = {
+export const INDIA_OVERVIEW = {
   title: "About India",
   description:
     "India's land and people, national emblem, flag and national song, plus the public holidays and religious festivals celebrated across the country.",
@@ -220,4 +203,4 @@ India celebrates festivals of many faiths through the year. See the [calendar](/
 - **Good Friday and Easter:** Services and recitals of religious music are held in hundreds of churches all over India on Good Friday. The Christian belief in the resurrection of Christ is celebrated with enthusiasm on Easter by members of the community, and processions are taken out in some parts of the country.
 - **Christmas:** Celebrated by Christians and non-Christians with special enthusiasm. The bigger cities like Delhi, Mumbai and Kolkata wear a festive look as Christmas bazaars and festivities are organized.
 - **Khordad Sal:** The birth anniversary of the Prophet Zarathustra (Zoroaster), who was born at the beginning of the 1st millennium BC. It is one of the most important Parsi festivals.`,
-};
+} as const;

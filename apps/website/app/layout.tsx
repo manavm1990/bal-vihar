@@ -8,7 +8,6 @@ import type { Metadata } from "next";
 import { Eczar, Poppins } from "next/font/google";
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
-
 import "./globals.css";
 
 const TITLE = ORGANIZATION_LEGAL_NAME;
@@ -31,10 +30,7 @@ export const metadata: Metadata = {
   title: FULL_TITLE,
   description: DESCRIPTION,
   applicationName: BASE_TITLE,
-  // Resolves to each page's own address. Without it no page names its canonical URL.
   alternates: { canonical: "./" },
-  // Only what is the same on every page. A title, description or address here would be copied
-  // onto every page's share preview, so pages fall back to their own title and description.
   openGraph: {
     type: "website",
     locale: "en_US",

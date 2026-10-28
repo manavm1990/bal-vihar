@@ -1,5 +1,5 @@
-import EventCard from "@components/event-card.client";
-import { SanityImage } from "@components/sanity/sanity-image";
+import EventCard from "@components/event-card";
+import { SanityImage } from "@components/sanity-image";
 import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
 import { Bq, H1, H2, H3, LeadP, MutedP, P } from "@components/ui/typography";
@@ -11,36 +11,13 @@ import { getUpcomingCalendarEvents, mapCalendarEvents } from "@lib/sanity/map-ca
 import { mapHomePage } from "@lib/sanity/map-home-page";
 import { mapPhotoGallery } from "@lib/sanity/map-photo-gallery";
 import { CALENDAR_EVENTS_QUERY, HOME_PAGE_QUERY, PHOTO_GALLERY_QUERY } from "@lib/sanity/queries";
-import type {
-  CalendarEventData,
-  HomeAnnouncement,
-  HomePageData,
-  HomePhotoBoardItem,
-} from "@lib/sanity/types";
+import type { CalendarEventData, HomeAnnouncement, HomePhotoBoardItem } from "@lib/sanity/types";
 import { cn } from "@lib/utils";
 import Link from "next/link";
 
 const MISSION =
   "To throw the light of cultural knowledge on every child, to make every child an outstanding citizen and to spread the song of peace and harmony around the world.";
-
-const PROGRAMS = [
-  {
-    title: "Curriculum K–7",
-    href: "/education/curriculum#groups-k-7",
-    text: "A well-designed curriculum for younger children, with students grouped in classrooms by age.",
-  },
-  {
-    title: "Youth Group",
-    href: "/education/curriculum#youth-group",
-    text: "Value-based teaching for older students: respect, honesty and good citizenship.",
-  },
-  {
-    title: "Community Outreach",
-    href: "/about-us/community-outreach",
-    text: "Interfaith and community service activities that are part of the curriculum.",
-  },
-] as const;
-
+const NOTICE_LABELS = { urgent: "Urgent", success: "Good news" } as const;
 const QUICK_LINKS = [
   {
     title: "Class schedule & rooms",
@@ -73,16 +50,29 @@ const QUICK_LINKS = [
     text: "Quick answers, or send us a question.",
   },
 ] as const;
-
+const PROGRAMS = [
+  {
+    title: "Curriculum K–7",
+    href: "/education/curriculum#groups-k-7",
+    text: "A well-designed curriculum for younger children, with students grouped in classrooms by age.",
+  },
+  {
+    title: "Youth Group",
+    href: "/education/curriculum#youth-group",
+    text: "Value-based teaching for older students: respect, honesty and good citizenship.",
+  },
+  {
+    title: "Community Outreach",
+    href: "/about-us/community-outreach",
+    text: "Interfaith and community service activities that are part of the curriculum.",
+  },
+] as const;
 const STATS = [
   { value: "1992", label: "Serving Metro St. Louis since" },
   { value: "350+", label: "Students" },
   { value: "70+", label: "Volunteer teachers and assistants" },
   { value: "501(c)(3)", label: "All-volunteer non-profit" },
 ] as const;
-
-const NOTICE_LABELS = { urgent: "Urgent", success: "Good news" } as const;
-
 const WHO_WE_ARE =
   "Center for Indian Cultural Education – Bal Vihar of St. Louis is a non-profit organization that has served the Metro St. Louis Indian community since 1992. Our primary focus is Indian cultural education for students ages 5–18, and its application and integration with the global, multicultural society. Students also learn discipline, tolerance and devotion in their daily routine.";
 
@@ -94,11 +84,13 @@ export default async function HomePage() {
     getCachedNow(),
   ]);
 
-  const home: HomePageData | null = mapHomePage(homePayload);
+  const home = mapHomePage(homePayload);
   const announcements = (home?.announcements ?? []).filter((item) =>
     isAnnouncementVisible(item, now),
   );
+
   const events = getUpcomingCalendarEvents(mapCalendarEvents(calendarPayload), { now });
+
   const photos = (mapPhotoGallery(galleryPayload, { featuredOnly: true })?.photos ?? [])
     .filter((photo) => photo.image?.asset?._id || photo.image?.asset?.url)
     .slice(0, 8);
@@ -147,7 +139,6 @@ function AnnouncementCard({ announcement }: AnnouncementCardProps) {
 
   return (
     <Card
-      // An urgent notice is announced to screen readers as soon as the page loads.
       role={tone === "urgent" ? "alert" : undefined}
       className={cn(
         "border-2 shadow-none",

@@ -1,6 +1,5 @@
 import { cn } from "@lib/utils";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-
 import { MinusIcon, PlusIcon } from "./icons";
 
 type AccordionProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>;

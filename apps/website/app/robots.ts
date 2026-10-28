@@ -6,7 +6,6 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      // Crawlers following search links would use up the Algolia search quota.
       disallow: ["/api/", "/search"],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,

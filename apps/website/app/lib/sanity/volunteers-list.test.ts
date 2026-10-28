@@ -1,6 +1,5 @@
 import { deepStrictEqual, equal } from "node:assert/strict";
 import { test } from "node:test";
-
 import { getVolunteerContactLinks } from "./volunteers-list";
 
 test("optional contact links accept ordinary email and formatted phone values", () => {

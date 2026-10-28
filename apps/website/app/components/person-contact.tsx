@@ -4,7 +4,6 @@ interface PersonContactProps {
   person: Pick<DirectoryPerson, "email" | "name" | "phone"> & { isBackup?: boolean };
 }
 
-/** A person's name with a backup badge and whichever public contact links they have. */
 export default function PersonContact({ person }: PersonContactProps) {
   return (
     <div className="min-w-0 space-y-0.5">
@@ -22,7 +21,7 @@ export default function PersonContact({ person }: PersonContactProps) {
         </a>
       )}
       {person.phone && (
-        <a className="block w-fit text-sm" href={`tel:${toDialable(person.phone)}`}>
+        <a className="block w-fit text-sm" href={`tel:${getDialableNumber(person.phone)}`}>
           {person.phone}
         </a>
       )}
@@ -30,4 +29,4 @@ export default function PersonContact({ person }: PersonContactProps) {
   );
 }
 
-const toDialable = (phone: string) => phone.replace(/[ ()-]/g, "");
+const getDialableNumber = (phone: string) => phone.replace(/[ ()-]/g, "");

@@ -1,5 +1,4 @@
 import { stegaClean } from "@sanity/client/stega";
-
 import { fetchSanityOrNull } from "./fetch";
 import { IMPACT_AWARD_QUERY } from "./queries";
 import { getVolunteerContactLinks } from "./volunteers-list";
@@ -37,7 +36,6 @@ export interface AwardTier {
   youngAdults: string;
 }
 
-/** Everything Studio holds for the Impact Award page; blanks stay null or empty. */
 export interface ImpactAwardView {
   year: string | null;
   dates: AwardDates;
@@ -81,7 +79,6 @@ const TIER_LEVELS = [
   { key: "gold", name: "Gold" },
 ] as const;
 
-/** The award page's yearly details from Studio. Anything not filled in comes back empty. */
 export async function fetchImpactAward(): Promise<ImpactAwardView> {
   const result = await fetchSanityOrNull(IMPACT_AWARD_QUERY, "the Impact Award");
 
@@ -135,7 +132,6 @@ function getContact(coordinator: ImpactAwardData["coordinator"]): AwardContact |
     role: clean(coordinator?.role),
     email,
     phone,
-    // Ten digits are a US number, so give the phone app its country code.
     phoneHref: digits ? `tel:${/^\d{10}$/.test(digits) ? `+1${digits}` : digits}` : null,
   };
 }

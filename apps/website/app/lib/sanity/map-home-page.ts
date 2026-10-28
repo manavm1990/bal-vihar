@@ -1,15 +1,9 @@
 import { stegaClean } from "@sanity/client/stega";
-
 import { getSanityArrayKey } from "./sanity-array-key";
 import type { HomeAnnouncement, HomePageData } from "./types";
 
-/** CMS-authored links should resolve to a safe site-relative or absolute URL. */
 type SafeHref = `/${string}` | `http://${string}` | `https://${string}` | `mailto:${string}`;
 
-/**
- * Normalize a defineLive / client fetch result into our domain HomePageData.
- * Accepts either the bare document or `{ data: document }`.
- */
 export const mapHomePage = (input: unknown): HomePageData | null => {
   if (!isRecord(input)) return null;
 
@@ -35,7 +29,6 @@ const isBoolean = (value: unknown): value is boolean => typeof value === "boolea
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
-/** Type-guard the already stega-cleaned, trimmed href string. */
 const isSafeHref = (href: string): href is SafeHref => {
   if (!href || /\s/.test(href) || href.startsWith("//")) return false;
   if (href.startsWith("mailto:")) return /^mailto:[^\s]+$/i.test(href);
@@ -64,7 +57,6 @@ const mapAnnouncement = (value: unknown, index: number): HomeAnnouncement | null
   if (!title || !body) return null;
 
   const toneRaw = parseString(value["tone"]);
-  // Clean stega before enum compares used for CSS classes.
   const toneClean = toneRaw ? stegaClean(toneRaw) : null;
   const tone =
     toneClean === "default" || toneClean === "urgent" || toneClean === "success" ? toneClean : null;
@@ -92,7 +84,6 @@ const parseCleanString = (value: unknown): string | null => {
 const parseSafeHref = (value: unknown): SafeHref | null => {
   if (!isString(value)) return null;
 
-  // Stega encodes edit metadata into strings during draft preview — strip before URL checks.
   const cleaned = stegaClean(value).trim();
   if (!cleaned) return null;
 

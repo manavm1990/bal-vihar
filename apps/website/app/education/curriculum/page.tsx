@@ -12,7 +12,6 @@ const SECTION_LINKS = [
   { href: "#youth-group", title: "Youth Group" },
 ] as const;
 
-/** Moves each heading one level down so a page's sections nest under the one above it. */
 const demoteHeadings = (content: string) => content.replace(/^(#{2,4})(\s)/gm, "#$1$2");
 
 const PAGE: StaticPageContent = {
@@ -34,7 +33,6 @@ export default function EducationCurriculumPage() {
   return (
     <StaticContentPage
       page={PAGE}
-      // The key photos were saved under when Curriculum K–7 was its own page.
       photoPath="/education/curriculum-k-7"
       intro={<SectionNav label="On this page" links={SECTION_LINKS} />}
     />

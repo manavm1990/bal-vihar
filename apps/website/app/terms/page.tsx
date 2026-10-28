@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   description: PAGE_DESCRIPTIONS.terms,
 };
 
-// TODO: Review the verbiage!
 export default function TermsPage() {
   return (
     <Article title="Terms and Conditions">

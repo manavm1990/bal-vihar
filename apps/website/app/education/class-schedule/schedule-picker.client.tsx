@@ -44,7 +44,6 @@ const classroom = (number: RoomNumber): Spot => ({
   where: `Room #${number}`,
 });
 
-// Groups K–3 have class first, then yoga and bhajan in their own area.
 const lowerDay = (
   classSpot: Spot,
   practiceSpot: Spot,
@@ -59,7 +58,6 @@ const lowerDay = (
   slot("12:20 p.m.", "end", "Dismissal"),
 ];
 
-// Groups 4–7 do yoga and bhajan first, then class.
 const upperDay = (
   assembly: Spot,
   first: readonly [string, Spot],
@@ -80,9 +78,6 @@ const HALL_2: Spot = { room: "hall-2", where: "Hall Area 2" };
 const STAGE: Spot = { room: "room-8", where: "Stage Area Center (Room #8)" };
 const STAGE_LEFT: Spot = { room: "room-9", where: "Stage Area Left (Room #9)" };
 
-// TODO: Rooms and times come from the 2022–23 classroom layout and the old orientation booklet.
-// Confirm every placement for the current school year, including whether groups have sections,
-// and whether Group 3's "Center Hall" is Hall Area 1.
 const DEFAULT_GROUP: Group = {
   id: "K",
   label: "K",
@@ -146,7 +141,6 @@ const SLOT_STYLES: Record<SlotKind, string> = {
   practice: "bg-primary-50 border-primary-300 border-2",
 };
 
-/** A group picker that shows one K–7 group's Sunday timeline and rooms at a time. */
 export default function SchedulePicker() {
   const { group, select, fadeIn } = useSelectedGroup();
 
@@ -217,7 +211,6 @@ function useSelectedGroup() {
   const group = GROUPS.find((item) => item.id === selectedId) ?? DEFAULT_GROUP;
   const [hasPicked, setHasPicked] = useState(false);
   const shouldReduceMotion = useReducedMotion();
-  // Fade only after a tap, so the first paint is never hidden while the page hydrates.
   const fadeIn =
     shouldReduceMotion || !hasPicked
       ? {}

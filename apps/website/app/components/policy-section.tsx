@@ -38,6 +38,7 @@ const POLICY_TEXT_COMPONENTS: ComponentProps<typeof PortableText>["components"] 
     ),
   },
   types: {
+    // The schema's `policyTable` object guarantees this shape; Portable Text types `value` as `any`.
     policyTable: ({ value }) => <PolicyTable table={value as PolicyTableValue} />,
   },
 };
@@ -47,7 +48,6 @@ interface PolicySectionProps {
   section: PolicySectionView;
 }
 
-/** A numbered policy section with its heading, as listed on Policies & Procedures. */
 export default function PolicySection({ number, section }: PolicySectionProps) {
   return (
     <section id={section.slug} className="scroll-mt-6 space-y-4">
@@ -57,10 +57,6 @@ export default function PolicySection({ number, section }: PolicySectionProps) {
   );
 }
 
-/**
- * A policy section's intro, accordion and call to action without a heading, for pages that
- * supply their own.
- */
 export function PolicySectionBody({ number, section }: PolicySectionProps) {
   const { callToAction } = section;
 
@@ -134,8 +130,6 @@ interface PolicyTextProps {
   value: PolicyBody;
 }
 
-/** Renders a policy's Portable Text body with the site's typography primitives. */
-/** Renders policy-style Portable Text: paragraphs, lists, bold, italic, links and tables. */
 export function PolicyText({ value }: PolicyTextProps) {
   return <PortableText value={value} components={POLICY_TEXT_COMPONENTS} />;
 }

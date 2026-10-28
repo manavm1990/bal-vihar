@@ -3,7 +3,6 @@ import { getSanityArrayKey } from "./sanity-array-key";
 import type { HomePhotoBoardItem, PhotoGalleryData, SanityImageValue } from "./types";
 
 interface MapPhotoGalleryOptions {
-  /** When true, only photos with featured !== false (home board). */
   featuredOnly?: boolean;
 }
 
@@ -22,10 +21,7 @@ const parseImage = (value: unknown): SanityImageValue | null =>
 const parseString = (value: unknown): string | null => (isString(value) ? value : null);
 
 const parseStrings = (value: unknown): string[] =>
-  Array.isArray(value)
-    ? // Stega-clean path tags so banner matching still works in draft preview.
-      value.filter(isString).map((entry) => stegaClean(entry))
-    : [];
+  Array.isArray(value) ? value.filter(isString).map((entry) => stegaClean(entry)) : [];
 
 const mapGalleryPhoto = (
   value: unknown,
@@ -47,10 +43,9 @@ const mapGalleryPhoto = (
     pages: parseStrings(item["pages"]),
     schoolYear: parseString(item["schoolYear"]),
     title,
-  };
+  } as const;
 };
 
-/** Normalize photoGallery singleton fetch into domain photo items. */
 export const mapPhotoGallery = (
   input: unknown,
   options: MapPhotoGalleryOptions = {},
@@ -58,7 +53,6 @@ export const mapPhotoGallery = (
   const root = isRecord(input) ? input : null;
   if (!root) return null;
 
-  // Accept bare document or defineLive `{ data }`.
   const dataRecord = isRecord(root["data"]) ? root["data"] : root;
   const id = parseString(dataRecord["_id"]) ?? parseString(dataRecord["id"]);
   if (!id) return null;

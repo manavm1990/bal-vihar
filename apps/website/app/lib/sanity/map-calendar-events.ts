@@ -35,7 +35,6 @@ export const createCalendarEventShareUrl = (event: CalendarEventData) =>
     `${SITE_URL}/calendar/${event.id}`,
   ]);
 
-/** One line with the date, time and place, for cards, previews and share messages. */
 export const formatCalendarEventMeta = (event: CalendarEventData) =>
   [formatCalendarDate(event.date), event.time, event.location].filter(Boolean).join(" · ");
 
@@ -47,7 +46,6 @@ export const mapCalendarEvents = (input: unknown): CalendarEventData[] =>
 
         const id = isString(row["_id"]) ? row["_id"] : isString(row["id"]) ? row["id"] : null;
         const title = isString(row["title"]) ? row["title"] : null;
-        // Clean date for upcoming filters / sort; stega breaks string compares and Date.parse.
         const date = isString(row["date"]) ? stegaClean(row["date"]) : null;
 
         return !id || !title || !date

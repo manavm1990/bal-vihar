@@ -1,17 +1,4 @@
-interface AdminDocument {
-  title: string;
-  description: string;
-  issued: string;
-  href: string;
-}
-
-interface AdminForm {
-  title: string;
-  description: string;
-  href: string;
-}
-
-export const ADMIN_DOCUMENTS: readonly AdminDocument[] = [
+export const ADMIN_DOCUMENTS = [
   {
     title: "Certificate of Incorporation",
     description:
@@ -33,12 +20,12 @@ export const ADMIN_DOCUMENTS: readonly AdminDocument[] = [
     issued: "Covers 2005–2007",
     href: "/documents/cpa-review-letter-2005-2007.pdf",
   },
-];
+] as const;
 
-export const ADMIN_FORMS: readonly AdminForm[] = [
+export const ADMIN_FORMS = [
   {
     title: "Print Request",
     description: "Teachers and administrative staff can request a print job.",
     href: "/admin-resources/print-request",
   },
-];
+] as const;

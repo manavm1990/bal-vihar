@@ -19,8 +19,7 @@ import {
 } from "@lib/sanity/impact-award";
 import { cva } from "class-variance-authority";
 import type { Metadata } from "next";
-
-import AwardApplicationForm from "./components/form/award-application-form.client";
+import AwardApplicationForm from "./components/form/client";
 import {
   AWARD_AGE_GROUP_NOTE,
   type AwardStep,
@@ -37,7 +36,6 @@ import {
 } from "./impact-award-content";
 
 const PAGE_TITLE = "B-VISION Impact Award";
-
 const SECTIONS = [
   { id: "who-can-apply", label: "Who can apply" },
   { id: "your-year", label: "Your award year" },
@@ -45,7 +43,7 @@ const SECTIONS = [
   { id: "hours", label: "How hours count" },
   { id: "tools", label: "Tracking sheet" },
   { id: "apply", label: "Apply" },
-];
+] as const;
 
 export const metadata: Metadata = {
   title: `${BASE_TITLE} | ${PAGE_TITLE}`,
@@ -237,7 +235,7 @@ function HoursDetails({ award }: HoursDetailsProps) {
               <MutedP>The hours for each activity will be announced.</MutedP>
             ) : (
               <Table
-                headers={TEACHING_HOURS_HEADERS}
+                headers={[...TEACHING_HOURS_HEADERS]}
                 rows={award.teachingHours}
                 footer={TEACHING_HOURS_FOOTER}
               />
@@ -252,7 +250,7 @@ function HoursDetails({ award }: HoursDetailsProps) {
             {award.communityProjects.length === 0 ? (
               <MutedP>This year's projects and their hours will be announced.</MutedP>
             ) : (
-              <Table headers={COMMUNITY_HOURS_HEADERS} rows={award.communityProjects} />
+              <Table headers={[...COMMUNITY_HOURS_HEADERS]} rows={award.communityProjects} />
             )}
           </AccordionContent>
         </AccordionItem>

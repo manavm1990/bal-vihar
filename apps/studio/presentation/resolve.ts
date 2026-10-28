@@ -1,9 +1,5 @@
 import { defineLocations } from "sanity/presentation";
 
-/**
- * Where each document type appears on the website —
- * used by Presentation navigation.
- */
 export const resolve = {
   locations: {
     calendarEvent: defineLocations({

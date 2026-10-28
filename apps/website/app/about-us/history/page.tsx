@@ -2,7 +2,6 @@ import Article from "@components/article";
 import { Bq, P, Strong } from "@components/ui/typography";
 import { PAGE_DESCRIPTIONS } from "@lib/page-descriptions";
 import type { Metadata } from "next";
-
 import { ABOUT_US_TITLE } from "../constants";
 
 const TITLE = "History 📜";

@@ -1,6 +1,5 @@
 import { defineField } from "sanity";
 
-/** A name with optional public email and phone, typed straight into the document that lists them. */
 export const contactFields = () => [
   defineField({
     name: "name",

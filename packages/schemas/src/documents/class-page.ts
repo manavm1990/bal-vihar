@@ -28,7 +28,6 @@ const formatSessionDate = (date: unknown) =>
 const getGroupTitle = (value: unknown) =>
   GROUP_OPTIONS.find((option) => option.value === value)?.title;
 
-/** New sessions default to today's date at the school, wherever the teacher is editing. */
 const getToday = () => new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
 
 export const classPage = defineType({

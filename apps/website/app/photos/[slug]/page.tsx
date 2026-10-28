@@ -1,5 +1,5 @@
 import Article from "@components/article";
-import ImageGallery from "@components/image-gallery.client";
+import ImageGallery from "@components/ui/image-gallery";
 import { MutedP } from "@components/ui/typography";
 import { sanityFetchStaticParams } from "@lib/sanity/live";
 import { createAlbumMetadata, fetchPhotoAlbum } from "@lib/sanity/photo-albums";
@@ -11,6 +11,16 @@ import { Suspense } from "react";
 
 interface GalleryPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: GalleryPageProps): Promise<Metadata> {
+  return createAlbumMetadata(await fetchPhotoAlbum((await params).slug, { stega: false }));
+}
+
+export async function generateStaticParams() {
+  const { data } = await sanityFetchStaticParams({ query: PHOTO_ALBUMS_QUERY });
+
+  return data.map(({ slug }) => ({ slug }));
 }
 
 export default function GalleryPage({ params }: GalleryPageProps) {
@@ -42,14 +52,4 @@ async function GalleryContent({ params }: GalleryPageProps) {
       <ImageGallery images={images} label={`${album.title} photos`} />
     </Article>
   );
-}
-
-export async function generateStaticParams() {
-  const { data } = await sanityFetchStaticParams({ query: PHOTO_ALBUMS_QUERY });
-
-  return data.map(({ slug }) => ({ slug }));
-}
-
-export async function generateMetadata({ params }: GalleryPageProps): Promise<Metadata> {
-  return createAlbumMetadata(await fetchPhotoAlbum((await params).slug, { stega: false }));
 }

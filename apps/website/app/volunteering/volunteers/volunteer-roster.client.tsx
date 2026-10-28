@@ -1,7 +1,7 @@
 "use client";
 
-import Directory from "@components/directory.client";
-import OptionPicker from "@components/option-picker.client";
+import Directory from "@components/directory";
+import OptionPicker from "@components/option-picker";
 import SectionNav from "@components/section-nav";
 import { H3, MutedP, Ul } from "@components/ui/typography";
 import type { VolunteerActivity, VolunteerRosterView } from "@lib/sanity/volunteer-roster";
@@ -10,13 +10,12 @@ interface VolunteerRosterProps {
   view: VolunteerRosterView;
 }
 
-/** An event picker and a searchable A–Z list of the volunteers. */
 export default function VolunteerRoster({ view }: VolunteerRosterProps) {
   const { activities, directory } = view;
   const links = [
     ...(activities.length > 0 ? [{ href: "#by-event", title: "By event" }] : []),
     ...(directory.length > 0 ? [{ href: "#everyone", title: "Everyone, A to Z" }] : []),
-  ];
+  ] as const;
 
   return (
     <div className="space-y-10">

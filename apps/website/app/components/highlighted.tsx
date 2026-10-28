@@ -5,7 +5,6 @@ interface HighlightedProps {
 }
 
 export default function Highlighted({ parts }: HighlightedProps) {
-  // Each part's key is where it starts in the text, which is unique and stable.
   let offset = 0;
 
   return (

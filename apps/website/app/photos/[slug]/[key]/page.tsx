@@ -1,5 +1,5 @@
 import Article from "@components/article";
-import { SanityImage } from "@components/sanity/sanity-image";
+import { SanityImage } from "@components/sanity-image";
 import { Button } from "@components/ui/button";
 import { MutedP } from "@components/ui/typography";
 import { sanityFetchStaticParams } from "@lib/sanity/live";
@@ -12,10 +12,23 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-const IMAGE_WIDTH = 1200;
+const IMAGE_WIDTH = 960;
 
 interface PhotoPageProps {
   params: Promise<{ slug: string; key: string }>;
+}
+
+export async function generateMetadata({ params }: PhotoPageProps): Promise<Metadata> {
+  const { slug, key } = await params;
+  const album = await fetchPhotoAlbum(slug, { stega: false });
+
+  return createPhotoMetadata(album, findAlbumPhoto(album, key).index);
+}
+
+export async function generateStaticParams() {
+  const { data } = await sanityFetchStaticParams({ query: PHOTO_ALBUMS_QUERY });
+
+  return data.flatMap(({ slug, photoKeys }) => (photoKeys ?? []).map((key) => ({ slug, key })));
 }
 
 export default function PhotoPage({ params }: PhotoPageProps) {
@@ -82,20 +95,6 @@ async function PhotoContent({ params }: PhotoPageProps) {
   );
 }
 
-export async function generateStaticParams() {
-  const { data } = await sanityFetchStaticParams({ query: PHOTO_ALBUMS_QUERY });
-
-  return data.flatMap(({ slug, photoKeys }) => (photoKeys ?? []).map((key) => ({ slug, key })));
-}
-
-export async function generateMetadata({ params }: PhotoPageProps): Promise<Metadata> {
-  const { slug, key } = await params;
-  const album = await fetchPhotoAlbum(slug, { stega: false });
-
-  return createPhotoMetadata(album, findAlbumPhoto(album, key).index);
-}
-
-/** Keeps the picture's own proportions, so tall photos aren't cropped on the page. */
 const getImageHeight = (image: SanityImageValue) => {
   const { width, height } = image.asset?.metadata?.dimensions ?? {};
 

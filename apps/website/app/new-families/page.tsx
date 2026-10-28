@@ -15,30 +15,15 @@ export const metadata: Metadata = {
     "Everything new Bal Vihar families need: what a Sunday looks like, drop-off and pick-up, what to bring, and who to ask.",
 };
 
-const SECTIONS = {
-  sunday: "Your Sunday",
-  arrival: "Arrival and pick-up",
-  bring: "What to bring",
-  "ground-rules": "Ground rules",
-  support: "Supporting your child",
-  health: "Health and special needs",
-  learn: "What children learn",
-  "yoga-bhajan": "Yoga and Bhajan",
-  concerns: "If you have a concern",
-  events: "Events",
-  contact: "Staying in touch",
-} as const;
-
-const STATS = [
-  {
-    value: "📆❗",
-    label: "August to May, with breaks and some back-to-back Sundays. Check the calendar.",
-  },
-  { value: "10:00 a.m.", label: "Assembly begins. Doors open at 9:45." },
-  { value: "Groups K–7", label: "Plus a Youth Program from Grade 8." },
+const BACKPACK_ITEMS = [
+  "A composition book and a pencil or pen",
+  "A labeled bag or backpack",
+  "A labeled yoga mat",
+  "Colored markers or crayons",
+  "Scissors and glue",
+  "The Bal Vihar Bhajan Book. New families buy one.",
 ] as const;
 
-// TODO: Times and drop-off details come from the old orientation booklet; confirm each year.
 const DAY_STEPS = [
   {
     time: "9:45 a.m.",
@@ -69,19 +54,12 @@ const DAY_STEPS = [
   },
 ] as const;
 
-const BACKPACK_ITEMS = [
-  "A labeled bag or backpack",
-  "A composition book and a pencil or pen",
-  "Colored markers or crayons",
-  "Scissors and glue",
-  "A labeled yoga mat",
-  "The Bal Vihar Bhajan Book. New families buy one.",
-] as const;
-
-const YOGA_WEAR_ITEMS = [
-  "Loose, comfortable clothes",
-  "No jeans, belts, necklaces and the like",
-  "Shorts or tights under a skirt or dress",
+const EVENTS = [
+  "Diwali",
+  "Holi",
+  "Picnic and Family Night",
+  "Republic Day",
+  "Variety Show",
 ] as const;
 
 const GROUND_RULES = [
@@ -118,29 +96,50 @@ const GROUND_RULES = [
 
 const LEARNING_AREAS = [
   {
-    title: "Religion",
-    body: "Values and ethics from the Puranas, the Gods and Goddesses and the Dasa Avatars, the two epics, symbolism, samskaras and the meaning of festivals.",
-  },
-  {
     title: "Culture",
     body: "Why festivals matter, Indian art, architecture, literature, sports and music, and the diversity of cultures across India.",
+  },
+  {
+    title: "Geography",
+    body: "Where India sits and who its neighbors are, its mountains, plains, desert and rivers, and how the seasons shape agriculture.",
   },
   {
     title: "History",
     body: "From the Vedic era to modern India: how India has changed over time, and how to research and present what they find.",
   },
   {
-    title: "Geography",
-    body: "Where India sits and who its neighbors are, its mountains, plains, desert and rivers, and how the seasons shape agriculture.",
+    title: "Religion",
+    body: "Values and ethics from the Puranas, the Gods and Goddesses and the Dasa Avatars, the two epics, symbolism, samskaras and the meaning of festivals.",
   },
 ] as const;
 
-const EVENTS = [
-  "Diwali",
-  "Picnic and Family Night",
-  "Republic Day",
-  "Holi",
-  "Variety Show",
+const SECTIONS = {
+  sunday: "Your Sunday",
+  arrival: "Arrival and pick-up",
+  bring: "What to bring",
+  "ground-rules": "Ground rules",
+  support: "Supporting your child",
+  health: "Health and special needs",
+  learn: "What children learn",
+  "yoga-bhajan": "Yoga and Bhajan",
+  concerns: "If you have a concern",
+  events: "Events",
+  contact: "Staying in touch",
+} as const;
+
+const STATS = [
+  {
+    value: "📆❗",
+    label: "August to May, with breaks and some back-to-back Sundays. Check the calendar.",
+  },
+  { value: "10:00 a.m.", label: "Assembly begins. Doors open at 9:45." },
+  { value: "Groups K–7", label: "Plus a Youth Program from Grade 8." },
+] as const;
+
+const YOGA_WEAR_ITEMS = [
+  "Loose, comfortable clothes",
+  "No jeans, belts, necklaces and the like",
+  "Shorts or tights under a skirt or dress",
 ] as const;
 
 export default function NewFamiliesPage() {

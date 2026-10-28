@@ -1,6 +1,5 @@
 import PagePhoto from "./page-photo";
 import type { TextColumnsProps } from "./text-columns";
-
 import TextColumns from "./text-columns";
 import { H1, LeadP } from "./ui/typography";
 

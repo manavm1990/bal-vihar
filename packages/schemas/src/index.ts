@@ -16,9 +16,6 @@ import { classLink } from "./objects/class-link";
 import { mediaImage } from "./objects/media-image";
 import { youthAssistant } from "./objects/youth-assistant";
 
-/**
- * Fixed document IDs for Studio singletons.
- */
 export const SINGLETON_IDS = {
   faqs: "faqs",
   homePage: "homePage",
@@ -31,11 +28,9 @@ export const SINGLETON_IDS = {
   volunteersList: "volunteersList",
 } as const;
 
+// `Object.keys` widens to `string[]`; the keys come from the `as const` object above.
 export const SINGLETON_TYPES = Object.keys(SINGLETON_IDS) as (keyof typeof SINGLETON_IDS)[];
 
-/**
- * All Sanity schema types shared by Studio (and typed consumers).
- */
 export const schemaTypes = [
   albumPhoto,
   calendarEvent,

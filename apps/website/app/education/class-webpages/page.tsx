@@ -92,7 +92,6 @@ function ClassCard({ slug, title, teachers, hasContent }: ClassCardProps) {
     </Card>
   );
 
-  // Nothing to read yet, so there is nothing to click through to.
   return hasContent ? (
     <Link href={`/education/classes/${slug}`} className="hover:no-underline">
       {card}

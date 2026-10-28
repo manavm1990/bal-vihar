@@ -3,7 +3,6 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 const AUGUST = 8;
 const FIRST_SCHOOL_YEAR = 2014;
-// The dropdown stops here, so raise it when the newest school year is missing.
 const LAST_SCHOOL_YEAR = 2035;
 
 const describePhotoCount = (photos: unknown) => {
@@ -14,7 +13,6 @@ const describePhotoCount = (photos: unknown) => {
 
 const formatSchoolYear = (start: number) => `${start}-${String(start + 1).slice(2)}`;
 
-/** The school year running today, wherever the editor is, counting from August. */
 function getCurrentSchoolYear() {
   const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
   const year = Number(today.slice(0, 4));

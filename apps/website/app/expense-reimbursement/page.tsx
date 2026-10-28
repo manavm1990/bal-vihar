@@ -5,8 +5,7 @@ import { BASE_TITLE } from "@lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-
-import ExpenseForm from "./components/form/expense-form.client";
+import ExpenseForm from "./components/form/client";
 
 const TITLE = "Expense Reimbursement";
 
@@ -26,7 +25,6 @@ export default function ExpenseReimbursementPage() {
       </P>
       <Card className="w-full max-w-3xl">
         <CardContent className="p-5 sm:p-8">
-          {/* useFieldArray generates ids with crypto.randomUUID(), which can't run during prerender. */}
           <Suspense fallback={<MutedP>Loading form…</MutedP>}>
             <ExpenseForm />
           </Suspense>

@@ -1,11 +1,5 @@
 import arjunaKrishna from "../assets/hindu-rituals/arjuna-krishna.jpg";
 import vishnuAnantashayana from "../assets/hindu-rituals/vishnu-anantashayana.jpg";
-import type { StaticPageContent } from "./static-page-content";
-
-export interface Ritual {
-  question: string;
-  answer: string;
-}
 
 const INTRODUCTION = `Hinduism is not a religion but a way of life. Unlike other religions, Hindu dharma has many specialties. It is not known as a religion; it is known as the dharma, *Sanaathana Dharma*. According to the Bhagavad Geetha, *sanaathana* means that which cannot be destroyed by fire, weapons, water or air, and which is present in all living and non-living beings. *Dharma* is the way of life: the total of all *aachaaraas*, the customs and rituals.
 
@@ -31,7 +25,7 @@ This is an important teaching from the *smruthis*. A person gets one quarter of 
 
 In India, people have followed *aachaaraas* for these psychological, physical, family, social and national benefits. It is your right and your duty to understand the meaning of each one scientifically, rationally and logically, and to follow it systematically in your life.`;
 
-export const RITUALS: Ritual[] = [
+export const RITUALS = [
   {
     question: "Why do we light a lamp?",
     answer: `In almost every Indian home a lamp is lit daily before the altar of the Lord. In some houses it is lit at dawn, in some twice a day, at dawn and dusk, and in a few it is kept burning continuously (*Akhanda Deepa*). All auspicious functions begin with the lighting of a lamp, which is often kept burning through the whole occasion.
@@ -387,15 +381,14 @@ He is there where the sun does not shine, nor the moon, stars and lightning. Wha
 
 — Swami Chinmayananda`,
   },
-];
+] as const;
 
-export const RITUAL_IMAGES = { arjunaKrishna, vishnuAnantashayana };
-
-export const HINDU_RITUALS: StaticPageContent = {
+export const RITUAL_IMAGES = { arjunaKrishna, vishnuAnantashayana } as const;
+export const HINDU_RITUALS = {
   title: "Hindu Rituals & Routines",
   subtitle: "Why do we follow them?",
   description:
     "Why Hindus light a lamp, say namaste, ring the temple bell, chant Om and more: 22 questions about Hindu rituals and routines, answered for Bal Vihar students.",
   content: INTRODUCTION,
   images: RITUAL_IMAGES,
-};
+} as const;

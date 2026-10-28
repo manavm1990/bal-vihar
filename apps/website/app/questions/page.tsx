@@ -15,7 +15,7 @@ import { stegaClean } from "@sanity/client/stega";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { FAQPage, WithContext } from "schema-dts";
-import ContactForm from "./components/form/contact-form.client";
+import ContactForm from "./components/form/client";
 
 const TITLE = "Questions & Contact";
 
@@ -106,7 +106,6 @@ function Contact() {
 
 async function Faq() {
   const faqs = await fetchFaqs();
-  // The same questions and answers the page shows, for search and answer engines to read.
   const structuredData: WithContext<FAQPage> = {
     "@context": "https://schema.org",
     "@type": "FAQPage",

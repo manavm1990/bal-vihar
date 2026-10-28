@@ -29,6 +29,7 @@
     "canstruction",
     "Dandiya",
     "DFAR",
+    "Dialable",
     "Garba",
     "HTCC",
     "Nstruction",
@@ -36,6 +37,7 @@
     "Raas",
     "Samaj",
     "Sudhir",
+    "touchpoint",
     "vihar"
   ],
   "conventionalCommits.scopes": ["studio", "website", "schemas"]

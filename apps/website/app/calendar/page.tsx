@@ -1,5 +1,5 @@
 import Article from "@components/article";
-import EventCard from "@components/event-card.client";
+import EventCard from "@components/event-card";
 import { Card, CardContent } from "@components/ui/card";
 import { MutedP } from "@components/ui/typography";
 import { getCachedNow } from "@lib/clock";

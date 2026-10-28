@@ -1,5 +1,5 @@
 import Article from "@components/article";
-import { SanityImage } from "@components/sanity/sanity-image";
+import { SanityImage } from "@components/sanity-image";
 import { Card, CardContent } from "@components/ui/card";
 import { MutedP, P } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
@@ -54,7 +54,6 @@ function AlbumCard({ album }: AlbumCardProps) {
     >
       <span className="relative block aspect-4/3 overflow-hidden rounded-lg border">
         {album.cover ? (
-          // The title below names the link, so the picture itself has no description.
           <SanityImage
             value={{ ...album.cover, alt: null }}
             fill

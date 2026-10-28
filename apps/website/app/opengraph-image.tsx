@@ -7,8 +7,6 @@ export const alt = `${BASE_TITLE} – ${ORGANIZATION_LEGAL_NAME}`;
 export const contentType = "image/png";
 export const size = { width: 1200, height: 630 };
 
-// ImageResponse can't read CSS variables or oklch(), so these are the hex values behind the
-// brand tokens in globals.css.
 const COLORS = {
   saffron: "#FF9933",
   navy: "#000080",

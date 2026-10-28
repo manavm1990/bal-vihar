@@ -1,5 +1,5 @@
-import ImageGallery from "@components/image-gallery.client";
 import StaticContentPage from "@components/static-content-page";
+import ImageGallery from "@components/ui/image-gallery";
 import { createStaticPageMetadata } from "@lib/static-page-content";
 import { TEMPLE_IMAGES, TEMPLES_OF_INDIA } from "@lib/temples-of-india-content";
 import type { Metadata } from "next";

@@ -10,10 +10,8 @@ import { PHOTO_ALBUM_QUERY, PHOTO_ALBUMS_QUERY } from "./queries";
 type AlbumResult = WithSchoolYear<NonNullable<PHOTO_ALBUM_QUERY_RESULT>>;
 type RawPhoto = NonNullable<AlbumResult["photos"]>[number];
 type SummaryResult = WithSchoolYear<PHOTO_ALBUMS_QUERY_RESULT[number]>;
-/** The dropdown's years are typed as a fixed list, but a page only treats the year as text. */
 type WithSchoolYear<T> = Omit<T, "schoolYear"> & { schoolYear: string };
 
-/** A photo with what a page needs: a description, its own page and a share link. */
 export type AlbumPhoto = Omit<RawPhoto, "alt"> & { alt: string; path: string; shareHref: string };
 
 export interface PhotoAlbum extends Omit<AlbumResult, "photos"> {
@@ -28,12 +26,10 @@ export interface PhotoAlbumSummary extends SummaryResult {
 }
 
 interface FetchPhotoAlbumOptions {
-  /** Metadata must never carry stega characters, so it opts out. */
   stega?: boolean;
 }
 
-// 1.91:1 is the shape link previews are cropped to.
-const PREVIEW_SIZE = { width: 1200, height: 630 };
+const LINK_PREVIEW_SIZE = { width: 1200, height: 630 };
 
 export function createAlbumMetadata(album: PhotoAlbum | null): Metadata {
   const cover = album?.photos[0];
@@ -61,7 +57,6 @@ export function createPhotoMetadata(album: PhotoAlbum | null, index: number): Me
   );
 }
 
-/** The school year and how many photos, for cards, subtitles and link previews. */
 export const describeAlbum = ({
   schoolYear,
   photoCount,
@@ -76,19 +71,17 @@ export const describeAlbum = ({
     .filter(Boolean)
     .join(" · ");
 
-/** One gallery by its web address, or null if it was removed or has no picture. */
 export async function fetchPhotoAlbum(slug: string, options?: FetchPhotoAlbumOptions) {
   const result = await fetchSanityOrNull(PHOTO_ALBUM_QUERY, "the photo gallery", { slug }, options);
-  const album = result?.data ? toAlbum(result.data) : null;
+  const album = result?.data ? createAlbum(result.data) : null;
 
   return album && album.photos.length > 0 ? album : null;
 }
 
-/** Galleries that have a picture, newest school year first. */
 export async function fetchPhotoAlbums() {
   const result = await fetchSanityOrNull(PHOTO_ALBUMS_QUERY, "the photo galleries");
 
-  return (result?.data ?? []).map(toSummary);
+  return (result?.data ?? []).map(createAlbumSummary);
 }
 
 export function findAlbumPhoto(album: PhotoAlbum | null, key: string) {
@@ -108,12 +101,11 @@ const createMetadata = (title: string, description: string, path: string, photo:
       url: path,
       title,
       description,
-      images: [{ url: getPreviewImageUrl(photo), ...PREVIEW_SIZE, alt: photo.alt }],
+      images: [{ url: getLinkPreviewImageUrl(photo), ...LINK_PREVIEW_SIZE, alt: photo.alt }],
     },
   }) satisfies Metadata;
 
-/** A WhatsApp message with a link to one photo's page, which previews that picture. */
-const createPhotoShareUrl = ({ schoolYear, title }: AlbumResult, path: string) =>
+const createPhotoWhatsAppShareUrl = ({ schoolYear, title }: AlbumResult, path: string) =>
   createWhatsAppShareUrl([
     stegaClean(title),
     schoolYear ? `School year ${stegaClean(schoolYear)}` : null,
@@ -124,20 +116,19 @@ const getAlbumPath = (slug: string) => `/photos/${stegaClean(slug)}`;
 
 const getPhotoPath = (slug: string, key: string) => `${getAlbumPath(slug)}/${stegaClean(key)}`;
 
-/** JPEG, cropped to the preview shape and kept small, which chat apps load most reliably. */
-const getPreviewImageUrl = (photo: AlbumPhoto) =>
+const getLinkPreviewImageUrl = (photo: AlbumPhoto) =>
   urlFor(photo)
-    .width(PREVIEW_SIZE.width)
-    .height(PREVIEW_SIZE.height)
+    .width(LINK_PREVIEW_SIZE.width)
+    .height(LINK_PREVIEW_SIZE.height)
     .fit("crop")
     .format("jpg")
     .quality(75)
     .url();
 
-function toAlbum(album: AlbumResult): PhotoAlbum {
+function createAlbum(album: AlbumResult): PhotoAlbum {
   const photos = (album.photos ?? [])
     .filter((photo) => photo.asset)
-    .map((photo, index) => toAlbumPhoto(album, photo, index));
+    .map((photo, index) => createAlbumPhoto(album, photo, index));
 
   return {
     ...album,
@@ -147,19 +138,18 @@ function toAlbum(album: AlbumResult): PhotoAlbum {
   };
 }
 
-/** Photos added in bulk have no description of their own, so they take the gallery's name. */
-function toAlbumPhoto(album: AlbumResult, photo: RawPhoto, index: number): AlbumPhoto {
+function createAlbumPhoto(album: AlbumResult, photo: RawPhoto, index: number): AlbumPhoto {
   const path = getPhotoPath(album.slug, photo._key);
 
   return {
     ...photo,
     alt: photo.alt?.trim() || `${album.title}, photo ${index + 1}`,
     path,
-    shareHref: createPhotoShareUrl(album, path),
+    shareHref: createPhotoWhatsAppShareUrl(album, path),
   };
 }
 
-const toSummary = (album: SummaryResult): PhotoAlbumSummary => ({
+const createAlbumSummary = (album: SummaryResult): PhotoAlbumSummary => ({
   ...album,
   description: describeAlbum(album),
   path: getAlbumPath(album.slug),

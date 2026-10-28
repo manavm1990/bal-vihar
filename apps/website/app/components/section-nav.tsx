@@ -8,7 +8,6 @@ interface SectionNavProps {
   links: readonly SectionNavLink[];
 }
 
-/** A row of pill links that jump to sections of the current page. */
 export default function SectionNav({ label, links }: SectionNavProps) {
   return (
     <nav aria-label={label}>

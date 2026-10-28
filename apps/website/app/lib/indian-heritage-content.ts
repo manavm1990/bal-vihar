@@ -3,10 +3,8 @@ import kashmir from "../assets/indian-heritage/kashmir.jpg";
 import kerala from "../assets/indian-heritage/kerala.jpg";
 import tharDesert from "../assets/indian-heritage/thar-desert.jpg";
 import varanasi from "../assets/indian-heritage/varanasi.jpg";
-import type { GalleryImage } from "../components/image-gallery.client";
-import type { StaticPageContent } from "./static-page-content";
 
-export const SIGHT_IMAGES: GalleryImage[] = [
+export const SIGHT_IMAGES = [
   {
     src: himalayas,
     alt: "A snow-covered Himalayan peak against a dark blue sky",
@@ -34,7 +32,7 @@ export const SIGHT_IMAGES: GalleryImage[] = [
   },
 ];
 
-export const INDIAN_HERITAGE: StaticPageContent = {
+export const INDIAN_HERITAGE = {
   title: "Indian Heritage",
   subtitle: "History, language, learning, art and faith",
   description:
@@ -185,4 +183,4 @@ Lord Krishna counsels Prince Arjuna at the beginning of the great Mahabharata wa
 ## Om
 
 AUM, or OM, is the first sound of the Almighty, Infinite Reality, and oneness with the Supreme. Hindus chant it to begin prayers and meditation. Other traditions have a similar sacred word: Amen (Christian), Amin (Muslim), Aum (Hindu) and Hum (Buddhist).`,
-};
+} as const;

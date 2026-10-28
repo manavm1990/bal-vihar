@@ -1,13 +1,11 @@
 import { ImagesIcon } from "@sanity/icons/Images";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-/** Site pages that can show a gallery photo as their banner. */
 export const PHOTO_PAGE_OPTIONS = [
   { title: "About Us → History", value: "/about-us/history" },
   { title: "About Us → Community Outreach", value: "/about-us/community-outreach" },
   { title: "Admissions", value: "/admissions" },
   { title: "Education", value: "/education" },
-  // The value is the key already stored on photos, from when Curriculum K–7 was its own page.
   { title: "Education → Curriculum", value: "/education/curriculum-k-7" },
   { title: "Volunteering", value: "/volunteering" },
 ];

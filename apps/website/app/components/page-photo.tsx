@@ -1,8 +1,7 @@
 import { fetchSanityData } from "@lib/sanity/fetch";
 import { mapPhotoGallery } from "@lib/sanity/map-photo-gallery";
 import { PHOTO_GALLERY_QUERY } from "@lib/sanity/queries";
-
-import { SanityImage } from "./sanity/sanity-image";
+import { SanityImage } from "./sanity-image";
 
 interface PagePhotoProps {
   path?: string;

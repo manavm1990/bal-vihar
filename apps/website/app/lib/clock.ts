@@ -1,14 +1,24 @@
 import { cacheLife } from "next/cache";
 
-/**
- * The time that notices and events are filtered against. A per-request `new Date()` would pull
- * them out of the prerendered shell, so they would pop in after the page loads; a cached clock
- * keeps them in it at the cost of being up to a minute behind.
+// Seconds the client may serve the cached value without revalidating.
+const CLOCK_CACHE_STALE_SECONDS = 300;
+
+/*
+ * Seconds after which the server regenerates the cached value in the
+ * background.
  */
+const CLOCK_CACHE_REVALIDATE_SECONDS = 60;
+
+// Seconds after which the cached value must no longer be served.
+const CLOCK_CACHE_EXPIRE_SECONDS = 300;
+
 export async function getCachedNow() {
   "use cache";
-  // An `expire` under 5 minutes would make this a request-time read again, so it stays at 5.
-  cacheLife({ stale: 300, revalidate: 60, expire: 300 });
+  cacheLife({
+    stale: CLOCK_CACHE_STALE_SECONDS,
+    revalidate: CLOCK_CACHE_REVALIDATE_SECONDS,
+    expire: CLOCK_CACHE_EXPIRE_SECONDS,
+  });
 
   return new Date();
 }

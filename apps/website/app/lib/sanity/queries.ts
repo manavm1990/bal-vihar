@@ -1,6 +1,6 @@
 import { defineQuery } from "next-sanity";
 
-const mediaImageProjection = /* groq */ `{
+const mediaImageProjection = `{
   asset->{
     _id,
     url,
@@ -15,8 +15,7 @@ const mediaImageProjection = /* groq */ `{
   crop
 }`;
 
-/** A gallery photo is itself the image, so its `_key` sits beside the image fields. */
-const albumPhotoProjection = /* groq */ `{
+const albumPhotoProjection = `{
   _key,
   asset->{
     _id,

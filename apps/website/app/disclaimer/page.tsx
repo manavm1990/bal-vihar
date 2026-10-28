@@ -3,8 +3,7 @@ import { Card, CardContent } from "@components/ui/card";
 import { P } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import type { Metadata } from "next";
-
-import DisclaimerForm from "./components/form/disclaimer-form.client";
+import DisclaimerForm from "./components/form/client";
 
 const TITLE = "Disclaimer Form";
 

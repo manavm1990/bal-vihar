@@ -25,7 +25,6 @@ interface MarkdownContentProps {
 }
 
 export default function MarkdownContent({ content, images = {} }: MarkdownContentProps) {
-  // Each heading travels with its content so the page's CSS columns never strand a heading.
   return groupBlocks(parseMarkdown(content)).map((section) => (
     <section key={section.key} className="space-y-3">
       {section.blocks.map((block, blockIndex) => renderBlock(block, blockIndex, images))}
@@ -57,8 +56,6 @@ const cleanInlineText = (text: string) =>
     .replace(/\s+/g, " ")
     .trim();
 
-// Consecutive headings ("Social" then "History") stay in one section with the content after them.
-// An image that opens the page stands alone, so it never drags the text after it into its column.
 function groupBlocks(blocks: MarkdownBlock[]): MarkdownSection[] {
   const sections: MarkdownSection[] = [];
 
@@ -215,7 +212,6 @@ function parseTable(lines: string[]): MarkdownBlock | null {
     const beforeSeparator = separatorIndex > 0 ? (rows[separatorIndex - 1] ?? []) : [];
     const afterSeparator = rows.slice(separatorIndex + 1).filter(nonEmpty);
 
-    // Empty placeholder header rows (common in pasted tables) — promote the first body row.
     if (beforeSeparator.some(Boolean)) {
       headers = beforeSeparator;
       body = afterSeparator;

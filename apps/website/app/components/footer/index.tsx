@@ -1,7 +1,6 @@
 import { ADMIN_OFFICE, ORGANIZATION_NAME, SCHOOL_LOCATION } from "@lib/constants";
 import { cacheLife } from "next/cache";
 import Link from "next/link";
-
 import { MutedP, Small } from "../ui/typography";
 import Links from "./links.client";
 
@@ -15,7 +14,6 @@ const PRIMARY_LINKS = [
 ] as const;
 
 export default async function Footer() {
-  // The copyright year only needs to be right once a day.
   "use cache";
   cacheLife("days");
 

@@ -11,10 +11,6 @@ import { UsersIcon } from "@sanity/icons/Users";
 import { WarningOutlineIcon } from "@sanity/icons/WarningOutline";
 import type { StructureResolver } from "sanity/structure";
 
-/**
- * Idiot-proof desk: only what editors change week to week.
- * Legacy types stay in the schema for old data, but are not listed here.
- */
 export const structure: StructureResolver = (S) =>
   S.list()
     .title("Edit the website")

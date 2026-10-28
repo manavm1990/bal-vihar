@@ -1,7 +1,6 @@
 import { UserIcon } from "@sanity/icons/User";
 import { UsersIcon } from "@sanity/icons/Users";
 import { defineArrayMember, defineField, defineType } from "sanity";
-
 import { describeCount } from "../describe-count";
 
 export const volunteerRoster = defineType({

@@ -142,6 +142,7 @@ export const policies = defineType({
               description:
                 "Used for links like /about-us/policies-procedures#admissions. Changing it breaks existing links to this section.",
               options: {
+                // Sanity types `parent` as unknown; here it is the policy item holding this slug.
                 source: (_document, { parent }) =>
                   (parent as { title?: string } | undefined)?.title ?? "",
               },

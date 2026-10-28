@@ -5,7 +5,6 @@ import { fetchSanityOrNull } from "@lib/sanity/fetch";
 import { VOLUNTEER_ROSTER_QUERY } from "@lib/sanity/queries";
 import { getVolunteerRosterView } from "@lib/sanity/volunteer-roster";
 import type { Metadata } from "next";
-
 import VolunteerRoster from "./volunteer-roster.client";
 
 const TITLE = "Our Volunteers";
