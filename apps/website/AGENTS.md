@@ -10,7 +10,7 @@ From the repo root: `turbo run typecheck lint --filter=@bv/website`. Tests are `
 
 - `app/lib/sanity/`: GROQ in `queries.ts` (`defineQuery`), fetching through `sanityFetch` from `live.ts`, and `map-*.ts`, `policies.ts` and `volunteers-list.ts` shaping the results. Pages read Sanity only: an empty result renders an empty state, never other content.
 - `app/lib/static-page-content.ts` and `components/static-content-page.tsx`: static pages written as markdown strings. Links must be real, current paths, because `normalizeHref` drops anything else. Terms and Privacy are plain pages, edited by hand.
-- Forms: `lib/hooks/use-action-form.ts` (Valibot, React Hook Form, server action) and `components/ui/form/*`. Each route keeps `actions.ts`, `*.types.ts` (the schema), `use-*.ts` and `*-form.client.tsx` in a `components/form/` folder, and the server action re-validates with the same schema. Uploads travel as `FormData` (see `expense-reimbursement`); the request body limit is set in `next.config.ts`.
+- Forms: `lib/hooks/use-action-form.ts` (Valibot, React Hook Form, server action), `lib/form.ts` (shared Valibot helpers), `components/ui/fields.tsx` (field primitives, like `typography.tsx`), and `components/ui/form-success.client.tsx`. Each route keeps `actions.ts`, `types.ts` (the schema), `use-*.ts` and `client.tsx` in a `components/form/` folder; upload forms add `data.ts` + `form.test.ts`. The server action re-validates with the same schema. Uploads travel as `FormData` (see `expense-reimbursement`); the request body limit is set in `next.config.ts`.
 
 ## Gotchas
 

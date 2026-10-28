@@ -31,6 +31,7 @@ Scope a task with `turbo run <task> --filter=@bv/<name>`. Pre-push runs typegen 
 ## Code Standards
 
 - Strict TypeScript (`noUncheckedIndexedAccess`, `noImplicitOverride`, `verbatimModuleSyntax`); no `any`.
+- **No comments, except where they carry weight.** Deliberate names carry intent. Comments are required to justify every `useEffect`, lint/type ignore (`biome-ignore`, `@ts-expect-error`) and type assertion (`as`, `!`); remove the construct instead when it can't be justified. Framework boilerplate comments (Sanity, Next.js config) and the required TSDoc on UI primitives stay. Otherwise, add a comment only when asked.
 - Accessibility rules are enforced; use semantic HTML, labelled form controls and proper heading order.
 - Imports are ordered and cycle-checked by Biome.
 - Prefer custom hooks over direct hook use in components.
@@ -43,16 +44,17 @@ Path aliases (`apps/website`): `@components/*` -> `./app/components/*`, `@lib/*`
 ### Website component file organization (`apps/website`)
 
 - **One exported component per file** when the file is a page or shared module.
-- **Exception: UI primitive families** (currently `app/components/ui/typography.tsx`) live in one file with named exports, ordered: imports, types, props interfaces, exported components (alphabetical), then private helpers (`cva` variants, helper components, functions; alphabetical).
+- **Exception: UI primitive families** (currently `app/components/ui/fields.tsx` and `app/components/ui/typography.tsx`) live in one file with named exports, ordered: imports, types, props interfaces, exported components (alphabetical), then private helpers (`cva` variants, helper components, functions; alphabetical).
 - **Every exported primitive gets a one-line TSDoc plus an `@example`** showing real usage. Style differences are typed `variant`s (via `cva`), never an `as` prop; each component fixes its HTML element. Spread the element's native props (`ComponentPropsWithoutRef<"h2">`) and merge `className` with `cn()`.
 - **File order, top to bottom:** imports; shared types (anything that is not a component's props); constants (`SCREAMING_SNAKE_CASE`); the **exported component first**; other colocated components, alphabetical; then **utility functions (anything that is not a component) below all components**, alphabetical.
 - **A component's props type sits directly above that component.** Only non-props types go under the imports.
 - **Components and hooks are always `function` declarations**, never arrows, and the one a file exists for is `export default function` (`export default function Page() { return (…); }`, `export default function useContact() { return useActionForm({…}); }`), even when the body is a single `return`. Single-use components are colocated below the exported one, not moved to their own file.
 - **Utilities (neither components nor hooks): single-statement functions are implicit-return arrows** (`const isTableLine = (line: string) => …`); multi-statement ones are `function` declarations. `is*` helpers are plain boolean predicates; use a type guard (`x is T`) only when it narrows a union.
-- **Name utilities with verbs** (`createParagraph`, `getPolicies`, `isTableLine`, `parseMarkdown`, `normalizeHref`). Nouns and PascalCase are for components, and hooks start with `use`. A function named like a noun reads as a component.
+- **Name utilities with verbs** (`createParagraph`, `getPolicies`, `isTableLine`, `parseMarkdown`, `normalizeHref`). Nouns and PascalCase are for components, and hooks start with `use`. A function named like a noun reads as a component. Build-from-input helpers are `create*`, read-back helpers are `parse*`; no `to*`/`from*`.
 - Colocated helpers are only called at render time, so arrows below the component are safe. **Module-level data built while the module loads** (such as schema field definitions) must define its arrow helpers _above_ that data, since arrows are not hoisted.
 - **Sort lists alphabetically** (case-insensitive): barrel `export { … }` blocks and registries such as `schemaTypes`. Generated files (`sanity.types.ts`, `schema.json`) are never hand-edited.
-- **Client components** use the `name.client.tsx` suffix and `"use client"` (opt-in). All other components are server components by default.
+- **Don't repeat the folder (or route) name in the file name.** The parent path already carries that context—name the file for its role (`actions.ts`, `types.ts`, `data.ts`, `use-contact.ts`, `client.tsx`), not `contact-form.client.tsx` inside `questions/components/form/`. **Exceptions only when a tool or platform convention requires a pattern** (Bun: `*.test.ts`, form suites use `form.test.ts`; Next.js reserved files like `error.tsx` / `page.tsx` / `layout.tsx`).
+- **Client modules** use the `name.client.tsx` suffix (`teaching-faculty.client.tsx`, `search-menu.client.tsx`, `form-success.client.tsx`) so the path reads as client. When the file is the client entry inside a folder that already scopes it, the name is just `client.tsx`. UI primitive families under `app/components/ui/` keep plain established names (`button.tsx`, `fields.tsx`, `separator.tsx`, or a compound folder like `image-gallery/index.tsx`).
 - **Shared/reused UI** gets its own file under `app/components/` (kebab-case). Do not extract a separate file for single-use server presentational pieces.
 - Prefer **omitting braces** on single-statement `if` bodies (including multi-line `return (` … `)`).
 - Prefer **ternary returns** for simple null/branch UI: `return !src ? null : ( <Image … /> );`
