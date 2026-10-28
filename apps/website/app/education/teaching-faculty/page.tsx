@@ -6,7 +6,6 @@ import { TEACHING_FACULTY_QUERY } from "@lib/sanity/queries";
 import { getTeachingFacultyView } from "@lib/sanity/teaching-faculty";
 import { stegaClean } from "@sanity/client/stega";
 import type { Metadata } from "next";
-
 import TeachingFaculty from "./teaching-faculty.client";
 
 const TITLE = "Teaching Faculty";

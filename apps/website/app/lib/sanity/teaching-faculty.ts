@@ -2,14 +2,10 @@ import type { TEACHING_FACULTY_QUERY_RESULT } from "sanity.types";
 import { cleanText, type DirectoryEntry, type DirectoryPerson, sortDirectory } from "./directory";
 import { getVolunteerContactLinks } from "./volunteers-list";
 
-interface DirectoryAccumulator {
-  entry: DirectoryPerson;
-  coordinates: string[];
-  teams: string[];
-  subjects: Map<string, string[]>;
-  assistantLevel: string;
-  assistantLabels: string[];
-}
+type Credit =
+  | { kind: "assistant"; person: DirectoryPerson; label: string; level: string }
+  | { kind: "coordinator" | "team"; person: DirectoryPerson; label: string }
+  | { kind: "subject"; person: DirectoryPerson; label: string; subject: string };
 
 interface RawAssistant {
   _key: string;
@@ -63,7 +59,6 @@ export interface TeachingFacultyView {
   directory: DirectoryEntry[];
 }
 
-/** Maps the TeachingFaculty query into plain, serializable data for the page. */
 export function getTeachingFacultyView(
   data: TEACHING_FACULTY_QUERY_RESULT | null | undefined,
 ): TeachingFacultyView {
@@ -81,9 +76,9 @@ export function getTeachingFacultyView(
           subject,
           section: cleanText(team.section) || null,
           teachers: (team.teachers ?? []).flatMap((slot) =>
-            toPeople([slot], slot.isBackup === true),
+            createPeople([slot], slot.isBackup === true),
           ),
-          assistants: toAssistants(team.assistants),
+          assistants: createAssistants(team.assistants),
         },
       ];
     });
@@ -99,9 +94,9 @@ export function getTeachingFacultyView(
       {
         key: program._key,
         name,
-        coordinators: toPeople(program.coordinators),
-        team: toPeople(program.team),
-        assistants: toAssistants(program.assistants),
+        coordinators: createPeople(program.coordinators),
+        team: createPeople(program.team),
+        assistants: createAssistants(program.assistants),
       },
     ];
   });
@@ -114,88 +109,80 @@ export function getTeachingFacultyView(
   };
 }
 
-/** Reader-facing name for a subject; the Youth Group's teachers are listed as "Youth". */
 export const formatSubject = (subject: string) => (subject === "Teachers" ? "Youth" : subject);
 
-function addAssistants(
-  people: Map<string, DirectoryAccumulator>,
-  assistants: FacultyAssistant[],
-  label: string,
-) {
-  for (const assistant of assistants) {
-    const person = getAccumulator(people, `assistant:${assistant.name.toLowerCase()}`, {
-      id: `assistant:${assistant.name.toLowerCase()}`,
-      name: assistant.name,
-      email: null,
-      phone: null,
-    });
-    person.assistantLevel = assistant.level;
-    if (!person.assistantLabels.includes(label)) person.assistantLabels.push(label);
-  }
-}
+const getAssistantCredits = (assistants: FacultyAssistant[], label: string): Credit[] =>
+  assistants.map(({ name, level }) => ({
+    kind: "assistant",
+    person: { id: `assistant:${name.toLowerCase()}`, name, email: null, phone: null },
+    label,
+    level,
+  }));
 
-function buildDirectory(groups: FacultyGroup[], programs: FacultyProgram[]): DirectoryEntry[] {
-  const people = new Map<string, DirectoryAccumulator>();
-
-  for (const program of programs) {
-    for (const person of program.coordinators)
-      getAccumulator(people, person.id, person).coordinates.push(program.name);
-    for (const person of program.team)
-      getAccumulator(people, person.id, person).teams.push(program.name);
-    addAssistants(people, program.assistants, program.name);
-  }
-
-  for (const group of groups) {
-    for (const team of group.teams) {
+const getCredits = (groups: FacultyGroup[], programs: FacultyProgram[]): Credit[] => [
+  ...programs.flatMap((program): Credit[] => [
+    ...program.coordinators.map((person) => ({
+      kind: "coordinator" as const,
+      person,
+      label: program.name,
+    })),
+    ...program.team.map((person) => ({ kind: "team" as const, person, label: program.name })),
+    ...getAssistantCredits(program.assistants, program.name),
+  ]),
+  ...groups.flatMap((group) =>
+    group.teams.flatMap((team): Credit[] => {
       const subject = formatSubject(team.subject);
 
-      for (const teacher of team.teachers) {
-        const subjects = getAccumulator(people, teacher.id, teacher).subjects;
-        const label = teacher.isBackup ? `${group.name} (backup)` : group.name;
-        subjects.set(subject, [...(subjects.get(subject) ?? []), label]);
-      }
-      addAssistants(people, team.assistants, `${subject} ${group.name}`);
-    }
-  }
+      return [
+        ...team.teachers.map((person) => ({
+          kind: "subject" as const,
+          person,
+          subject,
+          label: person.isBackup ? `${group.name} (backup)` : group.name,
+        })),
+        ...getAssistantCredits(team.assistants, `${subject} ${group.name}`),
+      ];
+    }),
+  ),
+];
+
+function buildDirectory(groups: FacultyGroup[], programs: FacultyProgram[]): DirectoryEntry[] {
+  const credits = getCredits(groups, programs);
+  const creditsById = Map.groupBy(credits, ({ person }) => person.id);
+  // Reversed so the first credit's contact details win, as Map keeps the last duplicate.
+  const people = new Map(credits.toReversed().map(({ person }) => [person.id, person]));
 
   return sortDirectory(
-    [...people.values()].map((person) => ({ ...person.entry, roles: getRoles(person) })),
+    [...people.values()].map(({ id, name, email, phone }) => ({
+      id,
+      name,
+      email,
+      phone,
+      roles: getRoles(creditsById.get(id) ?? []),
+    })),
   );
 }
 
-function getAccumulator(
-  people: Map<string, DirectoryAccumulator>,
-  id: string,
-  person: DirectoryPerson,
-): DirectoryAccumulator {
-  const existing = people.get(id);
-  if (existing) return existing;
+function getRoles(credits: Credit[]) {
+  const ofKind = <K extends Credit["kind"]>(kind: K) =>
+    credits.filter((credit): credit is Extract<Credit, { kind: K }> => credit.kind === kind);
+  const subjects = Map.groupBy(ofKind("subject"), ({ subject }) => subject);
+  const assistants = ofKind("assistant");
+  const assistantLabels = [...new Set(assistants.map(({ label }) => label))];
 
-  const created: DirectoryAccumulator = {
-    entry: { id, name: person.name, email: person.email, phone: person.phone },
-    coordinates: [],
-    teams: [],
-    subjects: new Map(),
-    assistantLevel: "",
-    assistantLabels: [],
-  };
-  people.set(id, created);
-
-  return created;
-}
-
-function getRoles(person: DirectoryAccumulator) {
   return [
-    ...person.coordinates.map((program) => `Coordinator · ${program}`),
-    ...[...person.subjects].map(([subject, names]) => `${subject} ${names.join(", ")}`),
-    ...person.teams.map((program) => `${program} team`),
-    ...(person.assistantLabels.length > 0
-      ? [`${person.assistantLevel} assistant · ${person.assistantLabels.join(", ")}`]
+    ...ofKind("coordinator").map(({ label }) => `Coordinator · ${label}`),
+    ...[...subjects].map(
+      ([subject, list]) => `${subject} ${list.map(({ label }) => label).join(", ")}`,
+    ),
+    ...ofKind("team").map(({ label }) => `${label} team`),
+    ...(assistants.length > 0
+      ? [`${assistants.at(-1)?.level} assistant · ${assistantLabels.join(", ")}`]
       : []),
   ];
 }
 
-function toAssistants(list: RawAssistant[] | null | undefined): FacultyAssistant[] {
+function createAssistants(list: RawAssistant[] | null | undefined): FacultyAssistant[] {
   return (list ?? []).flatMap((assistant) => {
     const name = cleanText(assistant.name);
 
@@ -203,11 +190,7 @@ function toAssistants(list: RawAssistant[] | null | undefined): FacultyAssistant
   });
 }
 
-/**
- * People are typed in place, so the same name in several roles is one person in the directory,
- * matched ignoring case. Entries with no name are skipped.
- */
-function toPeople(
+function createPeople(
   list: (RawPerson | null)[] | null | undefined,
   isBackup = false,
 ): FacultyPerson[] {

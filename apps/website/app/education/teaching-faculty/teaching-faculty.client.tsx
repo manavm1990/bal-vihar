@@ -1,7 +1,7 @@
 "use client";
 
-import Directory from "@components/directory.client";
-import OptionPicker from "@components/option-picker.client";
+import Directory from "@components/directory";
+import OptionPicker from "@components/option-picker";
 import PageSection from "@components/page-section";
 import PersonContact from "@components/person-contact";
 import SectionNav from "@components/section-nav";
@@ -19,7 +19,6 @@ interface TeachingFacultyProps {
   view: TeachingFacultyView;
 }
 
-/** A group picker, program cards and a searchable A–Z list of everyone on the faculty. */
 export default function TeachingFaculty({ view }: TeachingFacultyProps) {
   const { groups, programs, directory } = view;
   const links = [

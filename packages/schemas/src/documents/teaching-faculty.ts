@@ -1,7 +1,6 @@
 import { UserIcon } from "@sanity/icons/User";
 import { UsersIcon } from "@sanity/icons/Users";
 import { defineArrayMember, defineField, defineType } from "sanity";
-
 import { describeCount } from "../describe-count";
 import { contactFields } from "../objects/contact-fields";
 
@@ -61,8 +60,6 @@ export const teachingFaculty = defineType({
               type: "string",
               options: { list: GROUP_KINDS, layout: "radio" },
               initialValue: "balVihar",
-              // The groups are fixed (K–7, then Youth), so editors never change this. The site
-              // still reads it to tell the two apart.
               hidden: true,
               validation: (rule) => rule.required(),
             }),
