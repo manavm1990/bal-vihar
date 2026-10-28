@@ -33,7 +33,7 @@ const CONTROL_CLASS =
 const LOAD_DISTANCE = 2;
 
 interface ImageGalleryProps {
-  images: AnyGalleryImage[];
+  images: readonly AnyGalleryImage[];
   label: string;
 }
 
@@ -144,7 +144,7 @@ function GalleryPicture({
 }
 
 interface GalleryViewerProps {
-  images: AnyGalleryImage[];
+  images: readonly AnyGalleryImage[];
   startIndex: number;
   onClose: () => void;
 }

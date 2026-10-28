@@ -1,7 +1,7 @@
 "use client";
 
-import Directory from "@components/directory";
-import OptionPicker from "@components/option-picker";
+import Directory from "@components/directory.client";
+import OptionPicker from "@components/option-picker.client";
 import SectionNav from "@components/section-nav";
 import { H3, MutedP, Ul } from "@components/ui/typography";
 import type { VolunteerActivity, VolunteerRosterView } from "@lib/sanity/volunteer-roster";

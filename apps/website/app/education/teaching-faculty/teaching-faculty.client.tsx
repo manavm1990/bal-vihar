@@ -1,7 +1,7 @@
 "use client";
 
-import Directory from "@components/directory";
-import OptionPicker from "@components/option-picker";
+import Directory from "@components/directory.client";
+import OptionPicker from "@components/option-picker.client";
 import PageSection from "@components/page-section";
 import PersonContact from "@components/person-contact";
 import SectionNav from "@components/section-nav";

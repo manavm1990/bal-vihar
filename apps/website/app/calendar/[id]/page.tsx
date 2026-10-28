@@ -1,5 +1,5 @@
 import Article from "@components/article";
-import EventCard from "@components/event-card";
+import EventCard from "@components/event-card.client";
 import { MutedP } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import { fetchSanityData } from "@lib/sanity/fetch";
