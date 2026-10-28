@@ -1,16 +1,13 @@
 interface NavigationItem {
   name: string;
   link: string;
-  /** Menus near the right edge open leftward so the dropdown stays on screen. */
   align?: "right";
-  /** Entries without sub-items render as a plain link instead of a dropdown. */
   items?: NavigationSubItem[];
 }
 
 export interface NavigationSubItem {
   name: string;
   link: string;
-  /** Consecutive items sharing a group are rendered together under a heading. */
   group?: string;
 }
 

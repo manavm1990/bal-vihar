@@ -11,8 +11,8 @@ import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import useMeasuredHeight from "./use-measured-height";
-import useSearchMenu from "./use-search-menu";
+import useMeasuredHeight from "./hooks/use-measured-height";
+import useSearchMenu from "./hooks/use-search-menu";
 
 export default function SearchMenu() {
   const {
@@ -130,7 +130,6 @@ interface AnimatedHeightProps {
   shouldReduceMotion: boolean | null;
 }
 
-/** Grows and shrinks to fit its content, so results appearing never make the panel jump. */
 function AnimatedHeight({ children, shouldReduceMotion }: AnimatedHeightProps) {
   const { ref, height } = useMeasuredHeight<HTMLDivElement>();
 
@@ -150,7 +149,6 @@ function AnimatedHeight({ children, shouldReduceMotion }: AnimatedHeightProps) {
 
 interface ResultsProps {
   query: string;
-  /** Null until the first answer arrives. */
   hits: SearchHit[] | null;
   hasFailed: boolean;
   isPending: boolean;

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-/** Tracks an element's height, so a wrapper can animate to it as the content changes. */
 export default function useMeasuredHeight<T extends HTMLElement>() {
   const ref = useRef<T>(null);
   const [height, setHeight] = useState<number | "auto">("auto");

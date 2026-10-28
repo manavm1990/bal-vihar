@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-
 import { DesktopNav, MobileNav } from "./navs";
 import SearchMenu from "./search-menu.client";
 

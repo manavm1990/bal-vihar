@@ -9,7 +9,6 @@ interface Settled {
   hasFailed: boolean;
 }
 
-/** Fetches results as the visitor types. Waits a beat between keystrokes and drops stale requests. */
 export default function useLiveSearch(query: string) {
   const [settled, setSettled] = useState<Settled | null>(null);
   const trimmed = query.trim();
@@ -29,6 +28,7 @@ export default function useLiveSearch(query: string) {
         });
         if (!response.ok) throw new Error(`Search responded with ${response.status}`);
 
+        // Our own /api/search route returns this shape.
         const { hits } = (await response.json()) as { hits: SearchHit[] };
         setSettled({ query: trimmed, hits, hasFailed: false });
       } catch {
@@ -43,7 +43,6 @@ export default function useLiveSearch(query: string) {
   }, [trimmed]);
 
   return {
-    /** The latest answer, which may still be for an earlier query while a newer one loads. */
     settled,
     isPending: trimmed !== "" && settled?.query !== trimmed,
   } as const;
