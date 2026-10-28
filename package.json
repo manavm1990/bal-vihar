@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.3",
-    "baseline-browser-mapping": "^2.11.33",
+    "baseline-browser-mapping": "^2.11.34",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "skills": "^1.7.4",
