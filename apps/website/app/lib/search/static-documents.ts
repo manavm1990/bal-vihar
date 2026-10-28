@@ -36,7 +36,7 @@ const stripMarkdown = (value: string) =>
     .replaceAll(/\s+/g, " ")
     .trim();
 
-const getCaptions = <T extends { alt: string; caption?: string }>(images: readonly T[]) =>
+const getCaptions = (images: readonly { alt: string; caption?: string }[]) =>
   images.flatMap(({ caption }) => (caption ? [caption] : [])).join(". ");
 
 const createEntryDocument = ({ href, title, section, text }: PageEntry): SearchDocument => ({
