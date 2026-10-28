@@ -198,12 +198,11 @@ function downloadCalendarEvent(event: CalendarEventData) {
   link.href = url;
   link.download = `${event.date}-${event.title.replaceAll(/[^a-z0-9]+/gi, "-").toLowerCase()}.ics`;
   link.click();
-  // Revoke after the click has started the download.
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 const eventTypeLabel = (value: string | null | undefined) => {
   if (!value || !(value in EVENT_TYPE_LABELS)) return null;
-  // Keys are validated against EVENT_TYPE_LABELS above.
+  // `in` narrows `EVENT_TYPE_LABELS`, not `value`, so the key is asserted after the check above.
   return EVENT_TYPE_LABELS[value as EventTypeKey];
 };

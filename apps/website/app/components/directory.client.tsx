@@ -2,7 +2,6 @@
 
 import type { DirectoryEntry } from "@lib/sanity/directory";
 import { useState } from "react";
-
 import PageSection from "./page-section";
 import PersonContact from "./person-contact";
 import { MutedP, Ul } from "./ui/typography";
@@ -11,7 +10,6 @@ interface DirectoryProps {
   entries: DirectoryEntry[];
 }
 
-/** A searchable A–Z list of people, each with the roles they hold. */
 export default function Directory({ entries }: DirectoryProps) {
   const { query, setQuery, shown } = useDirectorySearch(entries);
 

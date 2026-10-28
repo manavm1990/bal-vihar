@@ -1,4 +1,4 @@
-import { SanityImage } from "@components/sanity/sanity-image";
+import { SanityImage } from "@components/sanity-image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
 import { H5, MutedP } from "@components/ui/typography";
 import type { HomePhotoBoardItem } from "@lib/sanity/types";

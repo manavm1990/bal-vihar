@@ -1,6 +1,5 @@
 "use client";
 
-import useImageGallery from "@lib/hooks/use-image-gallery";
 import { urlFor } from "@lib/sanity/image";
 import type { SanityImageValue } from "@lib/sanity/types";
 import { isReducedMotionPreferred } from "@lib/utils";
@@ -8,23 +7,20 @@ import { ChevronLeftIcon, ChevronRightIcon, Cross2Icon, Share1Icon } from "@radi
 import useEmblaCarousel from "embla-carousel-react";
 import Image, { type StaticImageData } from "next/image";
 import { type KeyboardEvent, useEffect, useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../button";
+import useImageGallery from "./use-image-gallery";
 
 interface GalleryImageBase {
   alt: string;
   caption?: string;
-  /** Unique within the gallery. The picture's own id repeats when the same photo is added twice. */
   id?: string;
-  /** A link that shares this photo, such as a WhatsApp message. Shown in the viewer. */
   shareHref?: string;
 }
 
-/** A photo bundled with the site. */
 export interface GalleryImage extends GalleryImageBase {
   src: StaticImageData;
 }
 
-/** A photo uploaded in Studio. */
 export interface GalleryPhoto extends GalleryImageBase {
   image: SanityImageValue;
 }
@@ -34,7 +30,6 @@ type AnyGalleryImage = GalleryImage | GalleryPhoto;
 const CONTROL_CLASS =
   "absolute size-12 rounded-full bg-black/55 text-white hover:bg-black/75 hover:text-white";
 
-// Only the photos this close to the one on screen are loaded, so a long gallery stays light.
 const LOAD_DISTANCE = 2;
 
 interface ImageGalleryProps {
@@ -101,11 +96,9 @@ interface GalleryPictureProps {
   sizes: string;
   width: number;
   className: string;
-  /** Crops to the thumbnail shape, following the focus point set in Studio. */
   isThumbnail?: boolean;
 }
 
-/** Fills the box around it with one photo, whether bundled or from Studio. */
 function GalleryPicture({
   image,
   sizes,
@@ -156,13 +149,13 @@ interface GalleryViewerProps {
   onClose: () => void;
 }
 
-/** A swipeable carousel of every photo, starting on the one that was chosen. */
 function GalleryViewer({ images, startIndex, onClose }: GalleryViewerProps) {
   const [viewportRef, carousel] = useEmblaCarousel({ loop: true, startIndex });
   const [selected, setSelected] = useState(startIndex);
   const current = images[selected];
 
   useEffect(() => {
+    // Effect is needed to follow Embla's slide changes, including swipes, for as long as the viewer is open.
     if (!carousel) return;
 
     const syncSelected = () => setSelected(carousel.selectedScrollSnap());
@@ -173,7 +166,6 @@ function GalleryViewer({ images, startIndex, onClose }: GalleryViewerProps) {
     };
   }, [carousel]);
 
-  // With reduced motion a button press jumps to the photo instead of sliding.
   const showPrevious = () => carousel?.scrollPrev(isReducedMotionPreferred());
   const showNext = () => carousel?.scrollNext(isReducedMotionPreferred());
 
@@ -184,7 +176,6 @@ function GalleryViewer({ images, startIndex, onClose }: GalleryViewerProps) {
 
   return (
     <figure className="space-y-3" onKeyDown={handleKeyDown}>
-      {/* A stage of one fixed size, so the buttons stay put whatever shape each photo is. */}
       <div className="relative">
         <div ref={viewportRef} className="overflow-hidden rounded-lg">
           <div className="flex touch-pan-y">
@@ -243,13 +234,11 @@ function GalleryViewer({ images, startIndex, onClose }: GalleryViewerProps) {
 
 interface ViewerButtonProps {
   label: string;
-  /** Where on the stage the button sits, as Tailwind position classes. */
   position: string;
   onClick: () => void;
   children: React.ReactNode;
 }
 
-/** A round button over the photo, labelled for screen readers. */
 function ViewerButton({ label, position, onClick, children }: ViewerButtonProps) {
   return (
     <Button
@@ -267,7 +256,6 @@ function ViewerButton({ label, position, onClick, children }: ViewerButtonProps)
 const getImageKey = (image: AnyGalleryImage) =>
   image.id ?? ("src" in image ? image.src.src : (image.image.asset?._id ?? image.alt));
 
-/** The carousel loops, so the distance between two photos can go either way round. */
 const isNear = (position: number, selected: number, count: number) => {
   const distance = Math.abs(position - selected);
 

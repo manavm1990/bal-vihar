@@ -3,7 +3,6 @@
 import { FADE } from "@lib/animations";
 import { motion, useReducedMotion } from "motion/react";
 import { type ReactNode, useState } from "react";
-
 import PageSection from "./page-section";
 import { Button } from "./ui/button";
 
@@ -21,11 +20,9 @@ interface OptionPickerProps<T extends Option> {
   id: string;
   title: string;
   groups: OptionGroup<T>[];
-  /** Renders the picked option's content; the first option is shown until one is tapped. */
   children: (option: T) => ReactNode;
 }
 
-/** A section of toggle buttons, grouped under legends, that shows the content of the picked one. */
 export default function OptionPicker<T extends Option>({
   id,
   title,
@@ -90,7 +87,6 @@ function useSelectedOption<T extends Option>(options: T[]) {
   const selected = options.find((option) => option.key === selectedKey) ?? options[0];
   const [hasPicked, setHasPicked] = useState(false);
   const shouldReduceMotion = useReducedMotion();
-  // Fade only after a tap, so the first paint is never hidden while the page hydrates.
   const fadeIn =
     shouldReduceMotion || !hasPicked
       ? {}

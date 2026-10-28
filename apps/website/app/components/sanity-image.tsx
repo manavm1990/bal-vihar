@@ -4,7 +4,6 @@ import Image from "next/image";
 
 interface SanityImageProps {
   value: SanityImageValue;
-  /** Alt text used when the image has none of its own. */
   fallbackAlt?: string;
   width?: number;
   height?: number;
@@ -14,10 +13,6 @@ interface SanityImageProps {
   fill?: boolean;
 }
 
-/**
- * Renders a Sanity image via the image pipeline,
- * or a plain asset URL (static fallbacks).
- */
 export function SanityImage({
   value,
   fallbackAlt = "",
