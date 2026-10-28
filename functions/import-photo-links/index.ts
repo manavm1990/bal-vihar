@@ -146,7 +146,7 @@ const isAdded = (outcome: Outcome): outcome is Added => "assetId" in outcome;
 const isFailed = (outcome: Outcome): outcome is Failed => "reason" in outcome;
 
 const isPrivateHost = (hostname: string) =>
-  PRIVATE_NAME.test(hostname) ||
+  PRIVATE_NAME.test(hostname.replace(/\.$/, "")) ||
   (IPV4_ADDRESS.test(hostname) && PRIVATE_IPV4.test(hostname)) ||
   PRIVATE_IPV6.test(hostname);
 
