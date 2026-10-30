@@ -13,6 +13,7 @@ interface ExistingEvent {
 interface SpreadsheetImportEvent {
   _id: string;
   _rev: string;
+  fileRef?: string | null;
   fileUrl?: string | null;
   kind?: string | null;
   schoolYear?: string | null;
@@ -24,7 +25,7 @@ const MAX_LISTED_PROBLEMS = 20;
 const ROSTER_ID = "volunteerRoster";
 
 export const handler = documentEventHandler<SpreadsheetImportEvent>(async ({ context, event }) => {
-  const { _id, _rev } = event.data;
+  const { _id, _rev, fileRef } = event.data;
   const client = createClient({ ...context.clientOptions, apiVersion: API_VERSION, useCdn: false });
   const isDryRun = context.local === true;
 
@@ -34,7 +35,7 @@ export const handler = documentEventHandler<SpreadsheetImportEvent>(async ({ con
   if (isDryRun) return;
 
   // Fails if the upload was edited meanwhile, so the run starts again...
-  await client.patch(_id).ifRevisionId(_rev).set({ importReport }).commit();
+  await client.patch(_id).ifRevisionId(_rev).set({ importReport, processedFile: fileRef }).commit();
 });
 
 const createReport = (summary: string, details: string[] = []) =>

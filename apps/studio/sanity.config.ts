@@ -5,14 +5,12 @@ import { presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
 import { resolve } from "./presentation/resolve";
 import { structure } from "./structure";
+import { templates } from "./templates";
 
-/**
- * Only calendar events, photo galleries and Excel uploads are creatable from
- * “New document”.
- */
-const CREATABLE_TYPES = new Set(["calendarEvent", "photoAlbum", "spreadsheetImport"]);
-/** Singletons and class pages are edited and published only. */
-const EDIT_ONLY_TYPE_SET = new Set<string>([...SINGLETON_TYPES, "classPage"]);
+/** Only calendar events and photo galleries are creatable from “New document”. */
+const CREATABLE_TYPES = new Set(["calendarEvent", "photoAlbum"]);
+/** Singletons, class pages and the two Excel upload forms are edited and published only. */
+const EDIT_ONLY_TYPE_SET = new Set<string>([...SINGLETON_TYPES, "classPage", "spreadsheetImport"]);
 const EDIT_ONLY_ACTIONS = new Set(["publish", "discardChanges", "restore"]);
 
 const isDev = process.env["NODE_ENV"] === "development";
@@ -46,6 +44,7 @@ export default defineConfig({
 
   schema: {
     types: [...schemaTypes],
+    templates: (prev) => [...prev, ...templates],
   },
 
   document: {

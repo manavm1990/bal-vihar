@@ -21,14 +21,15 @@ export const spreadsheetImport = defineType({
       name: "kind",
       title: "What is in the file?",
       type: "string",
-      options: { list: IMPORT_KINDS, layout: "radio" },
-      validation: (rule) => rule.required().error("Pick what the file contains."),
+      options: { list: IMPORT_KINDS },
+      hidden: true,
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "schoolYear",
       title: "School year",
       type: "string",
-      description: "The list on the website is replaced with this file.",
+      description: "Pick the school year this list is for. The list on the website is replaced.",
       options: { list: SCHOOL_YEARS, layout: "dropdown" },
       initialValue: getCurrentSchoolYear,
       hidden: ({ document }) => isCalendar(document),
@@ -42,7 +43,7 @@ export const spreadsheetImport = defineType({
       title: "Excel file",
       type: "file",
       description:
-        "An .xlsx file with column headings in its first rows. Event volunteers: “Volunteer name” and “Events” (several events separated by commas). Calendar: “Date” and “Name”, plus optional “Time”, “Where”, “Kind”, “Notes” and “Highlight”. Then click Publish. A minute or so later the result appears below. To upload another file, make a new Excel upload.",
+        "Step 1: choose your Excel (.xlsx) file here. Step 2: click Publish at the bottom right. Step 3: wait about a minute. The Result appears below, starting with the time it ran. To import another file, choose it here and click Publish again. The first rows of the sheet must be column headings. Calendar: “Date” and “Name” are needed; “Time”, “Where”, “Kind”, “Notes” and “Highlight” are optional. Event volunteers: “Volunteer name” and “Events” (several events separated by commas).",
       options: { accept: ".xlsx" },
       validation: (rule) => rule.required().error("Choose the Excel file."),
     }),
@@ -53,15 +54,15 @@ export const spreadsheetImport = defineType({
       rows: 8,
       readOnly: true,
       hidden: ({ value }) => !value,
-      description: "What was imported and any rows that were skipped. Filled in automatically.",
+      description:
+        "What was imported and any rows that were skipped. Filled in automatically. If the time at the start is old, wait a minute for the new result.",
     }),
-  ],
-  orderings: [
-    {
-      title: "Newest first",
-      name: "newest",
-      by: [{ field: "_createdAt", direction: "desc" }],
-    },
+    defineField({
+      name: "processedFile",
+      type: "string",
+      readOnly: true,
+      hidden: true,
+    }),
   ],
   preview: {
     select: { kind: "kind", schoolYear: "schoolYear", importReport: "importReport" },

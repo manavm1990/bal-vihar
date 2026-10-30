@@ -22,8 +22,12 @@ export default defineBlueprint({
       timeout: 120,
       event: {
         on: ["create", "update"],
-        filter: '_type == "spreadsheetImport" && defined(file.asset) && !defined(importReport)',
-        projection: '{_id, _rev, kind, schoolYear, "fileUrl": file.asset->url}',
+        // The handler records the file it imported in processedFile, which stops this filter
+        // matching until a different file is attached, so its own write can't trigger it again.
+        filter:
+          '_type == "spreadsheetImport" && defined(file.asset) && file.asset._ref != processedFile',
+        projection:
+          '{_id, _rev, kind, schoolYear, "fileRef": file.asset._ref, "fileUrl": file.asset->url}',
         resource: { type: "dataset", id: "x5wq3sbt.production" },
       },
     }),

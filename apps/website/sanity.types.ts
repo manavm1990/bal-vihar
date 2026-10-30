@@ -137,6 +137,7 @@ export type SpreadsheetImport = {
     _type: "file";
   };
   importReport?: string;
+  processedFile?: string;
 };
 
 export type SiteSettings = {

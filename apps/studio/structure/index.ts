@@ -10,7 +10,8 @@ import { StarIcon } from "@sanity/icons/Star";
 import { UploadIcon } from "@sanity/icons/Upload";
 import { UsersIcon } from "@sanity/icons/Users";
 import { WarningOutlineIcon } from "@sanity/icons/WarningOutline";
-import type { StructureResolver } from "sanity/structure";
+import type { StructureBuilder, StructureResolver } from "sanity/structure";
+import { UPLOADS } from "../templates";
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -42,7 +43,18 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.documentTypeList("calendarEvent")
             .title("Calendar")
-            .defaultOrdering([{ field: "date", direction: "asc" }]),
+            .defaultOrdering([{ field: "date", direction: "asc" }])
+            .menuItems([
+              ...(S.documentTypeList("calendarEvent").getMenuItems() ?? []),
+              S.menuItem()
+                .title("Upload from Excel")
+                .icon(UploadIcon)
+                .intent({
+                  type: "edit",
+                  params: { id: UPLOADS.calendar.id, type: "spreadsheetImport" },
+                })
+                .showAsAction(true),
+            ]),
         ),
       S.listItem()
         .title("Classes")
@@ -107,14 +119,8 @@ export const structure: StructureResolver = (S) =>
             .title("Event volunteers"),
         ),
       S.divider(),
-      S.listItem()
-        .title("Upload from Excel")
-        .icon(UploadIcon)
-        .child(
-          S.documentTypeList("spreadsheetImport")
-            .title("Upload from Excel")
-            .defaultOrdering([{ field: "_createdAt", direction: "desc" }]),
-        ),
+      createUploadItem(S, "Upload calendar from Excel", UPLOADS.calendar),
+      createUploadItem(S, "Upload event volunteers from Excel", UPLOADS.volunteerRoster),
       S.listItem()
         .title("Advanced")
         .icon(CogIcon)
@@ -143,3 +149,19 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
     ]);
+
+const createUploadItem = (
+  S: StructureBuilder,
+  title: string,
+  upload: (typeof UPLOADS)[keyof typeof UPLOADS],
+) =>
+  S.listItem()
+    .title(title)
+    .icon(UploadIcon)
+    .child(
+      S.document()
+        .schemaType("spreadsheetImport")
+        .documentId(upload.id)
+        .initialValueTemplate(upload.template)
+        .title(title),
+    );
