@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@sanity/client": "^8.14.1",
-    "@sanity/functions": "^1.11.0"
+    "@sanity/functions": "^1.11.0",
+    "read-excel-file": "^9.3.14"
   },
   "devDependencies": {
     "@bv/typescript-config": "workspace:*",

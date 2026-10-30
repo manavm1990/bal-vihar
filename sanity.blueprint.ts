@@ -16,5 +16,16 @@ export default defineBlueprint({
         resource: { type: "dataset", id: "x5wq3sbt.production" },
       },
     }),
+    defineDocumentFunction({
+      name: "import-spreadsheet",
+      displayName: "Import calendar and volunteers from Excel",
+      timeout: 120,
+      event: {
+        on: ["create", "update"],
+        filter: '_type == "spreadsheetImport" && defined(file.asset) && !defined(importReport)',
+        projection: '{_id, _rev, kind, schoolYear, "fileUrl": file.asset->url}',
+        resource: { type: "dataset", id: "x5wq3sbt.production" },
+      },
+    }),
   ],
 });
