@@ -9,12 +9,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@sanity/client": "^8.13.0",
-    "@sanity/functions": "^1.10.1"
+    "@sanity/client": "^8.14.1",
+    "@sanity/functions": "^1.11.0"
   },
   "devDependencies": {
     "@bv/typescript-config": "workspace:*",
-    "@sanity/blueprints": "^0.31.0",
+    "@sanity/blueprints": "^0.32.0",
     "typescript": "^7.0.2"
   }
 }

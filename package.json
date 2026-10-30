@@ -21,7 +21,7 @@
     "postinstall": "bunx skills update -p -y || true"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.6.3",
+    "@biomejs/biome": "^2.6.4",
     "baseline-browser-mapping": "^2.11.34",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
