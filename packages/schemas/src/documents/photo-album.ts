@@ -1,9 +1,6 @@
 import { ImagesIcon } from "@sanity/icons/Images";
 import { defineArrayMember, defineField, defineType } from "sanity";
-
-const AUGUST = 8;
-const FIRST_SCHOOL_YEAR = 2014;
-const LAST_SCHOOL_YEAR = 2035;
+import { getCurrentSchoolYear, SCHOOL_YEARS } from "../school-years";
 
 const describePhotoCount = (photos: unknown) => {
   const count = Array.isArray(photos) ? photos.length : 0;
@@ -11,26 +8,12 @@ const describePhotoCount = (photos: unknown) => {
   return `${count} ${count === 1 ? "photo" : "photos"}`;
 };
 
-const formatSchoolYear = (start: number) => `${start}-${String(start + 1).slice(2)}`;
-
-function getCurrentSchoolYear() {
-  const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
-  const year = Number(today.slice(0, 4));
-  const month = Number(today.slice(5, 7));
-
-  return formatSchoolYear(month >= AUGUST ? year : year - 1);
-}
-
 const hasLinks = (value: unknown) => typeof value === "string" && value.trim().length > 0;
 
 const hasPhotos = (value: unknown) => Array.isArray(value) && value.length > 0;
 
 const hasSlug = (value: unknown) =>
   typeof value === "object" && value !== null && "current" in value && Boolean(value.current);
-
-const SCHOOL_YEARS = Array.from({ length: LAST_SCHOOL_YEAR - FIRST_SCHOOL_YEAR + 1 }, (_, index) =>
-  formatSchoolYear(LAST_SCHOOL_YEAR - index),
-);
 
 export const photoAlbum = defineType({
   name: "photoAlbum",
