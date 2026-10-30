@@ -7,6 +7,7 @@ import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
 import { ImageIcon } from "@sanity/icons/Image";
 import { ImagesIcon } from "@sanity/icons/Images";
 import { StarIcon } from "@sanity/icons/Star";
+import { UploadIcon } from "@sanity/icons/Upload";
 import { UsersIcon } from "@sanity/icons/Users";
 import { WarningOutlineIcon } from "@sanity/icons/WarningOutline";
 import type { StructureResolver } from "sanity/structure";
@@ -97,15 +98,23 @@ export const structure: StructureResolver = (S) =>
             .title("Administrative Team"),
         ),
       S.listItem()
-        .title("Thank-you list (event volunteers)")
+        .title("Event volunteers")
         .icon(UsersIcon)
         .child(
           S.document()
             .schemaType("volunteerRoster")
             .documentId(SINGLETON_IDS.volunteerRoster)
-            .title("Thank-you list (event volunteers)"),
+            .title("Event volunteers"),
         ),
       S.divider(),
+      S.listItem()
+        .title("Upload from Excel")
+        .icon(UploadIcon)
+        .child(
+          S.documentTypeList("spreadsheetImport")
+            .title("Upload from Excel")
+            .defaultOrdering([{ field: "_createdAt", direction: "desc" }]),
+        ),
       S.listItem()
         .title("Advanced")
         .icon(CogIcon)

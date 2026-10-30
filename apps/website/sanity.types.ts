@@ -116,6 +116,51 @@ export type TeachingFaculty = {
   }>;
 };
 
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type SpreadsheetImport = {
+  _id: string;
+  _type: "spreadsheetImport";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  kind: "calendar" | "volunteerRoster";
+  schoolYear?:
+    | "2035-36"
+    | "2034-35"
+    | "2033-34"
+    | "2032-33"
+    | "2031-32"
+    | "2030-31"
+    | "2029-30"
+    | "2028-29"
+    | "2027-28"
+    | "2026-27"
+    | "2025-26"
+    | "2024-25"
+    | "2023-24"
+    | "2022-23"
+    | "2021-22"
+    | "2020-21"
+    | "2019-20"
+    | "2018-19"
+    | "2017-18"
+    | "2016-17"
+    | "2015-16"
+    | "2014-15";
+  file: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  importReport?: string;
+};
+
 export type SiteSettings = {
   _id: string;
   _type: "siteSettings";
@@ -469,34 +514,6 @@ export type ClassLink = {
   url: string;
 };
 
-export type SanityFileAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-};
-
-export type CalendarImport = {
-  _id: string;
-  _type: "calendarImport";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  academicYear: string;
-  uploadedFile: {
-    asset?: SanityFileAssetReference;
-    media?: unknown;
-    _type: "file";
-  };
-  status?: "uploaded" | "processing" | "completed" | "error";
-  uploadedAt?: string;
-  processedAt?: string;
-  eventsCount?: number;
-  notes?: string;
-  errorLog?: string;
-};
-
 export type CalendarEvent = {
   _id: string;
   _type: "calendarEvent";
@@ -625,6 +642,8 @@ export type AllSanitySchemaTypes =
   | VolunteersList
   | VolunteerRoster
   | TeachingFaculty
+  | SanityFileAssetReference
+  | SpreadsheetImport
   | SiteSettings
   | SanityImageAssetReference
   | MediaImage
@@ -639,8 +658,6 @@ export type AllSanitySchemaTypes =
   | Faqs
   | ClassPage
   | ClassLink
-  | SanityFileAssetReference
-  | CalendarImport
   | CalendarEvent
   | AlbumPhoto
   | SanityImagePaletteSwatch
@@ -769,6 +786,34 @@ export type VOLUNTEER_ROSTER_QUERY_RESULT =
         | "2032-33"
         | "2033-34"
         | "2034-35"
+        | "2035-36"
+        | null;
+      activities: null;
+    }
+  | {
+      _id: "volunteerRoster";
+      schoolYear:
+        | "2014-15"
+        | "2015-16"
+        | "2016-17"
+        | "2017-18"
+        | "2018-19"
+        | "2019-20"
+        | "2020-21"
+        | "2021-22"
+        | "2022-23"
+        | "2023-24"
+        | "2024-25"
+        | "2025-26"
+        | "2026-27"
+        | "2027-28"
+        | "2028-29"
+        | "2029-30"
+        | "2030-31"
+        | "2031-32"
+        | "2032-33"
+        | "2033-34"
+        | "2034-35"
         | "2035-36";
       activities: null;
     }
@@ -796,6 +841,35 @@ export type TEACHING_FACULTY_QUERY_RESULT =
   | {
       _id: "teachingFaculty";
       schoolYear: string;
+      groups: null;
+      programs: null;
+    }
+  | {
+      _id: "teachingFaculty";
+      schoolYear:
+        | "2014-15"
+        | "2015-16"
+        | "2016-17"
+        | "2017-18"
+        | "2018-19"
+        | "2019-20"
+        | "2020-21"
+        | "2021-22"
+        | "2022-23"
+        | "2023-24"
+        | "2024-25"
+        | "2025-26"
+        | "2026-27"
+        | "2027-28"
+        | "2028-29"
+        | "2029-30"
+        | "2030-31"
+        | "2031-32"
+        | "2032-33"
+        | "2033-34"
+        | "2034-35"
+        | "2035-36"
+        | null;
       groups: null;
       programs: null;
     }

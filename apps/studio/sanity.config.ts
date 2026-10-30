@@ -6,8 +6,11 @@ import { structureTool } from "sanity/structure";
 import { resolve } from "./presentation/resolve";
 import { structure } from "./structure";
 
-/** Only calendar events and photo galleries are creatable from “New document”. */
-const CREATABLE_TYPES = new Set(["calendarEvent", "photoAlbum"]);
+/**
+ * Only calendar events, photo galleries and Excel uploads are creatable from
+ * “New document”.
+ */
+const CREATABLE_TYPES = new Set(["calendarEvent", "photoAlbum", "spreadsheetImport"]);
 /** Singletons and class pages are edited and published only. */
 const EDIT_ONLY_TYPE_SET = new Set<string>([...SINGLETON_TYPES, "classPage"]);
 const EDIT_ONLY_ACTIONS = new Set(["publish", "discardChanges", "restore"]);
@@ -46,9 +49,7 @@ export default defineConfig({
   },
 
   document: {
-    // Editors can only create calendar events and photo galleries (singletons and legacy types are blocked).
     newDocumentOptions: (prev) => prev.filter((item) => CREATABLE_TYPES.has(item.templateId)),
-    // Edit-only types can be edited and published, but not deleted, duplicated or unpublished.
     actions: (prev, { schemaType }) =>
       EDIT_ONLY_TYPE_SET.has(schemaType)
         ? prev.filter(({ action }) => action && EDIT_ONLY_ACTIONS.has(action))

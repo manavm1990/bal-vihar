@@ -1,5 +1,4 @@
 import { calendarEvent } from "./documents/calendar-event";
-import { calendarImport } from "./documents/calendar-import";
 import { classPage } from "./documents/class-page";
 import { faqs } from "./documents/faqs";
 import { homePage } from "./documents/home-page";
@@ -8,6 +7,7 @@ import { photoAlbum } from "./documents/photo-album";
 import { PHOTO_PAGE_OPTIONS, photoGallery } from "./documents/photo-gallery";
 import { policies } from "./documents/policies";
 import { siteSettings } from "./documents/site-settings";
+import { spreadsheetImport } from "./documents/spreadsheet-import";
 import { teachingFaculty } from "./documents/teaching-faculty";
 import { volunteerRoster } from "./documents/volunteer-roster";
 import { volunteersList } from "./documents/volunteers-list";
@@ -28,13 +28,11 @@ export const SINGLETON_IDS = {
   volunteersList: "volunteersList",
 } as const;
 
-// `Object.keys` widens to `string[]`; the keys come from the `as const` object above.
 export const SINGLETON_TYPES = Object.keys(SINGLETON_IDS) as (keyof typeof SINGLETON_IDS)[];
 
 export const schemaTypes = [
   albumPhoto,
   calendarEvent,
-  calendarImport,
   classLink,
   classPage,
   faqs,
@@ -45,16 +43,16 @@ export const schemaTypes = [
   photoGallery,
   policies,
   siteSettings,
+  spreadsheetImport,
   teachingFaculty,
   volunteerRoster,
   volunteersList,
   youthAssistant,
-];
+] as const;
 
 export {
   albumPhoto,
   calendarEvent,
-  calendarImport,
   classLink,
   classPage,
   faqs,
@@ -66,6 +64,7 @@ export {
   photoGallery,
   policies,
   siteSettings,
+  spreadsheetImport,
   teachingFaculty,
   volunteerRoster,
   volunteersList,
