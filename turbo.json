@@ -19,6 +19,9 @@
       "dependsOn": ["transit"],
       "cache": false
     },
+    "test": {
+      "dependsOn": ["^transit"]
+    },
     "typecheck": {
       "dependsOn": ["^transit"]
     },

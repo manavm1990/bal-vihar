@@ -15,6 +15,7 @@
     "deploy:studio": "turbo run deploy --filter=@bv/studio",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
+    "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "typegen": "turbo run typegen --filter=@bv/studio",
     "prepare": "husky",
