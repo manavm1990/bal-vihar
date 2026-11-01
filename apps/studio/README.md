@@ -1,6 +1,6 @@
 # Bal Vihar Sanity Studio
 
-CMS app for photos, home announcements, and calendar events.
+CMS app for photos, the home page notice, and calendar events.
 
 ## Develop
 

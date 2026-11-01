@@ -1,23 +1,18 @@
 import EventCard from "@components/event-card.client";
 import { SanityImage } from "@components/sanity-image";
 import { Button } from "@components/ui/button";
-import { Card, CardContent } from "@components/ui/card";
 import { Bq, H1, H2, H3, LeadP, MutedP, P } from "@components/ui/typography";
 import { getCachedNow } from "@lib/clock";
 import { REGISTRATION_URL } from "@lib/constants";
-import { isAnnouncementVisible } from "@lib/sanity/announcements";
 import { fetchSanityData } from "@lib/sanity/fetch";
 import { getUpcomingCalendarEvents, mapCalendarEvents } from "@lib/sanity/map-calendar-events";
-import { mapHomePage } from "@lib/sanity/map-home-page";
 import { mapPhotoGallery } from "@lib/sanity/map-photo-gallery";
-import { CALENDAR_EVENTS_QUERY, HOME_PAGE_QUERY, PHOTO_GALLERY_QUERY } from "@lib/sanity/queries";
-import type { CalendarEventData, HomeAnnouncement, HomePhotoBoardItem } from "@lib/sanity/types";
-import { cn } from "@lib/utils";
+import { CALENDAR_EVENTS_QUERY, PHOTO_GALLERY_QUERY } from "@lib/sanity/queries";
+import type { CalendarEventData, HomePhotoBoardItem } from "@lib/sanity/types";
 import Link from "next/link";
 
 const MISSION =
   "To throw the light of cultural knowledge on every child, to make every child an outstanding citizen and to spread the song of peace and harmony around the world.";
-const NOTICE_LABELS = { urgent: "Urgent", success: "Good news" } as const;
 const QUICK_LINKS = [
   {
     title: "Class schedule & rooms",
@@ -77,17 +72,11 @@ const WHO_WE_ARE =
   "Center for Indian Cultural Education – Bal Vihar of St. Louis is a non-profit organization that has served the Metro St. Louis Indian community since 1992. Our primary focus is Indian cultural education for students ages 5–18, and its application and integration with the global, multicultural society. Students also learn discipline, tolerance and devotion in their daily routine.";
 
 export default async function HomePage() {
-  const [homePayload, calendarPayload, galleryPayload, now] = await Promise.all([
-    fetchSanityData(HOME_PAGE_QUERY),
+  const [calendarPayload, galleryPayload, now] = await Promise.all([
     fetchSanityData(CALENDAR_EVENTS_QUERY),
     fetchSanityData(PHOTO_GALLERY_QUERY),
     getCachedNow(),
   ]);
-
-  const home = mapHomePage(homePayload);
-  const announcements = (home?.announcements ?? []).filter((item) =>
-    isAnnouncementVisible(item, now),
-  );
 
   const events = getUpcomingCalendarEvents(mapCalendarEvents(calendarPayload), { now });
 
@@ -98,8 +87,6 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <Announcements announcements={announcements} />
-
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <Intro text={WHO_WE_ARE} />
         <QuickLinks />
@@ -112,61 +99,6 @@ export default async function HomePage() {
         <PhotoStrip photos={photos} />
       </div>
     </div>
-  );
-}
-
-interface AnnouncementsProps {
-  announcements: HomeAnnouncement[];
-}
-
-function Announcements({ announcements }: AnnouncementsProps) {
-  return announcements.length === 0 ? null : (
-    <div className="mx-auto flex w-full max-w-prose flex-col gap-4">
-      {announcements.map((announcement) => (
-        <AnnouncementCard key={announcement.key} announcement={announcement} />
-      ))}
-    </div>
-  );
-}
-
-interface AnnouncementCardProps {
-  announcement: HomeAnnouncement;
-}
-
-function AnnouncementCard({ announcement }: AnnouncementCardProps) {
-  const tone = announcement.tone ?? "default";
-  const CtaLink = announcement.ctaHref?.startsWith("/") ? Link : "a";
-
-  return (
-    <Card
-      role={tone === "urgent" ? "alert" : undefined}
-      className={cn(
-        "border-2 shadow-none",
-        tone === "urgent" && "border-destructive bg-destructive/10",
-        tone === "success" && "border-success bg-success/10",
-        tone === "default" && "border-primary-300 bg-primary-50",
-      )}
-    >
-      <CardContent className="flex flex-col gap-4 p-4">
-        {tone === "default" ? null : (
-          <p
-            className={cn(
-              "text-sm font-bold tracking-wide uppercase",
-              tone === "urgent" ? "text-destructive" : "text-success",
-            )}
-          >
-            {NOTICE_LABELS[tone]}
-          </p>
-        )}
-        <H2>{announcement.title}</H2>
-        <LeadP className="whitespace-pre-line">{announcement.body}</LeadP>
-        {announcement.ctaHref && announcement.ctaLabel ? (
-          <Button asChild className="w-fit">
-            <CtaLink href={announcement.ctaHref}>{announcement.ctaLabel}</CtaLink>
-          </Button>
-        ) : null}
-      </CardContent>
-    </Card>
   );
 }
 

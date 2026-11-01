@@ -182,17 +182,9 @@ export const POLICIES_QUERY = defineQuery(`*[_id == "policies"][0]{
 export const HOME_PAGE_QUERY = defineQuery(`*[_id == "homePage"][0]{
   _id,
   title,
-  announcements[]{
-    _key,
-    title,
-    body,
-    ctaLabel,
-    ctaHref,
-    isActive,
-    startDate,
-    endDate,
-    tone
-  }
+  noticeText,
+  noticeHref,
+  noticeLabel
 }`);
 
 export const PHOTO_ALBUM_QUERY = defineQuery(`*[_type == "photoAlbum" && slug.current == $slug][0]{

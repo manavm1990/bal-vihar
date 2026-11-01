@@ -388,18 +388,9 @@ export type HomePage = {
   _updatedAt: string;
   _rev: string;
   title: string;
-  announcements?: Array<{
-    title: string;
-    body: string;
-    ctaLabel?: string;
-    ctaHref?: string;
-    isActive?: boolean;
-    startDate?: string;
-    endDate?: string;
-    tone?: "default" | "urgent" | "success";
-    _type: "announcement";
-    _key: string;
-  }>;
+  noticeText?: string;
+  noticeHref?: string;
+  noticeLabel?: string;
 };
 
 export type Faqs = {
@@ -1018,37 +1009,35 @@ export type POLICIES_QUERY_RESULT =
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: HOME_PAGE_QUERY
-// Query: *[_id == "homePage"][0]{  _id,  title,  announcements[]{    _key,    title,    body,    ctaLabel,    ctaHref,    isActive,    startDate,    endDate,    tone  }}
+// Query: *[_id == "homePage"][0]{  _id,  title,  noticeText,  noticeHref,  noticeLabel}
 export type HOME_PAGE_QUERY_RESULT =
   | {
       _id: "homePage";
       title: null;
-      announcements: null;
+      noticeText: null;
+      noticeHref: null;
+      noticeLabel: null;
     }
   | {
       _id: "homePage";
       title: string;
-      announcements: null;
+      noticeText: null;
+      noticeHref: null;
+      noticeLabel: null;
     }
   | {
       _id: "homePage";
       title: string | null;
-      announcements: null;
+      noticeText: null;
+      noticeHref: null;
+      noticeLabel: null;
     }
   | {
       _id: "homePage";
       title: string;
-      announcements: Array<{
-        _key: string;
-        title: string;
-        body: string;
-        ctaLabel: string | null;
-        ctaHref: string | null;
-        isActive: boolean | null;
-        startDate: string | null;
-        endDate: string | null;
-        tone: "default" | "success" | "urgent" | null;
-      }> | null;
+      noticeText: string | null;
+      noticeHref: string | null;
+      noticeLabel: string | null;
     }
   | null;
 
@@ -1235,7 +1224,7 @@ declare global {
     '*[_id == "faqs"][0]{\n  _id,\n  items[]{\n    _key,\n    question,\n    answer\n  }\n}': FAQS_QUERY_RESULT;
     '*[_id == "impactAward"][0]{\n  _id,\n  awardYear,\n  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },\n  coordinator{ name, role, email, phone },\n  tiers{\n    bronze{ teens, youngAdults },\n    silver{ teens, youngAdults },\n    gold{ teens, youngAdults }\n  },\n  teachingHours[]{\n    _key,\n    activity,\n    classesY4,\n    classesY5,\n    prepHours,\n    presentingHours,\n    attendedHours\n  },\n  communityIntro,\n  communityProjects[]{ _key, project, participating, onTheTeam, leading },\n  downloads[]{ _key, label, description, url }\n}': IMPACT_AWARD_QUERY_RESULT;
     '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
-    '*[_id == "homePage"][0]{\n  _id,\n  title,\n  announcements[]{\n    _key,\n    title,\n    body,\n    ctaLabel,\n    ctaHref,\n    isActive,\n    startDate,\n    endDate,\n    tone\n  }\n}': HOME_PAGE_QUERY_RESULT;
+    '*[_id == "homePage"][0]{\n  _id,\n  title,\n  noticeText,\n  noticeHref,\n  noticeLabel\n}': HOME_PAGE_QUERY_RESULT;
     '*[_type == "photoAlbum" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photos": photos[defined(asset)] {\n  _key,\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': PHOTO_ALBUM_QUERY_RESULT;
     '*[\n  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0\n] | order(schoolYear desc, _createdAt desc){\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photoCount": count(photos[defined(asset)]),\n  "photoKeys": photos[defined(asset)]._key,\n  "cover": photos[defined(asset)][0] {\n  _key,\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': PHOTO_ALBUMS_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;

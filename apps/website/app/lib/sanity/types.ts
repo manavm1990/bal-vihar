@@ -10,22 +10,12 @@ export interface CalendarEventData {
   academicYear?: string | null;
 }
 
-export interface HomeAnnouncement {
-  key: string;
-  title: string;
-  body: string;
-  ctaLabel?: string | null;
-  ctaHref?: string | null;
-  isActive?: boolean | null;
-  startDate?: string | null;
-  endDate?: string | null;
-  tone?: "default" | "urgent" | "success" | null;
-}
-
 export interface HomePageData {
   id: string;
   title?: string | null;
-  announcements?: HomeAnnouncement[] | null;
+  noticeText?: string | null;
+  noticeHref?: string | null;
+  noticeLabel?: string | null;
 }
 
 export interface HomePhotoBoardItem {
