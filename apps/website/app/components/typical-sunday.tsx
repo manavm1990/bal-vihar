@@ -11,28 +11,29 @@ export const typicalSundaySteps: readonly TypicalSundayStep[] = [
   {
     time: "9:45 a.m.",
     title: "Doors open",
-    detail: "Families arrive and settle in as class starts to come together.",
+    detail: "Drop off at the side entrance of the Hindu Temple Community Center.",
   },
   {
     time: "10:00 a.m.",
     title: "Assembly",
-    detail: "Students begin with a shared welcome, prayer and a quick overview of the day.",
-  },
-  {
-    time: "About an hour",
-    title: "Classroom learning",
     detail:
-      "Students move through culture, history, geography, values and projects in guided class time.",
+      "Groups K–3 start with Aarti in their classrooms. Groups 4–7 gather for assembly in the hall and stage areas.",
   },
   {
     time: "About an hour",
-    title: "Yoga & bhajan",
-    detail: "The group shifts into mindful movement, music and celebration before dismissal.",
+    title: "Classroom instruction",
+    detail: "Culture, religion, history and geography, with art projects that follow the lessons.",
   },
   {
-    time: "12:20–12:30 p.m.",
+    time: "About an hour",
+    title: "Yoga and bhajan",
+    detail:
+      "Half an hour of each. Groups K–3 have class first, then yoga and bhajan. Groups 4–7 do it the other way around.",
+  },
+  {
+    time: "12:20 or 12:30 p.m.",
     title: "Dismissal",
-    detail: "Classes wrap up and families head out, with pickup details posted for each group.",
+    detail: "Groups K–3 finish at 12:20 p.m. and groups 4–7 at 12:30 p.m.",
   },
 ] as const;
 
@@ -43,13 +44,15 @@ interface TypicalSundayProps {
 }
 
 export function TypicalSunday({
-  title = "A typical Sunday",
+  title,
   steps = typicalSundaySteps,
   className,
 }: TypicalSundayProps) {
   return (
     <section className={cn("space-y-4 lg:col-start-1", className)}>
-      <h2 className="text-secondary text-3xl font-semibold tracking-tight">{title}</h2>
+      {title ? (
+        <h2 className="text-secondary text-3xl font-semibold tracking-tight">{title}</h2>
+      ) : null}
       <Ol
         variant="unstyled"
         className="max-w-3xl divide-y rounded-lg border bg-white px-5 shadow-sm"

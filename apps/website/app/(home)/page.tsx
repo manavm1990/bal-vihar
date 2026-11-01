@@ -126,7 +126,7 @@ export default async function HomePage() {
           <UpcomingEvents events={events} />
         </aside>
         <Stats />
-        <TypicalSunday steps={typicalSundaySteps} />
+        <TypicalSunday title="A typical Sunday" steps={typicalSundaySteps} />
         <LearningPillars />
         <NewToBalVihar />
         <PhotoStrip photos={photos} />
