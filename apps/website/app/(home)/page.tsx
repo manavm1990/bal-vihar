@@ -91,9 +91,6 @@ interface IntroProps {
 function Intro({ text }: IntroProps) {
   return (
     <section className="space-y-4 lg:col-start-1">
-      <MutedP className="font-medium tracking-wide uppercase">
-        Center for Indian Cultural Education
-      </MutedP>
       <H1>Bal Vihar of St. Louis</H1>
       <LeadP className="max-w-prose text-base whitespace-pre-line sm:text-xl">{text}</LeadP>
       <P>
