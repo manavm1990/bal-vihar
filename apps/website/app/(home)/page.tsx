@@ -1,7 +1,7 @@
 import EventCard from "@components/event-card.client";
 import { SanityImage } from "@components/sanity-image";
 import { Button } from "@components/ui/button";
-import { Bq, H1, H2, H3, LeadP, MutedP, P } from "@components/ui/typography";
+import { Bq, H1, H2, LeadP, MutedP, P } from "@components/ui/typography";
 import { getCachedNow } from "@lib/clock";
 import { REGISTRATION_URL } from "@lib/constants";
 import { fetchSanityData } from "@lib/sanity/fetch";
@@ -45,23 +45,6 @@ const QUICK_LINKS = [
     text: "Quick answers, or send us a question.",
   },
 ] as const;
-const PROGRAMS = [
-  {
-    title: "Curriculum K–7",
-    href: "/education/curriculum#groups-k-7",
-    text: "A well-designed curriculum for younger children, with students grouped in classrooms by age.",
-  },
-  {
-    title: "Youth Group",
-    href: "/education/curriculum#youth-group",
-    text: "Value-based teaching for older students: respect, honesty and good citizenship.",
-  },
-  {
-    title: "Community Outreach",
-    href: "/about-us/community-outreach",
-    text: "Interfaith and community service activities that are part of the curriculum.",
-  },
-] as const;
 const STATS = [
   { value: "1992", label: "Serving Metro St. Louis since" },
   { value: "350+", label: "Students" },
@@ -95,7 +78,6 @@ export default async function HomePage() {
           <UpcomingEvents events={events} />
         </aside>
         <Stats />
-        <Programs />
         <PhotoStrip photos={photos} />
       </div>
     </div>
@@ -125,9 +107,6 @@ function Intro({ text }: IntroProps) {
         </Button>
         <Button asChild size="lg" variant="outline">
           <Link href="/new-families">New families</Link>
-        </Button>
-        <Button asChild size="lg" variant="outline">
-          <Link href="/about-us/history">Our story</Link>
         </Button>
       </div>
       <Bq>{MISSION}</Bq>
@@ -190,27 +169,6 @@ function PhotoStrip({ photos }: PhotoStripProps) {
       <Link href="/photos" className="inline-block font-semibold">
         More photos
       </Link>
-    </section>
-  );
-}
-
-function Programs() {
-  return (
-    <section className="space-y-4 lg:col-start-1">
-      <H2 variant="plain">What we teach</H2>
-      <ul className="grid gap-4 md:grid-cols-3">
-        {PROGRAMS.map((program) => (
-          <li key={program.href}>
-            <Link
-              href={program.href}
-              className="bg-background hover:bg-primary-50 focus-visible:ring-ring block h-full rounded-lg border p-4 shadow-sm hover:no-underline focus-visible:ring-2 focus-visible:outline-none"
-            >
-              <H3 className="text-secondary text-xl">{program.title}</H3>
-              <MutedP className="mt-2">{program.text}</MutedP>
-            </Link>
-          </li>
-        ))}
-      </ul>
     </section>
   );
 }
