@@ -30,11 +30,6 @@ const QUICK_LINKS = [
     text: "Class Sundays, celebrations and special events.",
   },
   {
-    title: "Admissions",
-    href: "/admissions",
-    text: "How enrollment works and what we ask of families.",
-  },
-  {
     title: "Policies & procedures",
     href: "/about-us/policies-procedures",
     text: "How the school runs, step by step.",
@@ -53,6 +48,59 @@ const STATS = [
 ] as const;
 const WHO_WE_ARE =
   "Center for Indian Cultural Education – Bal Vihar of St. Louis is a non-profit organization that has served the Metro St. Louis Indian community since 1992. Our primary focus is Indian cultural education for students ages 5–18, and its application and integration with the global, multicultural society. Students also learn discipline, tolerance and devotion in their daily routine.";
+const AUDIENCE_LINKS = [
+  {
+    title: "New family",
+    href: "/new-families",
+    description: "Start here for schedules, the first Sunday, and what to bring.",
+  },
+  {
+    title: "Current parent",
+    href: "/calendar",
+    description: "View upcoming class days, holidays, and special events.",
+  },
+  {
+    title: "Student",
+    href: "/education/class-webpages",
+    description: "Check classwork, lessons, and what your class covered.",
+  },
+  {
+    title: "Teacher",
+    href: "/education/curriculum",
+    description: "See the curriculum, class scope, and teaching materials.",
+  },
+  {
+    title: "Volunteer",
+    href: "/volunteering",
+    description: "Explore the ways families can help support Bal Vihar.",
+  },
+] as const;
+const PILLARS = [
+  {
+    title: "History & geography",
+    body: "Students learn where India is, how its people and landscapes shaped the nation, and the stories that carry its identity forward.",
+  },
+  {
+    title: "Culture & festivals",
+    body: "From traditions and art to holidays and music, children discover the richness of Indian culture in everyday life and celebration.",
+  },
+  {
+    title: "Values & stories",
+    body: "The epics, sages, and moral teachings of India give students a framework for empathy, character, and thoughtful living.",
+  },
+  {
+    title: "Yoga & meditation",
+    body: "Mindful movement, breath, and focus help children build discipline, calm, and confidence.",
+  },
+  {
+    title: "Bhajans",
+    body: "Students practice devotional songs and rhythm, connecting joy, memory, and community through music.",
+  },
+  {
+    title: "Community service",
+    body: "Service projects and outreach teach children to care for others, serve the wider community, and live out shared values.",
+  },
+] as const;
 
 export default async function HomePage() {
   const [calendarPayload, galleryPayload, now] = await Promise.all([
@@ -74,10 +122,11 @@ export default async function HomePage() {
         <Intro text={WHO_WE_ARE} />
         <QuickLinks />
         <PhotoBanner photo={banner} />
-        <aside className="lg:col-start-2 lg:row-span-4 lg:row-start-1">
+        <aside className="lg:col-start-2 lg:row-span-5 lg:row-start-1">
           <UpcomingEvents events={events} />
         </aside>
         <Stats />
+        <LearningPillars />
         <PhotoStrip photos={photos} />
       </div>
     </div>
@@ -90,21 +139,48 @@ interface IntroProps {
 
 function Intro({ text }: IntroProps) {
   return (
-    <section className="space-y-4 lg:col-start-1">
-      <H1>Bal Vihar of St. Louis</H1>
+    <section className="space-y-5 lg:col-start-1">
+      <p className="text-secondary text-xs font-semibold tracking-[0.2em] uppercase sm:text-sm">
+        Sunday School • Ages 5–18 • Since 1992
+      </p>
+      <H1 className="text-4xl sm:text-5xl">Roots to grow on.</H1>
       <LeadP className="max-w-prose text-base whitespace-pre-line sm:text-xl">{text}</LeadP>
       <P>
-        Classes meet on select Sundays, usually every other week, from August through May at the
-        Hindu Temple Community Center, 2nd floor. See the <Link href="/calendar">calendar</Link> for
-        dates.
+        Bal Vihar classes meet on select Sundays, usually every other week, from August through May
+        at the Hindu Temple Community Center, 2nd floor. See the{" "}
+        <Link href="/calendar">calendar</Link> for dates.
       </P>
       <div className="flex flex-wrap gap-3">
         <Button asChild size="lg">
-          <a href={REGISTRATION_URL}>Register a student</a>
+          <a href={REGISTRATION_URL}>Enroll</a>
         </Button>
         <Button asChild size="lg" variant="outline">
           <Link href="/new-families">New families</Link>
         </Button>
+      </div>
+      <div className="space-y-2">
+        <p
+          id="audience-links-title"
+          className="text-secondary text-xs font-semibold tracking-[0.2em] uppercase sm:text-sm"
+        >
+          I am a...
+        </p>
+        <ul
+          aria-labelledby="audience-links-title"
+          className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {AUDIENCE_LINKS.map((audience) => (
+            <li key={audience.title} className="list-none">
+              <Link
+                href={audience.href}
+                className="bg-background hover:bg-primary-50 focus-visible:ring-ring flex h-full min-h-28 flex-col rounded-lg border p-4 shadow-sm transition-colors hover:no-underline focus-visible:ring-2 focus-visible:outline-none"
+              >
+                <span className="text-secondary text-base font-semibold">{audience.title}</span>
+                <span className="mt-2 text-sm text-slate-700">{audience.description}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
       <Bq>{MISSION}</Bq>
     </section>
@@ -201,6 +277,22 @@ function Stats() {
         </div>
       ))}
     </dl>
+  );
+}
+
+function LearningPillars() {
+  return (
+    <section className="space-y-4 lg:col-start-1">
+      <H2 variant="plain">What children learn</H2>
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {PILLARS.map((pillar) => (
+          <div key={pillar.title} className="rounded-lg border bg-white p-4 shadow-sm">
+            <h3 className="text-secondary text-lg font-semibold">{pillar.title}</h3>
+            <P className="mt-2 text-sm leading-6">{pillar.body}</P>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
