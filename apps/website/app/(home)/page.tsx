@@ -101,6 +101,34 @@ const PILLARS = [
     body: "Service projects and outreach teach children to care for others, serve the wider community, and live out shared values.",
   },
 ] as const;
+const TYPICAL_SUNDAY = [
+  {
+    time: "9:45 a.m.",
+    title: "Doors open",
+    detail: "Families arrive and settle in as class starts to come together.",
+  },
+  {
+    time: "10:00 a.m.",
+    title: "Assembly",
+    detail: "Students begin with a shared welcome, prayer and a quick overview of the day.",
+  },
+  {
+    time: "About an hour",
+    title: "Classroom learning",
+    detail:
+      "Students move through culture, history, geography, values and projects in guided class time.",
+  },
+  {
+    time: "About an hour",
+    title: "Yoga & bhajan",
+    detail: "The group shifts into mindful movement, music and celebration before dismissal.",
+  },
+  {
+    time: "12:20–12:30 p.m.",
+    title: "Dismissal",
+    detail: "Classes wrap up and families head out, with pickup details posted for each group.",
+  },
+] as const;
 
 export default async function HomePage() {
   const [calendarPayload, galleryPayload, now] = await Promise.all([
@@ -126,7 +154,9 @@ export default async function HomePage() {
           <UpcomingEvents events={events} />
         </aside>
         <Stats />
+        <TypicalSunday />
         <LearningPillars />
+        <NewToBalVihar />
         <PhotoStrip photos={photos} />
       </div>
     </div>
@@ -280,6 +310,28 @@ function Stats() {
   );
 }
 
+function TypicalSunday() {
+  return (
+    <section className="space-y-4 lg:col-start-1">
+      <H2 variant="plain">A typical Sunday</H2>
+      <ol className="divide-y rounded-lg border bg-white p-0 shadow-sm">
+        {TYPICAL_SUNDAY.map((step) => (
+          <li
+            key={step.title}
+            className="grid gap-1 px-5 py-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6"
+          >
+            <p className="text-primary-ink text-sm font-semibold sm:pt-1">{step.time}</p>
+            <div className="space-y-1">
+              <h3 className="text-secondary text-lg font-semibold">{step.title}</h3>
+              <P className="text-sm leading-6">{step.detail}</P>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 function LearningPillars() {
   return (
     <section className="space-y-4 lg:col-start-1">
@@ -291,6 +343,32 @@ function LearningPillars() {
             <P className="mt-2 text-sm leading-6">{pillar.body}</P>
           </div>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function NewToBalVihar() {
+  return (
+    <section className="bg-navy rounded-lg p-6 text-white lg:col-start-1">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-2">
+          <H2 variant="plain" className="text-white">
+            New to Bal Vihar?
+          </H2>
+          <P className="text-sm text-white/80">
+            Learn how families get started, what a Sunday looks like, and how to join the next
+            session.
+          </P>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Button asChild>
+            <a href={REGISTRATION_URL}>Enroll</a>
+          </Button>
+          <Button asChild variant="outline" className="border-white text-white hover:bg-white/10">
+            <Link href="/donate">Donate</Link>
+          </Button>
+        </div>
       </div>
     </section>
   );
