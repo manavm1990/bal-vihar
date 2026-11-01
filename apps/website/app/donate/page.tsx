@@ -71,14 +71,14 @@ const SHLOKA =
   "DEHI SAUBHAAGYAM AAROGYAM DEHIME PARAMAM SUKHAM RUPAM DEHI JAYAM DEHI YASHO DEHI DWISHOJAHI";
 
 export const metadata: Metadata = {
-  title: `${BASE_TITLE} | Giving`,
+  title: `${BASE_TITLE} | Donate`,
   description:
     "Support Bal Vihar of St. Louis with a tax-deductible gift by check, through an employer matching gift, or by stock.",
 };
 
-export default function GivingPage() {
+export default function DonatePage() {
   return (
-    <Article title="Giving" className="md:columns-1">
+    <Article title="Donate" className="md:columns-1">
       <Bq className="max-w-prose text-sm font-medium tracking-wide not-italic">{SHLOKA}</Bq>
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-12">
         <div className="space-y-4">

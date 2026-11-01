@@ -19,8 +19,8 @@ export default function Header() {
   return (
     <header className="border-b-border relative border-b shadow-sm">
       <div className="bg-navy-900 text-white">
-        <div className="container flex flex-col gap-2 px-4 py-2 text-xs font-medium tracking-wide uppercase sm:flex-row sm:items-center sm:justify-between sm:text-[11px]">
-          <Suspense fallback={<div className="min-h-4" />}>
+        <div className="container flex flex-col gap-2 px-4 py-2 text-xs font-medium tracking-wide uppercase sm:flex-row sm:items-center sm:justify-between">
+          <Suspense fallback={<div className="min-h-8 sm:min-h-4" />}>
             <Notice />
           </Suspense>
 
@@ -79,13 +79,14 @@ async function Notice() {
     limit: 1,
     now,
   })[0];
+  const override = home?.noticeText?.trim();
   const noticeText =
-    home?.noticeText?.trim() ||
+    override ||
     (nextEvent
-      ? `Next class: ${nextEvent.title} · ${formatCalendarDate(nextEvent.date)}`
+      ? `Next up: ${nextEvent.title} · ${formatCalendarDate(nextEvent.date)}`
       : "Classes meet on Sundays");
-  const noticeHref = home?.noticeHref || (nextEvent ? "/calendar" : undefined);
-  const noticeLabel = home?.noticeLabel || (nextEvent ? "View calendar" : undefined);
+  const noticeHref = override ? home?.noticeHref : nextEvent ? "/calendar" : undefined;
+  const noticeLabel = override ? home?.noticeLabel : nextEvent ? "View calendar" : undefined;
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">

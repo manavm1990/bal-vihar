@@ -18,13 +18,13 @@ export const structure: StructureResolver = (S) =>
     .title("Edit the website")
     .items([
       S.listItem()
-        .title("Urgent notices")
+        .title("Header notice")
         .icon(WarningOutlineIcon)
         .child(
           S.document()
             .schemaType("homePage")
             .documentId(SINGLETON_IDS.homePage)
-            .title("Urgent notices"),
+            .title("Header notice"),
         ),
       S.listItem()
         .title("Photo galleries")

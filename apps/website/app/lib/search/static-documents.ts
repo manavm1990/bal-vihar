@@ -97,7 +97,6 @@ const CONTENT_PAGES: readonly ContentPage[] = [
     hasAnchors: false,
   },
   { page: STATIC_PAGES.education, href: "/education", section: "Education" },
-  { page: STATIC_PAGES.donate, href: "/donate", section: "Get Involved" },
   { page: HINDU_RITUALS, href: "/education/hindu-rituals", section: "Education" },
   { page: INDIA_OVERVIEW, href: "/education/about-india", section: "Education" },
   {
@@ -177,8 +176,8 @@ const PAGE_ENTRIES: readonly PageEntry[] = [
     text: "Submit an expense for reimbursement from Bal Vihar of St. Louis.",
   },
   {
-    href: "/giving",
-    title: "Giving",
+    href: "/donate",
+    title: "Donate",
     section: "Get Involved",
     text: "Support Bal Vihar of St. Louis with a tax-deductible gift by check, through an employer matching gift, or by stock. Ways to give, donate, donation, community support, matching gifts.",
   },

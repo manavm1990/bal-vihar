@@ -38,7 +38,7 @@ const stripHtml = (html: string) =>
 
 export async function crawlPageDocuments(origin: string): Promise<SearchDocument[]> {
   const pages = [
-    { path: "/giving", title: "Giving", section: "Get Involved" },
+    { path: "/donate", title: "Donate", section: "Get Involved" },
     { path: "/new-families", title: "New families", section: "Education" },
   ] as const;
 

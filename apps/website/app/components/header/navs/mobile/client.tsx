@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@components/ui/button";
+import { REGISTRATION_URL } from "@lib/constants";
 import { ChevronDownIcon, Cross1Icon as CrossIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
@@ -189,6 +191,9 @@ export default function MobileNav() {
               </motion.li>
             ))}
           </motion.ul>
+          <Button asChild className="mt-4 w-full">
+            <Link href={REGISTRATION_URL}>Enroll</Link>
+          </Button>
         </nav>
       </motion.div>
     </>
