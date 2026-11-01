@@ -1,16 +1,16 @@
-import { ADMIN_OFFICE, ORGANIZATION_NAME, SCHOOL_LOCATION } from "@lib/constants";
+import { ADMIN_OFFICE, ORGANIZATION_NAME, REGISTRATION_URL, SCHOOL_LOCATION } from "@lib/constants";
 import { cacheLife } from "next/cache";
 import Link from "next/link";
-import { MutedP, Small } from "../ui/typography";
+import { Small } from "../ui/typography";
 import Links from "./links.client";
 
-const PRIMARY_LINKS = [
-  { href: "/about-us", label: "About Us" },
-  { href: "/admissions", label: "Admissions" },
-  { href: "/education", label: "Education" },
-  { href: "/calendar", label: "Events" },
-  { href: "/volunteering", label: "Get Involved" },
+const QUICK_LINKS = [
+  { href: "/new-families", label: "New families" },
+  { href: "/about-us", label: "About us" },
+  { href: "/education", label: "Programs" },
+  { href: "/volunteering", label: "Volunteer" },
   { href: "/questions", label: "Contact" },
+  { href: REGISTRATION_URL, label: "Enroll" },
 ] as const;
 
 export default async function Footer() {
@@ -18,51 +18,95 @@ export default async function Footer() {
   cacheLife("days");
 
   return (
-    <footer className="border-t-secondary bg-navy-900 hover:[&_a]:text-primary mt-8 space-y-4 border-t-8 p-6 text-white [&_a]:text-white">
-      <nav aria-label="Primary" className="border-navy-700 border-b pb-4">
-        <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold">
-          {PRIMARY_LINKS.map((link) => (
-            <li key={link.href}>
-              <Link href={link.href}>{link.label}</Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <address className="not-italic">
-          <Small className="block text-white">School Location</Small>
-          <MutedP className="text-navy-200 mt-1">
+    <footer className="bg-navy-900 mt-8 border-t-8 border-t-secondary p-6 text-white md:p-8">
+      <div className="container grid gap-8 lg:grid-cols-[1.3fr_1fr_0.9fr]">
+        <div className="space-y-3">
+          <h2 className="font-display text-primary text-2xl leading-none">
+            Bal Vihar of St. Louis
+          </h2>
+          <address className="not-italic text-sm text-navy-200">
             {SCHOOL_LOCATION.name}
             <br />
             {SCHOOL_LOCATION.streetAddress}
             <br />
             {SCHOOL_LOCATION.addressLocality}, {SCHOOL_LOCATION.addressRegion}{" "}
             {SCHOOL_LOCATION.postalCode}
-          </MutedP>
-        </address>
+            <br />
+            <a
+              href="https://maps.google.com/?q=Hindu+Temple+Community+Center+725+Weidman+Road+Ballwin+MO+63011"
+              className="text-primary underline-offset-4 hover:underline"
+            >
+              View map
+            </a>
+          </address>
+          <p className="text-sm text-navy-200">2nd &amp; 4th Sundays, Aug–May, 10:00–12:30</p>
+        </div>
 
-        <address className="not-italic">
-          <Small className="block text-white">Administrative Office</Small>
-          <MutedP className="text-navy-200 mt-1">
-            {ADMIN_OFFICE.streetAddress}
-            <br />
-            {ADMIN_OFFICE.addressLocality}, {ADMIN_OFFICE.addressRegion} {ADMIN_OFFICE.postalCode}
-            <br />
-            <a href={`tel:${ADMIN_OFFICE.phoneHref}`}>{ADMIN_OFFICE.phoneDisplay}</a>
-          </MutedP>
-        </address>
+        <div className="space-y-3">
+          <h2 className="font-display text-xl text-white">Contact</h2>
+          <p className="text-sm text-navy-200">
+            <a
+              href="mailto:info@balviharstlouis.org"
+              className="text-primary underline-offset-4 hover:underline"
+            >
+              info@balviharstlouis.org
+            </a>
+          </p>
+          <p className="text-sm text-navy-200">
+            <a
+              href={`tel:${ADMIN_OFFICE.phoneHref}`}
+              className="text-primary underline-offset-4 hover:underline"
+            >
+              {ADMIN_OFFICE.phoneDisplay}
+            </a>
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          <h2 className="font-display text-xl text-white">Quick links</h2>
+          <ul className="space-y-2 text-sm">
+            {QUICK_LINKS.map((link) => (
+              <li key={link.href}>
+                {link.href.startsWith("http") ? (
+                  <a href={link.href} className="text-primary underline-offset-4 hover:underline">
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    href={link.href}
+                    className="text-primary underline-offset-4 hover:underline"
+                  >
+                    {link.label}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      <MutedP className="text-navy-200">
-        © {new Date().getFullYear()} {ORGANIZATION_NAME} All rights reserved.
-      </MutedP>
-      <Small>
-        Website Creation & Hosting Services Provided by:{" "}
-        <a href="https://github.com/manavm1990">@manavm1990</a>
-      </Small>
+      <div className="container mt-8 flex flex-col gap-4 border-t border-white/10 pt-6 text-sm text-navy-200">
+        <Links />
 
-      <Links />
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <p>{ORGANIZATION_NAME} is a 501(c)(3) nonprofit organization.</p>
+            <p>
+              © {new Date().getFullYear()} {ORGANIZATION_NAME}. All rights reserved.
+            </p>
+          </div>
+
+          <Small className="text-navy-300">
+            Website creation & hosting provided voluntarily by:{" "}
+            <a
+              href="https://github.com/manavm1990"
+              className="text-primary underline-offset-4 hover:underline"
+            >
+              @manavm1990
+            </a>
+          </Small>
+        </div>
+      </div>
     </footer>
   );
 }
