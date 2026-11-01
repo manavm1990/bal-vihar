@@ -12,12 +12,83 @@ export interface NavigationSubItem {
 }
 
 export const NAVIGATION: readonly NavigationItem[] = [
-  { name: "About", link: "/about-us" },
-  { name: "Programs", link: "/education" },
-  { name: "Parents", link: "/new-families" },
-  { name: "Teachers", link: "/volunteering" },
-  { name: "Volunteer", link: "/volunteering" },
-  { name: "Contact", link: "/questions" },
+  {
+    name: "About",
+    link: "/about-us",
+    items: [
+      { name: "About Bal Vihar", link: "/about-us", group: "Who we are" },
+      { name: "History", link: "/about-us/history", group: "Who we are" },
+      { name: "President's Message", link: "/presidents-message", group: "Who we are" },
+      { name: "Leadership & Board", link: "/about-us/administrative-team", group: "Who we are" },
+      { name: "Community Outreach", link: "/about-us/community-outreach", group: "Community" },
+      { name: "Photos", link: "/photos", group: "Community" },
+      { name: "Donate", link: "/donate", group: "Community" },
+    ],
+  },
+  {
+    name: "Programs",
+    link: "/education",
+    items: [
+      { name: "Programs Overview", link: "/education", group: "Classes" },
+      { name: "Curriculum", link: "/education/curriculum", group: "Classes" },
+      { name: "Class Schedule & Rooms", link: "/education/class-schedule", group: "Classes" },
+      { name: "Teaching Faculty", link: "/education/teaching-faculty", group: "Classes" },
+      { name: "Class Webpages", link: "/education/class-webpages", group: "Classes" },
+      { name: "About India", link: "/education/about-india", group: "Learn More" },
+      { name: "Hindu Rituals & Routines", link: "/education/hindu-rituals", group: "Learn More" },
+      { name: "Indian Heritage", link: "/education/indian-heritage", group: "Learn More" },
+      { name: "Temples of India", link: "/education/temples-of-india", group: "Learn More" },
+    ],
+  },
+  {
+    name: "Parents",
+    link: "/new-families",
+    items: [
+      { name: "New Families", link: "/new-families", group: "New families" },
+      { name: "Admissions", link: "/admissions", group: "New families" },
+      { name: "Disclaimer Form", link: "/disclaimer", group: "New families" },
+      { name: "Calendar", link: "/calendar", group: "Current parents" },
+      { name: "Class Webpages", link: "/education/class-webpages", group: "Current parents" },
+      {
+        name: "Policies & Procedures",
+        link: "/about-us/policies-procedures",
+        group: "Current parents",
+      },
+      { name: "Concerns & Feedback", link: "/grievance", group: "Current parents" },
+    ],
+  },
+  {
+    name: "Teachers",
+    link: "/education/curriculum",
+    items: [
+      { name: "Curriculum", link: "/education/curriculum", group: "Teaching" },
+      { name: "Class Schedule & Rooms", link: "/education/class-schedule", group: "Teaching" },
+      { name: "Admin Resources", link: "/admin-resources", group: "Admin" },
+      { name: "Print Request", link: "/admin-resources/print-request", group: "Admin" },
+      { name: "Submit an Expense", link: "/expense-reimbursement", group: "Admin" },
+      { name: "Want to Teach?", link: "/volunteering", group: "Join us" },
+    ],
+  },
+  {
+    name: "Volunteer",
+    link: "/volunteering",
+    align: "right",
+    items: [
+      { name: "Ways to Help", link: "/volunteering" },
+      { name: "Our Volunteers", link: "/volunteering/volunteers" },
+      { name: "B-VISION Impact Award", link: "/volunteering/impact-award" },
+    ],
+  },
+  {
+    name: "Contact",
+    link: "/questions",
+    align: "right",
+    items: [
+      { name: "Contact Us", link: "/questions#contact" },
+      { name: "Questions & FAQs", link: "/questions" },
+      { name: "Concerns & Feedback", link: "/grievance" },
+    ],
+  },
 ];
 
 export function groupItems(items: readonly NavigationSubItem[]) {
