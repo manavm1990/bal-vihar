@@ -1,5 +1,5 @@
 import SectionNav from "@components/section-nav";
-import { TypicalSunday, typicalSundaySteps } from "@components/typical-sunday";
+import TypicalSunday from "@components/typical-sunday";
 import { Button } from "@components/ui/button";
 import { Card } from "@components/ui/card";
 import { H1, H2, H3, LeadP, P, Ul } from "@components/ui/typography";
@@ -154,7 +154,7 @@ export default function NewFamiliesPage() {
           Every class opens with assembly at 10:00 a.m., then moves through an hour of classroom
           instruction and an hour of yoga and bhajan.
         </P>
-        <TypicalSunday steps={typicalSundaySteps} />
+        <TypicalSunday />
         <Button asChild variant="outline">
           <Link href="/education/class-schedule">Rooms and times for every group</Link>
         </Button>

@@ -1,6 +1,6 @@
 import EventCard from "@components/event-card.client";
 import { SanityImage } from "@components/sanity-image";
-import { TypicalSunday, typicalSundaySteps } from "@components/typical-sunday";
+import TypicalSunday from "@components/typical-sunday";
 import { Button } from "@components/ui/button";
 import { Bq, H1, H2, LeadP, MutedP, P } from "@components/ui/typography";
 import { getCachedNow } from "@lib/clock";
@@ -126,7 +126,10 @@ export default async function HomePage() {
           <UpcomingEvents events={events} />
         </aside>
         <Stats />
-        <TypicalSunday title="A typical Sunday" steps={typicalSundaySteps} />
+        <section className="space-y-4 lg:col-start-1">
+          <h2 className="text-secondary text-3xl font-semibold tracking-tight">A typical Sunday</h2>
+          <TypicalSunday />
+        </section>
         <LearningPillars />
         <NewToBalVihar />
         <PhotoStrip photos={photos} />

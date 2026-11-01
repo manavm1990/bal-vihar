@@ -1,63 +1,12 @@
-import { H3, Ol, P } from "@components/ui/typography";
-import { cn } from "@lib/utils";
+import { H3, Ol, P, Table, Ul } from "@components/ui/typography";
+import { sundayBringItems, sundayGroups, sundaySteps } from "@lib/sunday-content";
+import { CheckIcon } from "@radix-ui/react-icons";
 
-export interface TypicalSundayStep {
-  time: string;
-  title: string;
-  detail: string;
-}
-
-export const typicalSundaySteps: readonly TypicalSundayStep[] = [
-  {
-    time: "9:45 a.m.",
-    title: "Doors open",
-    detail: "Drop off at the side entrance of the Hindu Temple Community Center.",
-  },
-  {
-    time: "10:00 a.m.",
-    title: "Assembly",
-    detail:
-      "Groups K–3 start with Aarti in their classrooms. Groups 4–7 gather for assembly in the hall and stage areas.",
-  },
-  {
-    time: "About an hour",
-    title: "Classroom instruction",
-    detail: "Culture, religion, history and geography, with art projects that follow the lessons.",
-  },
-  {
-    time: "About an hour",
-    title: "Yoga and bhajan",
-    detail:
-      "Half an hour of each. Groups K–3 have class first, then yoga and bhajan. Groups 4–7 do it the other way around.",
-  },
-  {
-    time: "12:20 or 12:30 p.m.",
-    title: "Dismissal",
-    detail: "Groups K–3 finish at 12:20 p.m. and groups 4–7 at 12:30 p.m.",
-  },
-] as const;
-
-interface TypicalSundayProps {
-  title?: string;
-  steps?: readonly TypicalSundayStep[];
-  className?: string;
-}
-
-export function TypicalSunday({
-  title,
-  steps = typicalSundaySteps,
-  className,
-}: TypicalSundayProps) {
+export default function TypicalSunday() {
   return (
-    <section className={cn("space-y-4 lg:col-start-1", className)}>
-      {title ? (
-        <h2 className="text-secondary text-3xl font-semibold tracking-tight">{title}</h2>
-      ) : null}
-      <Ol
-        variant="unstyled"
-        className="max-w-3xl divide-y rounded-lg border bg-white px-5 shadow-sm"
-      >
-        {steps.map((step) => (
+    <section className="space-y-6">
+      <Ol variant="unstyled" className="divide-y rounded-lg border px-5 shadow-sm">
+        {sundaySteps.map((step) => (
           <li
             key={step.title}
             className="grid gap-1 py-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6"
@@ -70,6 +19,28 @@ export function TypicalSunday({
           </li>
         ))}
       </Ol>
+
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+        <div className="space-y-3 rounded-lg border p-5 shadow-sm">
+          <H3>Which group is yours?</H3>
+          <Table
+            headers={["Group", "Sunday rhythm", "Dismissal"]}
+            rows={sundayGroups.map(({ group, rhythm, dismissal }) => [group, rhythm, dismissal])}
+          />
+        </div>
+
+        <div className="space-y-3 rounded-lg border p-5 shadow-sm">
+          <H3>What to bring</H3>
+          <Ul variant="unstyled" className="space-y-3">
+            {sundayBringItems.map((item) => (
+              <li key={item} className="flex items-start gap-3">
+                <CheckIcon aria-hidden="true" className="text-primary-700 mt-0.5 size-5 shrink-0" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </Ul>
+        </div>
+      </div>
     </section>
   );
 }
