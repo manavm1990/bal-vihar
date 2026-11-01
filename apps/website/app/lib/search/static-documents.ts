@@ -97,6 +97,7 @@ const CONTENT_PAGES: readonly ContentPage[] = [
     hasAnchors: false,
   },
   { page: STATIC_PAGES.education, href: "/education", section: "Education" },
+  { page: STATIC_PAGES.donate, href: "/donate", section: "Get Involved" },
   { page: HINDU_RITUALS, href: "/education/hindu-rituals", section: "Education" },
   { page: INDIA_OVERVIEW, href: "/education/about-india", section: "Education" },
   {

@@ -39,6 +39,14 @@ export const STATIC_PAGES = {
       'Bal Vihar helps students to learn Indian culture and its application to global multicultural and multifaceted society. With value based teaching, the students learn respect, honesty and good citizenship. They are also taught discipline, tolerance and devotion in their daily routine.\n\nBal Vihar\'s main goal is to integrate Indian cultural values with the mainstream. This organization prepares the future achievers of the United States to be well rounded and apply the learned values for the best of the communities. The ultimate goal is "**to throw the light of cultural knowledge on every child, to make every child an outstanding citizen and to spread the song of peace and harmony around the world**".\n\nExplore the [K–7 curriculum](/education/curriculum#groups-k-7), the [youth group curriculum](/education/curriculum#youth-group), the [class schedule](/education/class-schedule) and the [class webpages](/education/class-webpages). To learn more, read about [India](/education/about-india) and [Hindu rituals and routines](/education/hindu-rituals). You can also watch the [Daily Gita on YouTube](https://youtu.be/5wC1C89AQRA), a channel created by volunteers and Lal Prabhu Ji.',
     singleColumn: true,
   },
+  donate: {
+    title: "Donate",
+    description:
+      "Support Bal Vihar of St. Louis with a clear mission-focused giving page while a future Stripe flow is added.",
+    content:
+      "## Support the mission\n\nBal Vihar is sustained by families, grandparents, alumni, and community supporters who believe cultural education is a lasting investment in our children and in the broader community. Your support helps keep classes accessible, strengthen our volunteer-led teaching, and create meaningful opportunities for students to learn, serve, and grow.\n\n## Why give\n\n* Help cover classroom materials, library resources, and program costs\n* Support scholarships and need-based assistance for families\n* Strengthen youth leadership, service projects, and community activities\n* Keep a values-based Indian cultural education welcoming and affordable\n\n## A gift that keeps giving\n\nEvery contribution helps us build a stronger program for the next generation. Through your generosity, we can continue offering a learning environment rooted in Indian culture while helping students connect with the wider community and live their values with confidence.\n\nThis page is a placeholder for a future Stripe-powered giving experience. For now, it serves as a clear, mission-focused sales pitch and a simple point of entry for the eventual donation flow.",
+    singleColumn: true,
+  },
   curriculumK7: {
     title: "Curriculum K–7",
     description: "Objectives, methodology, and assessment for the K–7 curriculum.",
