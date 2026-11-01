@@ -57,8 +57,8 @@ const AUDIENCE_LINKS = [
   },
   {
     title: "Current parent",
-    href: "/calendar",
-    description: "View upcoming class days, holidays, and special events.",
+    href: "/parents",
+    description: "View updates, schedules, and parent resources for the current session.",
   },
   {
     title: "Student",

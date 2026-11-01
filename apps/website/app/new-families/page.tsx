@@ -2,7 +2,7 @@ import SectionNav from "@components/section-nav";
 import { TypicalSunday, typicalSundaySteps } from "@components/typical-sunday";
 import { Button } from "@components/ui/button";
 import { Card } from "@components/ui/card";
-import { H1, H2, LeadP, P, Ul } from "@components/ui/typography";
+import { H1, H2, H3, LeadP, P, Ul } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import { CheckIcon } from "@radix-ui/react-icons";
 import type { Metadata } from "next";
