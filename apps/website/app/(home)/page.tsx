@@ -1,5 +1,6 @@
 import EventCard from "@components/event-card.client";
 import { SanityImage } from "@components/sanity-image";
+import { TypicalSunday, typicalSundaySteps } from "@components/typical-sunday";
 import { Button } from "@components/ui/button";
 import { Bq, H1, H2, LeadP, MutedP, P } from "@components/ui/typography";
 import { getCachedNow } from "@lib/clock";
@@ -101,35 +102,6 @@ const PILLARS = [
     body: "Service projects and outreach teach children to care for others, serve the wider community, and live out shared values.",
   },
 ] as const;
-const TYPICAL_SUNDAY = [
-  {
-    time: "9:45 a.m.",
-    title: "Doors open",
-    detail: "Families arrive and settle in as class starts to come together.",
-  },
-  {
-    time: "10:00 a.m.",
-    title: "Assembly",
-    detail: "Students begin with a shared welcome, prayer and a quick overview of the day.",
-  },
-  {
-    time: "About an hour",
-    title: "Classroom learning",
-    detail:
-      "Students move through culture, history, geography, values and projects in guided class time.",
-  },
-  {
-    time: "About an hour",
-    title: "Yoga & bhajan",
-    detail: "The group shifts into mindful movement, music and celebration before dismissal.",
-  },
-  {
-    time: "12:20–12:30 p.m.",
-    title: "Dismissal",
-    detail: "Classes wrap up and families head out, with pickup details posted for each group.",
-  },
-] as const;
-
 export default async function HomePage() {
   const [calendarPayload, galleryPayload, now] = await Promise.all([
     fetchSanityData(CALENDAR_EVENTS_QUERY),
@@ -154,7 +126,7 @@ export default async function HomePage() {
           <UpcomingEvents events={events} />
         </aside>
         <Stats />
-        <TypicalSunday />
+        <TypicalSunday steps={typicalSundaySteps} />
         <LearningPillars />
         <NewToBalVihar />
         <PhotoStrip photos={photos} />
@@ -307,28 +279,6 @@ function Stats() {
         </div>
       ))}
     </dl>
-  );
-}
-
-function TypicalSunday() {
-  return (
-    <section className="space-y-4 lg:col-start-1">
-      <H2 variant="plain">A typical Sunday</H2>
-      <ol className="divide-y rounded-lg border bg-white p-0 shadow-sm">
-        {TYPICAL_SUNDAY.map((step) => (
-          <li
-            key={step.title}
-            className="grid gap-1 px-5 py-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6"
-          >
-            <p className="text-primary-ink text-sm font-semibold sm:pt-1">{step.time}</p>
-            <div className="space-y-1">
-              <h3 className="text-secondary text-lg font-semibold">{step.title}</h3>
-              <P className="text-sm leading-6">{step.detail}</P>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </section>
   );
 }
 

@@ -1,7 +1,8 @@
 import SectionNav from "@components/section-nav";
+import { TypicalSunday, typicalSundaySteps } from "@components/typical-sunday";
 import { Button } from "@components/ui/button";
 import { Card } from "@components/ui/card";
-import { H1, H2, H3, LeadP, Ol, P, Ul } from "@components/ui/typography";
+import { H1, H2, LeadP, P, Ul } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import { CheckIcon } from "@radix-ui/react-icons";
 import type { Metadata } from "next";
@@ -22,36 +23,6 @@ const BACKPACK_ITEMS = [
   "Colored markers or crayons",
   "Scissors and glue",
   "The Bal Vihar Bhajan Book. New families buy one.",
-] as const;
-
-const DAY_STEPS = [
-  {
-    time: "9:45 a.m.",
-    title: "Doors open",
-    detail: "Drop off at the side entrance of the Hindu Temple Community Center.",
-  },
-  {
-    time: "10:00 a.m.",
-    title: "Assembly",
-    detail:
-      "Groups K–3 start with Aarti in their classrooms. Groups 4–7 gather for assembly in the hall and stage areas.",
-  },
-  {
-    time: "About an hour",
-    title: "Classroom instruction",
-    detail: "Culture, religion, history and geography, with art projects that follow the lessons.",
-  },
-  {
-    time: "About an hour",
-    title: "Yoga and bhajan",
-    detail:
-      "Half an hour of each. Groups K–3 have class first, then yoga and bhajan. Groups 4–7 do it the other way around.",
-  },
-  {
-    time: "12:20 or 12:30 p.m.",
-    title: "Dismissal",
-    detail: "Groups K–3 finish at 12:20 p.m. and groups 4–7 at 12:30 p.m.",
-  },
 ] as const;
 
 const EVENTS = [
@@ -183,20 +154,7 @@ export default function NewFamiliesPage() {
           Every class opens with assembly at 10:00 a.m., then moves through an hour of classroom
           instruction and an hour of yoga and bhajan.
         </P>
-        <Ol variant="unstyled" className="max-w-3xl divide-y rounded-lg border px-5">
-          {DAY_STEPS.map((step) => (
-            <li
-              key={step.title}
-              className="grid gap-1 py-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6"
-            >
-              <p className="text-primary-ink text-sm font-semibold sm:pt-1">{step.time}</p>
-              <div className="space-y-1">
-                <H3 className="text-xl">{step.title}</H3>
-                <P>{step.detail}</P>
-              </div>
-            </li>
-          ))}
-        </Ol>
+        <TypicalSunday steps={typicalSundaySteps} />
         <Button asChild variant="outline">
           <Link href="/education/class-schedule">Rooms and times for every group</Link>
         </Button>
