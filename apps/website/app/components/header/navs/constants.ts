@@ -19,7 +19,7 @@ export const NAVIGATION: readonly NavigationItem[] = [
       { name: "About Bal Vihar", link: "/about-us", group: "Who we are" },
       { name: "History", link: "/about-us/history", group: "Who we are" },
       { name: "President's Message", link: "/presidents-message", group: "Who we are" },
-      { name: "Leadership & Board", link: "/about-us/administrative-team", group: "Who we are" },
+      { name: "Administrative Team", link: "/about-us/administrative-team", group: "Who we are" },
       { name: "Community Outreach", link: "/about-us/community-outreach", group: "Community" },
       { name: "Photos", link: "/photos", group: "Community" },
       { name: "Donate", link: "/donate", group: "Community" },
