@@ -46,7 +46,7 @@ export default function PrintRequestForm() {
         <legend className="sr-only">Print request form</legend>
 
         <section className="space-y-5">
-          <H2 variant="plain" className="text-2xl tracking-tight">
+          <H2 variant="plain" className="text-2xl">
             Requester details
           </H2>
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
@@ -77,7 +77,7 @@ export default function PrintRequestForm() {
         </section>
 
         <section className="space-y-5">
-          <H2 variant="plain" className="text-2xl tracking-tight">
+          <H2 variant="plain" className="text-2xl">
             Print job details
           </H2>
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">

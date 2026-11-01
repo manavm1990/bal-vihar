@@ -5,7 +5,7 @@ import { BASE_TITLE, DESCRIPTION, ORGANIZATION_LEGAL_NAME, SITE_URL } from "@lib
 import { SanityLive } from "@lib/sanity/live";
 import { createJsonLd } from "@lib/utils";
 import type { Metadata } from "next";
-import { Eczar, Poppins } from "next/font/google";
+import { Baloo_2, Poppins } from "next/font/google";
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
 import "./globals.css";
@@ -19,10 +19,10 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-const eczar = Eczar({
+const baloo = Baloo_2({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-eczar",
+  weight: ["500", "600", "700"],
+  variable: "--font-baloo",
 });
 
 export const metadata: Metadata = {
@@ -47,7 +47,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
-      <body className={`${poppins.variable} ${eczar.variable} font-sans`}>
+      <body className={`${poppins.variable} ${baloo.variable} font-sans`}>
         <script type="application/ld+json">{JSON.stringify(createJsonLd(TITLE))}</script>
 
         <a

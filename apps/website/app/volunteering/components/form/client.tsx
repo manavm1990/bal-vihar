@@ -29,7 +29,7 @@ export default function VolunteerApplicationForm() {
       <TricolorBand />
       <form noValidate onSubmit={onSubmit} aria-busy={isPending} className="space-y-8 p-5 sm:p-8">
         <header className="space-y-2">
-          <H2 variant="plain" className="text-2xl tracking-tight">
+          <H2 variant="plain" className="text-2xl">
             Tell us how you would like to help
           </H2>
           <p className="text-muted-foreground text-sm">
@@ -147,7 +147,7 @@ interface StepHeadingProps {
 function StepHeading({ number, title }: StepHeadingProps) {
   return (
     <div className="flex items-baseline gap-3 border-b pb-2">
-      <span aria-hidden="true" className="font-eczar text-primary-ink text-3xl leading-none">
+      <span aria-hidden="true" className="font-display text-primary-ink text-3xl leading-none">
         {number}
       </span>
       <H3 className="text-xl">{title}</H3>

@@ -167,7 +167,7 @@ export default function NewFamiliesPage() {
       >
         {STATS.map((stat) => (
           <div key={stat.value}>
-            <p className="font-eczar text-primary text-3xl leading-10 font-bold">{stat.value}</p>
+            <p className="font-display text-primary text-3xl leading-10 font-bold">{stat.value}</p>
             <p className="mt-1 text-sm">{stat.label}</p>
           </div>
         ))}

@@ -177,7 +177,7 @@ interface IntroProps {
 function Intro({ text }: IntroProps) {
   return (
     <section className="space-y-4 lg:col-start-1">
-      <MutedP className="font-semibold tracking-wide uppercase">
+      <MutedP className="font-medium tracking-wide uppercase">
         Center for Indian Cultural Education
       </MutedP>
       <H1>Bal Vihar of St. Louis</H1>
@@ -309,7 +309,7 @@ function Stats() {
     <dl className="bg-navy grid grid-cols-2 gap-4 rounded-lg p-6 md:grid-cols-4 lg:col-start-1">
       {STATS.map((stat) => (
         <div key={stat.label} className="space-y-1">
-          <dt className="font-eczar text-primary text-3xl font-bold">{stat.value}</dt>
+          <dt className="font-display text-primary text-3xl font-bold">{stat.value}</dt>
           <dd className="text-sm text-white">{stat.label}</dd>
         </div>
       ))}

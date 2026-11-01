@@ -32,7 +32,7 @@ export default function EducationAboutIndiaPage() {
 function FestivalPhotos() {
   return (
     <section className="space-y-4">
-      <H2 variant="plain" className="text-2xl tracking-tight">
+      <H2 variant="plain" className="text-2xl">
         Festivals in Pictures
       </H2>
       <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">

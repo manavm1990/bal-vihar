@@ -58,7 +58,7 @@ export function Em({ className, ...props }: ComponentPropsWithoutRef<"em">) {
 export function H1({ className, ...props }: ComponentPropsWithoutRef<"h1">) {
   return (
     <h1
-      className={cn("scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl", className)}
+      className={cn("scroll-m-20 text-4xl leading-tight font-bold lg:text-5xl", className)}
       {...props}
     />
   );
@@ -81,9 +81,7 @@ export function H2({ className, variant, ...props }: H2Props) {
  * <H3>History</H3>
  */
 export function H3({ className, ...props }: ComponentPropsWithoutRef<"h3">) {
-  return (
-    <h3 className={cn("scroll-m-20 text-2xl font-semibold tracking-tight", className)} {...props} />
-  );
+  return <h3 className={cn("scroll-m-20 text-2xl font-semibold", className)} {...props} />;
 }
 
 /**
@@ -93,9 +91,7 @@ export function H3({ className, ...props }: ComponentPropsWithoutRef<"h3">) {
  * <H4>Our teachers</H4>
  */
 export function H4({ className, ...props }: ComponentPropsWithoutRef<"h4">) {
-  return (
-    <h4 className={cn("scroll-m-20 text-xl font-semibold tracking-tight", className)} {...props} />
-  );
+  return <h4 className={cn("scroll-m-20 text-xl font-semibold", className)} {...props} />;
 }
 
 /**
@@ -105,9 +101,7 @@ export function H4({ className, ...props }: ComponentPropsWithoutRef<"h4">) {
  * <H5>Classroom</H5>
  */
 export function H5({ className, ...props }: ComponentPropsWithoutRef<"h5">) {
-  return (
-    <h5 className={cn("scroll-m-20 text-lg font-semibold tracking-tight", className)} {...props} />
-  );
+  return <h5 className={cn("scroll-m-20 text-lg font-semibold", className)} {...props} />;
 }
 
 /**
@@ -212,7 +206,7 @@ export function Ul({ className, variant, ...props }: UlProps) {
   );
 }
 
-const h2Variants = cva("scroll-m-20 text-3xl font-semibold tracking-wider first:mt-0", {
+const h2Variants = cva("scroll-m-20 text-3xl font-bold first:mt-0", {
   variants: {
     variant: {
       underlined: "border-b pb-2",

@@ -16,7 +16,7 @@ From the repo root: `turbo run typecheck lint --filter=@bv/website`. Tests are `
 
 Tokens live in `app/globals.css` (`@theme`); that file is the source of truth. Use token utilities, never hard-coded colors.
 
-- **Headings** are `font-eczar` in `text-navy` (set globally; don't restyle per component). Body is Poppins (`font-sans`).
+- **Headings** are `font-display` (Baloo 2) in `text-navy` (set globally; don't restyle per component). Body is Poppins (`font-sans`).
 - **Saffron (`primary`) is a fill.** Text on it is `text-primary-foreground` (navy); never white. Saffron-colored text or icons use `primary-ink` or `primary-700`.
 - **Green (`secondary`)** is the secondary button, check states and card titles. Navy bands and the footer (`bg-navy`, `bg-navy-900`) use white text and `text-primary` numerals.
 - **Bands** alternate `background`, `bg-primary-50` (cream) and `bg-muted` (lavender).

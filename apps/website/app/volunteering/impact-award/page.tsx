@@ -206,7 +206,7 @@ function Fact({ term, detail }: FactProps) {
   return (
     <div className="border-primary space-y-1 border-l-4 pl-4">
       <dt className="text-muted-foreground text-sm font-medium">{term}</dt>
-      <dd className="font-eczar text-foreground text-3xl font-bold">{detail}</dd>
+      <dd className="font-display text-foreground text-3xl font-bold">{detail}</dd>
     </div>
   );
 }
@@ -356,7 +356,7 @@ function TierHours({ label, hours }: TierHoursProps) {
   return (
     <div>
       <dt className="text-muted-foreground text-sm">{label}</dt>
-      <dd className="font-eczar text-foreground text-3xl font-bold">
+      <dd className="font-display text-foreground text-3xl font-bold">
         {hours}
         <span className="text-muted-foreground ml-1.5 font-sans text-sm font-normal">hours</span>
       </dd>

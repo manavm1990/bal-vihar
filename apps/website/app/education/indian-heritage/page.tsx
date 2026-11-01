@@ -29,7 +29,7 @@ export default function EducationIndianHeritagePage() {
         intro={<SectionNav label="On this page" links={SECTION_LINKS} />}
       />
       <section className="space-y-3">
-        <H2 id="sights-of-india" variant="plain" className="text-2xl tracking-tight">
+        <H2 id="sights-of-india" variant="plain" className="text-2xl">
           Sights of India
         </H2>
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

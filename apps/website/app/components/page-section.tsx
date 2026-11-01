@@ -10,7 +10,7 @@ interface PageSectionProps {
 export default function PageSection({ id, title, children }: PageSectionProps) {
   return (
     <section aria-labelledby={id} className="space-y-4">
-      <H2 id={id} variant="plain" className="scroll-mt-6 text-2xl tracking-tight">
+      <H2 id={id} variant="plain" className="scroll-mt-6 text-2xl">
         {title}
       </H2>
       {children}

@@ -61,7 +61,7 @@ export default function EventCard({ event }: EventCardProps) {
             <span className="text-xs font-semibold uppercase">
               {parsed.toLocaleDateString("en-US", { month: "short" })}
             </span>
-            <span className="font-eczar text-2xl font-bold">{parsed.getDate()}</span>
+            <span className="font-display text-2xl font-bold">{parsed.getDate()}</span>
           </time>
         ) : null}
 
@@ -138,11 +138,7 @@ export default function EventCard({ event }: EventCardProps) {
                     {typeLabel}
                   </span>
                 ) : null}
-                <H2
-                  id={`event-detail-${event.id}`}
-                  variant="plain"
-                  className="text-2xl tracking-tight"
-                >
+                <H2 id={`event-detail-${event.id}`} variant="plain" className="text-2xl">
                   {event.title}
                 </H2>
               </div>

@@ -146,7 +146,7 @@ export default function SchedulePicker() {
 
   return (
     <section aria-labelledby="k7-schedule" className="space-y-4">
-      <H2 id="k7-schedule" variant="plain" className="text-2xl tracking-tight">
+      <H2 id="k7-schedule" variant="plain" className="text-2xl">
         Groups K–7
       </H2>
       <fieldset className="min-w-0 space-y-2">

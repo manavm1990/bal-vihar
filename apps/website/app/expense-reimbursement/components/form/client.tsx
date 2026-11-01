@@ -29,7 +29,7 @@ export default function ExpenseForm() {
         <legend className="sr-only">Expense reimbursement form</legend>
 
         <section className="space-y-5">
-          <H2 variant="plain" className="text-2xl tracking-tight">
+          <H2 variant="plain" className="text-2xl">
             Your details
           </H2>
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
@@ -81,7 +81,7 @@ export default function ExpenseForm() {
         </section>
 
         <section className="space-y-5">
-          <H2 variant="plain" className="text-2xl tracking-tight">
+          <H2 variant="plain" className="text-2xl">
             Expenses
           </H2>
 

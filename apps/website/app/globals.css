@@ -86,7 +86,7 @@
   --radius-md: 0.75rem;
   --radius-sm: 0.5rem;
 
-  --font-eczar: var(--font-eczar);
+  --font-display: var(--font-baloo);
 
   --animate-enter-from-right: enterFromRight 250ms ease;
   --animate-enter-from-left: enterFromLeft 250ms ease;
@@ -281,7 +281,7 @@
   h4,
   h5,
   h6 {
-    @apply font-eczar text-navy;
+    @apply font-display text-navy;
   }
 
   a {

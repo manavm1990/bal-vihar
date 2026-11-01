@@ -57,7 +57,7 @@ async function ClassPageContent({ params }: ClassPageProps) {
       ) : null}
       {sessions.length === 0 ? null : (
         <section className="space-y-4">
-          <H2 variant="plain" className="text-2xl tracking-tight">
+          <H2 variant="plain" className="text-2xl">
             Latest sessions
           </H2>
           <Ul variant="unstyled" className="max-w-3xl space-y-4">
@@ -71,7 +71,7 @@ async function ClassPageContent({ params }: ClassPageProps) {
       )}
       {links.length === 0 ? null : (
         <section className="space-y-4">
-          <H2 variant="plain" className="text-2xl tracking-tight">
+          <H2 variant="plain" className="text-2xl">
             Class links
           </H2>
           <LinkList links={links} />
