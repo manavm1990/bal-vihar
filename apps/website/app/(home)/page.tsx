@@ -306,11 +306,11 @@ function QuickLinks() {
 
 function Stats() {
   return (
-    <dl className="bg-secondary text-secondary-foreground grid grid-cols-2 gap-4 rounded-lg p-6 md:grid-cols-4 lg:col-start-1">
+    <dl className="bg-navy grid grid-cols-2 gap-4 rounded-lg p-6 md:grid-cols-4 lg:col-start-1">
       {STATS.map((stat) => (
         <div key={stat.label} className="space-y-1">
-          <dt className="font-eczar text-3xl font-bold">{stat.value}</dt>
-          <dd className="text-sm">{stat.label}</dd>
+          <dt className="font-eczar text-primary text-3xl font-bold">{stat.value}</dt>
+          <dd className="text-sm text-white">{stat.label}</dd>
         </div>
       ))}
     </dl>
@@ -323,7 +323,7 @@ interface UpcomingEventsProps {
 
 function UpcomingEvents({ events }: UpcomingEventsProps) {
   return (
-    <section className="bg-gray-50 space-y-4 rounded-lg border p-4 lg:sticky lg:top-4">
+    <section className="bg-primary-50 space-y-4 rounded-lg border p-4 lg:sticky lg:top-4">
       <H2 variant="plain" className="text-2xl">
         Upcoming events
       </H2>

@@ -3,8 +3,8 @@
 @theme {
   /* Core brand colors */
   --color-primary: oklch(0.774 0.163 60); /* Saffron (#FF9933) */
-  --color-secondary: oklch(0.45 0.2 145); /* Deep Green (#138808) */
-  --color-navy: oklch(0.25 0.2 265); /* Navy Blue (#000080) */
+  --color-secondary: var(--color-secondary-600);
+  --color-navy: var(--color-navy-700);
 
   /* Primary (Saffron) scale */
   --color-primary-50: oklch(0.98 0.02 60);
@@ -19,16 +19,28 @@
   --color-primary-900: oklch(0.42 0.11 60);
 
   /* Navy scale */
-  --color-navy-50: oklch(0.98 0.02 265);
-  --color-navy-100: oklch(0.93 0.04 265);
-  --color-navy-200: oklch(0.86 0.08 265);
-  --color-navy-300: oklch(0.79 0.12 265);
-  --color-navy-400: oklch(0.72 0.16 265);
-  --color-navy-500: oklch(0.25 0.2 265);
-  --color-navy-600: oklch(0.38 0.22 265);
-  --color-navy-700: oklch(0.31 0.24 265);
-  --color-navy-800: oklch(0.24 0.26 265);
-  --color-navy-900: oklch(0.17 0.28 265);
+  --color-navy-50: oklch(0.979 0.006 264.5);
+  --color-navy-100: oklch(0.95 0.018 266);
+  --color-navy-200: oklch(0.89 0.035 267);
+  --color-navy-300: oklch(0.8 0.055 268);
+  --color-navy-400: oklch(0.68 0.075 268);
+  --color-navy-500: oklch(0.56 0.09 268);
+  --color-navy-600: oklch(0.46 0.095 268);
+  --color-navy-700: oklch(0.363 0.09 268.5);
+  --color-navy-800: oklch(0.32 0.08 269.5);
+  --color-navy-900: oklch(0.278 0.073 270.3);
+
+  /* Secondary (forest green) scale */
+  --color-secondary-50: oklch(0.975 0.012 155);
+  --color-secondary-100: oklch(0.94 0.025 155);
+  --color-secondary-200: oklch(0.88 0.04 155);
+  --color-secondary-300: oklch(0.79 0.055 155);
+  --color-secondary-400: oklch(0.68 0.065 156);
+  --color-secondary-500: oklch(0.557 0.069 156.8);
+  --color-secondary-600: oklch(0.5 0.066 157);
+  --color-secondary-700: oklch(0.44 0.06 157);
+  --color-secondary-800: oklch(0.37 0.05 157);
+  --color-secondary-900: oklch(0.3 0.04 157);
 
   /* Gray Scale with navy tint */
   --color-gray-50: oklch(0.98 0.005 265);
@@ -44,7 +56,7 @@
 
   --color-background: oklch(1 0 0);
   --color-foreground: var(--color-gray-800);
-  --color-muted: var(--color-gray-100);
+  --color-muted: var(--color-navy-50);
   --color-muted-foreground: var(--color-gray-500);
   --color-border: var(--color-gray-200);
   --color-input: var(--color-gray-200);
@@ -60,7 +72,7 @@
   --color-success: oklch(0.55 0.15 145);
   --color-warning: oklch(0.8 0.15 78);
 
-  /* Saffron is too light for white text; navy on saffron is about 8:1 */
+  /* Saffron is too light for white text; navy on saffron is about 7.5:1 */
   --color-primary-foreground: var(--color-navy);
   --color-secondary-foreground: #fff;
   /* Saffron used as text or icon on white (6.2:1) */
@@ -69,10 +81,10 @@
   --color-accent-foreground: var(--color-navy-900);
 
   /* Border radius */
-  --radius: 0.5rem;
+  --radius: 1rem;
   --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: 0.75rem;
+  --radius-sm: 0.5rem;
 
   --font-eczar: var(--font-eczar);
 
@@ -269,7 +281,7 @@
   h4,
   h5,
   h6 {
-    @apply font-eczar text-secondary;
+    @apply font-eczar text-navy;
   }
 
   a {

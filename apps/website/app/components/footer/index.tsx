@@ -18,8 +18,8 @@ export default async function Footer() {
   cacheLife("days");
 
   return (
-    <footer className="border-t-secondary bg-gray-50 mt-8 space-y-4 border-t-8 p-6">
-      <nav aria-label="Primary" className="border-border border-b pb-4">
+    <footer className="border-t-secondary bg-navy-900 hover:[&_a]:text-primary mt-8 space-y-4 border-t-8 p-6 text-white [&_a]:text-white">
+      <nav aria-label="Primary" className="border-navy-700 border-b pb-4">
         <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold">
           {PRIMARY_LINKS.map((link) => (
             <li key={link.href}>
@@ -31,8 +31,8 @@ export default async function Footer() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <address className="not-italic">
-          <Small className="block text-foreground">School Location</Small>
-          <MutedP className="mt-1 text-muted-foreground">
+          <Small className="block text-white">School Location</Small>
+          <MutedP className="text-navy-200 mt-1">
             {SCHOOL_LOCATION.name}
             <br />
             {SCHOOL_LOCATION.streetAddress}
@@ -43,8 +43,8 @@ export default async function Footer() {
         </address>
 
         <address className="not-italic">
-          <Small className="block text-foreground">Administrative Office</Small>
-          <MutedP className="mt-1 text-muted-foreground">
+          <Small className="block text-white">Administrative Office</Small>
+          <MutedP className="text-navy-200 mt-1">
             {ADMIN_OFFICE.streetAddress}
             <br />
             {ADMIN_OFFICE.addressLocality}, {ADMIN_OFFICE.addressRegion} {ADMIN_OFFICE.postalCode}
@@ -54,7 +54,7 @@ export default async function Footer() {
         </address>
       </div>
 
-      <MutedP className="text-muted-foreground">
+      <MutedP className="text-navy-200">
         © {new Date().getFullYear()} {ORGANIZATION_NAME} All rights reserved.
       </MutedP>
       <Small>

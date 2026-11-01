@@ -19,7 +19,7 @@ export default function Links() {
   const pathname = usePathname();
 
   return (
-    <ul className="[&_a]:text-muted-foreground mt-4 flex flex-wrap gap-2 text-xs">
+    <ul className="[&_a]:text-navy-200 hover:[&_a]:text-primary mt-4 flex flex-wrap gap-2 text-xs">
       {filterLinks(pathname).map((link) => (
         <li key={link.href}>
           <Link href={link.href}>{link.label}</Link>

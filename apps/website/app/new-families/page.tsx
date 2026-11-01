@@ -163,11 +163,11 @@ export default function NewFamiliesPage() {
 
       <section
         aria-label="Bal Vihar at a glance"
-        className="bg-secondary text-secondary-foreground grid gap-6 rounded-lg p-6 sm:grid-cols-3"
+        className="bg-navy grid gap-6 rounded-lg p-6 text-white sm:grid-cols-3"
       >
         {STATS.map((stat) => (
           <div key={stat.value}>
-            <p className="font-eczar text-3xl leading-10 font-bold">{stat.value}</p>
+            <p className="font-eczar text-primary text-3xl leading-10 font-bold">{stat.value}</p>
             <p className="mt-1 text-sm">{stat.label}</p>
           </div>
         ))}
