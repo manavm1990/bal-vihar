@@ -27,21 +27,6 @@ const nextConfig: NextConfig = {
       destination: "/education/curriculum#youth-group",
       permanent: true,
     },
-    { source: "/giving/event-sponsors", destination: "/giving", permanent: true },
-    { source: "/giving/give-online", destination: "/giving", permanent: true },
-    { source: "/giving/make-a-gift", destination: "/giving", permanent: true },
-    {
-      source: "/giving/matching-gift-companies",
-      destination: "/giving#matching-gifts",
-      permanent: true,
-    },
-    {
-      source: "/giving/matching-gift-program",
-      destination: "/giving#matching-gifts",
-      permanent: true,
-    },
-    { source: "/giving/matching-gifts", destination: "/giving#matching-gifts", permanent: true },
-    { source: "/giving/welcome-message", destination: "/giving", permanent: true },
     { source: "/news-and-events", destination: "/calendar", permanent: true },
     {
       source: "/volunteering/volunteer-application",
