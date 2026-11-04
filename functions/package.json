@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@bv/typescript-config": "workspace:*",
-    "@sanity/blueprints": "^0.32.0",
+    "@sanity/blueprints": "^0.33.0",
     "typescript": "^7.0.2"
   }
 }
