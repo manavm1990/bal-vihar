@@ -140,35 +140,6 @@ export type SpreadsheetImport = {
   processedFile?: string;
 };
 
-export type SiteSettings = {
-  _id: string;
-  _type: "siteSettings";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  registrationUrl?: string;
-  defaultOgImage?: MediaImage;
-  contactEmail?: string;
-};
-
-export type SanityImageAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-};
-
-export type MediaImage = {
-  _type: "mediaImage";
-  asset?: SanityImageAssetReference;
-  media?: unknown;
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  alt: string;
-  caption?: string;
-};
-
 export type Policies = {
   _id: string;
   _type: "policies";
@@ -280,6 +251,23 @@ export type PhotoGallery = {
     _type: "galleryPhoto";
     _key: string;
   }>;
+};
+
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
+export type MediaImage = {
+  _type: "mediaImage";
+  asset?: SanityImageAssetReference;
+  media?: unknown;
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt: string;
+  caption?: string;
 };
 
 export type PhotoAlbum = {
@@ -592,12 +580,11 @@ export type AllSanitySchemaTypes =
   | TeachingFaculty
   | SanityFileAssetReference
   | SpreadsheetImport
-  | SiteSettings
-  | SanityImageAssetReference
-  | MediaImage
   | Policies
   | Slug
   | PhotoGallery
+  | SanityImageAssetReference
+  | MediaImage
   | PhotoAlbum
   | SanityImageCrop
   | SanityImageHotspot
@@ -1162,56 +1149,6 @@ export type PHOTO_GALLERY_QUERY_RESULT =
     }
   | null;
 
-// Source: ../website/app/lib/sanity/queries.ts
-// Variable: SITE_SETTINGS_QUERY
-// Query: *[_id == "siteSettings"][0]{  _id,  title,  registrationUrl,  contactEmail,  defaultOgImage {  asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop}}
-export type SITE_SETTINGS_QUERY_RESULT =
-  | {
-      _id: "siteSettings";
-      title: null;
-      registrationUrl: null;
-      contactEmail: null;
-      defaultOgImage: null;
-    }
-  | {
-      _id: "siteSettings";
-      title: string;
-      registrationUrl: null;
-      contactEmail: null;
-      defaultOgImage: null;
-    }
-  | {
-      _id: "siteSettings";
-      title: string | null;
-      registrationUrl: null;
-      contactEmail: null;
-      defaultOgImage: null;
-    }
-  | {
-      _id: "siteSettings";
-      title: string;
-      registrationUrl: string | null;
-      contactEmail: string | null;
-      defaultOgImage: {
-        asset: {
-          _id: string;
-          url: string;
-          metadata: {
-            lqip: string | null;
-            dimensions: {
-              width: number;
-              height: number;
-            } | null;
-          } | null;
-        } | null;
-        alt: string;
-        caption: string | null;
-        hotspot: SanityImageHotspot | null;
-        crop: SanityImageCrop | null;
-      } | null;
-    }
-  | null;
-
 // Query TypeMap
 declare global {
   interface SanityQueries {
@@ -1228,7 +1165,6 @@ declare global {
     '*[_type == "photoAlbum" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photos": photos[defined(asset)] {\n  _key,\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': PHOTO_ALBUM_QUERY_RESULT;
     '*[\n  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0\n] | order(schoolYear desc, _createdAt desc){\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photoCount": count(photos[defined(asset)]),\n  "photoKeys": photos[defined(asset)]._key,\n  "cover": photos[defined(asset)][0] {\n  _key,\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': PHOTO_ALBUMS_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;
-    '*[_id == "siteSettings"][0]{\n  _id,\n  title,\n  registrationUrl,\n  contactEmail,\n  defaultOgImage {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': SITE_SETTINGS_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

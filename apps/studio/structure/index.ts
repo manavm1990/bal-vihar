@@ -137,15 +137,6 @@ export const structure: StructureResolver = (S) =>
                     .documentId(SINGLETON_IDS.photoGallery)
                     .title("Home & page photos"),
                 ),
-              S.listItem()
-                .title("Site settings")
-                .icon(CogIcon)
-                .child(
-                  S.document()
-                    .schemaType("siteSettings")
-                    .documentId(SINGLETON_IDS.siteSettings)
-                    .title("Site settings"),
-                ),
             ]),
         ),
     ]);

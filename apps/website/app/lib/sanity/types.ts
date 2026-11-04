@@ -60,11 +60,3 @@ export interface SanityImageValue {
     right?: number;
   } | null;
 }
-
-export interface SiteSettingsData {
-  id: string;
-  title?: string | null;
-  registrationUrl?: string | null;
-  contactEmail?: string | null;
-  defaultOgImage?: SanityImageValue | null;
-}

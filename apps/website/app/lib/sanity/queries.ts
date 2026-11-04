@@ -220,11 +220,3 @@ export const PHOTO_GALLERY_QUERY = defineQuery(`*[_id == "photoGallery"][0]{
     image ${mediaImageProjection}
   }
 }`);
-
-export const SITE_SETTINGS_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
-  _id,
-  title,
-  registrationUrl,
-  contactEmail,
-  defaultOgImage ${mediaImageProjection}
-}`);

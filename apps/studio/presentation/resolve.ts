@@ -54,12 +54,6 @@ export const resolve = {
         locations: [{ title: "Policies & Procedures", href: "/about-us/policies-procedures" }],
       }),
     }),
-    siteSettings: defineLocations({
-      select: { title: "title" },
-      resolve: () => ({
-        locations: [{ title: "Home page", href: "/" }],
-      }),
-    }),
     volunteersList: defineLocations({
       select: { title: "title" },
       resolve: () => ({

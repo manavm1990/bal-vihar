@@ -4,7 +4,6 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 export const PHOTO_PAGE_OPTIONS = [
   { title: "About Us → History", value: "/about-us/history" },
   { title: "About Us → Community Outreach", value: "/about-us/community-outreach" },
-  { title: "Admissions", value: "/admissions" },
   { title: "Education", value: "/education" },
   { title: "Education → Curriculum", value: "/education/curriculum-k-7" },
   { title: "Volunteering", value: "/volunteering" },
