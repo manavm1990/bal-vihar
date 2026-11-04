@@ -106,45 +106,39 @@ export default async function HomePage() {
 
   const events = getUpcomingCalendarEvents(mapCalendarEvents(calendarPayload), { now });
 
-  const photos = (mapPhotoGallery(galleryPayload, { featuredOnly: true })?.photos ?? [])
-    .filter((photo) => photo.image?.asset?._id || photo.image?.asset?.url)
-    .slice(0, 8);
-  const banner = photos[0];
+  const photos = (mapPhotoGallery(galleryPayload, { featuredOnly: true })?.photos ?? []).filter(
+    (photo) => photo.image?.asset?._id || photo.image?.asset?.url,
+  );
+  const [banner, ...stripPhotos] = photos;
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
-        <Intro text={WHO_WE_ARE} />
-        <QuickLinks />
-        <PhotoBanner photo={banner} />
-        <aside className="lg:col-start-2 lg:row-span-5 lg:row-start-1">
-          <UpcomingEvents events={events} />
-        </aside>
-        <Stats />
-        <section className="space-y-4 lg:col-start-1">
-          <h2 className="text-secondary text-3xl font-semibold tracking-tight">A typical Sunday</h2>
-          <TypicalSunday />
-        </section>
-        <LearningPillars />
-        <NewToBalVihar />
-        <PhotoStrip photos={photos} />
-      </div>
+    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
+      <Intro />
+      <QuickLinks />
+      <PhotoBanner photo={banner} />
+      <aside className="lg:col-start-2 lg:row-span-5 lg:row-start-1">
+        <UpcomingEvents events={events} />
+      </aside>
+      <Stats />
+      <section className="space-y-4 lg:col-start-1">
+        <h2 className="text-secondary text-3xl font-semibold tracking-tight">A typical Sunday</h2>
+        <TypicalSunday />
+      </section>
+      <LearningPillars />
+      <NewToBalVihar />
+      <PhotoStrip photos={stripPhotos.slice(0, 8)} />
     </div>
   );
 }
 
-interface IntroProps {
-  text: string;
-}
-
-function Intro({ text }: IntroProps) {
+function Intro() {
   return (
     <section className="space-y-5 lg:col-start-1">
       <p className="text-secondary text-xs font-semibold tracking-[0.2em] uppercase sm:text-sm">
         Sunday School • Ages 5–18 • Since 1992
       </p>
       <H1 className="text-4xl sm:text-5xl">Roots to grow on.</H1>
-      <LeadP className="max-w-prose text-base whitespace-pre-line sm:text-xl">{text}</LeadP>
+      <LeadP className="max-w-prose text-base whitespace-pre-line sm:text-xl">{WHO_WE_ARE}</LeadP>
       <P>
         Bal Vihar classes meet on select Sundays, usually every other week, from August through May
         at the Hindu Temple Community Center, 2nd floor. See the{" "}
@@ -173,7 +167,7 @@ function Intro({ text }: IntroProps) {
                 className="bg-background hover:bg-primary-50 focus-visible:ring-ring flex h-full min-h-28 flex-col rounded-lg border p-4 shadow-sm transition-colors hover:no-underline focus-visible:ring-2 focus-visible:outline-none"
               >
                 <span className="text-secondary text-base font-semibold">{audience.title}</span>
-                <span className="mt-2 text-sm text-slate-700">{audience.description}</span>
+                <span className="text-foreground mt-2 text-sm">{audience.description}</span>
               </Link>
             </li>
           ))}
@@ -283,7 +277,7 @@ function LearningPillars() {
       <H2 variant="plain">What children learn</H2>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {PILLARS.map((pillar) => (
-          <div key={pillar.title} className="rounded-lg border bg-white p-4 shadow-sm">
+          <div key={pillar.title} className="bg-background rounded-lg border p-4 shadow-sm">
             <h3 className="text-secondary text-lg font-semibold">{pillar.title}</h3>
             <P className="mt-2 text-sm leading-6">{pillar.body}</P>
           </div>
@@ -310,8 +304,8 @@ function NewToBalVihar() {
           <Button asChild>
             <a href={REGISTRATION_URL}>Enroll</a>
           </Button>
-          <Button asChild variant="outline" className="border-white text-white hover:bg-white/10">
-            <Link href="/donate">Donate</Link>
+          <Button asChild variant="secondary">
+            <Link href="/new-families">New families</Link>
           </Button>
         </div>
       </div>
