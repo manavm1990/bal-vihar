@@ -77,7 +77,6 @@ const createResourceDocument = ({
 
 const CONTENT_PAGES: readonly ContentPage[] = [
   { page: STATIC_PAGES.about, href: "/about-us", section: "About Us" },
-  { page: STATIC_PAGES.admissions, href: "/admissions", section: "Admissions" },
   { page: STATIC_PAGES.classSchedule, href: "/education/class-schedule", section: "Education" },
   {
     page: STATIC_PAGES.communityOutreach,
@@ -154,7 +153,7 @@ const PAGE_ENTRIES: readonly PageEntry[] = [
   {
     href: "/disclaimer",
     title: "Disclaimer form",
-    section: "Admissions",
+    section: "Education",
     text: "Parent consent and liability disclaimer for Bal Vihar of St. Louis school activities.",
   },
   {

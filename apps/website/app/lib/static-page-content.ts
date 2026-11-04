@@ -25,13 +25,6 @@ export const STATIC_PAGES = {
     content:
       "## Serving the Community\n\nSince the inception of Bal Vihar, community service projects have been an integral part of the program. Children as young as 5 years to the youth group participate each year and learn practical ways to give back to the community in need by various projects.  The younger children are involved in yearly food and clothing drives, writing postcards for nursing home and elderly patients and visiting them. The older children volunteer at various food pantries, soup kitchens, summer projects and grounds maintenance at the Hindu Temple. Bal Vihar is not only teaching Indian culture but also exposing the students to other cultures and religions.  We have partnered with “Faith Beyond Walls” and participate in many interfaith community outreach, discussions and service projects. Various field trips are offered to the youth group to interact and exchange views with the youth from the other faiths.\n\n## Service Partners and Projects\n\nFollowing is a list of various places/ projects where Bal Vihar children have volunteered and this list grows each year according the needs.\n\n* Annie Malone children & family service center\n* Bhutan Refugees\n* Circle of Concern\n* Donation of items for Katrina Relief\n* Faith Beyond Walls tree planting and SLICE program\n* Joint Neighborhood Ministries\n* Missouri Baptist Hospital\n* Missouri School for Blind\n* Our Little Haven\n* Ranken Jordan Hospital\n* Ronald McDonald House\n* St. Louis Children’s Hospital\n* St. Patrick’s Center\n* Supporting our troops in Iraq and Afghanistan\n* Yearly Clothing drive\n* Yearly Food drive\n\nVarious in-house community events such as Grand Parents program, Youth Lunch Program and helping at the Blood and Bone Marrow Drives have been a good success in the past few years. The school provides Community Service Hours Certificate to students to use for high school graduation.\n\nTo find out more about this school, you can [contact](/questions) any member of the [administrative team](/about-us/administrative-team).",
   },
-  admissions: {
-    title: "Admissions",
-    description: "Admissions overview for students ages 5 through 18.",
-    content:
-      "Bal Vihar of St. Louis admits any student aged 5 through 18, regardless of their background, and expects all to abide by the [policies and procedures](/about-us/policies-procedures). Before the school year, parents complete the [disclaimer form](/disclaimer). New to Bal Vihar? Read the [New Families guide](/new-families).",
-    singleColumn: true,
-  },
   education: {
     title: "Education",
     description: "Education philosophy and curriculum overview for Bal Vihar.",

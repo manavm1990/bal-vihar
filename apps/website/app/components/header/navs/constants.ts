@@ -31,9 +31,7 @@ export const NAVIGATION: readonly NavigationItem[] = [
     items: [
       { name: "Programs Overview", link: "/education", group: "Classes" },
       { name: "Curriculum", link: "/education/curriculum", group: "Classes" },
-      { name: "Class Schedule & Rooms", link: "/education/class-schedule", group: "Classes" },
       { name: "Teaching Faculty", link: "/education/teaching-faculty", group: "Classes" },
-      { name: "Class Webpages", link: "/education/class-webpages", group: "Classes" },
       { name: "About India", link: "/education/about-india", group: "Learn More" },
       { name: "Hindu Rituals & Routines", link: "/education/hindu-rituals", group: "Learn More" },
       { name: "Indian Heritage", link: "/education/indian-heritage", group: "Learn More" },
@@ -45,9 +43,13 @@ export const NAVIGATION: readonly NavigationItem[] = [
     link: "/new-families",
     items: [
       { name: "New Families", link: "/new-families", group: "New families" },
-      { name: "Admissions", link: "/admissions", group: "New families" },
       { name: "Disclaimer Form", link: "/disclaimer", group: "New families" },
       { name: "Calendar", link: "/calendar", group: "Current parents" },
+      {
+        name: "Class Schedule & Rooms",
+        link: "/education/class-schedule",
+        group: "Current parents",
+      },
       { name: "Class Webpages", link: "/education/class-webpages", group: "Current parents" },
       {
         name: "Policies & Procedures",
@@ -61,8 +63,6 @@ export const NAVIGATION: readonly NavigationItem[] = [
     name: "Teachers",
     link: "/education/curriculum",
     items: [
-      { name: "Curriculum", link: "/education/curriculum", group: "Teaching" },
-      { name: "Class Schedule & Rooms", link: "/education/class-schedule", group: "Teaching" },
       { name: "Admin Resources", link: "/admin-resources", group: "Admin" },
       { name: "Print Request", link: "/admin-resources/print-request", group: "Admin" },
       { name: "Submit an Expense", link: "/expense-reimbursement", group: "Admin" },
@@ -86,7 +86,6 @@ export const NAVIGATION: readonly NavigationItem[] = [
     items: [
       { name: "Contact Us", link: "/questions#contact" },
       { name: "Questions & FAQs", link: "/questions" },
-      { name: "Concerns & Feedback", link: "/grievance" },
     ],
   },
 ];
