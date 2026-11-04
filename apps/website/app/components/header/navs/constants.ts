@@ -42,9 +42,8 @@ export const NAVIGATION: readonly NavigationItem[] = [
   },
   {
     name: "Parents",
-    link: "/parents",
+    link: "/new-families",
     items: [
-      { name: "Parent Hub", link: "/parents", group: "New families" },
       { name: "New Families", link: "/new-families", group: "New families" },
       { name: "Admissions", link: "/admissions", group: "New families" },
       { name: "Disclaimer Form", link: "/disclaimer", group: "New families" },

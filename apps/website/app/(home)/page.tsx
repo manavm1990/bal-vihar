@@ -51,14 +51,9 @@ const WHO_WE_ARE =
   "Center for Indian Cultural Education – Bal Vihar of St. Louis is a non-profit organization that has served the Metro St. Louis Indian community since 1992. Our primary focus is Indian cultural education for students ages 5–18, and its application and integration with the global, multicultural society. Students also learn discipline, tolerance and devotion in their daily routine.";
 const AUDIENCE_LINKS = [
   {
-    title: "New family",
+    title: "Parent / family",
     href: "/new-families",
-    description: "Start here for schedules, the first Sunday, and what to bring.",
-  },
-  {
-    title: "Current parent",
-    href: "/parents",
-    description: "View updates, schedules, and parent resources for the current session.",
+    description: "Sunday logistics, what to bring, drop-off, and who to ask.",
   },
   {
     title: "Student",
@@ -158,9 +153,6 @@ function Intro({ text }: IntroProps) {
       <div className="flex flex-wrap gap-3">
         <Button asChild size="lg">
           <a href={REGISTRATION_URL}>Enroll</a>
-        </Button>
-        <Button asChild size="lg" variant="outline">
-          <Link href="/new-families">New families</Link>
         </Button>
       </div>
       <div className="space-y-2">
