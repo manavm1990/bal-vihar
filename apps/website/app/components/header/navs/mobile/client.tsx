@@ -109,6 +109,7 @@ export default function MobileNav() {
         <div className="flex justify-end border-b p-4">
           <button
             type="button"
+            aria-label="Close menu"
             onClick={() => {
               setIsOpen(false);
             }}
@@ -132,6 +133,7 @@ export default function MobileNav() {
                 ) : (
                   <button
                     type="button"
+                    aria-expanded={activeSection === section.name}
                     onClick={() => {
                       setActiveSection(activeSection === section.name ? null : section.name);
                     }}
