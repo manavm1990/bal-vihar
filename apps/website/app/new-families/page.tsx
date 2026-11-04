@@ -4,6 +4,7 @@ import { Button } from "@components/ui/button";
 import { Card } from "@components/ui/card";
 import { H1, H2, H3, LeadP, P, Ul } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
+import { sundayBringItems } from "@lib/sunday-content";
 import { CheckIcon } from "@radix-ui/react-icons";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -15,15 +16,6 @@ export const metadata: Metadata = {
   description:
     "Everything new Bal Vihar families need: what a Sunday looks like, drop-off and pick-up, what to bring, and who to ask.",
 };
-
-const BACKPACK_ITEMS = [
-  "A composition book and a pencil or pen",
-  "A labeled bag or backpack",
-  "A labeled yoga mat",
-  "Colored markers or crayons",
-  "Scissors and glue",
-  "The Bal Vihar Bhajan Book. New families buy one.",
-] as const;
 
 const EVENTS = [
   "Diwali",
@@ -65,25 +57,6 @@ const GROUND_RULES = [
   },
 ] as const;
 
-const LEARNING_AREAS = [
-  {
-    title: "Culture",
-    body: "Why festivals matter, Indian art, architecture, literature, sports and music, and the diversity of cultures across India.",
-  },
-  {
-    title: "Geography",
-    body: "Where India sits and who its neighbors are, its mountains, plains, desert and rivers, and how the seasons shape agriculture.",
-  },
-  {
-    title: "History",
-    body: "From the Vedic era to modern India: how India has changed over time, and how to research and present what they find.",
-  },
-  {
-    title: "Religion",
-    body: "Values and ethics from the Puranas, the Gods and Goddesses and the Dasa Avatars, the two epics, symbolism, samskaras and the meaning of festivals.",
-  },
-] as const;
-
 const SECTIONS = {
   sunday: "Your Sunday",
   arrival: "Arrival and pick-up",
@@ -97,15 +70,6 @@ const SECTIONS = {
   events: "Events",
   contact: "Staying in touch",
 } as const;
-
-const STATS = [
-  {
-    value: "📆❗",
-    label: "August to May, with breaks and some back-to-back Sundays. Check the calendar.",
-  },
-  { value: "10:00 a.m.", label: "Assembly begins. Doors open at 9:45." },
-  { value: "Groups K–7", label: "Plus a Youth Program from Grade 8." },
-] as const;
 
 const YOGA_WEAR_ITEMS = [
   "Loose, comfortable clothes",
@@ -122,27 +86,13 @@ export default function NewFamiliesPage() {
           Everything you need before your first Sunday: what the day looks like, what to bring, how
           drop-off and pick-up work, and who to ask.
         </LeadP>
-        <div className="flex flex-wrap gap-3 pt-2">
-          <Button asChild>
-            <a href="#sunday">See a typical Sunday</a>
-          </Button>
-          <Button asChild variant="outline">
-            <a href="#contact">Who to ask</a>
-          </Button>
-        </div>
+        <P className="max-w-prose">
+          Bal Vihar of St. Louis admits any student aged 5 through 18, regardless of their
+          background, and expects all to abide by the{" "}
+          <Link href="/about-us/policies-procedures">policies and procedures</Link>. Before the
+          school year, parents complete the <Link href="/disclaimer">disclaimer form</Link>.
+        </P>
       </header>
-
-      <section
-        aria-label="Bal Vihar at a glance"
-        className="bg-navy grid gap-6 rounded-lg p-6 text-white sm:grid-cols-3"
-      >
-        {STATS.map((stat) => (
-          <div key={stat.value}>
-            <p className="font-display text-primary text-3xl leading-10 font-bold">{stat.value}</p>
-            <p className="mt-1 text-sm">{stat.label}</p>
-          </div>
-        ))}
-      </section>
 
       <SectionNav
         label="On this page"
@@ -151,29 +101,24 @@ export default function NewFamiliesPage() {
 
       <Section id="sunday">
         <P>
-          Every class opens with assembly at 10:00 a.m., then moves through an hour of classroom
-          instruction and an hour of yoga and bhajan.
+          August to May, with breaks and some back-to-back Sundays. Check the{" "}
+          <Link href="/calendar">calendar</Link>.
         </P>
         <TypicalSunday />
         <Button asChild variant="outline">
-          <Link href="/education/class-schedule">Rooms and times for every group</Link>
+          <Link href="/education/class-schedule#where-to-go">Find your group’s rooms</Link>
         </Button>
       </Section>
 
       <Section id="arrival">
         <P>Your child’s safety is important to us.</P>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <InfoCard title="Drop-off">
-            Use the side entrance of the Hindu Temple Community Center from 9:45 a.m. Assembly
-            starts at 10:00 a.m. in the classrooms.
-          </InfoCard>
+        <div className="grid gap-4 md:grid-cols-3">
           <InfoCard title="Running late">
             Late arrivals wait in the common area and join their class after Aarti.
           </InfoCard>
           <InfoCard title="Pick-up">
-            All dismissals are at the side entrance, except Groups K and 1: they finish at 12:20
-            p.m. and are picked up from the Parents’ lounge. Everyone must be collected on time, no
-            exceptions.
+            All dismissals are at the side entrance, except Groups K and 1, who are picked up from
+            the Parents’ lounge. Everyone must be collected on time, no exceptions.
           </InfoCard>
           <InfoCard title="Leaving early">
             Email the teacher the night before, or send a note with your child.
@@ -185,15 +130,12 @@ export default function NewFamiliesPage() {
             Zoom sessions so classes stay connected.
           </P>
         </Callout>
-        <Button asChild variant="outline">
-          <Link href="/education/class-schedule#where-to-go">Find your group’s rooms</Link>
-        </Button>
       </Section>
 
       <Section id="bring">
         <div className="grid gap-4 md:grid-cols-2">
           <InfoCard title="In the backpack">
-            <CheckList items={BACKPACK_ITEMS} />
+            <CheckList items={sundayBringItems} />
           </InfoCard>
           <InfoCard title="What to wear for yoga">
             <CheckList items={YOGA_WEAR_ITEMS} />
@@ -234,7 +176,6 @@ export default function NewFamiliesPage() {
             Talk to the group teachers. We love feedback, whether it is a pat on the back, a
             suggestion or a question about the subject matter.
           </li>
-          <li>Make sure you are in your class’s WhatsApp group.</li>
         </Ul>
         <Callout title="A better question than “How was class?”">
           <P>Ask something specific, such as “Name two things that were taught today.”</P>
@@ -243,10 +184,7 @@ export default function NewFamiliesPage() {
         <Ul>
           <li>At dismissal, please stand away from the prasad distribution area.</li>
           <li>Make sure children are well rested and have had a good breakfast.</li>
-          <li>
-            Please don’t speak with teachers or children during transitions or class time. Admin
-            volunteers are always in the lobby to take your questions.
-          </li>
+          <li>Please don’t speak with teachers or children during transitions or class time.</li>
           <li>Encourage children not to touch or play with school property.</li>
         </Ul>
       </Section>
@@ -274,22 +212,13 @@ export default function NewFamiliesPage() {
           introduction to the epics Mahabharat and Ramayan and art projects that follow the
           curriculum.
         </P>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {LEARNING_AREAS.map((area) => (
-            <InfoCard key={area.title} title={area.title}>
-              {area.body}
-            </InfoCard>
-          ))}
-        </div>
         <InfoCard title="Youth Program, Grade 8 and up">
           Gita chanting and discussion, community service projects and guest lectures, with a focus
           on concrete spiritual knowledge and character built on the values of the scriptures.
         </InfoCard>
-        <div className="flex flex-wrap gap-3">
-          <Button asChild variant="outline">
-            <Link href="/education/curriculum">Curriculum</Link>
-          </Button>
-        </div>
+        <Button asChild variant="outline">
+          <Link href="/education/curriculum">See the full curriculum</Link>
+        </Button>
       </Section>
 
       <Section id="yoga-bhajan">

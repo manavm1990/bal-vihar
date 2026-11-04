@@ -1,10 +1,4 @@
-export interface SundayStep {
-  time: string;
-  title: string;
-  detail: string;
-}
-
-export const sundaySteps: readonly SundayStep[] = [
+export const sundaySteps = [
   {
     time: "9:45 a.m.",
     title: "Doors open",
@@ -31,29 +25,6 @@ export const sundaySteps: readonly SundayStep[] = [
     time: "12:20 or 12:30 p.m.",
     title: "Dismissal",
     detail: "Groups K–3 finish at 12:20 p.m. and groups 4–7 at 12:30 p.m.",
-  },
-] as const;
-
-export const sundayGroups = [
-  {
-    group: "K",
-    rhythm: "Aarti and classroom instruction in the classroom, followed by yoga and bhajan.",
-    dismissal: "Parents' lounge",
-  },
-  {
-    group: "1–3",
-    rhythm: "Aarti and classroom instruction in the classroom, followed by yoga and bhajan.",
-    dismissal: "Side entrance",
-  },
-  {
-    group: "4–7",
-    rhythm: "Assembly in the hall, then classroom instruction and yoga and bhajan in the rotation.",
-    dismissal: "Side entrance",
-  },
-  {
-    group: "Youth",
-    rhythm: "Check the class webpage for the day’s lesson, practice, and service-hour updates.",
-    dismissal: "Per teacher",
   },
 ] as const;
 
