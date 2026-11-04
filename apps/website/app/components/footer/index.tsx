@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Small } from "../ui/typography";
 import Links from "./links.client";
 
+const LINK_CLASS_NAME = "text-primary underline-offset-4 hover:underline";
+
 const QUICK_LINKS = [
   { href: "/new-families", label: "New families" },
   { href: "/about-us", label: "About us" },
@@ -34,29 +36,23 @@ export default async function Footer() {
             <br />
             <a
               href="https://maps.google.com/?q=Hindu+Temple+Community+Center+725+Weidman+Road+Ballwin+MO+63011"
-              className="text-primary underline-offset-4 hover:underline"
+              className={LINK_CLASS_NAME}
             >
               View map
             </a>
           </address>
-          <p className="text-sm text-navy-200">2nd &amp; 4th Sundays, Aug–May, 10:00–12:30</p>
+          <p className="text-sm text-navy-200">Select Sundays, Aug–May, 10:00–12:30</p>
         </div>
 
         <div className="space-y-3">
           <h2 className="font-display text-xl text-white">Contact</h2>
           <p className="text-sm text-navy-200">
-            <a
-              href="mailto:info@balviharstlouis.org"
-              className="text-primary underline-offset-4 hover:underline"
-            >
+            <a href="mailto:info@balviharstlouis.org" className={LINK_CLASS_NAME}>
               info@balviharstlouis.org
             </a>
           </p>
           <p className="text-sm text-navy-200">
-            <a
-              href={`tel:${ADMIN_OFFICE.phoneHref}`}
-              className="text-primary underline-offset-4 hover:underline"
-            >
+            <a href={`tel:${ADMIN_OFFICE.phoneHref}`} className={LINK_CLASS_NAME}>
               {ADMIN_OFFICE.phoneDisplay}
             </a>
           </p>
@@ -67,18 +63,9 @@ export default async function Footer() {
           <ul className="space-y-2 text-sm">
             {QUICK_LINKS.map((link) => (
               <li key={link.href}>
-                {link.href.startsWith("http") ? (
-                  <a href={link.href} className="text-primary underline-offset-4 hover:underline">
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    href={link.href}
-                    className="text-primary underline-offset-4 hover:underline"
-                  >
-                    {link.label}
-                  </Link>
-                )}
+                <Link href={link.href} className={LINK_CLASS_NAME}>
+                  {link.label}
+                </Link>
               </li>
             ))}
           </ul>
@@ -98,10 +85,7 @@ export default async function Footer() {
 
           <Small className="text-navy-300">
             Website creation & hosting provided voluntarily by:{" "}
-            <a
-              href="https://github.com/manavm1990"
-              className="text-primary underline-offset-4 hover:underline"
-            >
+            <a href="https://github.com/manavm1990" className={LINK_CLASS_NAME}>
               @manavm1990
             </a>
           </Small>

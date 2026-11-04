@@ -21,7 +21,7 @@ export default function HistoryPage() {
       <P>
         Since its <Strong>inception in 1992</Strong>, Bal Vihar has been serving the Metro St. Louis
         southeast Asian / Indian community of about 10,000 families. The primary focus of this
-        organization is to provide Indian cultural education for children of ages 5 through 16. Bal
+        organization is to provide Indian cultural education for children of ages 5 through 18. Bal
         Vihar is a school to educate, foster and preserve Asian cultural values. Bal Vihar has{" "}
         <Strong>350+ students and over 70 volunteer teachers and teaching assistants</Strong>.
       </P>
