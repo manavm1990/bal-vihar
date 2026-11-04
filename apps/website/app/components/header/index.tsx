@@ -9,11 +9,18 @@ import {
 } from "@lib/sanity/map-calendar-events";
 import { mapHomePage } from "@lib/sanity/map-home-page";
 import { CALENDAR_EVENTS_QUERY, HOME_PAGE_QUERY } from "@lib/sanity/queries";
+import type { CalendarEventData, HomePageData } from "@lib/sanity/types";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { DesktopNav, MobileNav } from "./navs";
 import SearchMenu from "./search-menu.client";
+
+interface HeaderNotice {
+  text: string;
+  href?: string | null;
+  label?: string | null;
+}
 
 export default function Header() {
   return (
@@ -74,28 +81,36 @@ async function Notice() {
     fetchSanityData(CALENDAR_EVENTS_QUERY),
     getCachedNow(),
   ]);
-  const home = mapHomePage(homePayload);
-  const nextEvent = getUpcomingCalendarEvents(mapCalendarEvents(calendarPayload), {
-    limit: 1,
-    now,
-  })[0];
-  const override = home?.noticeText?.trim();
-  const noticeText =
-    override ||
-    (nextEvent
-      ? `Next up: ${nextEvent.title} · ${formatCalendarDate(nextEvent.date)}`
-      : "Classes meet on Sundays");
-  const noticeHref = override ? home?.noticeHref : nextEvent ? "/calendar" : undefined;
-  const noticeLabel = override ? home?.noticeLabel : nextEvent ? "View calendar" : undefined;
+  const notice = getNotice(
+    mapHomePage(homePayload),
+    getUpcomingCalendarEvents(mapCalendarEvents(calendarPayload), { limit: 1, now })[0],
+  );
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-      <span className="text-navy-200">{noticeText}</span>
-      {noticeHref && noticeLabel ? (
-        <Link href={noticeHref} className="text-primary underline underline-offset-2">
-          {noticeLabel}
+      <span className="text-navy-200">{notice.text}</span>
+      {notice.href && notice.label ? (
+        <Link href={notice.href} className="text-primary underline underline-offset-2">
+          {notice.label}
         </Link>
       ) : null}
     </div>
   );
+}
+
+function getNotice(
+  home: HomePageData | null,
+  nextEvent: CalendarEventData | undefined,
+): HeaderNotice {
+  if (home?.noticeText)
+    return { text: home.noticeText, href: home.noticeHref, label: home.noticeLabel };
+
+  if (nextEvent)
+    return {
+      text: `Next up: ${nextEvent.title} · ${formatCalendarDate(nextEvent.date)}`,
+      href: "/calendar",
+      label: "View calendar",
+    };
+
+  return { text: "Classes meet on Sundays" };
 }

@@ -16,7 +16,7 @@ export const mapHomePage = (input: unknown): HomePageData | null => {
 
   return {
     id,
-    noticeHref: noticeHref ?? null,
+    noticeHref,
     noticeLabel,
     noticeText: noticeText ?? null,
     title: parseString(dataRecord["title"]),
