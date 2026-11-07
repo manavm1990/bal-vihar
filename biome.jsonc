@@ -105,6 +105,13 @@
                 // `taskID`) keep their API names.
                 "match": "_(?:createdAt|id|key|ref|rev|type|updatedAt|weak)|objectID|taskID|(.+)",
                 "formats": ["camelCase", "CONSTANT_CASE", "PascalCase", "snake_case"]
+              },
+              {
+                "selector": {
+                  "kind": "typeProperty"
+                },
+                "match": "S|(.+)",
+                "formats": ["camelCase"]
               }
             ]
           }
