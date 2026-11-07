@@ -15,7 +15,7 @@ import { stegaClean } from "@sanity/client/stega";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { FAQPage, WithContext } from "schema-dts";
-import ContactForm from "./components/form/client";
+import ContactForm from "./form/client";
 
 const TITLE = "Questions & Contact";
 

@@ -3,7 +3,7 @@ import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
 import { createStaticPageMetadata, STATIC_PAGES } from "@lib/static-page-content";
 import type { Metadata } from "next";
-import VolunteerApplicationForm from "./components/form/client";
+import VolunteerApplicationForm from "./form/client";
 
 const PAGE = STATIC_PAGES.volunteering;
 

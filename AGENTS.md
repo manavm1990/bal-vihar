@@ -19,6 +19,7 @@ Stack: Bun, Next.js 16, React 19, strict TypeScript, Tailwind CSS v4, Radix UI, 
 ## Commands
 
 Run from the repo root (Turborepo fans out to each workspace):
+
 - `bun run dev` - website and studio dev servers
 - `bun run build` - build all workspaces
 - `bun run lint` / `bun run lint:fix` - Biome check / autofix
@@ -53,7 +54,7 @@ Path aliases (`apps/website`): `@components/*` -> `./app/components/*`, `@lib/*`
 - **Name utilities with verbs** (`createParagraph`, `getPolicies`, `isTableLine`, `parseMarkdown`, `normalizeHref`). Nouns and PascalCase are for components, and hooks start with `use`. A function named like a noun reads as a component. Build-from-input helpers are `create*`, read-back helpers are `parse*`; no `to*`/`from*`.
 - Colocated helpers are only called at render time, so arrows below the component are safe. **Module-level data built while the module loads** (such as schema field definitions) must define its arrow helpers _above_ that data, since arrows are not hoisted.
 - **Sort lists alphabetically** (case-insensitive): barrel `export { … }` blocks and registries such as `schemaTypes`. Generated files (`sanity.types.ts`, `schema.json`) are never hand-edited.
-- **Don't repeat the folder (or route) name in the file name.** The parent path already carries that context—name the file for its role (`actions.ts`, `types.ts`, `data.ts`, `use-contact.ts`, `client.tsx`), not `contact-form.client.tsx` inside `questions/components/form/`. **Exceptions only when a tool or platform convention requires a pattern** (Bun: `*.test.ts`, form suites use `form.test.ts`; Next.js reserved files like `error.tsx` / `page.tsx` / `layout.tsx`).
+- **Don't repeat the folder (or route) name in the file name.** The parent path already carries that context—name the file for its role (`actions.ts`, `types.ts`, `data.ts`, `use-contact.ts`, `client.tsx`), not `contact-form.client.tsx` inside `questions/form/`. **Exceptions only when a tool or platform convention requires a pattern** (Bun: `*.test.ts`, form suites use `form.test.ts`; Next.js reserved files like `error.tsx` / `page.tsx` / `layout.tsx`).
 - **Client modules** use the `name.client.tsx` suffix (`teaching-faculty.client.tsx`, `search-menu.client.tsx`, `form-success.client.tsx`) so the path reads as client. Import them with that segment included (`@components/event-card.client`, `./search-menu.client`)—TypeScript will not resolve a bare `@components/event-card` to `event-card.client.tsx`. When the file is the client entry inside a folder that already scopes it, the name is just `client.tsx`. UI primitive families under `app/components/ui/` keep plain established names (`button.tsx`, `fields.tsx`, `separator.tsx`, or a compound folder like `image-gallery/index.tsx`).
 - **Shared/reused UI** gets its own file under `app/components/` (kebab-case). Do not extract a separate file for single-use server presentational pieces.
 - Prefer **omitting braces** on single-statement `if` bodies (including multi-line `return (` … `)`).
@@ -94,6 +95,7 @@ Skills live in `.agents/skills/`. Read the matching `SKILL.md` (and only the nee
 - Public site consumption: `apps/website`
 
 Follow `.agents/skills/sanity-best-practices/SKILL.md` and load only the relevant references (usually `references/schema.md`, `references/groq.md`, and/or `references/nextjs.md`).
+
 1. **Schemas first in the shared package** — define or change document/object types in `packages/schemas`, not duplicated inside the website app.
 2. **Studio follows shared schemas** — wire Studio structure/plugins in `apps/studio`; keep desk structure and singletons aligned with schema reality.
 3. **Typed GROQ** — prefer `defineQuery` and generated types via TypeGen over untyped string queries and manual interfaces.
@@ -107,6 +109,7 @@ Follow `.agents/skills/sanity-best-practices/SKILL.md` and load only the relevan
 ## SEO
 
 Load `.agents/skills/seo-aeo-best-practices/SKILL.md` (references: `technical-seo.md`, `structured-data.md`, `eeat-principles.md`, `aeo-considerations.md`). When metadata is CMS-driven, also load `sanity-best-practices` -> `references/seo.md`.
+
 1. Every public route exposes metadata through Next.js App Router patterns (`metadata` / `generateMetadata`), not ad-hoc `<head>` tags.
 2. Prefer canonical, absolute URLs consistent with the production domain when emitting OG/canonical/JSON-LD.
 3. Structured data must match visible content; do not mark up content that is not on the page.

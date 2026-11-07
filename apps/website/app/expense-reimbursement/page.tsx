@@ -5,7 +5,7 @@ import { BASE_TITLE } from "@lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import ExpenseForm from "./components/form/client";
+import ExpenseForm from "./form/client";
 
 const TITLE = "Expense Reimbursement";
 

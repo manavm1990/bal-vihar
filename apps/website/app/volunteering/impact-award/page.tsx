@@ -19,7 +19,7 @@ import {
 } from "@lib/sanity/impact-award";
 import { cva } from "class-variance-authority";
 import type { Metadata } from "next";
-import AwardApplicationForm from "./components/form/client";
+import AwardApplicationForm from "./form/client";
 import {
   AWARD_AGE_GROUP_NOTE,
   type AwardStep,

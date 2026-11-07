@@ -4,7 +4,7 @@ import { P } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
-import GrievanceForm from "./components/form/client";
+import GrievanceForm from "./form/client";
 
 const TITLE = "File a Grievance";
 

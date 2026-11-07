@@ -3,7 +3,7 @@ import { Card, CardContent } from "@components/ui/card";
 import { P } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import type { Metadata } from "next";
-import PrintRequestForm from "./components/form/client";
+import PrintRequestForm from "./form/client";
 
 const TITLE = "Print Request";
 
