@@ -7,11 +7,9 @@ import { resolve } from "./presentation/resolve";
 import { structure } from "./structure";
 import { templates } from "./templates";
 
-/** Only calendar events and photo galleries are creatable from “New document”. */
 const CREATABLE_TYPES = new Set(["calendarEvent", "photoAlbum"]);
-/** Singletons, class pages and the two Excel upload forms are edited and published only. */
-const EDIT_ONLY_TYPE_SET = new Set<string>([...SINGLETON_TYPES, "classPage", "spreadsheetImport"]);
 const EDIT_ONLY_ACTIONS = new Set(["publish", "discardChanges", "restore"]);
+const EDIT_ONLY_TYPE_SET = new Set<string>([...SINGLETON_TYPES, "classPage", "spreadsheetImport"]);
 
 const isDev = process.env["NODE_ENV"] === "development";
 
@@ -21,7 +19,6 @@ const previewOrigin =
 export default defineConfig({
   name: "default",
   title: "Bal Vihar CMS",
-
   projectId: "x5wq3sbt",
   dataset: "production",
 
@@ -38,6 +35,7 @@ export default defineConfig({
         },
       },
     }),
+
     // Vision is a developer query tool — keep it out of the hosted editor UI.
     ...(isDev ? [visionTool()] : []),
   ],
