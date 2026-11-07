@@ -2,9 +2,9 @@ import Article from "@components/article";
 import EventCard from "@components/event-card.client";
 import { MutedP } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
-import { fetchSanityData } from "@lib/sanity/fetch";
+import { fetchCalendarEvent } from "@lib/sanity/calendar-event";
 import { sanityFetchStaticParams } from "@lib/sanity/live";
-import { formatCalendarEventMeta, mapCalendarEvents } from "@lib/sanity/map-calendar-events";
+import { formatCalendarEventMeta } from "@lib/sanity/map-calendar-events";
 import { CALENDAR_EVENTS_QUERY } from "@lib/sanity/queries";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -73,8 +73,3 @@ async function CalendarEventContent({ params }: CalendarEventPageProps) {
     </Article>
   );
 }
-
-const fetchCalendarEvent = async (id: string, options?: { stega?: boolean }) =>
-  mapCalendarEvents(await fetchSanityData(CALENDAR_EVENTS_QUERY, options)).find(
-    (event) => event.id === id,
-  ) ?? null;
