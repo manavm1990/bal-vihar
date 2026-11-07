@@ -119,8 +119,12 @@ export const structure: StructureResolver = (S) =>
             .title("Event volunteers"),
         ),
       S.divider(),
-      createUploadItem(S, "Upload calendar from Excel", UPLOADS.calendar),
-      createUploadItem(S, "Upload event volunteers from Excel", UPLOADS.volunteerRoster),
+      createUploadItem({ S, title: "Upload calendar from Excel", upload: UPLOADS.calendar }),
+      createUploadItem({
+        S,
+        title: "Upload event volunteers from Excel",
+        upload: UPLOADS.volunteerRoster,
+      }),
       S.listItem()
         .title("Advanced")
         .icon(CogIcon)
@@ -141,11 +145,15 @@ export const structure: StructureResolver = (S) =>
         ),
     ]);
 
-const createUploadItem = (
-  S: StructureBuilder,
-  title: string,
-  upload: (typeof UPLOADS)[keyof typeof UPLOADS],
-) =>
+const createUploadItem = ({
+  S,
+  title,
+  upload,
+}: {
+  S: StructureBuilder;
+  title: string;
+  upload: (typeof UPLOADS)[keyof typeof UPLOADS];
+}) =>
   S.listItem()
     .title(title)
     .icon(UploadIcon)
