@@ -86,9 +86,7 @@ export const IMPACT_AWARD_QUERY = defineQuery(`*[_id == "impactAward"][0]{
   downloads[]{ _key, label, description, url }
 }`);
 
-const albumPhotoProjection = `{
-  _key,
-  asset->{
+const imageFields = `asset->{
     _id,
     url,
     metadata {
@@ -99,14 +97,13 @@ const albumPhotoProjection = `{
   alt,
   caption,
   hotspot,
-  crop
-}`;
+  crop`;
 export const PHOTO_ALBUM_QUERY = defineQuery(`*[_type == "photoAlbum" && slug.current == $slug][0]{
   _id,
   title,
   "slug": slug.current,
   schoolYear,
-  "photos": photos[defined(asset)] ${albumPhotoProjection}
+  "photos": photos[defined(asset)]{ _key, ${imageFields} }
 }`);
 
 export const PHOTO_ALBUMS_QUERY = defineQuery(`*[
@@ -118,23 +115,9 @@ export const PHOTO_ALBUMS_QUERY = defineQuery(`*[
   schoolYear,
   "photoCount": count(photos[defined(asset)]),
   "photoKeys": photos[defined(asset)]._key,
-  "cover": photos[defined(asset)][0] ${albumPhotoProjection}
+  "cover": photos[defined(asset)][0]{ _key, ${imageFields} }
 }`);
 
-const mediaImageProjection = `{
-  asset->{
-    _id,
-    url,
-    metadata {
-      lqip,
-      dimensions { width, height }
-    }
-  },
-  alt,
-  caption,
-  hotspot,
-  crop
-}`;
 export const PHOTO_GALLERY_QUERY = defineQuery(`*[_id == "photoGallery"][0]{
   _id,
   title,
@@ -145,7 +128,7 @@ export const PHOTO_GALLERY_QUERY = defineQuery(`*[_id == "photoGallery"][0]{
     note,
     featured,
     pages,
-    image ${mediaImageProjection}
+    image{ ${imageFields} }
   }
 }`);
 

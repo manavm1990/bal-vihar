@@ -1,5 +1,14 @@
 import { CalendarIcon } from "@sanity/icons/Calendar";
 import { defineField, defineType } from "sanity";
+import { getCurrentSchoolYear, SCHOOL_YEARS } from "../school-years";
+
+const EVENT_TYPES = [
+  { title: "Regular classes", value: "regular", label: "Classes" },
+  { title: "Special event", value: "special", label: "Special" },
+  { title: "Celebration", value: "celebration", label: "Celebration" },
+  { title: "Holiday", value: "holiday", label: "Holiday" },
+  { title: "Project / show", value: "project", label: "Project" },
+] as const;
 
 export const calendarEvent = defineType({
   name: "calendarEvent",
@@ -57,13 +66,7 @@ export const calendarEvent = defineType({
       type: "string",
       description: "Used for grouping on the site.",
       options: {
-        list: [
-          { title: "Regular classes", value: "regular" },
-          { title: "Special event", value: "special" },
-          { title: "Celebration", value: "celebration" },
-          { title: "Holiday", value: "holiday" },
-          { title: "Project / show", value: "project" },
-        ],
+        list: EVENT_TYPES.map(({ title, value }) => ({ title, value })),
         layout: "radio",
       },
       initialValue: "regular",
@@ -89,8 +92,8 @@ export const calendarEvent = defineType({
       name: "academicYear",
       title: "School year",
       type: "string",
-      description: 'e.g. "2025-26"',
-      initialValue: "2025-26",
+      options: { list: SCHOOL_YEARS, layout: "dropdown" },
+      initialValue: getCurrentSchoolYear,
       group: "settings",
     }),
   ],
@@ -109,16 +112,7 @@ export const calendarEvent = defineType({
             year: "numeric",
           })
         : "No date";
-      const kind =
-        eventType === "special"
-          ? "Special"
-          : eventType === "celebration"
-            ? "Celebration"
-            : eventType === "holiday"
-              ? "Holiday"
-              : eventType === "project"
-                ? "Project"
-                : "Classes";
+      const kind = EVENT_TYPES.find((type) => type.value === eventType)?.label ?? "Classes";
       return {
         title: title || "Untitled event",
         subtitle: `${eventDate} · ${location || "Location TBD"} · ${kind}`,
