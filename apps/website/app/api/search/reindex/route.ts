@@ -108,7 +108,7 @@ async function configureIndex(algolia: ReturnType<typeof algoliasearch>, indexNa
 
   const synonyms = await algolia.saveSynonyms({
     indexName,
-    synonymHit: SYNONYMS,
+    synonymHit: SYNONYMS.map((entry) => ({ ...entry, synonyms: [...entry.synonyms] })),
     replaceExistingSynonyms: true,
   });
   await algolia.waitForTask({ indexName, taskID: synonyms.taskID });
