@@ -4,12 +4,12 @@ import { defineLive, type LivePerspective, resolvePerspectiveFromCookies } from 
 import { client } from "./client";
 import { apiVersion, sanityReadToken } from "./env";
 
+export const SANITY_CONTENT_TAG = "sanity-content"; // * Next cache tag
+
 export interface DynamicFetchOptions {
   perspective: LivePerspective;
   stega: boolean;
 }
-
-export const SANITY_CONTENT_TAG = "sanity-content"; // * Next cache tag
 
 const draftToken = sanityReadToken ?? false;
 
@@ -30,7 +30,6 @@ export async function getDynamicFetchOptions(): Promise<DynamicFetchOptions> {
   } as const;
 }
 
-/** For `generateStaticParams`, which always reads published content. */
 export async function sanityFetchStaticParams<const QueryString extends string>({
   query,
   params = {},

@@ -9,7 +9,7 @@ export const EMPTY_EXPENSE = {
   category: "",
   amount: "",
   comments: "",
-} as const;
+};
 const DEFAULT_VALUES: ExpenseFormInputs = {
   name: "",
   email: "",

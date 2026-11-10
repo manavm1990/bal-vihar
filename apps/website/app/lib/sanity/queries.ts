@@ -1,36 +1,5 @@
 import { defineQuery } from "next-sanity";
 
-const mediaImageProjection = `{
-  asset->{
-    _id,
-    url,
-    metadata {
-      lqip,
-      dimensions { width, height }
-    }
-  },
-  alt,
-  caption,
-  hotspot,
-  crop
-}`;
-
-const albumPhotoProjection = `{
-  _key,
-  asset->{
-    _id,
-    url,
-    metadata {
-      lqip,
-      dimensions { width, height }
-    }
-  },
-  alt,
-  caption,
-  hotspot,
-  crop
-}`;
-
 export const CALENDAR_EVENTS_QUERY = defineQuery(`*[_type == "calendarEvent"] | order(date asc) {
   _id,
   title,
@@ -76,28 +45,128 @@ export const CLASS_PAGES_QUERY = defineQuery(`*[_type == "classPage"] | order(so
   "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)
 }`);
 
-export const VOLUNTEERS_LIST_QUERY = defineQuery(`*[_id == "volunteersList"][0]{
+export const FAQS_QUERY = defineQuery(`*[_id == "faqs"][0]{
   _id,
-  teams[]{
+  items[]{
     _key,
-    name,
-    description,
-    members[]{
-      _key,
-      name,
-      email,
-      phone
-    }
+    question,
+    answer
   }
 }`);
 
-export const VOLUNTEER_ROSTER_QUERY = defineQuery(`*[_id == "volunteerRoster"][0]{
+export const HOME_PAGE_QUERY = defineQuery(`*[_id == "homePage"][0]{
   _id,
-  schoolYear,
-  activities[]{
+  title,
+  noticeText,
+  noticeHref,
+  noticeLabel
+}`);
+
+export const IMPACT_AWARD_QUERY = defineQuery(`*[_id == "impactAward"][0]{
+  _id,
+  awardYear,
+  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },
+  coordinator{ name, role, email, phone },
+  tiers{
+    bronze{ teens, youngAdults },
+    silver{ teens, youngAdults },
+    gold{ teens, youngAdults }
+  },
+  teachingHours[]{
     _key,
-    name,
-    volunteers
+    activity,
+    classesY4,
+    classesY5,
+    prepHours,
+    presentingHours,
+    attendedHours
+  },
+  communityIntro,
+  communityProjects[]{ _key, project, participating, onTheTeam, leading },
+  downloads[]{ _key, label, description, url }
+}`);
+
+const albumPhotoProjection = `{
+  _key,
+  asset->{
+    _id,
+    url,
+    metadata {
+      lqip,
+      dimensions { width, height }
+    }
+  },
+  alt,
+  caption,
+  hotspot,
+  crop
+}`;
+export const PHOTO_ALBUM_QUERY = defineQuery(`*[_type == "photoAlbum" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  schoolYear,
+  "photos": photos[defined(asset)] ${albumPhotoProjection}
+}`);
+
+export const PHOTO_ALBUMS_QUERY = defineQuery(`*[
+  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0
+] | order(schoolYear desc, _createdAt desc){
+  _id,
+  title,
+  "slug": slug.current,
+  schoolYear,
+  "photoCount": count(photos[defined(asset)]),
+  "photoKeys": photos[defined(asset)]._key,
+  "cover": photos[defined(asset)][0] ${albumPhotoProjection}
+}`);
+
+const mediaImageProjection = `{
+  asset->{
+    _id,
+    url,
+    metadata {
+      lqip,
+      dimensions { width, height }
+    }
+  },
+  alt,
+  caption,
+  hotspot,
+  crop
+}`;
+export const PHOTO_GALLERY_QUERY = defineQuery(`*[_id == "photoGallery"][0]{
+  _id,
+  title,
+  photos[]{
+    _key,
+    title,
+    schoolYear,
+    note,
+    featured,
+    pages,
+    image ${mediaImageProjection}
+  }
+}`);
+
+export const POLICIES_QUERY = defineQuery(`*[_id == "policies"][0]{
+  _id,
+  intro,
+  sections[]{
+    _key,
+    title,
+    "slug": slug.current,
+    intro,
+    callToAction{
+      text,
+      label,
+      href
+    },
+    items[]{
+      _key,
+      title,
+      body
+    }
   }
 }`);
 
@@ -125,98 +194,27 @@ export const TEACHING_FACULTY_QUERY = defineQuery(`*[_id == "teachingFaculty"][0
   }
 }`);
 
-export const FAQS_QUERY = defineQuery(`*[_id == "faqs"][0]{
+export const VOLUNTEER_ROSTER_QUERY = defineQuery(`*[_id == "volunteerRoster"][0]{
   _id,
-  items[]{
+  schoolYear,
+  activities[]{
     _key,
-    question,
-    answer
+    name,
+    volunteers
   }
 }`);
 
-export const IMPACT_AWARD_QUERY = defineQuery(`*[_id == "impactAward"][0]{
+export const VOLUNTEERS_LIST_QUERY = defineQuery(`*[_id == "volunteersList"][0]{
   _id,
-  awardYear,
-  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },
-  coordinator{ name, role, email, phone },
-  tiers{
-    bronze{ teens, youngAdults },
-    silver{ teens, youngAdults },
-    gold{ teens, youngAdults }
-  },
-  teachingHours[]{
+  teams[]{
     _key,
-    activity,
-    classesY4,
-    classesY5,
-    prepHours,
-    presentingHours,
-    attendedHours
-  },
-  communityIntro,
-  communityProjects[]{ _key, project, participating, onTheTeam, leading },
-  downloads[]{ _key, label, description, url }
-}`);
-
-export const POLICIES_QUERY = defineQuery(`*[_id == "policies"][0]{
-  _id,
-  intro,
-  sections[]{
-    _key,
-    title,
-    "slug": slug.current,
-    intro,
-    callToAction{
-      text,
-      label,
-      href
-    },
-    items[]{
+    name,
+    description,
+    members[]{
       _key,
-      title,
-      body
+      name,
+      email,
+      phone
     }
-  }
-}`);
-
-export const HOME_PAGE_QUERY = defineQuery(`*[_id == "homePage"][0]{
-  _id,
-  title,
-  noticeText,
-  noticeHref,
-  noticeLabel
-}`);
-
-export const PHOTO_ALBUM_QUERY = defineQuery(`*[_type == "photoAlbum" && slug.current == $slug][0]{
-  _id,
-  title,
-  "slug": slug.current,
-  schoolYear,
-  "photos": photos[defined(asset)] ${albumPhotoProjection}
-}`);
-
-export const PHOTO_ALBUMS_QUERY = defineQuery(`*[
-  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0
-] | order(schoolYear desc, _createdAt desc){
-  _id,
-  title,
-  "slug": slug.current,
-  schoolYear,
-  "photoCount": count(photos[defined(asset)]),
-  "photoKeys": photos[defined(asset)]._key,
-  "cover": photos[defined(asset)][0] ${albumPhotoProjection}
-}`);
-
-export const PHOTO_GALLERY_QUERY = defineQuery(`*[_id == "photoGallery"][0]{
-  _id,
-  title,
-  photos[]{
-    _key,
-    title,
-    schoolYear,
-    note,
-    featured,
-    pages,
-    image ${mediaImageProjection}
   }
 }`);

@@ -24,7 +24,7 @@ export const BOUNCE_ROTATE = {
       times: [0, 0.7, 1],
     },
   },
-};
+} as const;
 
 export const FADE = {
   initial: { opacity: 0 },
@@ -33,20 +33,6 @@ export const FADE = {
   transition: {
     duration: 0.25,
     ease: "easeOut",
-  },
-} as const;
-
-export const FADE_SCALE = {
-  initial: { opacity: 0, scale: 0.95 },
-  animate: { opacity: 1, scale: 1 },
-  exit: { opacity: 0, scale: 0.95, y: 20 },
-  transition: {
-    duration: 0.2,
-    ease: "easeOut",
-    exit: {
-      duration: 0.15,
-      ease: "easeIn",
-    },
   },
 } as const;
 
@@ -66,6 +52,20 @@ export const FADE_IN_SCALE = {
   initial: {
     scale: 0.98,
     opacity: 0.8,
+  },
+} as const;
+
+export const FADE_SCALE = {
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.95, y: 20 },
+  transition: {
+    duration: 0.2,
+    ease: "easeOut",
+    exit: {
+      duration: 0.15,
+      ease: "easeIn",
+    },
   },
 } as const;
 

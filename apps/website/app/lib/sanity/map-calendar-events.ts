@@ -68,6 +68,13 @@ export const mapCalendarEvents = (input: unknown): CalendarEventData[] =>
 const chicagoToday = (now = new Date()) =>
   now.toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
 
+const escapeIcsText = (value: string) =>
+  value
+    .replaceAll("\\", "\\\\")
+    .replaceAll(";", "\\;")
+    .replaceAll(",", "\\,")
+    .replaceAll("\n", "\\n");
+
 const sortByDateAsc = (events: CalendarEventData[]) =>
   [...events].sort((a, b) => a.date.localeCompare(b.date));
 
@@ -113,10 +120,3 @@ export function createCalendarEventIcs(event: CalendarEventData) {
     .filter((line): line is string => Boolean(line))
     .join("\r\n");
 }
-
-const escapeIcsText = (value: string) =>
-  value
-    .replaceAll("\\", "\\\\")
-    .replaceAll(";", "\\;")
-    .replaceAll(",", "\\,")
-    .replaceAll("\n", "\\n");

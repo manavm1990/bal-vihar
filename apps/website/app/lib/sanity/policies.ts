@@ -5,6 +5,11 @@ import type { POLICIES_QUERY_RESULT } from "sanity.types";
 import { fetchSanityOrNull } from "./fetch";
 import { POLICIES_QUERY } from "./queries";
 
+export interface NumberedPolicySection {
+  number: number;
+  section: PolicySectionView;
+}
+
 export type PolicyBody = ComponentProps<typeof PortableText>["value"];
 
 export interface PolicyCallToAction {
@@ -31,11 +36,6 @@ export interface PolicySectionView {
 export interface PoliciesView {
   intro: string;
   sections: PolicySectionView[];
-}
-
-export interface NumberedPolicySection {
-  number: number;
-  section: PolicySectionView;
 }
 
 function createPolicies(data: NonNullable<POLICIES_QUERY_RESULT>): PoliciesView {
@@ -65,11 +65,6 @@ function createPolicies(data: NonNullable<POLICIES_QUERY_RESULT>): PoliciesView 
   return { intro: data.intro ?? "", sections } as const;
 }
 
-export const getPolicies = (data: POLICIES_QUERY_RESULT) =>
-  data ? createPolicies(data) : { intro: "", sections: [] };
-
-export const parseBody = (value: PolicyBody | null) => value ?? [];
-
 export async function fetchPolicySection(slug: string) {
   const result = await fetchSanityOrNull(POLICIES_QUERY, `the ${slug} policies`);
   const { sections } = getPolicies(result?.data ?? null);
@@ -78,3 +73,8 @@ export async function fetchPolicySection(slug: string) {
 
   return section ? ({ number: index + 1, section } as const) : null;
 }
+
+export const getPolicies = (data: POLICIES_QUERY_RESULT) =>
+  data ? createPolicies(data) : { intro: "", sections: [] };
+
+export const parseBody = (value: PolicyBody | null) => value ?? [];

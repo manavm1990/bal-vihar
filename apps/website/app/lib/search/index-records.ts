@@ -11,9 +11,6 @@ const createRecordWithText = (document: SearchDocument, text: string) => ({
   boost: document.boost ?? 0,
 });
 
-export const createAlgoliaRecords = (documents: readonly SearchDocument[]): AlgoliaSearchRecord[] =>
-  documents.map(createAlgoliaRecord);
-
 export function createAlgoliaRecord(document: SearchDocument): AlgoliaSearchRecord {
   let text = document.text.slice(0, 8000);
   let record = createRecordWithText(document, text);
@@ -26,3 +23,6 @@ export function createAlgoliaRecord(document: SearchDocument): AlgoliaSearchReco
 
   return record;
 }
+
+export const createAlgoliaRecords = (documents: readonly SearchDocument[]): AlgoliaSearchRecord[] =>
+  documents.map(createAlgoliaRecord);

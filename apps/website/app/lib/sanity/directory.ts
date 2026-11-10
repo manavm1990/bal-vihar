@@ -11,6 +11,8 @@ export interface DirectoryEntry extends DirectoryPerson {
   roles: string[];
 }
 
+const getLastName = (name: string) => name.split(" ").at(-1)?.toLowerCase() ?? "";
+
 export const cleanText = (value: string | null | undefined) =>
   value ? stegaClean(value).trim() : "";
 
@@ -19,5 +21,3 @@ export const compareNames = (a: string, b: string) =>
 
 export const sortDirectory = (entries: DirectoryEntry[]) =>
   [...entries].sort((a, b) => compareNames(a.name, b.name));
-
-const getLastName = (name: string) => name.split(" ").at(-1)?.toLowerCase() ?? "";

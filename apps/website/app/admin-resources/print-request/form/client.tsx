@@ -18,12 +18,11 @@ import usePrintRequest from "./use-print-request";
 
 type ChoiceName = "color" | "layout" | "role";
 
+const FILE_ACCEPT = PRINT_FILE_TYPES.join(",");
 const PAPER_SIZE_OPTIONS = [
   { value: "", label: "Select a paper size…" },
   ...PAPER_SIZES.map((size) => ({ value: size, label: size })),
 ];
-
-const FILE_ACCEPT = PRINT_FILE_TYPES.join(",");
 
 export default function PrintRequestForm() {
   const {

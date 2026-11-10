@@ -15,7 +15,7 @@ export const POST = async (request: NextRequest) => {
 
   if (!isValidSignature) return Response.json({ error: "Invalid signature" }, { status: 401 });
 
-  // `expire: 0` serves no stale copy, so the next visit already shows the published change.
+  // * `expire: 0` - next visit already shows the published change.
   revalidateTag(SANITY_CONTENT_TAG, { expire: 0 });
 
   return Response.json({ revalidated: true });

@@ -9,8 +9,6 @@ export interface SearchHit {
   snippet: HighlightPart[];
 }
 
-export const findResults = (query: string, limit: number) => searchAlgolia(query, limit);
-
 export const createSearchHit = ({ document, title, snippet }: SearchResult): SearchHit => ({
   id: document.id,
   href: document.href,
@@ -18,3 +16,5 @@ export const createSearchHit = ({ document, title, snippet }: SearchResult): Sea
   title,
   snippet,
 });
+
+export const findResults = (query: string, limit: number) => searchAlgolia(query, limit);

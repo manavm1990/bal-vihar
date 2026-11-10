@@ -11,7 +11,7 @@ const PATH = "/about-us/community-outreach";
 
 export const metadata: Metadata = createStaticPageMetadata(PAGE);
 
-export default function AboutUsCommunityOutreachPage() {
+export default function CommunityOutreachPage() {
   return (
     <StaticContentPage page={PAGE} photoPath={PATH}>
       <CommunityPhotos />

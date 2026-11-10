@@ -16,6 +16,11 @@ export interface VolunteerRosterView {
 function buildDirectory(activities: VolunteerActivity[]) {
   const people = new Map<string, DirectoryEntry>();
 
+  /**
+   * Imperative > Declarative -
+   * it's about accumulating into a keyed structure with
+   * first-wins and dedupe rules.
+   */
   for (const activity of activities) {
     for (const name of activity.volunteers) {
       const id = name.toLowerCase();

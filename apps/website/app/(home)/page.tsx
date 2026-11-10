@@ -12,8 +12,56 @@ import { CALENDAR_EVENTS_QUERY, PHOTO_GALLERY_QUERY } from "@lib/sanity/queries"
 import type { CalendarEventData, HomePhotoBoardItem } from "@lib/sanity/types";
 import Link from "next/link";
 
+const AUDIENCE_LINKS = [
+  {
+    title: "Parent / family",
+    href: "/new-families",
+    description: "Sunday logistics, what to bring, drop-off, and who to ask.",
+  },
+  {
+    title: "Student",
+    href: "/education/class-webpages",
+    description: "Check classwork, lessons, and what your class covered.",
+  },
+  {
+    title: "Teacher",
+    href: "/education/curriculum",
+    description: "See the curriculum, class scope, and teaching materials.",
+  },
+  {
+    title: "Volunteer",
+    href: "/volunteering",
+    description: "Explore the ways families can help support Bal Vihar.",
+  },
+] as const;
 const MISSION =
   "To throw the light of cultural knowledge on every child, to make every child an outstanding citizen and to spread the song of peace and harmony around the world.";
+const PILLARS = [
+  {
+    title: "History & geography",
+    body: "Students learn where India is, how its people and landscapes shaped the nation, and the stories that carry its identity forward.",
+  },
+  {
+    title: "Culture & festivals",
+    body: "From traditions and art to holidays and music, children discover the richness of Indian culture in everyday life and celebration.",
+  },
+  {
+    title: "Values & stories",
+    body: "The epics, sages, and moral teachings of India give students a framework for empathy, character, and thoughtful living.",
+  },
+  {
+    title: "Yoga & meditation",
+    body: "Mindful movement, breath, and focus help children build discipline, calm, and confidence.",
+  },
+  {
+    title: "Bhajans",
+    body: "Students practice devotional songs and rhythm, connecting joy, memory, and community through music.",
+  },
+  {
+    title: "Community service",
+    body: "Service projects and outreach teach children to care for others, serve the wider community, and live out shared values.",
+  },
+] as const;
 const QUICK_LINKS = [
   {
     title: "Class schedule & rooms",
@@ -49,54 +97,7 @@ const STATS = [
 ] as const;
 const WHO_WE_ARE =
   "Center for Indian Cultural Education – Bal Vihar of St. Louis is a non-profit organization that has served the Metro St. Louis Indian community since 1992. Our primary focus is Indian cultural education for students ages 5–18, and its application and integration with the global, multicultural society. Students also learn discipline, tolerance and devotion in their daily routine.";
-const AUDIENCE_LINKS = [
-  {
-    title: "Parent / family",
-    href: "/new-families",
-    description: "Sunday logistics, what to bring, drop-off, and who to ask.",
-  },
-  {
-    title: "Student",
-    href: "/education/class-webpages",
-    description: "Check classwork, lessons, and what your class covered.",
-  },
-  {
-    title: "Teacher",
-    href: "/education/curriculum",
-    description: "See the curriculum, class scope, and teaching materials.",
-  },
-  {
-    title: "Volunteer",
-    href: "/volunteering",
-    description: "Explore the ways families can help support Bal Vihar.",
-  },
-] as const;
-const PILLARS = [
-  {
-    title: "History & geography",
-    body: "Students learn where India is, how its people and landscapes shaped the nation, and the stories that carry its identity forward.",
-  },
-  {
-    title: "Culture & festivals",
-    body: "From traditions and art to holidays and music, children discover the richness of Indian culture in everyday life and celebration.",
-  },
-  {
-    title: "Values & stories",
-    body: "The epics, sages, and moral teachings of India give students a framework for empathy, character, and thoughtful living.",
-  },
-  {
-    title: "Yoga & meditation",
-    body: "Mindful movement, breath, and focus help children build discipline, calm, and confidence.",
-  },
-  {
-    title: "Bhajans",
-    body: "Students practice devotional songs and rhythm, connecting joy, memory, and community through music.",
-  },
-  {
-    title: "Community service",
-    body: "Service projects and outreach teach children to care for others, serve the wider community, and live out shared values.",
-  },
-] as const;
+
 export default async function HomePage() {
   const [calendarPayload, galleryPayload, now] = await Promise.all([
     fetchSanityData(CALENDAR_EVENTS_QUERY),
@@ -105,7 +106,6 @@ export default async function HomePage() {
   ]);
 
   const events = getUpcomingCalendarEvents(mapCalendarEvents(calendarPayload), { now });
-
   const photos = (mapPhotoGallery(galleryPayload, { featuredOnly: true })?.photos ?? []).filter(
     (photo) => photo.image?.asset?._id || photo.image?.asset?.url,
   );
@@ -174,6 +174,48 @@ function Intro() {
         </ul>
       </div>
       <Bq>{MISSION}</Bq>
+    </section>
+  );
+}
+
+function LearningPillars() {
+  return (
+    <section className="space-y-4 lg:col-start-1">
+      <H2 variant="plain">What children learn</H2>
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {PILLARS.map((pillar) => (
+          <div key={pillar.title} className="bg-background rounded-lg border p-4 shadow-sm">
+            <h3 className="text-secondary text-lg font-semibold">{pillar.title}</h3>
+            <P className="mt-2 text-sm leading-6">{pillar.body}</P>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function NewToBalVihar() {
+  return (
+    <section className="bg-navy rounded-lg p-6 text-white lg:col-start-1">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-2">
+          <H2 variant="plain" className="text-white">
+            New to Bal Vihar?
+          </H2>
+          <P className="text-sm text-white/80">
+            Learn how families get started, what a Sunday looks like, and how to join the next
+            session.
+          </P>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Button asChild>
+            <a href={REGISTRATION_URL}>Enroll</a>
+          </Button>
+          <Button asChild variant="secondary">
+            <Link href="/new-families">New families</Link>
+          </Button>
+        </div>
+      </div>
     </section>
   );
 }
@@ -268,48 +310,6 @@ function Stats() {
         </div>
       ))}
     </dl>
-  );
-}
-
-function LearningPillars() {
-  return (
-    <section className="space-y-4 lg:col-start-1">
-      <H2 variant="plain">What children learn</H2>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {PILLARS.map((pillar) => (
-          <div key={pillar.title} className="bg-background rounded-lg border p-4 shadow-sm">
-            <h3 className="text-secondary text-lg font-semibold">{pillar.title}</h3>
-            <P className="mt-2 text-sm leading-6">{pillar.body}</P>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function NewToBalVihar() {
-  return (
-    <section className="bg-navy rounded-lg p-6 text-white lg:col-start-1">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div className="space-y-2">
-          <H2 variant="plain" className="text-white">
-            New to Bal Vihar?
-          </H2>
-          <P className="text-sm text-white/80">
-            Learn how families get started, what a Sunday looks like, and how to join the next
-            session.
-          </P>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Button asChild>
-            <a href={REGISTRATION_URL}>Enroll</a>
-          </Button>
-          <Button asChild variant="secondary">
-            <Link href="/new-families">New families</Link>
-          </Button>
-        </div>
-      </div>
-    </section>
   );
 }
 

@@ -1,10 +1,14 @@
 import { stegaClean } from "@sanity/client/stega";
-import { getSanityArrayKey } from "./sanity-array-key";
 import type { HomePhotoBoardItem, PhotoGalleryData, SanityImageValue } from "./types";
 
 interface MapPhotoGalleryOptions {
   featuredOnly?: boolean;
 }
+
+const getSanityArrayKey = (item: Record<string, unknown>, fallback: string) => {
+  const raw = item["_key"];
+  return typeof raw === "string" && raw.trim().length > 0 ? raw.trim() : fallback;
+};
 
 const isBoolean = (value: unknown): value is boolean => typeof value === "boolean";
 
@@ -12,16 +16,6 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
 const isString = (value: unknown): value is string => typeof value === "string";
-
-const parseBoolean = (value: unknown): boolean | null => (isBoolean(value) ? value : null);
-
-const parseImage = (value: unknown): SanityImageValue | null =>
-  isRecord(value) ? (value as SanityImageValue) : null;
-
-const parseString = (value: unknown): string | null => (isString(value) ? value : null);
-
-const parseStrings = (value: unknown): string[] =>
-  Array.isArray(value) ? value.filter(isString).map((entry) => stegaClean(entry)) : [];
 
 const mapGalleryPhoto = (
   value: unknown,
@@ -70,3 +64,13 @@ export const mapPhotoGallery = (
     title: parseString(dataRecord["title"]),
   } as const;
 };
+
+const parseBoolean = (value: unknown): boolean | null => (isBoolean(value) ? value : null);
+
+const parseImage = (value: unknown): SanityImageValue | null =>
+  isRecord(value) ? (value as SanityImageValue) : null;
+
+const parseString = (value: unknown): string | null => (isString(value) ? value : null);
+
+const parseStrings = (value: unknown): string[] =>
+  Array.isArray(value) ? value.filter(isString).map((entry) => stegaClean(entry)) : [];

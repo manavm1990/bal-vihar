@@ -45,6 +45,16 @@ const SECTIONS = [
   { id: "apply", label: "Apply" },
 ] as const;
 
+const tierVariants = cva("flex flex-col gap-4 rounded-lg border border-t-8 p-4 shadow-sm", {
+  variants: {
+    tone: {
+      bronze: "bg-background border-t-primary-800 sm:min-h-48",
+      gold: "bg-primary-50 border-t-primary-500 sm:min-h-64",
+      silver: "bg-background border-t-gray-400 sm:min-h-56",
+    },
+  },
+});
+
 export const metadata: Metadata = {
   title: `${BASE_TITLE} | ${PAGE_TITLE}`,
   description:
@@ -454,13 +464,3 @@ function TrailStep({ step, number }: TrailStepProps) {
     </li>
   );
 }
-
-const tierVariants = cva("flex flex-col gap-4 rounded-lg border border-t-8 p-4 shadow-sm", {
-  variants: {
-    tone: {
-      bronze: "bg-background border-t-primary-800 sm:min-h-48",
-      gold: "bg-primary-50 border-t-primary-500 sm:min-h-64",
-      silver: "bg-background border-t-gray-400 sm:min-h-56",
-    },
-  },
-});

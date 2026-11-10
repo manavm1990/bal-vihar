@@ -15,13 +15,10 @@ interface FaqsData {
     | undefined;
 }
 
-export async function fetchFaqs(): Promise<FaqItemView[]> {
-  const result = await fetchSanityOrNull(FAQS_QUERY, "the FAQs");
+export const fetchFaqs = async (): Promise<FaqItemView[]> =>
+  getFaqs((await fetchSanityOrNull(FAQS_QUERY, "the FAQs"))?.data);
 
-  return getFaqs(result?.data);
-}
-
-export const getFaqs = (data: FaqsData | null | undefined): FaqItemView[] =>
+export const getFaqs = (data: FaqsData | null | undefined) =>
   (data?.items ?? []).flatMap((item) =>
     item.question
       ? [{ key: item._key, question: item.question, answer: parseBody(item.answer) }]

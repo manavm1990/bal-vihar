@@ -1,12 +1,6 @@
 import { createClient, isHttpError, type SanityClient } from "@sanity/client";
 import { documentEventHandler } from "@sanity/functions";
 
-interface PhotoAlbumEvent {
-  _id: string;
-  _rev: string;
-  pasteLinks?: string | null;
-}
-
 interface Added {
   link: string;
   assetId: string;
@@ -19,18 +13,20 @@ interface Failed {
 
 type Outcome = Added | Failed;
 
+interface PhotoAlbumEvent {
+  _id: string;
+  _rev: string;
+  pasteLinks?: string | null;
+}
+
 class PhotoError extends Error {}
 
 const API_VERSION = "2025-05-08";
 const CONCURRENCY = 4;
 const FETCH_TIMEOUT_MS = 20_000;
-const IPV4_ADDRESS = /^\d{1,3}(\.\d{1,3}){3}$/;
 const MAX_BYTES = 20 * 1024 * 1024;
 const MAX_LINKS = 40;
 const MAX_REDIRECTS = 3;
-const PRIVATE_IPV4 = /^(0|10|127)\.|^169\.254\.|^192\.168\.|^172\.(1[6-9]|2\d|3[01])\./;
-const PRIVATE_IPV6 = /^\[(::1?\]|::ffff:|f[cd][0-9a-f]{2}:|fe[89ab][0-9a-f]:)/;
-const PRIVATE_NAME = /^localhost$|\.(local|internal)$/;
 const TOO_BIG = "the picture is over 20 MB";
 
 export const handler = documentEventHandler<PhotoAlbumEvent>(async ({ context, event }) => {
@@ -146,9 +142,10 @@ const isAdded = (outcome: Outcome): outcome is Added => "assetId" in outcome;
 const isFailed = (outcome: Outcome): outcome is Failed => "reason" in outcome;
 
 const isPrivateHost = (hostname: string) =>
-  PRIVATE_NAME.test(hostname.replace(/\.$/, "")) ||
-  (IPV4_ADDRESS.test(hostname) && PRIVATE_IPV4.test(hostname)) ||
-  PRIVATE_IPV6.test(hostname);
+  /^localhost$|\.(local|internal)$/.test(hostname.replace(/\.$/, "")) ||
+  (/^\d{1,3}(\.\d{1,3}){3}$/.test(hostname) &&
+    /^(0|10|127)\.|^169\.254\.|^192\.168\.|^172\.(1[6-9]|2\d|3[01])\./.test(hostname)) ||
+  /^\[(::1?\]|::ffff:|f[cd][0-9a-f]{2}:|fe[89ab][0-9a-f]:)/.test(hostname);
 
 function isPublicWebLink(value: string) {
   if (!URL.canParse(value)) return false;

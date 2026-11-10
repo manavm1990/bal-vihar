@@ -44,5 +44,5 @@ export default function useAnimatedDialog() {
     if (event.target === event.currentTarget) close();
   };
 
-  return { dialogRef, open, close, handleKeyDown, handleCancel, handleBackdropClick };
+  return { dialogRef, open, close, handleKeyDown, handleCancel, handleBackdropClick } as const;
 }

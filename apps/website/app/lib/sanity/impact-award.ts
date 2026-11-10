@@ -3,6 +3,11 @@ import { fetchSanityOrNull } from "./fetch";
 import { IMPACT_AWARD_QUERY } from "./queries";
 import { getVolunteerContactLinks } from "./volunteers-list";
 
+const TIER_LEVELS = [
+  { key: "bronze", name: "Bronze" },
+  { key: "silver", name: "Silver" },
+  { key: "gold", name: "Gold" },
+] as const;
 export const TO_BE_ANNOUNCED = "To be announced";
 
 export interface AwardContact {
@@ -36,19 +41,6 @@ export interface AwardTier {
   youngAdults: string;
 }
 
-export interface ImpactAwardView {
-  year: string | null;
-  dates: AwardDates;
-  contact: AwardContact | null;
-  tiers: AwardTier[];
-  teachingHours: string[][];
-  communityIntro: string | null;
-  communityProjects: string[][];
-  downloads: AwardDownload[];
-}
-
-type Text = string | null | undefined;
-
 interface ImpactAwardData {
   awardYear?: Text;
   dates?: Partial<Record<keyof AwardDates, Text>> | null;
@@ -73,47 +65,18 @@ interface ImpactAwardData {
   downloads?: readonly { label?: Text; description?: Text; url?: Text }[] | null;
 }
 
-const TIER_LEVELS = [
-  { key: "bronze", name: "Bronze" },
-  { key: "silver", name: "Silver" },
-  { key: "gold", name: "Gold" },
-] as const;
-
-export async function fetchImpactAward(): Promise<ImpactAwardView> {
-  const result = await fetchSanityOrNull(IMPACT_AWARD_QUERY, "the Impact Award");
-
-  return getImpactAward(result?.data);
+export interface ImpactAwardView {
+  year: string | null;
+  dates: AwardDates;
+  contact: AwardContact | null;
+  tiers: AwardTier[];
+  teachingHours: string[][];
+  communityIntro: string | null;
+  communityProjects: string[][];
+  downloads: AwardDownload[];
 }
 
-export const getImpactAward = (data: ImpactAwardData | null | undefined): ImpactAwardView => ({
-  year: clean(data?.awardYear),
-  dates: {
-    trackingStart: clean(data?.dates?.trackingStart),
-    trackingEnd: clean(data?.dates?.trackingEnd),
-    intent: clean(data?.dates?.intent),
-    touchpointOne: clean(data?.dates?.touchpointOne),
-    touchpointTwo: clean(data?.dates?.touchpointTwo),
-    apply: clean(data?.dates?.apply),
-    awards: clean(data?.dates?.awards),
-  },
-  contact: getContact(data?.coordinator),
-  tiers: getTiers(data?.tiers),
-  teachingHours: (data?.teachingHours ?? []).map((row) =>
-    [
-      row.activity,
-      row.classesY4,
-      row.classesY5,
-      row.prepHours,
-      row.presentingHours,
-      row.attendedHours,
-    ].map((cell) => clean(cell) ?? ""),
-  ),
-  communityIntro: clean(data?.communityIntro),
-  communityProjects: (data?.communityProjects ?? []).map((row) =>
-    [row.project, row.participating, row.onTheTeam, row.leading].map((cell) => clean(cell) ?? ""),
-  ),
-  downloads: getDownloads(data?.downloads),
-});
+type Text = string | null | undefined;
 
 const clean = (value: Text) => stegaClean(value ?? "").trim() || null;
 
@@ -154,4 +117,40 @@ function getTiers(tiers: ImpactAwardData["tiers"]): AwardTier[] {
 
     return teens && youngAdults ? [{ name, tone: key, teens, youngAdults }] : [];
   });
+}
+
+export const getImpactAward = (data: ImpactAwardData | null | undefined): ImpactAwardView => ({
+  year: clean(data?.awardYear),
+  dates: {
+    trackingStart: clean(data?.dates?.trackingStart),
+    trackingEnd: clean(data?.dates?.trackingEnd),
+    intent: clean(data?.dates?.intent),
+    touchpointOne: clean(data?.dates?.touchpointOne),
+    touchpointTwo: clean(data?.dates?.touchpointTwo),
+    apply: clean(data?.dates?.apply),
+    awards: clean(data?.dates?.awards),
+  },
+  contact: getContact(data?.coordinator),
+  tiers: getTiers(data?.tiers),
+  teachingHours: (data?.teachingHours ?? []).map((row) =>
+    [
+      row.activity,
+      row.classesY4,
+      row.classesY5,
+      row.prepHours,
+      row.presentingHours,
+      row.attendedHours,
+    ].map((cell) => clean(cell) ?? ""),
+  ),
+  communityIntro: clean(data?.communityIntro),
+  communityProjects: (data?.communityProjects ?? []).map((row) =>
+    [row.project, row.participating, row.onTheTeam, row.leading].map((cell) => clean(cell) ?? ""),
+  ),
+  downloads: getDownloads(data?.downloads),
+});
+
+export async function fetchImpactAward(): Promise<ImpactAwardView> {
+  const result = await fetchSanityOrNull(IMPACT_AWARD_QUERY, "the Impact Award");
+
+  return getImpactAward(result?.data);
 }

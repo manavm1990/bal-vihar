@@ -15,6 +15,14 @@ import { staticSearchDocuments } from "@lib/search/static-documents";
 import { algoliasearch } from "algoliasearch";
 import { after } from "next/server";
 
+interface AlgoliaConfig {
+  appId: string;
+  writeKey: string;
+  indexName: string;
+  configure: boolean;
+  origin: string;
+}
+
 export const maxDuration = 60;
 
 export const POST = async (request: Request) => {
@@ -54,31 +62,6 @@ export const POST = async (request: Request) => {
 
   return Response.json({ started: true }, { status: 202 });
 };
-
-interface AlgoliaConfig {
-  appId: string;
-  writeKey: string;
-  indexName: string;
-  configure: boolean;
-  origin: string;
-}
-
-async function rebuildIndex({ appId, writeKey, indexName, configure, origin }: AlgoliaConfig) {
-  const records = createAlgoliaRecords(await collectSearchDocuments(origin));
-
-  if (!records.length) throw new Error("Refusing to reindex: no search documents were built");
-
-  const algolia = algoliasearch(appId, writeKey);
-  if (configure) await configureIndex(algolia, indexName);
-
-  await algolia.replaceAllObjects({
-    indexName,
-    objects: records,
-    batchSize: 500,
-  });
-
-  return records.length;
-}
 
 async function collectSearchDocuments(origin: string) {
   const sanity = client.withConfig({ useCdn: false });
@@ -136,6 +119,23 @@ function isAuthorized(request: Request, secret: string) {
   const expected = Buffer.from(`Bearer ${secret}`);
 
   return given.length === expected.length && timingSafeEqual(given, expected);
+}
+
+async function rebuildIndex({ appId, writeKey, indexName, configure, origin }: AlgoliaConfig) {
+  const records = createAlgoliaRecords(await collectSearchDocuments(origin));
+
+  if (!records.length) throw new Error("Refusing to reindex: no search documents were built");
+
+  const algolia = algoliasearch(appId, writeKey);
+  if (configure) await configureIndex(algolia, indexName);
+
+  await algolia.replaceAllObjects({
+    indexName,
+    objects: records,
+    batchSize: 500,
+  });
+
+  return records.length;
 }
 
 const reportFailure = (error: unknown) => {

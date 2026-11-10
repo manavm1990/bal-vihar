@@ -22,12 +22,9 @@ export const EXPENSE_CATEGORIES = [
   "Walk/Run",
   "Other",
 ] as const;
-
 export const MAX_EXPENSES = 5;
-
-export const RECEIPT_TYPES = ["image/jpeg", "image/png", "application/pdf"] as const;
-
 export const MAX_TOTAL_RECEIPT_BYTES = 3.5 * 1024 * 1024;
+export const RECEIPT_TYPES = ["image/jpeg", "image/png", "application/pdf"] as const;
 
 const ReceiptSchema = v.pipe(
   v.file("Please attach the receipt."),

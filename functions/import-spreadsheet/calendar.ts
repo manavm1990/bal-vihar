@@ -16,7 +16,6 @@ export interface Problem {
   row: number;
 }
 
-const AUGUST = 8;
 const EVENT_TYPES = new Map([
   ["celebration", "celebration"],
   ["holiday", "holiday"],
@@ -28,21 +27,64 @@ const EVENT_TYPES = new Map([
   ["special", "special"],
   ["special event", "special"],
 ]);
-const HEADINGS = [
-  { pattern: /^date$/i, required: true },
-  { pattern: /^(event( name)?|name|title)$/i, required: true },
-  { pattern: /^time$/i },
-  { pattern: /^(where|location)$/i },
-  { pattern: /^(kind|type)( of event)?$/i },
-  { pattern: /^(notes?|description)$/i },
-  { pattern: /^highlight(ed)?$/i },
-];
-const HIGHLIGHTED = /^(x|y|yes|true|1)$/i;
-const ISO_DATE = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
-const US_DATE = /^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/;
+
+function formatDate(year: number, month: number, day: number) {
+  const date = new Date(Date.UTC(year, month - 1, day));
+  const isReal =
+    date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+
+  return isReal ? `${year}-${padTwo(month)}-${padTwo(day)}` : null;
+}
+
+function formatTime(cell: unknown) {
+  if (!(cell instanceof Date)) return toText(cell);
+
+  const hours = cell.getUTCHours();
+
+  return `${hours % 12 || 12}:${padTwo(cell.getUTCMinutes())} ${hours < 12 ? "A.M." : "P.M."}`;
+}
+
+function getAcademicYear(date: string) {
+  const year = Number(date.slice(0, 4));
+  const start = Number(date.slice(5, 7)) >= 8 ? year : year - 1;
+
+  return `${start}-${padTwo((start + 1) % 100)}`;
+}
+
+const isBlankRow = (row: Row) =>
+  row.every((cell) => cell === null || cell === undefined || toText(cell) === "");
+
+const padTwo = (value: number) => String(value).padStart(2, "0");
+
+function parseDate(cell: unknown) {
+  if (cell instanceof Date)
+    return formatDate(cell.getUTCFullYear(), cell.getUTCMonth() + 1, cell.getUTCDate());
+
+  const text = toText(cell);
+  const iso = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(text);
+  if (iso) return formatDate(Number(iso[1]), Number(iso[2]), Number(iso[3]));
+
+  const us = /^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/.exec(text);
+  if (!us) return null;
+
+  const year = Number(us[3]);
+
+  return formatDate(year < 100 ? 2000 + year : year, Number(us[1]), Number(us[2]));
+}
+
+export const createEventKey = (date: string, title: string) =>
+  `${date}|${title.replace(/\s+/g, " ").trim().toLowerCase()}`;
 
 export function parseCalendarEvents(rows: Row[]) {
-  const located = locateColumns(rows, HEADINGS);
+  const located = locateColumns(rows, [
+    { pattern: /^date$/i, required: true },
+    { pattern: /^(event( name)?|name|title)$/i, required: true },
+    { pattern: /^time$/i },
+    { pattern: /^(where|location)$/i },
+    { pattern: /^(kind|type)( of event)?$/i },
+    { pattern: /^(notes?|description)$/i },
+    { pattern: /^highlight(ed)?$/i },
+  ]);
   if (!located) throw new SheetError("could not find the “Date” and “Name” columns.");
 
   const [
@@ -87,7 +129,8 @@ export function parseCalendarEvents(rows: Row[]) {
           ...(description ? { description } : {}),
           eventType,
           isHighlighted:
-            row[highlightColumn] === true || HIGHLIGHTED.test(toText(row[highlightColumn])),
+            row[highlightColumn] === true ||
+            /^(x|y|yes|true|1)$/i.test(toText(row[highlightColumn])),
           ...(location ? { location } : {}),
           ...(time ? { time } : {}),
           title,
@@ -96,51 +139,4 @@ export function parseCalendarEvents(rows: Row[]) {
   }
 
   return { events: [...events.values()], problems } as const;
-}
-
-export const createEventKey = (date: string, title: string) =>
-  `${date}|${title.replace(/\s+/g, " ").trim().toLowerCase()}`;
-
-function formatDate(year: number, month: number, day: number) {
-  const date = new Date(Date.UTC(year, month - 1, day));
-  const isReal =
-    date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
-
-  return isReal ? `${year}-${padTwo(month)}-${padTwo(day)}` : null;
-}
-
-function formatTime(cell: unknown) {
-  if (!(cell instanceof Date)) return toText(cell);
-
-  const hours = cell.getUTCHours();
-
-  return `${hours % 12 || 12}:${padTwo(cell.getUTCMinutes())} ${hours < 12 ? "A.M." : "P.M."}`;
-}
-
-function getAcademicYear(date: string) {
-  const year = Number(date.slice(0, 4));
-  const start = Number(date.slice(5, 7)) >= AUGUST ? year : year - 1;
-
-  return `${start}-${padTwo((start + 1) % 100)}`;
-}
-
-const isBlankRow = (row: Row) =>
-  row.every((cell) => cell === null || cell === undefined || toText(cell) === "");
-
-const padTwo = (value: number) => String(value).padStart(2, "0");
-
-function parseDate(cell: unknown) {
-  if (cell instanceof Date)
-    return formatDate(cell.getUTCFullYear(), cell.getUTCMonth() + 1, cell.getUTCDate());
-
-  const text = toText(cell);
-  const iso = ISO_DATE.exec(text);
-  if (iso) return formatDate(Number(iso[1]), Number(iso[2]), Number(iso[3]));
-
-  const us = US_DATE.exec(text);
-  if (!us) return null;
-
-  const year = Number(us[3]);
-
-  return formatDate(year < 100 ? 2000 + year : year, Number(us[1]), Number(us[2]));
 }

@@ -3,26 +3,6 @@ import type { HomePageData } from "./types";
 
 type SafeHref = `/${string}` | `http://${string}` | `https://${string}` | `mailto:${string}`;
 
-export const mapHomePage = (input: unknown): HomePageData | null => {
-  if (!isRecord(input)) return null;
-
-  const dataRecord = isRecord(input["data"]) ? input["data"] : input;
-  const id = parseString(dataRecord["_id"]) ?? parseString(dataRecord["id"]);
-  if (!id) return null;
-
-  const noticeText = parseString(dataRecord["noticeText"])?.trim();
-  const noticeHref = parseSafeHref(dataRecord["noticeHref"]);
-  const noticeLabel = noticeHref ? (parseString(dataRecord["noticeLabel"])?.trim() ?? null) : null;
-
-  return {
-    id,
-    noticeHref,
-    noticeLabel,
-    noticeText: noticeText ?? null,
-    title: parseString(dataRecord["title"]),
-  };
-};
-
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
@@ -64,3 +44,23 @@ const parseSafeHref = (value: unknown): SafeHref | null => {
 };
 
 const parseString = (value: unknown): string | null => (isString(value) ? value : null);
+
+export const mapHomePage = (input: unknown): HomePageData | null => {
+  if (!isRecord(input)) return null;
+
+  const dataRecord = isRecord(input["data"]) ? input["data"] : input;
+  const id = parseString(dataRecord["_id"]) ?? parseString(dataRecord["id"]);
+  if (!id) return null;
+
+  const noticeText = parseString(dataRecord["noticeText"])?.trim();
+  const noticeHref = parseSafeHref(dataRecord["noticeHref"]);
+  const noticeLabel = noticeHref ? (parseString(dataRecord["noticeLabel"])?.trim() ?? null) : null;
+
+  return {
+    id,
+    noticeHref,
+    noticeLabel,
+    noticeText: noticeText ?? null,
+    title: parseString(dataRecord["title"]),
+  } as const;
+};
