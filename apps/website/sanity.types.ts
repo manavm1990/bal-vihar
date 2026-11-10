@@ -463,7 +463,7 @@ export type CalendarEvent = {
   eventType?: "regular" | "special" | "celebration" | "holiday" | "project";
   description?: string;
   isHighlighted?: boolean;
-  academicYear?: string;
+  academicYear?: "2026-27";
 };
 
 export type AlbumPhoto = {
@@ -617,7 +617,7 @@ export type CALENDAR_EVENTS_QUERY_RESULT = Array<{
   time: string | null;
   description: string | null;
   isHighlighted: boolean | null;
-  academicYear: string | null;
+  academicYear: "2026-27" | null;
 }>;
 
 // Source: ../website/app/lib/sanity/queries.ts
@@ -803,7 +803,7 @@ export type IMPACT_AWARD_QUERY_RESULT =
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: PHOTO_ALBUM_QUERY
-// Query: *[_type == "photoAlbum" && slug.current == $slug][0]{  _id,  title,  "slug": slug.current,  schoolYear,  "photos": photos[defined(asset)] {  _key,  asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop}}
+// Query: *[_type == "photoAlbum" && slug.current == $slug][0]{  _id,  title,  "slug": slug.current,  schoolYear,  "photos": photos[defined(asset)]{ _key, asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop }}
 export type PHOTO_ALBUM_QUERY_RESULT = {
   _id: string;
   title: string;
@@ -831,7 +831,7 @@ export type PHOTO_ALBUM_QUERY_RESULT = {
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: PHOTO_ALBUMS_QUERY
-// Query: *[  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0] | order(schoolYear desc, _createdAt desc){  _id,  title,  "slug": slug.current,  schoolYear,  "photoCount": count(photos[defined(asset)]),  "photoKeys": photos[defined(asset)]._key,  "cover": photos[defined(asset)][0] {  _key,  asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop}}
+// Query: *[  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0] | order(schoolYear desc, _createdAt desc){  _id,  title,  "slug": slug.current,  schoolYear,  "photoCount": count(photos[defined(asset)]),  "photoKeys": photos[defined(asset)]._key,  "cover": photos[defined(asset)][0]{ _key, asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop }}
 export type PHOTO_ALBUMS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
@@ -861,7 +861,7 @@ export type PHOTO_ALBUMS_QUERY_RESULT = Array<{
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: PHOTO_GALLERY_QUERY
-// Query: *[_id == "photoGallery"][0]{  _id,  title,  photos[]{    _key,    title,    schoolYear,    note,    featured,    pages,    image {  asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop}  }}
+// Query: *[_id == "photoGallery"][0]{  _id,  title,  photos[]{    _key,    title,    schoolYear,    note,    featured,    pages,    image{ asset->{    _id,    url,    metadata {      lqip,      dimensions { width, height }    }  },  alt,  caption,  hotspot,  crop }  }}
 export type PHOTO_GALLERY_QUERY_RESULT =
   | {
       _id: "photoGallery";
@@ -1158,9 +1158,9 @@ declare global {
     '*[_id == "faqs"][0]{\n  _id,\n  items[]{\n    _key,\n    question,\n    answer\n  }\n}': FAQS_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  noticeText,\n  noticeHref,\n  noticeLabel\n}': HOME_PAGE_QUERY_RESULT;
     '*[_id == "impactAward"][0]{\n  _id,\n  awardYear,\n  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },\n  coordinator{ name, role, email, phone },\n  tiers{\n    bronze{ teens, youngAdults },\n    silver{ teens, youngAdults },\n    gold{ teens, youngAdults }\n  },\n  teachingHours[]{\n    _key,\n    activity,\n    classesY4,\n    classesY5,\n    prepHours,\n    presentingHours,\n    attendedHours\n  },\n  communityIntro,\n  communityProjects[]{ _key, project, participating, onTheTeam, leading },\n  downloads[]{ _key, label, description, url }\n}': IMPACT_AWARD_QUERY_RESULT;
-    '*[_type == "photoAlbum" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photos": photos[defined(asset)] {\n  _key,\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': PHOTO_ALBUM_QUERY_RESULT;
-    '*[\n  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0\n] | order(schoolYear desc, _createdAt desc){\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photoCount": count(photos[defined(asset)]),\n  "photoKeys": photos[defined(asset)]._key,\n  "cover": photos[defined(asset)][0] {\n  _key,\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': PHOTO_ALBUMS_QUERY_RESULT;
-    '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;
+    '*[_type == "photoAlbum" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photos": photos[defined(asset)]{ _key, asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop }\n}': PHOTO_ALBUM_QUERY_RESULT;
+    '*[\n  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0\n] | order(schoolYear desc, _createdAt desc){\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photoCount": count(photos[defined(asset)]),\n  "photoKeys": photos[defined(asset)]._key,\n  "cover": photos[defined(asset)][0]{ _key, asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop }\n}': PHOTO_ALBUMS_QUERY_RESULT;
+    '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image{ asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop }\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;
     '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
     '*[_id == "teachingFaculty"][0]{\n  _id,\n  schoolYear,\n  groups[]{\n    _key,\n    name,\n    kind,\n    teams[]{\n      _key,\n      subject,\n      section,\n      teachers[]{ _key, isBackup, name, email, phone },\n      assistants[]{ _key, name, level }\n    }\n  },\n  programs[]{\n    _key,\n    name,\n    coordinators[]{ _key, name, email, phone },\n    team[]{ _key, name, email, phone },\n    assistants[]{ _key, name, level }\n  }\n}': TEACHING_FACULTY_QUERY_RESULT;
     '*[_id == "volunteerRoster"][0]{\n  _id,\n  schoolYear,\n  activities[]{\n    _key,\n    name,\n    volunteers\n  }\n}': VOLUNTEER_ROSTER_QUERY_RESULT;

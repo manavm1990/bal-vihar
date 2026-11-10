@@ -2928,7 +2928,13 @@
       "academicYear": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "2026-27"
+            }
+          ]
         },
         "optional": true
       }
