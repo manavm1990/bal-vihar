@@ -3,8 +3,7 @@ import TypicalSunday from "@components/typical-sunday";
 import { Button } from "@components/ui/button";
 import { Card } from "@components/ui/card";
 import { H1, H2, H3, LeadP, P, Ul } from "@components/ui/typography";
-import { BASE_TITLE } from "@lib/constants";
-import { sundayBringItems } from "@lib/sunday-content";
+import { BASE_TITLE, SUNDAY_BRING_ITEMS } from "@lib/constants";
 import { CheckIcon } from "@radix-ui/react-icons";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -135,7 +134,7 @@ export default function NewFamiliesPage() {
       <Section id="bring">
         <div className="grid gap-4 md:grid-cols-2">
           <InfoCard title="In the backpack">
-            <CheckList items={sundayBringItems} />
+            <CheckList items={SUNDAY_BRING_ITEMS} />
           </InfoCard>
           <InfoCard title="What to wear for yoga">
             <CheckList items={YOGA_WEAR_ITEMS} />

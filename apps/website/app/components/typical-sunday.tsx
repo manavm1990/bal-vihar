@@ -1,10 +1,10 @@
 import { H3, Ol, P } from "@components/ui/typography";
-import { sundaySteps } from "@lib/sunday-content";
+import { SUNDAY_STEPS } from "@lib/constants";
 
 export default function TypicalSunday() {
   return (
     <Ol variant="unstyled" className="divide-y rounded-lg border px-5 shadow-sm">
-      {sundaySteps.map((step) => (
+      {SUNDAY_STEPS.map((step) => (
         <li
           key={step.title}
           className="grid gap-1 py-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6"

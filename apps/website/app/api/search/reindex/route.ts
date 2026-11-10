@@ -7,11 +7,11 @@ import {
   PHOTO_ALBUMS_QUERY,
   POLICIES_QUERY,
 } from "@lib/sanity/queries";
+import { SYNONYMS } from "@lib/search/constants";
 import { crawlPageDocuments } from "@lib/search/crawl-pages";
 import { createAlgoliaRecords } from "@lib/search/index-records";
 import { createSanitySearchDocuments } from "@lib/search/sanity-documents";
 import { staticSearchDocuments } from "@lib/search/static-documents";
-import { SYNONYMS } from "@lib/search/synonyms";
 import { algoliasearch } from "algoliasearch";
 import { after } from "next/server";
 

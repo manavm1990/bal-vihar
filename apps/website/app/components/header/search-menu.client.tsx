@@ -2,8 +2,8 @@
 
 import Highlighted from "@components/highlighted";
 import { Button } from "@components/ui/button";
+import { SEARCH_SUGGESTIONS } from "@lib/search/constants";
 import type { SearchHit } from "@lib/search/find-results";
-import { SEARCH_SUGGESTIONS } from "@lib/search/suggestions";
 import { cn } from "@lib/utils";
 import { ArrowRightIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import * as Popover from "@radix-ui/react-popover";

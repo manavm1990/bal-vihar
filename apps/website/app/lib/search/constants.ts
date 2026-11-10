@@ -1,6 +1,13 @@
-import type { SynonymHit } from "algoliasearch";
+export const SEARCH_SUGGESTIONS = [
+  "homework",
+  "schedule",
+  "registration",
+  "forms",
+  "volunteer",
+  "teachers",
+] as const;
 
-export const SYNONYMS: SynonymHit[] = [
+export const SYNONYMS = [
   { objectID: "bal-vihar", type: "synonym", synonyms: ["bal vihar", "balvihar"] },
   { objectID: "diwali", type: "synonym", synonyms: ["diwali", "deepavali", "dipavali"] },
   { objectID: "donate", type: "synonym", synonyms: ["donate", "donation", "giving", "gift"] },
@@ -16,4 +23,4 @@ export const SYNONYMS: SynonymHit[] = [
   { objectID: "schedule", type: "synonym", synonyms: ["schedule", "timing", "timings"] },
   { objectID: "teacher", type: "synonym", synonyms: ["teacher", "faculty", "instructor"] },
   { objectID: "volunteer", type: "synonym", synonyms: ["volunteer", "volunteering"] },
-];
+] as const;
