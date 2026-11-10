@@ -1,11 +1,7 @@
 import kebabCase from "lodash.kebabcase";
 import { ADMIN_DOCUMENTS, ADMIN_FORMS } from "../admin-resources-content";
-import { HINDU_RITUALS, RITUALS } from "../hindu-rituals-content";
-import { INDIA_OVERVIEW } from "../india-overview-content";
-import { INDIAN_HERITAGE, SIGHT_IMAGES } from "../indian-heritage-content";
 import { PAGE_DESCRIPTIONS } from "../page-descriptions";
 import { STATIC_PAGES, type StaticPageContent } from "../static-page-content";
-import { TEMPLE_IMAGES, TEMPLES_OF_INDIA } from "../temples-of-india-content";
 import type { SearchDocument } from "./search";
 
 interface ContentPage {
@@ -13,7 +9,6 @@ interface ContentPage {
   href: string;
   section: string;
   hasAnchors?: boolean;
-  extraText?: string;
 }
 
 interface PageEntry {
@@ -23,59 +18,7 @@ interface PageEntry {
   text: string;
 }
 
-const PAGE_BOOST = 5;
-
-const stripMarkdown = (value: string) =>
-  value
-    .replaceAll(/!\[[^\]]*\]\([^)]*\)/g, " ")
-    .replaceAll(/\[([^\]]+)\]\([^)]*\)/g, "$1")
-    .replaceAll(/^\s{0,3}(?:[-*+]|\d+\.)\s+/gm, "")
-    .replaceAll(/^>\s?/gm, "")
-    .replaceAll(/^\s*[-=|:\s]{3,}$/gm, " ")
-    .replaceAll(/[*_`|]/g, "")
-    .replaceAll(/\s+/g, " ")
-    .trim();
-
-const getCaptions = (images: readonly { alt: string; caption?: string }[]) =>
-  images.flatMap(({ caption }) => (caption ? [caption] : [])).join(". ");
-
-const createEntryDocument = ({ href, title, section, text }: PageEntry): SearchDocument => ({
-  id: `page:${href}`,
-  title,
-  section,
-  href,
-  text,
-  boost: PAGE_BOOST,
-});
-
-const createRitualDocument = (
-  { question, answer }: (typeof RITUALS)[number],
-  index: number,
-): SearchDocument => ({
-  id: `ritual:${index}`,
-  title: question,
-  section: `Education › ${HINDU_RITUALS.title}`,
-  href: "/education/hindu-rituals",
-  text: stripMarkdown(answer),
-});
-
-const createResourceDocument = ({
-  href,
-  title,
-  description,
-}: {
-  href: string;
-  title: string;
-  description: string;
-}): SearchDocument => ({
-  id: `resource:${href}`,
-  title,
-  section: "About Us › Forms & documents",
-  href,
-  text: description,
-});
-
-const CONTENT_PAGES: readonly ContentPage[] = [
+const CONTENT_PAGES = [
   { page: STATIC_PAGES.about, href: "/about-us", section: "About Us" },
   { page: STATIC_PAGES.classSchedule, href: "/education/class-schedule", section: "Education" },
   {
@@ -96,24 +39,10 @@ const CONTENT_PAGES: readonly ContentPage[] = [
     hasAnchors: false,
   },
   { page: STATIC_PAGES.education, href: "/education", section: "Education" },
-  { page: HINDU_RITUALS, href: "/education/hindu-rituals", section: "Education" },
-  { page: INDIA_OVERVIEW, href: "/education/about-india", section: "Education" },
-  {
-    page: INDIAN_HERITAGE,
-    href: "/education/indian-heritage",
-    section: "Education",
-    extraText: getCaptions(SIGHT_IMAGES),
-  },
-  {
-    page: TEMPLES_OF_INDIA,
-    href: "/education/temples-of-india",
-    section: "Education",
-    extraText: getCaptions(TEMPLE_IMAGES),
-  },
   { page: STATIC_PAGES.volunteering, href: "/volunteering", section: "Get Involved" },
-];
-
-const PAGE_ENTRIES: readonly PageEntry[] = [
+] as const;
+const PAGE_BOOST = 5;
+const PAGE_ENTRIES = [
   {
     href: "/about-us/administrative-team",
     title: "Administrative Team",
@@ -234,21 +163,49 @@ const PAGE_ENTRIES: readonly PageEntry[] = [
     section: "Get Involved",
     text: "Thank you to the volunteers who helped run Bal Vihar's events, classes and administration, listed by event and A to Z.",
   },
-];
+] as const;
 
-export const STATIC_SEARCH_DOCUMENTS: readonly SearchDocument[] = [
-  ...CONTENT_PAGES.flatMap(createContentDocuments),
-  ...PAGE_ENTRIES.map(createEntryDocument),
-  ...RITUALS.map(createRitualDocument),
-  ...[...ADMIN_DOCUMENTS, ...ADMIN_FORMS].map(createResourceDocument),
-];
+const createEntryDocument = ({ href, title, section, text }: PageEntry): SearchDocument => ({
+  id: `page:${href}`,
+  title,
+  section,
+  href,
+  text,
+  boost: PAGE_BOOST,
+});
+
+const createResourceDocument = ({
+  href,
+  title,
+  description,
+}: {
+  href: string;
+  title: string;
+  description: string;
+}): SearchDocument => ({
+  id: `resource:${href}`,
+  title,
+  section: "About Us › Forms & documents",
+  href,
+  text: description,
+});
+
+const stripMarkdown = (value: string) =>
+  value
+    .replaceAll(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replaceAll(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replaceAll(/^\s{0,3}(?:[-*+]|\d+\.)\s+/gm, "")
+    .replaceAll(/^>\s?/gm, "")
+    .replaceAll(/^\s*[-=|:\s]{3,}$/gm, " ")
+    .replaceAll(/[*_`|]/g, "")
+    .replaceAll(/\s+/g, " ")
+    .trim();
 
 function createContentDocuments({
   page,
   href,
   section,
   hasAnchors = true,
-  extraText = "",
 }: ContentPage): SearchDocument[] {
   return splitSections(page.content).flatMap(({ heading, lines }, index) => {
     const body = stripMarkdown(lines.join("\n"));
@@ -260,7 +217,7 @@ function createContentDocuments({
           title: page.title,
           section,
           href,
-          text: [page.description, body, extraText].filter(Boolean).join(" "),
+          text: [page.description, body].filter(Boolean).join(" "),
           boost: PAGE_BOOST,
         },
       ];
@@ -291,3 +248,9 @@ function splitSections(content: string) {
 
   return sections;
 }
+
+export const staticSearchDocuments = [
+  ...CONTENT_PAGES.flatMap(createContentDocuments),
+  ...PAGE_ENTRIES.map(createEntryDocument),
+  ...[...ADMIN_DOCUMENTS, ...ADMIN_FORMS].map(createResourceDocument),
+] as const;

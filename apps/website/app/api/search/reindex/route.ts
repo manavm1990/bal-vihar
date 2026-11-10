@@ -10,7 +10,7 @@ import {
 import { crawlPageDocuments } from "@lib/search/crawl-pages";
 import { createAlgoliaRecords } from "@lib/search/index-records";
 import { createSanitySearchDocuments } from "@lib/search/sanity-documents";
-import { STATIC_SEARCH_DOCUMENTS } from "@lib/search/static-documents";
+import { staticSearchDocuments } from "@lib/search/static-documents";
 import { SYNONYMS } from "@lib/search/synonyms";
 import { algoliasearch } from "algoliasearch";
 import { after } from "next/server";
@@ -92,7 +92,7 @@ async function collectSearchDocuments(origin: string) {
   ]);
 
   return [
-    ...STATIC_SEARCH_DOCUMENTS,
+    ...staticSearchDocuments,
     ...crawled,
     ...createSanitySearchDocuments({ events, classes, faqs, albums, policies }),
   ] as const;

@@ -32,10 +32,6 @@ export const NAVIGATION: readonly NavigationItem[] = [
       { name: "Programs Overview", link: "/education", group: "Classes" },
       { name: "Curriculum", link: "/education/curriculum", group: "Classes" },
       { name: "Teaching Faculty", link: "/education/teaching-faculty", group: "Classes" },
-      { name: "About India", link: "/education/about-india", group: "Learn More" },
-      { name: "Hindu Rituals & Routines", link: "/education/hindu-rituals", group: "Learn More" },
-      { name: "Indian Heritage", link: "/education/indian-heritage", group: "Learn More" },
-      { name: "Temples of India", link: "/education/temples-of-india", group: "Learn More" },
     ],
   },
   {
