@@ -1,20 +1,11 @@
 "use server";
 
-import * as v from "valibot";
+import { createFormAction } from "@lib/form";
 import { type VolunteerApplicationInputs, VolunteerApplicationSchema } from "./types";
 
-export async function submitVolunteerApplication(input: VolunteerApplicationInputs) {
-  const validatedFields = v.safeParse(VolunteerApplicationSchema, input);
-
-  if (!validatedFields.success)
-    return {
-      success: false,
-      message: "Please check the highlighted fields and try again.",
-    } as const;
-
-  return {
-    success: true,
-    message:
-      "Your application has been received. A member of the volunteer team will be in touch soon.",
-  } as const;
-}
+export const submitVolunteerApplication = createFormAction({
+  schema: VolunteerApplicationSchema,
+  parse: (input: VolunteerApplicationInputs) => input,
+  getSuccessMessage:
+    "Your application has been received. A member of the volunteer team will be in touch soon.",
+});

@@ -1,19 +1,11 @@
 "use server";
 
-import * as v from "valibot";
+import { createFormAction } from "@lib/form";
 import { type GrievanceFormInputs, GrievanceFormSchema } from "./types";
 
-export async function submitGrievance(input: GrievanceFormInputs) {
-  const validatedFields = v.safeParse(GrievanceFormSchema, input);
-
-  if (!validatedFields.success)
-    return {
-      success: false,
-      message: "Please check the highlighted fields and try again.",
-    };
-
-  return {
-    success: true,
-    message: "Your grievance has been submitted and will be reviewed by the Grievance Committee.",
-  };
-}
+export const submitGrievance = createFormAction({
+  schema: GrievanceFormSchema,
+  parse: (input: GrievanceFormInputs) => input,
+  getSuccessMessage:
+    "Your grievance has been submitted and will be reviewed by the Grievance Committee.",
+});

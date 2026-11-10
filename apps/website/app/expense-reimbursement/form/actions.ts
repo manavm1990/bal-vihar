@@ -1,8 +1,15 @@
 "use server";
 
-import * as v from "valibot";
+import { createFormAction } from "@lib/form";
 import { parseExpenseFormData } from "./data";
 import { ExpenseFormSchema } from "./types";
+
+export const submitExpense = createFormAction({
+  schema: ExpenseFormSchema,
+  parse: parseExpenseFormData,
+  getSuccessMessage: (output) =>
+    `Your expense claim has been submitted. Your claim number is ${createClaimId(output.name)}.`,
+});
 
 function createClaimId(name: string) {
   const words = name.split(/\s+/).filter(Boolean);
@@ -11,21 +18,4 @@ function createClaimId(name: string) {
     .join("");
 
   return `${initials}${new Date().toISOString().slice(0, 10).replaceAll("-", "")}`;
-}
-
-export async function submitExpense(formData: FormData) {
-  const validatedFields = v.safeParse(ExpenseFormSchema, parseExpenseFormData(formData));
-
-  if (!validatedFields.success)
-    return {
-      success: false,
-      message: "Please check the highlighted fields and try again.",
-    };
-
-  const claimId = createClaimId(validatedFields.output.name);
-
-  return {
-    success: true,
-    message: `Your expense claim has been submitted. Your claim number is ${claimId}.`,
-  } as const;
 }

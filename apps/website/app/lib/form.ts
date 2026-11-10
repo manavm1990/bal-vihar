@@ -30,3 +30,32 @@ export const PhoneSchema = v.pipe(
   v.trim(),
   v.check((input) => isMobilePhone(input), "Please enter a valid phone number."),
 );
+
+type FormActionOptions<Schema extends v.GenericSchema, Input> = {
+  schema: Schema;
+  parse: (input: Input) => unknown;
+  getSuccessMessage: string | ((output: v.InferOutput<Schema>) => string);
+};
+
+export const createFormAction =
+  <Schema extends v.GenericSchema, Input>({
+    schema,
+    parse,
+    getSuccessMessage,
+  }: FormActionOptions<Schema, Input>) =>
+  async (input: Input) => {
+    const result = v.safeParse(schema, parse(input));
+
+    return !result.success
+      ? ({
+          success: false,
+          message: "Please check the highlighted fields and try again.",
+        } as const)
+      : ({
+          success: true,
+          message:
+            typeof getSuccessMessage === "function"
+              ? getSuccessMessage(result.output)
+              : getSuccessMessage,
+        } as const);
+  };
