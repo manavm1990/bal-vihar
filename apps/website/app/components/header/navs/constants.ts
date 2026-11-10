@@ -29,9 +29,9 @@ export const NAVIGATION: readonly NavigationItem[] = [
     name: "Programs",
     link: "/education",
     items: [
-      { name: "Programs Overview", link: "/education", group: "Classes" },
-      { name: "Curriculum", link: "/education/curriculum", group: "Classes" },
-      { name: "Teaching Faculty", link: "/education/teaching-faculty", group: "Classes" },
+      { name: "Programs Overview", link: "/education" },
+      { name: "Curriculum", link: "/education/curriculum" },
+      { name: "Teaching Faculty", link: "/education/teaching-faculty" },
     ],
   },
   {
