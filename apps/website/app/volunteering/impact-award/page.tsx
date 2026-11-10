@@ -397,7 +397,7 @@ function TierStep({ tier }: TierStepProps) {
       <H3>{tier.name}</H3>
       <dl className="space-y-3">
         <TierHours label="Teens (11–15)" hours={tier.teens} />
-        <TierHours label="Young adults (16–25)" hours={tier.youngAdults} />
+        <TierHours label="Young adults (16–18)" hours={tier.youngAdults} />
       </dl>
     </li>
   );

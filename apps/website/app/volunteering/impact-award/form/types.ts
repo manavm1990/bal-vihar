@@ -1,36 +1,22 @@
 import { BaseFormSchema, createRequiredCheck, createRequiredText, PhoneSchema } from "@lib/form";
 import * as v from "valibot";
 
-export const AWARD_AGE_GROUPS = ["Teens (11–15)", "Young adults (16–25)"] as const;
-export const AWARD_GRADES = [
-  "Middle school",
-  "High school freshman",
-  "High school sophomore",
-  "High school junior",
-  "High school senior",
-] as const;
-export const AWARD_WORK_AREAS = [
-  "Student teacher",
-  "Community service",
-  "Social media",
-  "Technology",
-  "Event volunteer",
-] as const;
-export const AWARD_FILE_TYPES = [
-  "application/pdf",
-  "image/jpeg",
-  "image/png",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-] as const;
-
-export const MAX_TOTAL_AWARD_FILE_BYTES = 3.5 * 1024 * 1024;
+const MAX_TOTAL_AWARD_FILE_BYTES = 3.5 * 1024 * 1024;
 
 const getTotalFileBytes = (files: (File | undefined)[]) =>
   files.reduce((total, file) => total + (file?.size ?? 0), 0);
 
 const AwardFileSchema = v.pipe(
   v.file("Please attach a file."),
-  v.mimeType(AWARD_FILE_TYPES, "The file must be a PDF, JPG, PNG or Excel (.xlsx) file."),
+  v.mimeType(
+    [
+      "application/pdf",
+      "image/jpeg",
+      "image/png",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ],
+    "The file must be a PDF, JPG, PNG or Excel (.xlsx) file.",
+  ),
   v.maxSize(MAX_TOTAL_AWARD_FILE_BYTES, "This file is too large. Keep all files under 3.5 MB."),
 );
 
@@ -55,10 +41,33 @@ export const AwardApplicationSchema = v.pipe(
     email: BaseFormSchema.entries.email,
     phone: PhoneSchema,
     address: createRequiredText("Please enter your mailing address."),
-    ageGroup: v.pipe(v.string(), v.picklist(AWARD_AGE_GROUPS, "Please choose an age group.")),
-    grade: v.pipe(v.string(), v.picklist(AWARD_GRADES, "Please choose the current grade.")),
+    ageGroup: v.pipe(
+      v.string(),
+      v.picklist(["Teens (11–15)", "Young adults (16–18)"], "Please choose an age group."),
+    ),
+    grade: v.pipe(
+      v.string(),
+      v.picklist(
+        [
+          "Middle school",
+          "High school freshman",
+          "High school sophomore",
+          "High school junior",
+          "High school senior",
+        ],
+        "Please choose the current grade.",
+      ),
+    ),
     areas: v.pipe(
-      v.array(v.picklist(AWARD_WORK_AREAS)),
+      v.array(
+        v.picklist([
+          "Student teacher",
+          "Community service",
+          "Social media",
+          "Technology",
+          "Event volunteer",
+        ]),
+      ),
       v.minLength(1, "Please choose at least one area of work."),
     ),
     events: v.optional(

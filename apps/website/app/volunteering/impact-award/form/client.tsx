@@ -4,19 +4,7 @@ import { Checkbox, FileField, FormField, FormSubmit, Select } from "@components/
 import { FormSuccess } from "@components/ui/form-success.client";
 import { H3 } from "@components/ui/typography";
 import { Controller } from "react-hook-form";
-import { AWARD_AGE_GROUPS, AWARD_FILE_TYPES, AWARD_GRADES, AWARD_WORK_AREAS } from "./types";
 import useAwardApplication from "./use-award-application";
-
-const AGE_GROUP_OPTIONS = [
-  { value: "", label: "Select an age group…" },
-  ...AWARD_AGE_GROUPS.map((group) => ({ value: group, label: group })),
-] as const;
-const FILE_ACCEPT = AWARD_FILE_TYPES.join(",");
-const FILE_HINT = "PDF, JPG, PNG or Excel. All files together must be under 3.5 MB.";
-const GRADE_OPTIONS = [
-  { value: "", label: "Select a grade…" },
-  ...AWARD_GRADES.map((grade) => ({ value: grade, label: grade })),
-] as const;
 
 export default function AwardApplicationForm() {
   const { register, control, errors, onSubmit, isPending, successMessage, errorMessage } =
@@ -39,6 +27,7 @@ export default function AwardApplicationForm() {
               {...register("youthName")}
               error={errors.youthName?.message}
             />
+
             <FormField
               label="Date of birth"
               type="date"
@@ -46,6 +35,7 @@ export default function AwardApplicationForm() {
               {...register("dateOfBirth")}
               error={errors.dateOfBirth?.message}
             />
+
             <FormField
               label="Contact email"
               type="email"
@@ -54,6 +44,7 @@ export default function AwardApplicationForm() {
               {...register("email")}
               error={errors.email?.message}
             />
+
             <FormField
               label="Contact phone number"
               type="tel"
@@ -62,6 +53,7 @@ export default function AwardApplicationForm() {
               {...register("phone")}
               error={errors.phone?.message}
             />
+
             <FormField
               label="Mailing address"
               autoComplete="street-address"
@@ -70,19 +62,32 @@ export default function AwardApplicationForm() {
               {...register("address")}
               error={errors.address?.message}
             />
+
             <Select
               id="age-group"
               label="Age group"
               required
-              options={AGE_GROUP_OPTIONS}
+              options={[
+                { value: "", label: "Select an age group…" },
+                { value: "Teens (11–15)", label: "Teens (11–15)" },
+                { value: "Young adults (16–18)", label: "Young adults (16–18)" },
+              ]}
               {...register("ageGroup")}
               error={errors.ageGroup?.message}
             />
+
             <Select
               id="grade"
               label="Current grade"
               required
-              options={GRADE_OPTIONS}
+              options={[
+                { value: "", label: "Select a grade…" },
+                { value: "Middle school", label: "Middle school" },
+                { value: "High school freshman", label: "High school freshman" },
+                { value: "High school sophomore", label: "High school sophomore" },
+                { value: "High school junior", label: "High school junior" },
+                { value: "High school senior", label: "High school senior" },
+              ]}
               {...register("grade")}
               error={errors.grade?.message}
             />
@@ -102,7 +107,13 @@ export default function AwardApplicationForm() {
               </span>
             </legend>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {AWARD_WORK_AREAS.map((area) => (
+              {[
+                "Student teacher",
+                "Community service",
+                "Social media",
+                "Technology",
+                "Event volunteer",
+              ].map((area) => (
                 <Checkbox
                   key={area}
                   id={`area-${area}`.replaceAll(" ", "-").toLowerCase()}
@@ -161,9 +172,9 @@ export default function AwardApplicationForm() {
                 <FileField
                   label="Tracking log"
                   name={field.name}
-                  accept={FILE_ACCEPT}
+                  accept="application/pdf,image/jpeg,image/png,.xlsx"
                   required
-                  hint={FILE_HINT}
+                  hint="PDF, JPG, PNG or Excel. All files together must be under 3.5 MB."
                   error={fieldState.error?.message}
                   ref={field.ref}
                   onBlur={field.onBlur}
@@ -178,7 +189,7 @@ export default function AwardApplicationForm() {
                 <FileField
                   label="Sign-off emails for Bal Vihar hours"
                   name={field.name}
-                  accept={FILE_ACCEPT}
+                  accept="application/pdf,image/jpeg,image/png,.xlsx"
                   hint="Save the emails as one PDF. See “Get your hours signed off” above."
                   error={fieldState.error?.message}
                   ref={field.ref}
@@ -194,7 +205,7 @@ export default function AwardApplicationForm() {
                 <FileField
                   label="Proof of hours outside Bal Vihar (if any)"
                   name={field.name}
-                  accept={FILE_ACCEPT}
+                  accept="application/pdf,image/jpeg,image/png,.xlsx"
                   hint="Combine certificates and letters into one PDF."
                   error={fieldState.error?.message}
                   ref={field.ref}
