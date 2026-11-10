@@ -660,142 +660,6 @@ export type CLASS_PAGES_QUERY_RESULT = Array<{
 }>;
 
 // Source: ../website/app/lib/sanity/queries.ts
-// Variable: VOLUNTEERS_LIST_QUERY
-// Query: *[_id == "volunteersList"][0]{  _id,  teams[]{    _key,    name,    description,    members[]{      _key,      name,      email,      phone    }  }}
-export type VOLUNTEERS_LIST_QUERY_RESULT =
-  | {
-      _id: "volunteersList";
-      teams: null;
-    }
-  | {
-      _id: "volunteersList";
-      teams: Array<{
-        _key: string;
-        name: string;
-        description: string | null;
-        members: Array<{
-          _key: string;
-          name: string;
-          email: string | null;
-          phone: string | null;
-        }> | null;
-      }> | null;
-    }
-  | null;
-
-// Source: ../website/app/lib/sanity/queries.ts
-// Variable: VOLUNTEER_ROSTER_QUERY
-// Query: *[_id == "volunteerRoster"][0]{  _id,  schoolYear,  activities[]{    _key,    name,    volunteers  }}
-export type VOLUNTEER_ROSTER_QUERY_RESULT =
-  | {
-      _id: "volunteerRoster";
-      schoolYear: null;
-      activities: null;
-    }
-  | {
-      _id: "volunteerRoster";
-      schoolYear: "2026-27";
-      activities: null;
-    }
-  | {
-      _id: "volunteerRoster";
-      schoolYear: string;
-      activities: null;
-    }
-  | {
-      _id: "volunteerRoster";
-      schoolYear: "2026-27" | null;
-      activities: null;
-    }
-  | {
-      _id: "volunteerRoster";
-      schoolYear: string;
-      activities: Array<{
-        _key: string;
-        name: string;
-        volunteers: Array<string> | null;
-      }> | null;
-    }
-  | null;
-
-// Source: ../website/app/lib/sanity/queries.ts
-// Variable: TEACHING_FACULTY_QUERY
-// Query: *[_id == "teachingFaculty"][0]{  _id,  schoolYear,  groups[]{    _key,    name,    kind,    teams[]{      _key,      subject,      section,      teachers[]{ _key, isBackup, name, email, phone },      assistants[]{ _key, name, level }    }  },  programs[]{    _key,    name,    coordinators[]{ _key, name, email, phone },    team[]{ _key, name, email, phone },    assistants[]{ _key, name, level }  }}
-export type TEACHING_FACULTY_QUERY_RESULT =
-  | {
-      _id: "teachingFaculty";
-      schoolYear: null;
-      groups: null;
-      programs: null;
-    }
-  | {
-      _id: "teachingFaculty";
-      schoolYear: "2026-27";
-      groups: null;
-      programs: null;
-    }
-  | {
-      _id: "teachingFaculty";
-      schoolYear: string;
-      groups: null;
-      programs: null;
-    }
-  | {
-      _id: "teachingFaculty";
-      schoolYear: "2026-27" | null;
-      groups: null;
-      programs: null;
-    }
-  | {
-      _id: "teachingFaculty";
-      schoolYear: string;
-      groups: Array<{
-        _key: string;
-        name: string;
-        kind: "balVihar" | "youth";
-        teams: Array<{
-          _key: string;
-          subject: "Bhajan" | "Class" | "Teachers" | "Yoga";
-          section: string | null;
-          teachers: Array<{
-            _key: string;
-            isBackup: boolean | null;
-            name: string;
-            email: string | null;
-            phone: string | null;
-          }> | null;
-          assistants: Array<{
-            _key: string;
-            name: string;
-            level: "Y4" | "Y5";
-          }> | null;
-        }> | null;
-      }> | null;
-      programs: Array<{
-        _key: string;
-        name: string;
-        coordinators: Array<{
-          _key: string;
-          name: string;
-          email: string | null;
-          phone: string | null;
-        }> | null;
-        team: Array<{
-          _key: string;
-          name: string;
-          email: string | null;
-          phone: string | null;
-        }> | null;
-        assistants: Array<{
-          _key: string;
-          name: string;
-          level: "Y4" | "Y5";
-        }> | null;
-      }> | null;
-    }
-  | null;
-
-// Source: ../website/app/lib/sanity/queries.ts
 // Variable: FAQS_QUERY
 // Query: *[_id == "faqs"][0]{  _id,  items[]{    _key,    question,    answer  }}
 export type FAQS_QUERY_RESULT =
@@ -827,6 +691,40 @@ export type FAQS_QUERY_RESULT =
   | {
       _id: "faqs";
       items: null;
+    }
+  | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: HOME_PAGE_QUERY
+// Query: *[_id == "homePage"][0]{  _id,  title,  noticeText,  noticeHref,  noticeLabel}
+export type HOME_PAGE_QUERY_RESULT =
+  | {
+      _id: "homePage";
+      title: null;
+      noticeText: null;
+      noticeHref: null;
+      noticeLabel: null;
+    }
+  | {
+      _id: "homePage";
+      title: string;
+      noticeText: null;
+      noticeHref: null;
+      noticeLabel: null;
+    }
+  | {
+      _id: "homePage";
+      title: string | null;
+      noticeText: null;
+      noticeHref: null;
+      noticeLabel: null;
+    }
+  | {
+      _id: "homePage";
+      title: string;
+      noticeText: string | null;
+      noticeHref: string | null;
+      noticeLabel: string | null;
     }
   | null;
 
@@ -900,131 +798,6 @@ export type IMPACT_AWARD_QUERY_RESULT =
         description: string | null;
         url: string;
       }> | null;
-    }
-  | null;
-
-// Source: ../website/app/lib/sanity/queries.ts
-// Variable: POLICIES_QUERY
-// Query: *[_id == "policies"][0]{  _id,  intro,  sections[]{    _key,    title,    "slug": slug.current,    intro,    callToAction{      text,      label,      href    },    items[]{      _key,      title,      body    }  }}
-export type POLICIES_QUERY_RESULT =
-  | {
-      _id: "policies";
-      intro: null;
-      sections: null;
-    }
-  | {
-      _id: "policies";
-      intro: string;
-      sections: Array<{
-        _key: string;
-        title: string;
-        slug: string;
-        intro: Array<
-          | {
-              children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "h5" | "normal";
-              listItem?: "bullet";
-              markDefs?: Array<{
-                href: string;
-                _type: "link";
-                _key: string;
-              }>;
-              level?: number;
-              _type: "block";
-              _key: string;
-            }
-          | {
-              headers: Array<string>;
-              rows: Array<{
-                cells: Array<string>;
-                _type: "policyTableRow";
-                _key: string;
-              }>;
-              footer?: string;
-              _type: "policyTable";
-              _key: string;
-            }
-        > | null;
-        callToAction: {
-          text: string | null;
-          label: string;
-          href: string;
-        } | null;
-        items: Array<{
-          _key: string;
-          title: string;
-          body: Array<
-            | {
-                children?: Array<{
-                  marks?: Array<string>;
-                  text?: string;
-                  _type: "span";
-                  _key: string;
-                }>;
-                style?: "h5" | "normal";
-                listItem?: "bullet";
-                markDefs?: Array<{
-                  href: string;
-                  _type: "link";
-                  _key: string;
-                }>;
-                level?: number;
-                _type: "block";
-                _key: string;
-              }
-            | {
-                headers: Array<string>;
-                rows: Array<{
-                  cells: Array<string>;
-                  _type: "policyTableRow";
-                  _key: string;
-                }>;
-                footer?: string;
-                _type: "policyTable";
-                _key: string;
-              }
-          >;
-        }>;
-      }>;
-    }
-  | null;
-
-// Source: ../website/app/lib/sanity/queries.ts
-// Variable: HOME_PAGE_QUERY
-// Query: *[_id == "homePage"][0]{  _id,  title,  noticeText,  noticeHref,  noticeLabel}
-export type HOME_PAGE_QUERY_RESULT =
-  | {
-      _id: "homePage";
-      title: null;
-      noticeText: null;
-      noticeHref: null;
-      noticeLabel: null;
-    }
-  | {
-      _id: "homePage";
-      title: string;
-      noticeText: null;
-      noticeHref: null;
-      noticeLabel: null;
-    }
-  | {
-      _id: "homePage";
-      title: string | null;
-      noticeText: null;
-      noticeHref: null;
-      noticeLabel: null;
-    }
-  | {
-      _id: "homePage";
-      title: string;
-      noticeText: string | null;
-      noticeHref: string | null;
-      noticeLabel: string | null;
     }
   | null;
 
@@ -1149,22 +922,249 @@ export type PHOTO_GALLERY_QUERY_RESULT =
     }
   | null;
 
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: POLICIES_QUERY
+// Query: *[_id == "policies"][0]{  _id,  intro,  sections[]{    _key,    title,    "slug": slug.current,    intro,    callToAction{      text,      label,      href    },    items[]{      _key,      title,      body    }  }}
+export type POLICIES_QUERY_RESULT =
+  | {
+      _id: "policies";
+      intro: null;
+      sections: null;
+    }
+  | {
+      _id: "policies";
+      intro: string;
+      sections: Array<{
+        _key: string;
+        title: string;
+        slug: string;
+        intro: Array<
+          | {
+              children?: Array<{
+                marks?: Array<string>;
+                text?: string;
+                _type: "span";
+                _key: string;
+              }>;
+              style?: "h5" | "normal";
+              listItem?: "bullet";
+              markDefs?: Array<{
+                href: string;
+                _type: "link";
+                _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+            }
+          | {
+              headers: Array<string>;
+              rows: Array<{
+                cells: Array<string>;
+                _type: "policyTableRow";
+                _key: string;
+              }>;
+              footer?: string;
+              _type: "policyTable";
+              _key: string;
+            }
+        > | null;
+        callToAction: {
+          text: string | null;
+          label: string;
+          href: string;
+        } | null;
+        items: Array<{
+          _key: string;
+          title: string;
+          body: Array<
+            | {
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "h5" | "normal";
+                listItem?: "bullet";
+                markDefs?: Array<{
+                  href: string;
+                  _type: "link";
+                  _key: string;
+                }>;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }
+            | {
+                headers: Array<string>;
+                rows: Array<{
+                  cells: Array<string>;
+                  _type: "policyTableRow";
+                  _key: string;
+                }>;
+                footer?: string;
+                _type: "policyTable";
+                _key: string;
+              }
+          >;
+        }>;
+      }>;
+    }
+  | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: TEACHING_FACULTY_QUERY
+// Query: *[_id == "teachingFaculty"][0]{  _id,  schoolYear,  groups[]{    _key,    name,    kind,    teams[]{      _key,      subject,      section,      teachers[]{ _key, isBackup, name, email, phone },      assistants[]{ _key, name, level }    }  },  programs[]{    _key,    name,    coordinators[]{ _key, name, email, phone },    team[]{ _key, name, email, phone },    assistants[]{ _key, name, level }  }}
+export type TEACHING_FACULTY_QUERY_RESULT =
+  | {
+      _id: "teachingFaculty";
+      schoolYear: null;
+      groups: null;
+      programs: null;
+    }
+  | {
+      _id: "teachingFaculty";
+      schoolYear: "2026-27";
+      groups: null;
+      programs: null;
+    }
+  | {
+      _id: "teachingFaculty";
+      schoolYear: string;
+      groups: null;
+      programs: null;
+    }
+  | {
+      _id: "teachingFaculty";
+      schoolYear: "2026-27" | null;
+      groups: null;
+      programs: null;
+    }
+  | {
+      _id: "teachingFaculty";
+      schoolYear: string;
+      groups: Array<{
+        _key: string;
+        name: string;
+        kind: "balVihar" | "youth";
+        teams: Array<{
+          _key: string;
+          subject: "Bhajan" | "Class" | "Teachers" | "Yoga";
+          section: string | null;
+          teachers: Array<{
+            _key: string;
+            isBackup: boolean | null;
+            name: string;
+            email: string | null;
+            phone: string | null;
+          }> | null;
+          assistants: Array<{
+            _key: string;
+            name: string;
+            level: "Y4" | "Y5";
+          }> | null;
+        }> | null;
+      }> | null;
+      programs: Array<{
+        _key: string;
+        name: string;
+        coordinators: Array<{
+          _key: string;
+          name: string;
+          email: string | null;
+          phone: string | null;
+        }> | null;
+        team: Array<{
+          _key: string;
+          name: string;
+          email: string | null;
+          phone: string | null;
+        }> | null;
+        assistants: Array<{
+          _key: string;
+          name: string;
+          level: "Y4" | "Y5";
+        }> | null;
+      }> | null;
+    }
+  | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: VOLUNTEER_ROSTER_QUERY
+// Query: *[_id == "volunteerRoster"][0]{  _id,  schoolYear,  activities[]{    _key,    name,    volunteers  }}
+export type VOLUNTEER_ROSTER_QUERY_RESULT =
+  | {
+      _id: "volunteerRoster";
+      schoolYear: null;
+      activities: null;
+    }
+  | {
+      _id: "volunteerRoster";
+      schoolYear: "2026-27";
+      activities: null;
+    }
+  | {
+      _id: "volunteerRoster";
+      schoolYear: string;
+      activities: null;
+    }
+  | {
+      _id: "volunteerRoster";
+      schoolYear: "2026-27" | null;
+      activities: null;
+    }
+  | {
+      _id: "volunteerRoster";
+      schoolYear: string;
+      activities: Array<{
+        _key: string;
+        name: string;
+        volunteers: Array<string> | null;
+      }> | null;
+    }
+  | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: VOLUNTEERS_LIST_QUERY
+// Query: *[_id == "volunteersList"][0]{  _id,  teams[]{    _key,    name,    description,    members[]{      _key,      name,      email,      phone    }  }}
+export type VOLUNTEERS_LIST_QUERY_RESULT =
+  | {
+      _id: "volunteersList";
+      teams: null;
+    }
+  | {
+      _id: "volunteersList";
+      teams: Array<{
+        _key: string;
+        name: string;
+        description: string | null;
+        members: Array<{
+          _key: string;
+          name: string;
+          email: string | null;
+          phone: string | null;
+        }> | null;
+      }> | null;
+    }
+  | null;
+
 // Query TypeMap
 declare global {
   interface SanityQueries {
     '*[_type == "calendarEvent"] | order(date asc) {\n  _id,\n  title,\n  date,\n  location,\n  eventType,\n  time,\n  description,\n  isHighlighted,\n  academicYear\n}': CALENDAR_EVENTS_QUERY_RESULT;
     '*[_type == "classPage" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  teachers,\n  pinnedNote,\n  links[]{\n    _key,\n    label,\n    url\n  },\n  "sessions": sessions[] | order(date desc){\n    _key,\n    date,\n    covered,\n    homework,\n    links[]{\n      _key,\n      label,\n      url\n    }\n  }\n}': CLASS_PAGE_QUERY_RESULT;
     '*[_type == "classPage"] | order(sortOrder asc){\n  _id,\n  title,\n  "slug": slug.current,\n  group,\n  teachers,\n  "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)\n}': CLASS_PAGES_QUERY_RESULT;
-    '*[_id == "volunteersList"][0]{\n  _id,\n  teams[]{\n    _key,\n    name,\n    description,\n    members[]{\n      _key,\n      name,\n      email,\n      phone\n    }\n  }\n}': VOLUNTEERS_LIST_QUERY_RESULT;
-    '*[_id == "volunteerRoster"][0]{\n  _id,\n  schoolYear,\n  activities[]{\n    _key,\n    name,\n    volunteers\n  }\n}': VOLUNTEER_ROSTER_QUERY_RESULT;
-    '*[_id == "teachingFaculty"][0]{\n  _id,\n  schoolYear,\n  groups[]{\n    _key,\n    name,\n    kind,\n    teams[]{\n      _key,\n      subject,\n      section,\n      teachers[]{ _key, isBackup, name, email, phone },\n      assistants[]{ _key, name, level }\n    }\n  },\n  programs[]{\n    _key,\n    name,\n    coordinators[]{ _key, name, email, phone },\n    team[]{ _key, name, email, phone },\n    assistants[]{ _key, name, level }\n  }\n}': TEACHING_FACULTY_QUERY_RESULT;
     '*[_id == "faqs"][0]{\n  _id,\n  items[]{\n    _key,\n    question,\n    answer\n  }\n}': FAQS_QUERY_RESULT;
-    '*[_id == "impactAward"][0]{\n  _id,\n  awardYear,\n  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },\n  coordinator{ name, role, email, phone },\n  tiers{\n    bronze{ teens, youngAdults },\n    silver{ teens, youngAdults },\n    gold{ teens, youngAdults }\n  },\n  teachingHours[]{\n    _key,\n    activity,\n    classesY4,\n    classesY5,\n    prepHours,\n    presentingHours,\n    attendedHours\n  },\n  communityIntro,\n  communityProjects[]{ _key, project, participating, onTheTeam, leading },\n  downloads[]{ _key, label, description, url }\n}': IMPACT_AWARD_QUERY_RESULT;
-    '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  noticeText,\n  noticeHref,\n  noticeLabel\n}': HOME_PAGE_QUERY_RESULT;
+    '*[_id == "impactAward"][0]{\n  _id,\n  awardYear,\n  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },\n  coordinator{ name, role, email, phone },\n  tiers{\n    bronze{ teens, youngAdults },\n    silver{ teens, youngAdults },\n    gold{ teens, youngAdults }\n  },\n  teachingHours[]{\n    _key,\n    activity,\n    classesY4,\n    classesY5,\n    prepHours,\n    presentingHours,\n    attendedHours\n  },\n  communityIntro,\n  communityProjects[]{ _key, project, participating, onTheTeam, leading },\n  downloads[]{ _key, label, description, url }\n}': IMPACT_AWARD_QUERY_RESULT;
     '*[_type == "photoAlbum" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photos": photos[defined(asset)] {\n  _key,\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': PHOTO_ALBUM_QUERY_RESULT;
     '*[\n  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0\n] | order(schoolYear desc, _createdAt desc){\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photoCount": count(photos[defined(asset)]),\n  "photoKeys": photos[defined(asset)]._key,\n  "cover": photos[defined(asset)][0] {\n  _key,\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n}': PHOTO_ALBUMS_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image {\n  asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop\n}\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;
+    '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
+    '*[_id == "teachingFaculty"][0]{\n  _id,\n  schoolYear,\n  groups[]{\n    _key,\n    name,\n    kind,\n    teams[]{\n      _key,\n      subject,\n      section,\n      teachers[]{ _key, isBackup, name, email, phone },\n      assistants[]{ _key, name, level }\n    }\n  },\n  programs[]{\n    _key,\n    name,\n    coordinators[]{ _key, name, email, phone },\n    team[]{ _key, name, email, phone },\n    assistants[]{ _key, name, level }\n  }\n}': TEACHING_FACULTY_QUERY_RESULT;
+    '*[_id == "volunteerRoster"][0]{\n  _id,\n  schoolYear,\n  activities[]{\n    _key,\n    name,\n    volunteers\n  }\n}': VOLUNTEER_ROSTER_QUERY_RESULT;
+    '*[_id == "volunteersList"][0]{\n  _id,\n  teams[]{\n    _key,\n    name,\n    description,\n    members[]{\n      _key,\n      name,\n      email,\n      phone\n    }\n  }\n}': VOLUNTEERS_LIST_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too
