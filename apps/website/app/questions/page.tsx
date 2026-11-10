@@ -58,11 +58,12 @@ function Contact() {
                     className="text-muted-foreground h-7 w-6"
                   />
                 </dt>
-                <dd>
-                  {ADMIN_OFFICE.streetAddress}
-                  <br />
-                  {ADMIN_OFFICE.addressLocality}, {ADMIN_OFFICE.addressRegion}{" "}
-                  {ADMIN_OFFICE.postalCode}
+                <dd className="flex flex-col">
+                  <span>{ADMIN_OFFICE.streetAddress}</span>
+                  <span>
+                    {ADMIN_OFFICE.addressLocality}, {ADMIN_OFFICE.addressRegion}{" "}
+                    {ADMIN_OFFICE.postalCode}
+                  </span>
                 </dd>
               </address>
 
@@ -71,13 +72,13 @@ function Contact() {
                   <H3>School Address</H3>
                   <SchoolIcon aria-hidden="true" className="text-muted-foreground h-7 w-6" />
                 </dt>
-                <dd>
-                  {SCHOOL_LOCATION.name}
-                  <br />
-                  {SCHOOL_LOCATION.streetAddress}
-                  <br />
-                  {SCHOOL_LOCATION.addressLocality}, {SCHOOL_LOCATION.addressRegion}{" "}
-                  {SCHOOL_LOCATION.postalCode}
+                <dd className="flex flex-col">
+                  <span>{SCHOOL_LOCATION.name}</span>
+                  <span>{SCHOOL_LOCATION.streetAddress}</span>
+                  <span>
+                    {SCHOOL_LOCATION.addressLocality}, {SCHOOL_LOCATION.addressRegion}{" "}
+                    {SCHOOL_LOCATION.postalCode}
+                  </span>
                 </dd>
               </address>
 
