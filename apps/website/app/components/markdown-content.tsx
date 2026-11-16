@@ -56,6 +56,15 @@ const cleanInlineText = (text: string) =>
     .replace(/\s+/g, " ")
     .trim();
 
+function collectRun(lines: string[], start: number, isInRun: (line: string) => boolean) {
+  const run: string[] = [];
+  for (const line of lines.slice(start)) {
+    if (!isInRun(line)) break;
+    run.push(line);
+  }
+  return run;
+}
+
 function groupBlocks(blocks: MarkdownBlock[]): MarkdownSection[] {
   const sections: MarkdownSection[] = [];
 
@@ -72,6 +81,16 @@ function groupBlocks(blocks: MarkdownBlock[]): MarkdownSection[] {
 
   return sections;
 }
+
+const isBlockBreak = (line: string) =>
+  !line ||
+  line === "---" ||
+  /^#{2,5}\s+/.test(line) ||
+  isImageLine(line) ||
+  isListLine(line) ||
+  isOrderedListLine(line) ||
+  isQuoteLine(line) ||
+  isTableLine(line);
 
 const isImageLine = (line: string) => /^!\[[^\]]*\]\([^)\s]+\)$/.test(line);
 
@@ -90,13 +109,13 @@ function normalizeHref(href: string) {
 
 function parseMarkdown(content: string): MarkdownBlock[] {
   const blocks: MarkdownBlock[] = [];
-  const lines = content.split("\n");
+  const lines = content.split("\n").map((line) => line.trim());
   let index = 0;
 
   while (index < lines.length) {
-    const line = lines[index]?.trim() ?? "";
+    const line = lines[index] ?? "";
 
-    if (!line) {
+    if (!line || line === "---") {
       index += 1;
       continue;
     }
@@ -108,81 +127,42 @@ function parseMarkdown(content: string): MarkdownBlock[] {
       continue;
     }
 
-    if (line === "---") {
-      index += 1;
-      continue;
-    }
-
-    const image = isImageLine(line) ? line.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/) : null;
+    const image = line.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/);
     if (image?.[2]) {
       blocks.push({ kind: "image", alt: cleanInlineText(image[1] ?? ""), key: image[2] });
       index += 1;
       continue;
     }
 
-    if (isQuoteLine(line)) {
-      const quoteLines: string[] = [];
-      while (index < lines.length && isQuoteLine(lines[index]?.trim() ?? "")) {
-        quoteLines.push(cleanInlineText((lines[index]?.trim() ?? "").replace(/^>\s?/, "")));
-        index += 1;
-      }
-      blocks.push({ kind: "quote", lines: quoteLines });
-      continue;
-    }
+    const predicate = [isQuoteLine, isTableLine, isOrderedListLine, isListLine].find((matches) =>
+      matches(line),
+    );
+    const run = collectRun(lines, index, predicate ?? ((current) => !isBlockBreak(current)));
+    index += run.length;
 
-    if (isTableLine(line)) {
-      const tableLines: string[] = [];
-      while (index < lines.length && isTableLine(lines[index]?.trim() ?? "")) {
-        tableLines.push(lines[index]?.trim() ?? "");
-        index += 1;
-      }
-      const table = parseTable(tableLines);
+    if (predicate === isQuoteLine)
+      blocks.push({
+        kind: "quote",
+        lines: run.map((item) => cleanInlineText(item.replace(/^>\s?/, ""))),
+      });
+    else if (predicate === isTableLine) {
+      const table = parseTable(run);
       if (table) blocks.push(table);
-      continue;
+    } else if (predicate === isOrderedListLine)
+      blocks.push({
+        kind: "ordered-list",
+        start: Number.parseInt(line, 10),
+        items: run.map((item) => cleanInlineText(item.replace(/^\d{1,9}[.)]\s+/, ""))),
+      });
+    else if (predicate === isListLine)
+      blocks.push({
+        kind: "list",
+        items: run.map((item) => cleanInlineText(item.replace(/^[-*+]\s+/, ""))),
+      });
+    else {
+      const paragraph = cleanInlineText(run.join(" "));
+      if (paragraph) blocks.push({ kind: "paragraph", text: paragraph });
     }
-
-    if (isOrderedListLine(line)) {
-      const items: string[] = [];
-      const start = Number.parseInt(line, 10);
-      while (index < lines.length && isOrderedListLine(lines[index]?.trim() ?? "")) {
-        items.push(cleanInlineText((lines[index]?.trim() ?? "").replace(/^\d{1,9}[.)]\s+/, "")));
-        index += 1;
-      }
-      blocks.push({ kind: "ordered-list", start, items });
-      continue;
-    }
-
-    if (isListLine(line)) {
-      const items: string[] = [];
-      while (index < lines.length && isListLine(lines[index]?.trim() ?? "")) {
-        items.push(cleanInlineText((lines[index]?.trim() ?? "").replace(/^[-*+]\s+/, "")));
-        index += 1;
-      }
-      blocks.push({ kind: "list", items });
-      continue;
-    }
-
-    const paragraphLines: string[] = [];
-    while (index < lines.length) {
-      const current = lines[index]?.trim() ?? "";
-      if (
-        !current ||
-        current === "---" ||
-        /^(#{2,5})\s+/.test(current) ||
-        isImageLine(current) ||
-        isListLine(current) ||
-        isOrderedListLine(current) ||
-        isQuoteLine(current) ||
-        isTableLine(current)
-      ) {
-        break;
-      }
-      paragraphLines.push(current);
-      index += 1;
-    }
-
-    const paragraph = cleanInlineText(paragraphLines.join(" "));
-    if (paragraph) blocks.push({ kind: "paragraph", text: paragraph });
   }
 
   return blocks;
