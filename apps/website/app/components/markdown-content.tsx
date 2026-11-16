@@ -134,35 +134,49 @@ function parseMarkdown(content: string): MarkdownBlock[] {
       continue;
     }
 
-    const predicate = [isQuoteLine, isTableLine, isOrderedListLine, isListLine].find((matches) =>
-      matches(line),
-    );
-    const run = collectRun(lines, index, predicate ?? ((current) => !isBlockBreak(current)));
-    index += run.length;
-
-    if (predicate === isQuoteLine)
+    if (isQuoteLine(line)) {
+      const run = collectRun(lines, index, isQuoteLine);
+      index += run.length;
       blocks.push({
         kind: "quote",
         lines: run.map((item) => cleanInlineText(item.replace(/^>\s?/, ""))),
       });
-    else if (predicate === isTableLine) {
+      continue;
+    }
+
+    if (isTableLine(line)) {
+      const run = collectRun(lines, index, isTableLine);
+      index += run.length;
       const table = parseTable(run);
       if (table) blocks.push(table);
-    } else if (predicate === isOrderedListLine)
+      continue;
+    }
+
+    if (isOrderedListLine(line)) {
+      const run = collectRun(lines, index, isOrderedListLine);
+      index += run.length;
       blocks.push({
         kind: "ordered-list",
         start: Number.parseInt(line, 10),
         items: run.map((item) => cleanInlineText(item.replace(/^\d{1,9}[.)]\s+/, ""))),
       });
-    else if (predicate === isListLine)
+      continue;
+    }
+
+    if (isListLine(line)) {
+      const run = collectRun(lines, index, isListLine);
+      index += run.length;
       blocks.push({
         kind: "list",
         items: run.map((item) => cleanInlineText(item.replace(/^[-*+]\s+/, ""))),
       });
-    else {
-      const paragraph = cleanInlineText(run.join(" "));
-      if (paragraph) blocks.push({ kind: "paragraph", text: paragraph });
+      continue;
     }
+
+    const run = collectRun(lines, index, (current) => !isBlockBreak(current));
+    index += run.length;
+    const paragraph = cleanInlineText(run.join(" "));
+    if (paragraph) blocks.push({ kind: "paragraph", text: paragraph });
   }
 
   return blocks;
