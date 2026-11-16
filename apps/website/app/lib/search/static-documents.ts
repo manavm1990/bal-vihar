@@ -39,7 +39,6 @@ const CONTENT_PAGES = [
     hasAnchors: false,
   },
   { page: STATIC_PAGES.education, href: "/education", section: "Education" },
-  { page: STATIC_PAGES.volunteering, href: "/volunteering", section: "Get Involved" },
 ] as const;
 const PAGE_BOOST = 5;
 const PAGE_ENTRIES = [
@@ -150,6 +149,12 @@ const PAGE_ENTRIES = [
     title: "Terms of use",
     section: "About Us",
     text: PAGE_DESCRIPTIONS.terms,
+  },
+  {
+    href: "/volunteering",
+    title: "Volunteering",
+    section: "Get Involved",
+    text: "Ways to help at Bal Vihar: teaching, events (Family Night, Diwali, Holi, Annual Day), the administration team (operations, website, events management, fund raising), youth service, and how to apply.",
   },
   {
     href: "/volunteering/impact-award",
