@@ -40,5 +40,17 @@
     "touchpoint",
     "vihar"
   ],
-  "conventionalCommits.scopes": ["studio", "website", "schemas"]
+  "conventionalCommits.scopes": [
+    "agents",
+    "biome",
+    "ci",
+    "deps",
+    "docs",
+    "functions",
+    "monorepo",
+    "sanity",
+    "schemas",
+    "studio",
+    "website"
+  ]
 }

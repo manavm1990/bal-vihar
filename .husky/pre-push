@@ -1,6 +1,9 @@
-bun run typegen
+npx --no-install turbo run typegen --filter=@bv/studio
 if ! git diff --quiet -- apps/studio/schema.json apps/website/sanity.types.ts; then
   echo "husky - Sanity typegen produced changes. Commit schema.json / sanity.types.ts and push again."
   exit 1
 fi
-bun run typecheck
+npx --no-install turbo run typecheck test --filter='...[origin/main]' || {
+  echo "husky - Typecheck or tests failed in a changed package. Fix the error above and push again. Do not use --no-verify."
+  exit 1
+}

@@ -19,10 +19,12 @@
     "typecheck": "turbo run typecheck",
     "typegen": "turbo run typegen --filter=@bv/studio",
     "prepare": "husky",
-    "postinstall": "bunx skills update -p -y || true"
+    "postinstall": "npx skills update -p -y || echo 'skills update skipped'"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.6",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
     "baseline-browser-mapping": "^2.11.35",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
