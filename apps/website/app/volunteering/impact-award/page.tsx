@@ -17,6 +17,7 @@ import {
   type ImpactAwardView,
   TO_BE_ANNOUNCED,
 } from "@lib/sanity/impact-award";
+import { cn } from "@lib/utils";
 import { cva } from "class-variance-authority";
 import type { Metadata } from "next";
 import AwardApplicationForm from "./form/client";
@@ -100,9 +101,7 @@ function Apply({ award }: ApplyProps) {
   const { contact, dates } = award;
 
   return (
-    <section id="apply" aria-labelledby="apply-heading" className="scroll-mt-6 space-y-6">
-      <H2 id="apply-heading">Apply</H2>
-
+    <Section id="apply" title="Apply" className="space-y-6">
       <Card>
         <CardContent className="space-y-3 p-5">
           <P>
@@ -122,11 +121,7 @@ function Apply({ award }: ApplyProps) {
 
       <div className="space-y-3">
         <H3>What happens next</H3>
-        <Ul>
-          {getWhatHappensNext(dates).map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </Ul>
+        <TextList items={getWhatHappensNext(dates)} />
       </div>
 
       {contact ? (
@@ -147,7 +142,7 @@ function Apply({ award }: ApplyProps) {
           .
         </P>
       ) : null}
-    </section>
+    </Section>
   );
 }
 
@@ -157,8 +152,7 @@ interface DownloadsProps {
 
 function Downloads({ downloads }: DownloadsProps) {
   return downloads.length === 0 ? null : (
-    <section id="tools" aria-labelledby="tools-heading" className="scroll-mt-6 space-y-4">
-      <H2 id="tools-heading">Tracking sheet and templates</H2>
+    <Section id="tools" title="Tracking sheet and templates">
       <ul className="bg-background divide-y rounded-lg border shadow-sm">
         {downloads.map((item) => (
           <li key={item.href}>
@@ -179,7 +173,7 @@ function Downloads({ downloads }: DownloadsProps) {
           </li>
         ))}
       </ul>
-    </section>
+    </Section>
   );
 }
 
@@ -189,21 +183,12 @@ interface EligibilityProps {
 
 function Eligibility({ dates }: EligibilityProps) {
   return (
-    <section
-      id="who-can-apply"
-      aria-labelledby="who-can-apply-heading"
-      className="scroll-mt-6 space-y-4"
-    >
-      <H2 id="who-can-apply-heading">Who can apply</H2>
-      <Ul>
-        {getAwardEligibility(dates).map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </Ul>
+    <Section id="who-can-apply" title="Who can apply">
+      <TextList items={getAwardEligibility(dates)} />
       <P>
         Parents, please support your child. We encourage youth to contact the award team directly.
       </P>
-    </section>
+    </Section>
   );
 }
 
@@ -227,70 +212,71 @@ interface HoursDetailsProps {
 
 function HoursDetails({ award }: HoursDetailsProps) {
   return (
-    <section id="hours" aria-labelledby="hours-heading" className="scroll-mt-6 space-y-4">
-      <H2 id="hours-heading">How hours count</H2>
+    <Section id="hours" title="How hours count">
       <Accordion
         type="multiple"
         className="bg-background divide-y rounded-lg border px-5 py-2 shadow-sm"
       >
-        <AccordionItem value="teaching">
-          <AccordionTrigger>Teaching in the classroom (Y4 and Y5)</AccordionTrigger>
-          <AccordionContent className="text-foreground space-y-3 pr-4 sm:pr-12">
-            <Ul>
-              {TEACHING_REQUIREMENTS.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </Ul>
-            {award.teachingHours.length === 0 ? (
-              <MutedP>The hours for each activity will be announced.</MutedP>
-            ) : (
-              <Table
-                headers={[...TEACHING_HOURS_HEADERS]}
-                rows={award.teachingHours}
-                footer={TEACHING_HOURS_FOOTER}
-              />
-            )}
-          </AccordionContent>
-        </AccordionItem>
+        <HoursItem
+          value="teaching"
+          title="Teaching in the classroom (Y4 and Y5)"
+          className="space-y-3"
+        >
+          <TextList items={TEACHING_REQUIREMENTS} />
+          {award.teachingHours.length === 0 ? (
+            <MutedP>The hours for each activity will be announced.</MutedP>
+          ) : (
+            <Table
+              headers={[...TEACHING_HOURS_HEADERS]}
+              rows={award.teachingHours}
+              footer={TEACHING_HOURS_FOOTER}
+            />
+          )}
+        </HoursItem>
 
-        <AccordionItem value="community">
-          <AccordionTrigger>Community service projects</AccordionTrigger>
-          <AccordionContent className="text-foreground space-y-3 pr-4 sm:pr-12">
-            {award.communityIntro ? <P>{award.communityIntro}</P> : null}
-            {award.communityProjects.length === 0 ? (
-              <MutedP>This year's projects and their hours will be announced.</MutedP>
-            ) : (
-              <Table headers={[...COMMUNITY_HOURS_HEADERS]} rows={award.communityProjects} />
-            )}
-          </AccordionContent>
-        </AccordionItem>
+        <HoursItem value="community" title="Community service projects" className="space-y-3">
+          {award.communityIntro ? <P>{award.communityIntro}</P> : null}
+          {award.communityProjects.length === 0 ? (
+            <MutedP>This year's projects and their hours will be announced.</MutedP>
+          ) : (
+            <Table headers={[...COMMUNITY_HOURS_HEADERS]} rows={award.communityProjects} />
+          )}
+        </HoursItem>
 
-        <AccordionItem value="events">
-          <AccordionTrigger>Bal Vihar events and logistics</AccordionTrigger>
-          <AccordionContent className="text-foreground pr-4 sm:pr-12">
-            <P>{EVENT_HOURS_TEXT}</P>
-          </AccordionContent>
-        </AccordionItem>
+        <HoursItem value="events" title="Bal Vihar events and logistics">
+          <P>{EVENT_HOURS_TEXT}</P>
+        </HoursItem>
 
-        <AccordionItem value="outside">
-          <AccordionTrigger>Service outside Bal Vihar</AccordionTrigger>
-          <AccordionContent className="text-foreground pr-4 sm:pr-12">
-            <P>{OUTSIDE_HOURS_TEXT}</P>
-          </AccordionContent>
-        </AccordionItem>
+        <HoursItem value="outside" title="Service outside Bal Vihar">
+          <P>{OUTSIDE_HOURS_TEXT}</P>
+        </HoursItem>
 
-        <AccordionItem value="ideas">
-          <AccordionTrigger>Ideas for finding service hours</AccordionTrigger>
-          <AccordionContent className="text-foreground pr-4 sm:pr-12">
-            <Ul className="md:columns-2 md:gap-x-8 [&>li]:break-inside-avoid">
-              {VOLUNTEER_IDEAS.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </Ul>
-          </AccordionContent>
-        </AccordionItem>
+        <HoursItem value="ideas" title="Ideas for finding service hours">
+          <TextList
+            items={VOLUNTEER_IDEAS}
+            className="md:columns-2 md:gap-x-8 [&>li]:break-inside-avoid"
+          />
+        </HoursItem>
       </Accordion>
-    </section>
+    </Section>
+  );
+}
+
+interface HoursItemProps {
+  value: string;
+  title: string;
+  className?: string;
+  children: React.ReactNode;
+}
+
+function HoursItem({ value, title, className, children }: HoursItemProps) {
+  return (
+    <AccordionItem value={value}>
+      <AccordionTrigger>{title}</AccordionTrigger>
+      <AccordionContent className={cn("text-foreground pr-4 sm:pr-12", className)}>
+        {children}
+      </AccordionContent>
+    </AccordionItem>
   );
 }
 
@@ -334,6 +320,22 @@ function QuickFacts({ award }: QuickFactsProps) {
   );
 }
 
+interface SectionProps {
+  id: string;
+  title: string;
+  className?: string;
+  children: React.ReactNode;
+}
+
+function Section({ id, title, className = "space-y-4", children }: SectionProps) {
+  return (
+    <section id={id} aria-labelledby={`${id}-heading`} className={cn("scroll-mt-6", className)}>
+      <H2 id={`${id}-heading`}>{title}</H2>
+      {children}
+    </section>
+  );
+}
+
 interface SectionNavProps {
   hasDownloads: boolean;
 }
@@ -354,6 +356,21 @@ function SectionNav({ hasDownloads }: SectionNavProps) {
         ))}
       </ul>
     </nav>
+  );
+}
+
+interface TextListProps {
+  items: readonly string[];
+  className?: string;
+}
+
+function TextList({ items, className }: TextListProps) {
+  return (
+    <Ul className={className}>
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </Ul>
   );
 }
 
@@ -380,8 +397,7 @@ interface TiersProps {
 
 function Tiers({ tiers }: TiersProps) {
   return (
-    <section id="awards" aria-labelledby="awards-heading" className="scroll-mt-6 space-y-4">
-      <H2 id="awards-heading">Hours and awards</H2>
+    <Section id="awards" title="Hours and awards">
       <P>The hours you earn in the award year add up to a Bronze, Silver or Gold award.</P>
       {tiers.length === 0 ? (
         <MutedP>The hours for each level will be announced.</MutedP>
@@ -393,7 +409,7 @@ function Tiers({ tiers }: TiersProps) {
         </Ol>
       )}
       <MutedP>{AWARD_AGE_GROUP_NOTE}</MutedP>
-    </section>
+    </Section>
   );
 }
 
@@ -419,8 +435,7 @@ interface TrailProps {
 
 function Trail({ dates }: TrailProps) {
   return (
-    <section id="your-year" aria-labelledby="your-year-heading" className="scroll-mt-6 space-y-6">
-      <H2 id="your-year-heading">Your award year</H2>
+    <Section id="your-year" title="Your award year" className="space-y-6">
       <Ol
         variant="unstyled"
         className="before:bg-border relative space-y-8 before:absolute before:top-4 before:bottom-4 before:left-4 before:w-px"
@@ -429,7 +444,7 @@ function Trail({ dates }: TrailProps) {
           <TrailStep key={step.key} step={step} number={index + 1} />
         ))}
       </Ol>
-    </section>
+    </Section>
   );
 }
 
@@ -453,13 +468,7 @@ function TrailStep({ step, number }: TrailStepProps) {
         </p>
         <H3 className="text-xl">{step.title}</H3>
         <P className="text-muted-foreground">{step.body}</P>
-        {step.details && (
-          <Ul className="text-muted-foreground pt-1">
-            {step.details.map((detail) => (
-              <li key={detail}>{detail}</li>
-            ))}
-          </Ul>
-        )}
+        {step.details && <TextList items={step.details} className="text-muted-foreground pt-1" />}
       </div>
     </li>
   );
