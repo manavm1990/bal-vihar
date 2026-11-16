@@ -18,16 +18,16 @@ Stack: Bun, Next.js 16, React 19, strict TypeScript, Tailwind CSS v4, Radix UI, 
 
 ## Commands
 
-Run from the repo root (Turborepo fans out to each workspace):
+Run from the repo root (Turborepo fans out to each workspace). Bun is only for `bun install` / `bun update`; run everything else with `npx turbo`:
 
-- `bun run dev` - website and studio dev servers
-- `bun run build` - build all workspaces
-- `bun run lint` / `bun run lint:fix` - Biome check / autofix
-- `bun run typecheck` - `tsc --noEmit` in every workspace
-- `bun run typegen` - Sanity `schema.json` + `sanity.types.ts` (studio only); commit the output
-- `bun run deploy:studio` - publish the hosted Studio (needed after schema or desk changes; needs `bunx sanity login`)
+- `npx turbo run dev` - website and studio dev servers
+- `npx turbo run build` - build all workspaces
+- `npx turbo run lint` / `npx turbo run lint:fix` - Biome check / autofix
+- `npx turbo run typecheck` - `tsc --noEmit` in every workspace
+- `npx turbo run typegen --filter=@bv/studio` - Sanity `schema.json` + `sanity.types.ts` (studio only); commit the output
+- `npx turbo run deploy --filter=@bv/studio` - publish the hosted Studio (needed after schema or desk changes; needs `npx sanity login`)
 
-Scope a task with `turbo run <task> --filter=@bv/<name>`. Pre-push runs typegen, typecheck, and test — commit regenerated type files when typegen drifts.
+Scope a task with `npx turbo run <task> --filter=@bv/<name>`. Pre-push runs typegen, typecheck, and test — commit regenerated type files when typegen drifts.
 
 ## Contribution guardrails
 
@@ -35,7 +35,7 @@ Scope a task with `turbo run <task> --filter=@bv/<name>`. Pre-push runs typegen,
 - **PRs only** into `main`. Direct pushes should be blocked by GitHub branch protection (org/repo setting; not enforceable from this file alone).
 - **Default reviewer / CODEOWNERS**: `.github/CODEOWNERS` → `@manavm1990`. Require a CODEOWNERS review on the default branch.
 - **Conventional commits** enforced by Husky `commit-msg` + CI (`commitlint`). Format: `type(scope?): subject`. Allowed scopes are defined in `commitlint.config.ts` (single source). See `CONTRIBUTING.md`.
-- **Pre-commit**: `lint-staged` → Biome on staged files only; lint errors in untouched files never block. **Pre-push**: Sanity typegen drift check, then `turbo run typecheck test --filter='...[origin/main]'` (changed packages and their dependents only). **CI**: `turbo run typecheck`, `test` and `lint`, filtered to changed packages (`--filter="...[<base sha>]"`) on PRs and unfiltered on pushes to `main`. Never add repo-wide checks to hooks; a problem in an untouched package must not block a quick fix.
+- **Pre-commit**: `lint-staged` → Biome on staged files only; lint errors in untouched files never block. **Pre-push**: Sanity typegen drift check, then `npx turbo run typecheck test --filter='...[origin/main]'` (changed packages and their dependents only). **CI**: `npx turbo run typecheck`, `test` and `lint`, filtered to changed packages (`--filter="...[<base sha>]"`) on PRs and unfiltered on pushes to `main`. Never add repo-wide checks to hooks; a problem in an untouched package must not block a quick fix.
 - **Agent skills** live in `.agents/skills/` and are locked in `skills-lock.json`. `bun install` runs `skills update` (postinstall) so skills stay current; commit any resulting skill/lock changes in the same PR when they appear. Do not add/remove skills unless asked.
 - **MCP**: workspace servers are in root `.mcp.json` (portable `mcpServers` format). Do not reintroduce `.vscode/mcp.json`.
 
@@ -92,9 +92,9 @@ Skills live in `.agents/skills/`. Read the matching `SKILL.md` (and only the nee
 - Finish non-trivial changes with the built-in `/code-review`.
 - Do not add, remove or broaden the skill set unless explicitly asked.
 - Never hand-edit files under `.agents/skills/`; `skills update` overwrites them. Put project rules in this file.
-- Verify with the project's own tooling (`turbo run lint typecheck test --filter=...`); do not install a framework, test runner or type checker just to check work, and say what you could not run.
+- Verify with the project's own tooling (`npx turbo run lint typecheck test --filter=...`); do not install a framework, test runner or type checker just to check work, and say what you could not run.
 - For menus, dialogs, tabs, listboxes and comboboxes, follow the WAI-ARIA APG pattern exactly.
-- After install or deliberate `bunx skills update -y`, if `skills-lock.json` or `.agents/skills/**` change, commit them (do not hand-edit hashes).
+- After install or deliberate `npx skills update -y`, if `skills-lock.json` or `.agents/skills/**` change, commit them (do not hand-edit hashes).
 
 ## MCP Servers
 

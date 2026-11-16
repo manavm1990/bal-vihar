@@ -4,7 +4,7 @@ The root [`../../AGENTS.md`](../../AGENTS.md) is canonical: read and follow it f
 
 ## Commands
 
-From the repo root: `turbo run typecheck lint --filter=@bv/website`. Tests are `node:test` files with no `test` script; run `bun test app` from this directory. The developer often has `:3000` open; if you are asked to start a dev server, use a spare port (`next dev --turbopack -p 3100`) and stop it afterwards.
+From the repo root: `npx turbo run typecheck lint --filter=@bv/website`. Tests are `node:test` files with no `test` script; run `bun test app` from this directory. The developer often has `:3000` open; if you are asked to start a dev server, use a spare port (`next dev --turbopack -p 3100`) and stop it afterwards.
 
 ## Where things live
 

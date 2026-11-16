@@ -45,29 +45,29 @@ Use Bun only to install and update dependencies (`bun install`, `bun update`). R
 bun install
 
 # Start both website and studio
-turbo dev
+npx turbo dev
 
 # Start only the website (Next.js)
-turbo dev --filter=@bv/website
+npx turbo dev --filter=@bv/website
 
 # Start only the studio (Sanity)
-turbo dev --filter=@bv/studio
+npx turbo dev --filter=@bv/studio
 ```
 
 ### Build & Deploy
 
 ```bash
 # Build all packages
-turbo build
+npx turbo build
 
 # Lint all packages
-turbo lint
+npx turbo lint
 
 # Lint and auto-fix all packages
-turbo lint:fix
+npx turbo lint:fix
 
 # Build specific packages
-turbo build --filter=@bv/website
+npx turbo build --filter=@bv/website
 ```
 
 ## 📦 Packages
@@ -111,15 +111,15 @@ turbo build --filter=@bv/website
 
 ## 🔧 Development Commands
 
-| Command                          | Description                    |
-| -------------------------------- | ------------------------------ |
-| `turbo dev`                      | Start both website and studio  |
-| `turbo dev --filter=@bv/website` | Start only Next.js website     |
-| `turbo dev --filter=@bv/studio`  | Start only Sanity Studio       |
-| `turbo build`                    | Build all packages             |
-| `turbo lint`                     | Lint all packages              |
-| `turbo lint:fix`                 | Lint and auto-fix all packages |
-| `bun install`                    | Install dependencies           |
+| Command                              | Description                    |
+| ------------------------------------ | ------------------------------ |
+| `npx turbo dev`                      | Start both website and studio  |
+| `npx turbo dev --filter=@bv/website` | Start only Next.js website     |
+| `npx turbo dev --filter=@bv/studio`  | Start only Sanity Studio       |
+| `npx turbo build`                    | Build all packages             |
+| `npx turbo lint`                     | Lint all packages              |
+| `npx turbo lint:fix`                 | Lint and auto-fix all packages |
+| `bun install`                        | Install dependencies           |
 
 ## 🌐 Local Development
 
