@@ -112,7 +112,7 @@ export default function DonatePage() {
         <section className="space-y-4 lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <H2>Ways to give</H2>
           <div className="space-y-4">
-            <Card className="h-full">
+            <Card>
               <CardHeader>
                 <CardTitle>By check</CardTitle>
                 <CardDescription>
@@ -132,7 +132,7 @@ export default function DonatePage() {
                 </address>
               </CardContent>
             </Card>
-            <Card className="h-full">
+            <Card>
               <CardHeader>
                 <CardTitle>Matching gifts</CardTitle>
                 <CardDescription>
@@ -144,7 +144,7 @@ export default function DonatePage() {
                 <a href="#matching-gifts">See how matching gifts work</a>
               </CardContent>
             </Card>
-            <Card className="h-full">
+            <Card>
               <CardHeader>
                 <CardTitle>Stocks</CardTitle>
                 <CardDescription>
