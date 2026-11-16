@@ -1,3 +1,4 @@
+import ContentSection from "@components/content-section";
 import {
   Accordion,
   AccordionContent,
@@ -7,7 +8,7 @@ import {
 import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
 import { ExternalIcon } from "@components/ui/icons";
-import { H1, H2, H3, LeadP, MutedP, Ol, P, Strong, Table, Ul } from "@components/ui/typography";
+import { H1, H3, LeadP, MutedP, Ol, P, Strong, Table, Ul } from "@components/ui/typography";
 import { BASE_TITLE } from "@lib/constants";
 import {
   type AwardDates,
@@ -67,7 +68,7 @@ export default async function ImpactAwardPage() {
 
   return (
     <article className="space-y-12">
-      <header className="space-y-6">
+      <header>
         <div className="space-y-2">
           <H1>{PAGE_TITLE}</H1>
           <LeadP>
@@ -101,7 +102,7 @@ function Apply({ award }: ApplyProps) {
   const { contact, dates } = award;
 
   return (
-    <Section id="apply" title="Apply" className="space-y-6">
+    <ContentSection id="apply" title="Apply">
       <Card>
         <CardContent className="space-y-3 p-5">
           <P>
@@ -142,7 +143,7 @@ function Apply({ award }: ApplyProps) {
           .
         </P>
       ) : null}
-    </Section>
+    </ContentSection>
   );
 }
 
@@ -152,7 +153,7 @@ interface DownloadsProps {
 
 function Downloads({ downloads }: DownloadsProps) {
   return downloads.length === 0 ? null : (
-    <Section id="tools" title="Tracking sheet and templates">
+    <ContentSection id="tools" title="Tracking sheet and templates" className="space-y-4">
       <ul className="bg-background divide-y rounded-lg border shadow-sm">
         {downloads.map((item) => (
           <li key={item.href}>
@@ -173,7 +174,7 @@ function Downloads({ downloads }: DownloadsProps) {
           </li>
         ))}
       </ul>
-    </Section>
+    </ContentSection>
   );
 }
 
@@ -183,12 +184,12 @@ interface EligibilityProps {
 
 function Eligibility({ dates }: EligibilityProps) {
   return (
-    <Section id="who-can-apply" title="Who can apply">
+    <ContentSection id="who-can-apply" title="Who can apply" className="space-y-4">
       <TextList items={getAwardEligibility(dates)} />
       <P>
         Parents, please support your child. We encourage youth to contact the award team directly.
       </P>
-    </Section>
+    </ContentSection>
   );
 }
 
@@ -212,7 +213,7 @@ interface HoursDetailsProps {
 
 function HoursDetails({ award }: HoursDetailsProps) {
   return (
-    <Section id="hours" title="How hours count">
+    <ContentSection id="hours" title="How hours count" className="space-y-4">
       <Accordion
         type="multiple"
         className="bg-background divide-y rounded-lg border px-5 py-2 shadow-sm"
@@ -258,7 +259,7 @@ function HoursDetails({ award }: HoursDetailsProps) {
           />
         </HoursItem>
       </Accordion>
-    </Section>
+    </ContentSection>
   );
 }
 
@@ -317,22 +318,6 @@ function QuickFacts({ award }: QuickFactsProps) {
         )}
       </div>
     </div>
-  );
-}
-
-interface SectionProps {
-  id: string;
-  title: string;
-  className?: string;
-  children: React.ReactNode;
-}
-
-function Section({ id, title, className = "space-y-4", children }: SectionProps) {
-  return (
-    <section id={id} aria-labelledby={`${id}-heading`} className={cn("scroll-mt-6", className)}>
-      <H2 id={`${id}-heading`}>{title}</H2>
-      {children}
-    </section>
   );
 }
 
@@ -397,7 +382,7 @@ interface TiersProps {
 
 function Tiers({ tiers }: TiersProps) {
   return (
-    <Section id="awards" title="Hours and awards">
+    <ContentSection id="awards" title="Hours and awards" className="space-y-4">
       <P>The hours you earn in the award year add up to a Bronze, Silver or Gold award.</P>
       {tiers.length === 0 ? (
         <MutedP>The hours for each level will be announced.</MutedP>
@@ -409,7 +394,7 @@ function Tiers({ tiers }: TiersProps) {
         </Ol>
       )}
       <MutedP>{AWARD_AGE_GROUP_NOTE}</MutedP>
-    </Section>
+    </ContentSection>
   );
 }
 
@@ -435,7 +420,7 @@ interface TrailProps {
 
 function Trail({ dates }: TrailProps) {
   return (
-    <Section id="your-year" title="Your award year" className="space-y-6">
+    <ContentSection id="your-year" title="Your award year">
       <Ol
         variant="unstyled"
         className="before:bg-border relative space-y-8 before:absolute before:top-4 before:bottom-4 before:left-4 before:w-px"
@@ -444,7 +429,7 @@ function Trail({ dates }: TrailProps) {
           <TrailStep key={step.key} step={step} number={index + 1} />
         ))}
       </Ol>
-    </Section>
+    </ContentSection>
   );
 }
 

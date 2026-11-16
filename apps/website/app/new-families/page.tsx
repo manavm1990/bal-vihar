@@ -1,8 +1,10 @@
+import Callout from "@components/callout";
+import ContentSection from "@components/content-section";
+import InfoCard from "@components/info-card";
 import SectionNav from "@components/section-nav";
 import TypicalSunday from "@components/typical-sunday";
 import { Button } from "@components/ui/button";
-import { Card } from "@components/ui/card";
-import { H1, H2, H3, LeadP, P, Ul } from "@components/ui/typography";
+import { H1, H3, LeadP, P, Ul } from "@components/ui/typography";
 import { BASE_TITLE, SUNDAY_BRING_ITEMS } from "@lib/constants";
 import { CheckIcon } from "@radix-ui/react-icons";
 import type { Metadata } from "next";
@@ -327,20 +329,6 @@ export default function NewFamiliesPage() {
   );
 }
 
-interface CalloutProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-function Callout({ title, children }: CalloutProps) {
-  return (
-    <div className="bg-primary-50 border-primary-300 space-y-3 rounded-lg border-2 p-5">
-      <H3 className="text-xl">{title}</H3>
-      {children}
-    </div>
-  );
-}
-
 interface CheckListProps {
   items: readonly string[];
 }
@@ -358,20 +346,6 @@ function CheckList({ items }: CheckListProps) {
   );
 }
 
-interface InfoCardProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-function InfoCard({ title, children }: InfoCardProps) {
-  return (
-    <Card className="space-y-2 p-5">
-      <H3 className="text-xl">{title}</H3>
-      {typeof children === "string" ? <P>{children}</P> : children}
-    </Card>
-  );
-}
-
 interface SectionProps {
   id: keyof typeof SECTIONS;
   children: React.ReactNode;
@@ -379,9 +353,8 @@ interface SectionProps {
 
 function Section({ id, children }: SectionProps) {
   return (
-    <section id={id} aria-labelledby={`${id}-heading`} className="scroll-mt-6 space-y-6">
-      <H2 id={`${id}-heading`}>{SECTIONS[id]}</H2>
+    <ContentSection id={id} title={SECTIONS[id]}>
       {children}
-    </section>
+    </ContentSection>
   );
 }
