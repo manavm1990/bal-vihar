@@ -14,7 +14,7 @@ const EDIT_ONLY_TYPE_SET = new Set<string>([...SINGLETON_TYPES, "classPage", "sp
 const isDev = process.env["NODE_ENV"] === "development";
 
 const previewOrigin =
-  process.env["SANITY_STUDIO_PREVIEW_ORIGIN"]?.replace(/\/$/, "") || "https://balviharstlouis.org";
+  process.env["SANITY_STUDIO_PREVIEW_ORIGIN"]?.replace(/\/$/, "") || "https://balvihar-stlouis.com";
 
 export default defineConfig({
   name: "default",

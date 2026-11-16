@@ -18,7 +18,7 @@ Website: `bun run --filter @bv/website dev` → `http://localhost:3000`
 `bun run --filter @bv/studio deploy`
 
 - Project: `x5wq3sbt` / dataset `production`
-- Preview origin defaults to `https://balviharstlouis.org` (override with `SANITY_STUDIO_PREVIEW_ORIGIN` for local or Vercel)
+- Preview origin defaults to `https://balvihar-stlouis.com` (override with `SANITY_STUDIO_PREVIEW_ORIGIN` for local or Vercel)
 - Website needs `SANITY_API_READ_TOKEN` (Viewer) for draft preview; set `NEXT_PUBLIC_SANITY_STUDIO_URL` to the deployed Studio URL
 - Add the website origin to Sanity CORS with credentials
 
