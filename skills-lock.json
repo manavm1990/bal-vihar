@@ -11,7 +11,7 @@
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/frontend-ui-engineering/SKILL.md",
-      "computedHash": "22ee43d0367d2c3f611585eead5f0c413bcefa947da34b25a4935726ed76533e"
+      "computedHash": "cd191bdd08c5ec373c6bc98a4ad5435c50fa7453a2276095e52a6ea7e1000c9d"
     },
     "sanity-best-practices": {
       "source": "sanity-io/agent-toolkit",
