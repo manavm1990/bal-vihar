@@ -2,6 +2,8 @@
 
 **Code changes go through the maintainer (@manavm1990).** If you want something changed on the site, tell them what and why; they will make the change. Please do not edit code unless they have asked you to.
 
+**Pull requests from forks are closed without review.** Use the provided tooling: clone this repository, install with Bun, and let the Husky hooks and `turbo` run. Work that skips them (forks, `--no-verify`, editing in the GitHub web editor) will not be merged.
+
 ## What goes where
 
 | You want to change                                                              | How                                                                                       |
