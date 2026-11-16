@@ -10,13 +10,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@sanity/client": "^8.15.0",
+    "@sanity/client": "^8.16.0",
     "@sanity/functions": "^1.11.0",
-    "read-excel-file": "^9.3.14"
+    "read-excel-file": "^9.3.17"
   },
   "devDependencies": {
     "@bv/typescript-config": "workspace:*",
-    "@sanity/blueprints": "^0.34.0",
+    "@sanity/blueprints": "^0.34.1",
     "typescript": "^7.0.2"
   }
 }

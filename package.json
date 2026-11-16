@@ -22,13 +22,13 @@
     "postinstall": "npx skills update -p -y || echo 'skills update skipped'"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.6.6",
+    "@biomejs/biome": "^2.6.8",
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
-    "baseline-browser-mapping": "^2.11.35",
+    "baseline-browser-mapping": "^2.11.37",
     "husky": "^9.1.7",
-    "lint-staged": "^17.6.0",
-    "skills": "^1.7.6",
+    "lint-staged": "^17.6.1",
+    "skills": "^1.8.1",
     "turbo": "^2.11.11"
   },
   "lint-staged": {
