@@ -84,23 +84,21 @@ function createAssistants(list: SanityAssistant[] | null | undefined): FacultyAs
   });
 }
 
-function createPeople(
-  list: (SanityPerson | null)[] | null | undefined,
-  isBackup = false,
-): FacultyPerson[] {
-  return (list ?? []).flatMap((person) => {
-    const name = cleanText(person?.name);
-    if (!person || !name) return [];
+function createPeople(list: (SanityPerson | null)[] | null | undefined): FacultyPerson[] {
+  return (list ?? []).flatMap((person) => createPerson(person) ?? []);
+}
 
-    return [
-      {
+function createPerson(person: SanityPerson | null, isBackup = false): FacultyPerson | null {
+  const name = cleanText(person?.name);
+
+  return !person || !name
+    ? null
+    : {
         id: name.toLowerCase(),
         name,
         isBackup,
         ...getVolunteerContactLinks(person.email, person.phone),
-      },
-    ];
-  });
+      };
 }
 
 const getAssistantCredits = (assistants: FacultyAssistant[], label: string): Credit[] =>
@@ -173,8 +171,8 @@ export function getTeachingFacultyView(
           key: team._key,
           subject,
           section: cleanText(team.section) || null,
-          teachers: (team.teachers ?? []).flatMap((slot) =>
-            createPeople([slot], slot.isBackup === true),
+          teachers: (team.teachers ?? []).flatMap(
+            (slot) => createPerson(slot, slot.isBackup === true) ?? [],
           ),
           assistants: createAssistants(team.assistants),
         },
