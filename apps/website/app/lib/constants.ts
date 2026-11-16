@@ -23,7 +23,7 @@ export const SCHOOL_LOCATION = {
   postalCode: "63011",
   addressCountry: "US",
 } as const;
-export const SITE_URL = "https://balviharstlouis.org";
+export const SITE_URL = "https://balvihar-stlouis.com";
 export const SUNDAY_STEPS = [
   {
     time: "9:45 a.m.",

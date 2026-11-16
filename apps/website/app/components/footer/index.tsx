@@ -47,8 +47,8 @@ export default async function Footer() {
         <div className="space-y-3">
           <h2 className="font-display text-xl text-white">Contact</h2>
           <p className="text-sm text-navy-200">
-            <a href="mailto:info@balviharstlouis.org" className={LINK_CLASS_NAME}>
-              info@balviharstlouis.org
+            <a href="mailto:webmaster@balvihar-stlouis.com" className={LINK_CLASS_NAME}>
+              webmaster@balvihar-stlouis.com
             </a>
           </p>
           <p className="text-sm text-navy-200">
