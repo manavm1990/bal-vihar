@@ -21,7 +21,22 @@ bal-vihar/
 ### Prerequisites
 
 - **Node.js** 20.9+
-- **Bun** 1.0+ (package manager)
+- **Bun** — **you must install this yourself first.** Nothing in this repo can install it for you, and `bun install` will not work without it. Use the version pinned in the `packageManager` field of `package.json` (currently 1.4.4).
+
+```bash
+# Install Bun (macOS / Linux)
+curl -fsSL https://bun.sh/install | bash
+
+# Or with Homebrew
+brew install oven-sh/bun/bun
+
+# Confirm it worked (open a new terminal first)
+bun --version
+```
+
+Other platforms: [bun.sh/docs/installation](https://bun.sh/docs/installation).
+
+Use Bun only to install and update dependencies (`bun install`, `bun update`). Run everything else through `turbo` (see below).
 
 ### Development
 
@@ -80,8 +95,10 @@ turbo build --filter=@bv/website
 ### Development Tools
 
 - **Biome** - Unified linting and formatting
-- **Husky** - Git hooks for code quality
+- **Husky** - Git hooks (pre-commit Biome, commit-msg Commitlint, pre-push typegen/typecheck/test)
+- **Commitlint** - Conventional commits (`commitlint.config.ts`)
 - **lint-staged** - Pre-commit linting and formatting
+- **skills** + `skills-lock.json` - Agent skills under `.agents/skills/` (updated on `bun install`)
 
 ## 🎯 Key Features
 
@@ -117,7 +134,9 @@ turbo build --filter=@bv/website
 
 ## 🤝 Contributing
 
-1. Install dependencies: `bun install`
-2. Start development: `turbo dev`
-3. Make changes and ensure `turbo lint` passes
-4. Pre-commit hooks will automatically lint and format your code
+1. Install [Bun](https://bun.sh/docs/installation) yourself (see Prerequisites), then `bun install` (also refreshes agent skills; commit lock/skill churn if it appears)
+2. Code changes go through the maintainer; content goes in Sanity Studio. If invited to change code: clone (never fork), branch off `main`, open a PR, never push to `main`. Full guide: `CONTRIBUTING.md`
+3. Use conventional commits: `type(scope?): subject` (allowed scopes: `commitlint.config.ts`)
+4. Pre-commit runs Biome via lint-staged; commit-msg runs Commitlint; pre-push runs Sanity typegen drift, then typecheck and tests for changed packages only (`turbo --filter`)
+5. CI must be green; default reviewer is via `.github/CODEOWNERS`
+6. See `AGENTS.md` for coding standards, Sanity typegen (`apps/studio/sanity.cli.ts`), and MCP (`.mcp.json`)

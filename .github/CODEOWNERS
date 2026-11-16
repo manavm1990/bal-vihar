@@ -1,0 +1,3 @@
+# Default owner for the whole monorepo. Branch protection should require a
+# review from this owner (or CODEOWNERS) on every PR into the default branch.
+* @manavm1990
