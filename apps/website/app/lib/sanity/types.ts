@@ -8,6 +8,7 @@ export interface CalendarEventData {
   description?: string | null;
   isHighlighted?: boolean | null;
   academicYear?: string | null;
+  detailsHref?: string | null;
 }
 
 export interface HomePageData {

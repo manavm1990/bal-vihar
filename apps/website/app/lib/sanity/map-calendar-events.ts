@@ -61,11 +61,14 @@ export const mapCalendarEvents = (input: unknown): CalendarEventData[] =>
                 description: isString(row["description"]) ? row["description"] : null,
                 isHighlighted: isBoolean(row["isHighlighted"]) ? row["isHighlighted"] : null,
                 academicYear: isString(row["academicYear"]) ? row["academicYear"] : null,
+                detailsHref: isString(row["detailsSlug"])
+                  ? `/${stegaClean(row["detailsSlug"])}`
+                  : null,
               } satisfies CalendarEventData,
             ];
       });
 
-const chicagoToday = (now = new Date()) =>
+export const chicagoToday = (now = new Date()) =>
   now.toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
 
 const escapeIcsText = (value: string) =>

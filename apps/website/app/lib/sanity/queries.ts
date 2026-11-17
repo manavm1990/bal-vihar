@@ -9,7 +9,8 @@ export const CALENDAR_EVENTS_QUERY = defineQuery(`*[_type == "calendarEvent"] | 
   time,
   description,
   isHighlighted,
-  academicYear
+  academicYear,
+  "detailsSlug": *[_type == "page" && event._ref == ^._id][0].slug.current
 }`);
 
 export const CLASS_PAGE_QUERY = defineQuery(`*[_type == "classPage" && slug.current == $slug][0]{
@@ -98,6 +99,30 @@ const imageFields = `asset->{
   caption,
   hotspot,
   crop`;
+export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  description,
+  "endsOn": coalesce(showUntil, event->date),
+  "event": event->{ _id, title, date, time, location },
+  body[]{
+    ...,
+    _type == "mediaImage" => { ..., asset->{ _id, url, metadata { lqip, dimensions { width, height } } } }
+  }
+}`);
+
+export const PAGES_QUERY = defineQuery(`*[_type == "page" && defined(slug.current)]{
+  _id,
+  title,
+  "slug": slug.current,
+  description,
+  menu,
+  menuLabel,
+  "endsOn": coalesce(showUntil, event->date),
+  body
+}`);
+
 export const PHOTO_ALBUM_QUERY = defineQuery(`*[_type == "photoAlbum" && slug.current == $slug][0]{
   _id,
   title,
