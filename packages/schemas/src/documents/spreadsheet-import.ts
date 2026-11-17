@@ -1,4 +1,5 @@
 import { UploadIcon } from "@sanity/icons/Upload";
+import { createElement } from "react";
 import { defineField, defineType } from "sanity";
 import { getCurrentSchoolYear, SCHOOL_YEARS } from "../school-years";
 
@@ -11,9 +12,42 @@ const getKindTitle = (kind: unknown) => IMPORT_KINDS.find(({ value }) => value =
 
 const isCalendar = (document?: Record<string, unknown>) => document?.["kind"] === "calendar";
 
+const createInstructionLine = (label: string, text: string) =>
+  createElement("div", null, createElement("strong", null, `${label} `), text);
+
+const createUploadInstructions = () =>
+  createElement(
+    "div",
+    null,
+    createInstructionLine(
+      "Step 1.",
+      "Drag your spreadsheet into the box below, or click Upload. It must be an .xlsx file.",
+    ),
+    createInstructionLine("Step 2.", "Click Publish at the bottom right."),
+    createInstructionLine(
+      "Step 3.",
+      "Wait about a minute. The Result appears below, starting with the time it ran.",
+    ),
+    createElement("br"),
+    createInstructionLine("Another file?", "Add it in the box below and click Publish again."),
+    createElement("br"),
+    createInstructionLine(
+      "Column headings.",
+      "The first rows of the sheet must be column headings.",
+    ),
+    createInstructionLine(
+      "Calendar:",
+      "“Date” and “Name” are needed; “Time”, “Where”, “Kind”, “Notes” and “Highlight” are optional.",
+    ),
+    createInstructionLine(
+      "Event volunteers:",
+      "“Volunteer name” and “Events” (several events separated by commas).",
+    ),
+  );
+
 export const spreadsheetImport = defineType({
   name: "spreadsheetImport",
-  title: "Excel upload",
+  title: "Spreadsheet upload",
   type: "document",
   icon: UploadIcon,
   fields: [
@@ -40,12 +74,11 @@ export const spreadsheetImport = defineType({
     }),
     defineField({
       name: "file",
-      title: "Excel file",
+      title: "Spreadsheet file",
       type: "file",
-      description:
-        "Step 1: choose your Excel (.xlsx) file here. Step 2: click Publish at the bottom right. Step 3: wait about a minute. The Result appears below, starting with the time it ran. To import another file, choose it here and click Publish again. The first rows of the sheet must be column headings. Calendar: “Date” and “Name” are needed; “Time”, “Where”, “Kind”, “Notes” and “Highlight” are optional. Event volunteers: “Volunteer name” and “Events” (several events separated by commas).",
+      description: createUploadInstructions(),
       options: { accept: ".xlsx" },
-      validation: (rule) => rule.required().error("Choose the Excel file."),
+      validation: (rule) => rule.required().error("Choose the spreadsheet file."),
     }),
     defineField({
       name: "importReport",
@@ -67,7 +100,7 @@ export const spreadsheetImport = defineType({
   preview: {
     select: { kind: "kind", schoolYear: "schoolYear", importReport: "importReport" },
     prepare: ({ kind, schoolYear, importReport }) => ({
-      title: getKindTitle(kind) ?? "Excel upload",
+      title: getKindTitle(kind) ?? "Spreadsheet upload",
       subtitle:
         typeof importReport === "string"
           ? importReport.split("\n")[0]

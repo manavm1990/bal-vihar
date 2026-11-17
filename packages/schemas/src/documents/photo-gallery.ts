@@ -11,7 +11,7 @@ export const PHOTO_PAGE_OPTIONS = [
 
 export const photoGallery = defineType({
   name: "photoGallery",
-  title: "Home & page photos",
+  title: "Home page strip & page banners",
   type: "document",
   icon: ImagesIcon,
   fields: [
@@ -106,7 +106,7 @@ export const photoGallery = defineType({
   ],
   preview: {
     prepare() {
-      return { title: "Home & page photos" };
+      return { title: "Home page strip & page banners" };
     },
   },
 });

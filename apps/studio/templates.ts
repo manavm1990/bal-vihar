@@ -8,13 +8,13 @@ export const UPLOADS = {
 export const templates: Template[] = [
   {
     id: UPLOADS.calendar.template,
-    title: "Calendar from Excel",
+    title: "Calendar from spreadsheet",
     schemaType: "spreadsheetImport",
     value: { kind: "calendar" },
   },
   {
     id: UPLOADS.volunteerRoster.template,
-    title: "Event volunteers from Excel",
+    title: "Event volunteers from spreadsheet",
     schemaType: "spreadsheetImport",
     value: { kind: "volunteerRoster" },
   },
