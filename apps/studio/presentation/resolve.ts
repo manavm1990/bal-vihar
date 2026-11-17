@@ -25,10 +25,25 @@ export const resolve = {
           : [{ title: "Class Webpages", href: "/education/class-webpages" }],
       }),
     }),
+    faqs: defineLocations({
+      select: { title: "title" },
+      resolve: () => ({
+        locations: [{ title: "Questions & Contact", href: "/questions" }],
+      }),
+    }),
     homePage: defineLocations({
       select: { title: "title" },
       resolve: () => ({
         locations: [{ title: "Home page", href: "/" }],
+      }),
+    }),
+    impactAward: defineLocations({
+      select: { title: "title" },
+      resolve: () => ({
+        locations: [
+          { title: "Impact Award", href: "/volunteering/impact-award" },
+          { title: "Volunteering", href: "/volunteering" },
+        ],
       }),
     }),
     page: defineLocations({
@@ -58,6 +73,18 @@ export const resolve = {
       select: { title: "title" },
       resolve: () => ({
         locations: [{ title: "Policies & Procedures", href: "/about-us/policies-procedures" }],
+      }),
+    }),
+    teachingFaculty: defineLocations({
+      select: { title: "schoolYear" },
+      resolve: () => ({
+        locations: [{ title: "Teaching Faculty", href: "/education/teaching-faculty" }],
+      }),
+    }),
+    volunteerRoster: defineLocations({
+      select: { title: "schoolYear" },
+      resolve: () => ({
+        locations: [{ title: "Event volunteers", href: "/volunteering/volunteers" }],
       }),
     }),
     volunteersList: defineLocations({

@@ -1,8 +1,10 @@
-import { SINGLETON_IDS } from "@bv/schemas";
+import { getToday, SINGLETON_IDS } from "@bv/schemas";
 import { BookIcon } from "@sanity/icons/Book";
 import { CalendarIcon } from "@sanity/icons/Calendar";
+import { ClockIcon } from "@sanity/icons/Clock";
 import { DocumentIcon } from "@sanity/icons/Document";
 import { DocumentTextIcon } from "@sanity/icons/DocumentText";
+import { EditIcon } from "@sanity/icons/Edit";
 import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
 import { ImageIcon } from "@sanity/icons/Image";
 import { ImagesIcon } from "@sanity/icons/Images";
@@ -10,51 +12,80 @@ import { StarIcon } from "@sanity/icons/Star";
 import { UploadIcon } from "@sanity/icons/Upload";
 import { UsersIcon } from "@sanity/icons/Users";
 import { WarningOutlineIcon } from "@sanity/icons/WarningOutline";
-import type { StructureBuilder, StructureResolver } from "sanity/structure";
+import type { ListItemBuilder, StructureBuilder, StructureResolver } from "sanity/structure";
+import { getAccess, type SectionId, UNPUBLISHED_FILTER } from "../roles";
 import { UPLOADS } from "../templates";
+
+interface Section {
+  create: (S: StructureBuilder, classes: string[] | null) => ListItemBuilder;
+  group: (typeof GROUPS)[number];
+  id: SectionId;
+}
+
+const GROUPS = ["After each class", "Now and then", "Once a year"] as const;
 
 const PAGE_END = "coalesce(showUntil, event->date)";
 
-export const structure: StructureResolver = (S) =>
-  S.list()
-    .title("Edit the website")
-    .items([
+const SECTIONS: Section[] = [
+  {
+    id: "classes",
+    group: "After each class",
+    create: (S, classes) =>
       S.listItem()
-        .title("Administrative Team")
-        .icon(UsersIcon)
+        .title(classes?.length === 1 ? "My class" : "Classes")
+        .icon(BookIcon)
         .child(
-          S.document()
-            .schemaType("volunteersList")
-            .documentId(SINGLETON_IDS.volunteersList)
-            .title("Administrative Team"),
+          S.documentList()
+            .title("Classes")
+            .schemaType("classPage")
+            .filter(
+              classes ? '_type == "classPage" && slug.current in $classes' : '_type == "classPage"',
+            )
+            .params({ classes: classes ?? [] })
+            .defaultOrdering([{ field: "sortOrder", direction: "asc" }]),
         ),
+  },
+  {
+    id: "banners",
+    group: "Now and then",
+    create: (S) => createSingletonItem(S, "Banner photos", "photoGallery", ImageIcon),
+  },
+  {
+    id: "calendar",
+    group: "Now and then",
+    create: (S) =>
       S.listItem()
         .title("Calendar")
         .icon(CalendarIcon)
         .child(
-          S.documentTypeList("calendarEvent")
+          S.list()
             .title("Calendar")
-            .defaultOrdering([{ field: "date", direction: "asc" }])
-            .menuItems([
-              ...(S.documentTypeList("calendarEvent").getMenuItems() ?? []),
-              S.menuItem()
-                .title("Upload from spreadsheet")
-                .icon(UploadIcon)
-                .intent({
-                  type: "edit",
-                  params: { id: UPLOADS.calendar.id, type: "spreadsheetImport" },
-                })
-                .showAsAction(true),
+            .items([
+              createDatedItem({
+                S,
+                title: "Upcoming events",
+                type: "calendarEvent",
+                filter: "date >= $today",
+                direction: "asc",
+                orderBy: "date",
+              }),
+              createDatedItem({
+                S,
+                title: "Past events",
+                type: "calendarEvent",
+                filter: "date < $today",
+                direction: "desc",
+                orderBy: "date",
+              }),
+              S.divider(),
+              createUploadItem(S, "Add events from a spreadsheet", UPLOADS.calendar),
             ]),
         ),
-      S.listItem()
-        .title("Classes")
-        .icon(BookIcon)
-        .child(
-          S.documentTypeList("classPage")
-            .title("Classes")
-            .defaultOrdering([{ field: "sortOrder", direction: "asc" }]),
-        ),
+  },
+  {
+    id: "pages",
+    group: "Now and then",
+    create: (S) =>
       S.listItem()
         .title("Custom pages")
         .icon(DocumentIcon)
@@ -62,69 +93,30 @@ export const structure: StructureResolver = (S) =>
           S.list()
             .title("Custom pages")
             .items([
-              createPagesItem({
+              createDatedItem({
                 S,
                 title: "Current",
+                type: "page",
                 filter: `!defined(${PAGE_END}) || ${PAGE_END} >= $today`,
               }),
-              createPagesItem({ S, title: "Archived", filter: `${PAGE_END} < $today` }),
+              createDatedItem({
+                S,
+                title: "Archived",
+                type: "page",
+                filter: `${PAGE_END} < $today`,
+              }),
             ]),
         ),
-      S.listItem()
-        .title("Event volunteers")
-        .icon(UsersIcon)
-        .child(
-          S.list()
-            .title("Event volunteers")
-            .items([
-              S.listItem()
-                .title("Edit individual entries")
-                .icon(UsersIcon)
-                .child(
-                  S.document()
-                    .schemaType("volunteerRoster")
-                    .documentId(SINGLETON_IDS.volunteerRoster)
-                    .title("Event volunteers"),
-                ),
-              S.listItem()
-                .title("Upload from spreadsheet")
-                .icon(UploadIcon)
-                .child(
-                  S.document()
-                    .schemaType("spreadsheetImport")
-                    .documentId(UPLOADS.volunteerRoster.id)
-                    .initialValueTemplate(UPLOADS.volunteerRoster.template)
-                    .title("Upload event volunteers from spreadsheet"),
-                ),
-            ]),
-        ),
-      S.listItem()
-        .title("Header notice")
-        .icon(WarningOutlineIcon)
-        .child(
-          S.document()
-            .schemaType("homePage")
-            .documentId(SINGLETON_IDS.homePage)
-            .title("Header notice"),
-        ),
-      S.listItem()
-        .title("Home page strip & page banners")
-        .icon(ImageIcon)
-        .child(
-          S.document()
-            .schemaType("photoGallery")
-            .documentId(SINGLETON_IDS.photoGallery)
-            .title("Home page strip & page banners"),
-        ),
-      S.listItem()
-        .title("Impact Award")
-        .icon(StarIcon)
-        .child(
-          S.document()
-            .schemaType("impactAward")
-            .documentId(SINGLETON_IDS.impactAward)
-            .title("Impact Award"),
-        ),
+  },
+  {
+    id: "notice",
+    group: "Now and then",
+    create: (S) => createSingletonItem(S, "Header notice", "homePage", WarningOutlineIcon),
+  },
+  {
+    id: "photos",
+    group: "Now and then",
+    create: (S) =>
       S.listItem()
         .title("Photo galleries")
         .icon(ImagesIcon)
@@ -136,54 +128,134 @@ export const structure: StructureResolver = (S) =>
               { field: "_createdAt", direction: "desc" },
             ]),
         ),
+  },
+  {
+    id: "adminTeam",
+    group: "Once a year",
+    create: (S) => createSingletonItem(S, "Administrative Team", "volunteersList", UsersIcon),
+  },
+  {
+    id: "eventVolunteers",
+    group: "Once a year",
+    create: (S) =>
       S.listItem()
-        .title("Policies & Procedures")
-        .icon(DocumentTextIcon)
-        .child(
-          S.document()
-            .schemaType("policies")
-            .documentId(SINGLETON_IDS.policies)
-            .title("Policies & Procedures"),
-        ),
-      S.listItem()
-        .title("Questions & Answers")
-        .icon(HelpCircleIcon)
-        .child(
-          S.document()
-            .schemaType("faqs")
-            .documentId(SINGLETON_IDS.faqs)
-            .title("Questions & Answers"),
-        ),
-      S.listItem()
-        .title("Teaching Faculty")
+        .title("Event volunteers")
         .icon(UsersIcon)
         .child(
-          S.document()
-            .schemaType("teachingFaculty")
-            .documentId(SINGLETON_IDS.teachingFaculty)
-            .title("Teaching Faculty"),
+          S.list()
+            .title("Event volunteers")
+            .items([
+              createSingletonItem(S, "Edit the list", "volunteerRoster", EditIcon),
+              createUploadItem(
+                S,
+                "Replace the whole list from a spreadsheet",
+                UPLOADS.volunteerRoster,
+              ),
+            ]),
         ),
-    ]);
+  },
+  {
+    id: "impactAward",
+    group: "Once a year",
+    create: (S) => createSingletonItem(S, "Impact Award", "impactAward", StarIcon),
+  },
+  {
+    id: "policies",
+    group: "Once a year",
+    create: (S) => createSingletonItem(S, "Policies & Procedures", "policies", DocumentTextIcon),
+  },
+  {
+    id: "faqs",
+    group: "Once a year",
+    create: (S) => createSingletonItem(S, "Questions & Answers", "faqs", HelpCircleIcon),
+  },
+  {
+    id: "faculty",
+    group: "Once a year",
+    create: (S) => createSingletonItem(S, "Teaching Faculty", "teachingFaculty", UsersIcon),
+  },
+];
 
-const createPagesItem = ({
+export const structure: StructureResolver = (S, { currentUser }) => {
+  const { canSee, classes, types } = getAccess(currentUser?.id);
+  const visible = SECTIONS.filter(({ id }) => canSee(id));
+
+  return S.list()
+    .title("Edit the website")
+    .items([
+      S.listItem()
+        .id("unpublished")
+        .title("Not published yet")
+        .icon(ClockIcon)
+        .child(
+          S.documentList()
+            .title("Edits waiting for Publish")
+            .filter(UNPUBLISHED_FILTER)
+            .params({ types })
+            .defaultOrdering([{ field: "_updatedAt", direction: "desc" }]),
+        ),
+      ...GROUPS.flatMap((group) => {
+        const items = visible.filter((section) => section.group === group);
+
+        return items.length === 0
+          ? []
+          : [
+              S.divider().title(group),
+              ...items.map((section) => section.create(S, classes).id(section.id)),
+            ];
+      }),
+    ]);
+};
+
+const createDatedItem = ({
   S,
   title,
+  type,
   filter,
+  orderBy = "_createdAt",
+  direction = "desc",
 }: {
   S: StructureBuilder;
   title: string;
+  type: string;
   filter: string;
+  orderBy?: string;
+  direction?: "asc" | "desc";
 }) =>
   S.listItem()
     .title(title)
-    .icon(DocumentIcon)
+    .icon(type === "calendarEvent" ? CalendarIcon : DocumentIcon)
     .child(
-      S.documentList()
-        .title(`${title} custom pages`)
-        .schemaType("page")
-        .filter(`_type == "page" && (${filter})`)
-        .params({ today: getToday() })
-        .defaultOrdering([{ field: "_createdAt", direction: "desc" }]),
+      S.documentTypeList(type)
+        .title(title)
+        .filter(`_type == $type && (${filter})`)
+        .params({ today: getToday(), type })
+        .defaultOrdering([{ field: orderBy, direction }]),
     );
 
-const getToday = () => new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
+const createSingletonItem = (
+  S: StructureBuilder,
+  title: string,
+  type: keyof typeof SINGLETON_IDS,
+  icon: typeof UsersIcon,
+) =>
+  S.listItem()
+    .title(title)
+    .icon(icon)
+    .child(S.document().schemaType(type).documentId(SINGLETON_IDS[type]).title(title));
+
+const createUploadItem = (
+  S: StructureBuilder,
+  title: string,
+  upload: (typeof UPLOADS)[keyof typeof UPLOADS],
+) =>
+  S.listItem()
+    .title(title)
+    .icon(UploadIcon)
+    .child(
+      S.document()
+        .schemaType("spreadsheetImport")
+        .documentId(upload.id)
+        .initialValueTemplate(upload.template)
+        .title(title),
+    );

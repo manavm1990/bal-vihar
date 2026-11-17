@@ -132,12 +132,24 @@
   },
   "overrides": [
     {
-      // next/og renders plain <img>; next/image isn't available inside ImageResponse.
-      "includes": ["**/opengraph-image.tsx"],
+      // next/image isn't available in next/og's ImageResponse or in Sanity Studio.
+      "includes": ["**/opengraph-image.tsx", "apps/studio/**"],
       "linter": {
         "rules": {
           "performance": {
             "noImgElement": "off"
+          }
+        }
+      }
+    },
+    {
+      // Sanity extends built-in document actions by wrapping the component it passes in
+      // (sanity.io/docs/studio/document-actions#extending-built-in-actions); wrappers are cached.
+      "includes": ["apps/studio/actions/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noComponentHookFactories": "off"
           }
         }
       }
