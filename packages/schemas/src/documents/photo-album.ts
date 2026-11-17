@@ -41,7 +41,7 @@ export const photoAlbum = defineType({
       title: "School year",
       type: "string",
       description:
-        "Starts as the current school year. Change it only for older photos. The newest year is listed first on the Photos page.",
+        "Starts as the current school year. The newest year is listed first on the Photos page.",
       options: { list: SCHOOL_YEARS, layout: "dropdown" },
       initialValue: getCurrentSchoolYear,
       validation: (rule) => rule.required().error("Pick the school year."),

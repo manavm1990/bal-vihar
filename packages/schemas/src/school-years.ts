@@ -1,5 +1,4 @@
 const AUGUST = 8;
-const FIRST_LISTED_YEAR = 2010;
 
 const formatSchoolYear = (start: number) => `${start}-${String(start + 1).slice(2)}`;
 
@@ -18,7 +17,8 @@ function getCurrentStartYear() {
   return month >= AUGUST ? year : year - 1;
 }
 
-export const SCHOOL_YEARS = Array.from(
-  { length: getCurrentStartYear() + 2 - FIRST_LISTED_YEAR },
-  (_, index) => formatSchoolYear(getCurrentStartYear() + 1 - index),
-);
+export const SCHOOL_YEARS = [
+  formatSchoolYear(getCurrentStartYear() + 1),
+  formatSchoolYear(getCurrentStartYear()),
+  formatSchoolYear(getCurrentStartYear() - 1),
+];
