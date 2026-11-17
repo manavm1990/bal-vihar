@@ -27,7 +27,7 @@ export default defineBlueprint({
         filter:
           '_type == "spreadsheetImport" && defined(file.asset) && file.asset._ref != processedFile',
         projection:
-          '{_id, _rev, kind, schoolYear, "fileRef": file.asset._ref, "fileUrl": file.asset->url}',
+          '{_id, kind, schoolYear, "fileRef": file.asset._ref, "fileUrl": file.asset->url}',
         resource: { type: "dataset", id: "x5wq3sbt.production" },
       },
     }),

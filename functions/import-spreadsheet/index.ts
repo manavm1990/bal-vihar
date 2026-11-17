@@ -1,23 +1,37 @@
-import { createClient, isHttpError, type SanityClient } from "@sanity/client";
+import { createClient, isHttpError, type SanityClient, type SanityDocument } from "@sanity/client";
 import { documentEventHandler } from "@sanity/functions";
 import { readSheet } from "read-excel-file/universal";
-import { type CalendarEvent, createEventKey, type Problem, parseCalendarEvents } from "./calendar";
+import {
+  type CalendarEvent,
+  createEventKey,
+  findPossibleDuplicates,
+  type Problem,
+  parseCalendarEvents,
+} from "./calendar";
 import { type Row, SheetError } from "./sheet";
 import { parseVolunteerRoster, type VolunteerActivity } from "./volunteers";
 
 interface ExistingEvent {
-  date?: string | null;
-  title?: string | null;
+  date: string;
+  title: string;
+}
+
+interface ImportResult {
+  report: string;
+  undo?: UndoRecord;
 }
 
 interface SpreadsheetImportEvent {
   _id: string;
-  _rev: string;
   fileRef?: string | null;
   fileUrl?: string | null;
   kind?: string | null;
   schoolYear?: string | null;
 }
+
+type UndoRecord =
+  | { kind: "calendar"; createdIds: string[] }
+  | { kind: "volunteerRoster"; draft: SanityDocument | null; published: SanityDocument | null };
 
 const API_VERSION = "2025-05-08";
 const FETCH_TIMEOUT_MS = 30_000;
@@ -25,24 +39,33 @@ const MAX_LISTED_PROBLEMS = 20;
 const ROSTER_ID = "volunteerRoster";
 
 export const handler = documentEventHandler<SpreadsheetImportEvent>(async ({ context, event }) => {
-  const { _id, _rev, fileRef } = event.data;
+  const { _id, fileRef } = event.data;
   const client = createClient({ ...context.clientOptions, apiVersion: API_VERSION, useCdn: false });
   const isDryRun = context.local === true;
 
-  const importReport = await runImport(client, event.data, isDryRun).catch(describeFailure);
+  const { report, undo } = await runImport(client, event.data, isDryRun).catch(describeFailure);
 
-  console.info(importReport);
+  console.info(report);
   if (isDryRun) return;
 
-  // Fails if the upload was edited meanwhile, so the run starts again...
-  await client.patch(_id).ifRevisionId(_rev).set({ importReport, processedFile: fileRef }).commit();
+  // No revision lock: a retry would import again and record the wrong undo. If a newer file was
+  // attached meanwhile, its own run reports and records the undo, so this one leaves them alone.
+  const currentFile = await client.fetch<string | null>("*[_id == $id][0].file.asset._ref", {
+    id: _id,
+  });
+  if (currentFile !== fileRef) return;
+
+  const patch = client.patch(_id).set({ importReport: report, processedFile: fileRef });
+
+  await (undo ? patch.set({ undoData: JSON.stringify(undo) }) : patch.unset(["undoData"])).commit();
 });
 
 const createReport = (summary: string, details: string[] = []) =>
   [`${formatNow()}: ${summary}`, ...details].join("\n");
 
-function describeFailure(error: unknown) {
-  if (error instanceof SheetError) return createReport(`Nothing was imported: ${error.message}`);
+function describeFailure(error: unknown): ImportResult {
+  if (error instanceof SheetError)
+    return { report: createReport(`Nothing was imported: ${error.message}`) };
 
   console.error("Spreadsheet import failed", error);
 
@@ -50,14 +73,7 @@ function describeFailure(error: unknown) {
     ? `Sanity would not save it (${error.message})`
     : "something went wrong, so please try again";
 
-  return createReport(`Nothing was imported: ${reason}.`);
-}
-
-function formatLongSchoolYear(schoolYear: string | null | undefined) {
-  const start = Number(/^(\d{4})-\d{2}$/.exec(schoolYear ?? "")?.[1]);
-  if (!start) throw new SheetError("pick the school year, then publish again.");
-
-  return `${start}–${start + 1}`;
+  return { report: createReport(`Nothing was imported: ${reason}.`) };
 }
 
 const formatNow = () =>
@@ -67,25 +83,34 @@ const formatNow = () =>
     timeZone: "America/Chicago",
   }).format(new Date());
 
-async function importCalendar(client: SanityClient, rows: Row[], isDryRun: boolean) {
+const formatShortDate = (date: string) =>
+  new Date(`${date}T12:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+async function importCalendar(
+  client: SanityClient,
+  rows: Row[],
+  isDryRun: boolean,
+): Promise<ImportResult> {
   const { events, problems } = parseCalendarEvents(rows);
   if (events.length === 0 && problems.length === 0)
     throw new SheetError("no events were found below the headings.");
 
-  const existing = new Set(
-    (await client.fetch<ExistingEvent[]>('*[_type == "calendarEvent"]{date, title}')).map(
-      ({ date, title }) => createEventKey(date ?? "", title ?? ""),
-    ),
+  const existing = await client.fetch<ExistingEvent[]>(
+    '*[_type == "calendarEvent"]{"date": coalesce(date, ""), "title": coalesce(title, "")}',
   );
-  const added = events.filter(({ date, title }) => !existing.has(createEventKey(date, title)));
+  const existingKeys = new Set(existing.map(({ date, title }) => createEventKey(date, title)));
+  const added = events.filter(({ date, title }) => !existingKeys.has(createEventKey(date, title)));
   const alreadyListed = events.length - added.length;
+  const lookalikes = findPossibleDuplicates(added, existing);
+  const created = added.map((event) => ({ _id: crypto.randomUUID(), ...toCalendarEvent(event) }));
+  const undo: UndoRecord | undefined =
+    created.length > 0
+      ? { kind: "calendar", createdIds: created.map(({ _id }) => _id) }
+      : undefined;
 
-  if (!isDryRun && added.length > 0)
-    await added
-      .reduce(
-        (transaction, event) => transaction.create(toCalendarEvent(event)),
-        client.transaction(),
-      )
+  if (!isDryRun && created.length > 0)
+    await created
+      .reduce((transaction, event) => transaction.create(event), client.transaction())
       .commit();
 
   const summary = [
@@ -96,7 +121,16 @@ async function importCalendar(client: SanityClient, rows: Row[], isDryRun: boole
     .filter(Boolean)
     .join(", ");
 
-  return createReport(`${summary}.`, listProblems(problems));
+  return {
+    report: createReport(`${summary}.`, [
+      ...lookalikes.map(
+        ({ added, existing }) =>
+          `Check ${formatShortDate(added.date)}: “${added.title}” was added next to “${existing.title}”. If one replaces the other, delete the old one in Calendar.`,
+      ),
+      ...listProblems(problems),
+    ]),
+    ...(undo ? { undo } : {}),
+  };
 }
 
 async function importVolunteerRoster(
@@ -104,19 +138,27 @@ async function importVolunteerRoster(
   rows: Row[],
   schoolYear: string | null | undefined,
   isDryRun: boolean,
-) {
+): Promise<ImportResult> {
   const { activities, skippedRows, volunteerCount } = parseVolunteerRoster(rows);
-  const longSchoolYear = formatLongSchoolYear(schoolYear);
+  if (!schoolYear) throw new SheetError("pick the school year, then publish again.");
   if (activities.length === 0) throw new SheetError("no volunteers with events were found.");
 
-  if (!isDryRun) await replaceRoster(client, longSchoolYear, activities);
+  const [published, draft] = await Promise.all([
+    client.getDocument(ROSTER_ID),
+    client.getDocument(`drafts.${ROSTER_ID}`),
+  ]);
 
-  return createReport(
-    `${volunteerCount} volunteers across ${activities.length} events imported for ${longSchoolYear}. The event volunteers list was replaced.`,
-    skippedRows > 0
-      ? [`${skippedRows} rows had no events, for example people who declined, and were left out.`]
-      : [],
-  );
+  if (!isDryRun) await replaceRoster(client, schoolYear, activities, draft !== undefined);
+
+  return {
+    report: createReport(
+      `${volunteerCount} volunteers across ${activities.length} events imported for ${schoolYear}. The event volunteers list was replaced. Click “Undo last upload” to put the old list back.`,
+      skippedRows > 0
+        ? [`${skippedRows} rows had no events, for example people who declined, and were left out.`]
+        : [],
+    ),
+    undo: { kind: "volunteerRoster", published: published ?? null, draft: draft ?? null },
+  };
 }
 
 const listProblems = (problems: Problem[]) => [
@@ -146,14 +188,14 @@ async function replaceRoster(
   client: SanityClient,
   schoolYear: string,
   activities: VolunteerActivity[],
+  hasDraft: boolean,
 ) {
-  const draftId = `drafts.${ROSTER_ID}`;
   const fields = { schoolYear, activities: activities.map(toActivity) };
   const transaction = client
     .transaction()
     .createOrReplace({ _id: ROSTER_ID, _type: "volunteerRoster", ...fields });
 
-  if (await client.getDocument(draftId)) transaction.patch(draftId, { set: fields });
+  if (hasDraft) transaction.patch(`drafts.${ROSTER_ID}`, { set: fields });
 
   await transaction.commit();
 }

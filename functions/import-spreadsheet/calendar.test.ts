@@ -1,6 +1,6 @@
 import { deepStrictEqual, equal, throws } from "node:assert/strict";
 import { test } from "node:test";
-import { createEventKey, parseCalendarEvents } from "./calendar";
+import { createEventKey, findPossibleDuplicates, parseCalendarEvents } from "./calendar";
 import { SheetError } from "./sheet";
 
 test("reads dates, times and optional columns below a title row", () => {
@@ -123,6 +123,31 @@ test("event keys ignore case and extra spaces so existing events are recognised"
   equal(
     createEventKey("2025-09-07", "  Diwali   Party "),
     createEventKey("2025-09-07", "diwali party"),
+  );
+});
+
+test("a renamed event on the same date is flagged, but unrelated or generic names are not", () => {
+  const existing = [
+    { date: "2025-10-19", title: "Diwali" },
+    { date: "2025-10-19", title: "Regular classes" },
+    { date: "2025-10-26", title: "Diwali" },
+  ];
+
+  deepStrictEqual(
+    findPossibleDuplicates(
+      [
+        { date: "2025-10-19", title: "Diwali Celebration" },
+        { date: "2025-10-19", title: "Special classes" },
+        { date: "2025-11-02", title: "Diwali Celebration" },
+      ],
+      existing,
+    ),
+    [
+      {
+        added: { date: "2025-10-19", title: "Diwali Celebration" },
+        existing: { date: "2025-10-19", title: "Diwali" },
+      },
+    ],
   );
 });
 

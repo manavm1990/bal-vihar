@@ -1,6 +1,6 @@
 import { UploadIcon } from "@sanity/icons/Upload";
-import { createElement } from "react";
-import { defineField, defineType } from "sanity";
+import { createElement, Fragment } from "react";
+import { defineField, defineType, type FileInputProps, useFormValue } from "sanity";
 import { getCurrentSchoolYear, SCHOOL_YEARS } from "../school-years";
 
 const IMPORT_KINDS = [
@@ -15,7 +15,7 @@ const isCalendar = (document?: Record<string, unknown>) => document?.["kind"] ==
 const createInstructionLine = (label: string, text: string) =>
   createElement("div", null, createElement("strong", null, `${label} `), text);
 
-const createUploadInstructions = () =>
+const createUploadInstructions = (isCalendarUpload: boolean) =>
   createElement(
     "div",
     null,
@@ -30,19 +30,27 @@ const createUploadInstructions = () =>
     ),
     createElement("br"),
     createInstructionLine("Another file?", "Add it in the box below and click Publish again."),
+    createInstructionLine(
+      "Wrong file?",
+      "Click “Undo last upload” in the menu next to Publish. It puts things back as they were.",
+    ),
     createElement("br"),
+    isCalendarUpload
+      ? createInstructionLine(
+          "This upload only adds events.",
+          "Fixing a name or date in the sheet adds a second event, so the Result lists those to check and delete.",
+        )
+      : createInstructionLine(
+          "This upload replaces the whole list,",
+          "including changes typed in by hand.",
+        ),
     createInstructionLine(
       "Column headings.",
-      "The first rows of the sheet must be column headings.",
+      isCalendarUpload
+        ? "The first row must be headings. “Date” and “Name” are needed; “Time”, “Where”, “Kind”, “Notes” and “Highlight” are optional."
+        : "The first row must be headings: “Volunteer name” and “Events” (several events separated by commas).",
     ),
-    createInstructionLine(
-      "Calendar:",
-      "“Date” and “Name” are needed; “Time”, “Where”, “Kind”, “Notes” and “Highlight” are optional.",
-    ),
-    createInstructionLine(
-      "Event volunteers:",
-      "“Volunteer name” and “Events” (several events separated by commas).",
-    ),
+    createElement("br"),
   );
 
 export const spreadsheetImport = defineType({
@@ -76,7 +84,8 @@ export const spreadsheetImport = defineType({
       name: "file",
       title: "Spreadsheet file",
       type: "file",
-      description: createUploadInstructions(),
+      description: "An .xlsx file. The steps are below.",
+      components: { input: UploadInput },
       options: { accept: ".xlsx" },
       validation: (rule) => rule.required().error("Choose the spreadsheet file."),
     }),
@@ -89,6 +98,12 @@ export const spreadsheetImport = defineType({
       hidden: ({ value }) => !value,
       description:
         "What was imported and any rows that were skipped. Filled in automatically. If the time at the start is old, wait a minute for the new result.",
+    }),
+    defineField({
+      name: "undoData",
+      type: "text",
+      readOnly: true,
+      hidden: true,
     }),
     defineField({
       name: "processedFile",
@@ -108,3 +123,14 @@ export const spreadsheetImport = defineType({
     }),
   },
 });
+
+function UploadInput(props: FileInputProps) {
+  const isCalendarUpload = useFormValue(["kind"]) === "calendar";
+
+  return createElement(
+    Fragment,
+    null,
+    createUploadInstructions(isCalendarUpload),
+    props.renderDefault(props),
+  );
+}

@@ -28,6 +28,8 @@ const EVENT_TYPES = new Map([
   ["special event", "special"],
 ]);
 
+const GENERIC_WORDS = new Set(["class", "classes", "event", "regular", "special"]);
+
 function formatDate(year: number, month: number, day: number) {
   const date = new Date(Date.UTC(year, month - 1, day));
   const isReal =
@@ -54,6 +56,12 @@ function getAcademicYear(date: string) {
 const isBlankRow = (row: Row) =>
   row.every((cell) => cell === null || cell === undefined || toText(cell) === "");
 
+const listNameWords = (title: string) =>
+  title
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((word) => word.length >= 4 && !GENERIC_WORDS.has(word));
+
 const padTwo = (value: number) => String(value).padStart(2, "0");
 
 function parseDate(cell: unknown) {
@@ -72,8 +80,27 @@ function parseDate(cell: unknown) {
   return formatDate(year < 100 ? 2000 + year : year, Number(us[1]), Number(us[2]));
 }
 
+const sharesNameWord = (first: string, second: string) =>
+  listNameWords(first).some((word) => listNameWords(second).includes(word));
+
 export const createEventKey = (date: string, title: string) =>
   `${date}|${title.replace(/\s+/g, " ").trim().toLowerCase()}`;
+
+export function findPossibleDuplicates(
+  added: Pick<CalendarEvent, "date" | "title">[],
+  existing: Pick<CalendarEvent, "date" | "title">[],
+) {
+  return added.flatMap((event) =>
+    existing
+      .filter(
+        (other) =>
+          other.date === event.date &&
+          createEventKey(other.date, other.title) !== createEventKey(event.date, event.title) &&
+          sharesNameWord(other.title, event.title),
+      )
+      .map((other) => ({ added: event, existing: other })),
+  );
+}
 
 export function parseCalendarEvents(rows: Row[]) {
   const located = locateColumns(rows, [
