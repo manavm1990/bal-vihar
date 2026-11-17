@@ -9,11 +9,9 @@ const createPage = (overrides: Partial<PageRow> = {}): PageRow => ({
   _id: "page-1",
   title: "Diwali Show",
   slug: "diwali-2026",
-  description: "Our annual show.",
   menu: null,
   menuLabel: null,
   endsOn: null,
-  body: [],
   ...overrides,
 });
 

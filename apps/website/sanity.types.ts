@@ -726,7 +726,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: CALENDAR_EVENTS_QUERY
-// Query: *[_type == "calendarEvent"] | order(date asc) {  _id,  title,  date,  location,  eventType,  time,  description,  isHighlighted,  academicYear,  "detailsSlug": *[_type == "page" && event._ref == ^._id][0].slug.current}
+// Query: *[_type == "calendarEvent"] | order(date asc) {  _id,  title,  date,  location,  eventType,  time,  description,  isHighlighted,  academicYear,  "detailsSlug": *[_type == "page" && (event._ref == ^._id || "drafts." + event._ref == ^._id)][0].slug.current}
 export type CALENDAR_EVENTS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
@@ -1032,12 +1032,11 @@ export type PAGE_QUERY_RESULT = {
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: PAGES_QUERY
-// Query: *[_type == "page" && defined(slug.current)]{  _id,  title,  "slug": slug.current,  description,  menu,  menuLabel,  "endsOn": coalesce(showUntil, event->date),  body}
+// Query: *[_type == "page" && defined(slug.current)] | order(title asc){  _id,  title,  "slug": slug.current,  menu,  menuLabel,  "endsOn": coalesce(showUntil, event->date)}
 export type PAGES_QUERY_RESULT = Array<{
   _id: string;
   title: string;
   slug: string;
-  description: string;
   menu:
     | "About"
     | "Contact"
@@ -1048,6 +1047,17 @@ export type PAGES_QUERY_RESULT = Array<{
     | "Volunteer"
     | null;
   menuLabel: string | null;
+  endsOn: string | null;
+}>;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: PAGES_SEARCH_QUERY
+// Query: *[_type == "page" && defined(slug.current)]{  _id,  title,  "slug": slug.current,  description,  "endsOn": coalesce(showUntil, event->date),  body}
+export type PAGES_SEARCH_QUERY_RESULT = Array<{
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
   endsOn: string | null;
   body: Array<
     | ({
@@ -1437,14 +1447,15 @@ export type VOLUNTEERS_LIST_QUERY_RESULT =
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '*[_type == "calendarEvent"] | order(date asc) {\n  _id,\n  title,\n  date,\n  location,\n  eventType,\n  time,\n  description,\n  isHighlighted,\n  academicYear,\n  "detailsSlug": *[_type == "page" && event._ref == ^._id][0].slug.current\n}': CALENDAR_EVENTS_QUERY_RESULT;
+    '*[_type == "calendarEvent"] | order(date asc) {\n  _id,\n  title,\n  date,\n  location,\n  eventType,\n  time,\n  description,\n  isHighlighted,\n  academicYear,\n  "detailsSlug": *[_type == "page" && (event._ref == ^._id || "drafts." + event._ref == ^._id)][0].slug.current\n}': CALENDAR_EVENTS_QUERY_RESULT;
     '*[_type == "classPage" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  teachers,\n  pinnedNote,\n  links[]{\n    _key,\n    label,\n    url\n  },\n  "sessions": sessions[] | order(date desc){\n    _key,\n    date,\n    covered,\n    homework,\n    links[]{\n      _key,\n      label,\n      url\n    }\n  }\n}': CLASS_PAGE_QUERY_RESULT;
     '*[_type == "classPage"] | order(sortOrder asc){\n  _id,\n  title,\n  "slug": slug.current,\n  group,\n  teachers,\n  "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)\n}': CLASS_PAGES_QUERY_RESULT;
     '*[_id == "faqs"][0]{\n  _id,\n  items[]{\n    _key,\n    question,\n    answer\n  }\n}': FAQS_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  noticeText,\n  noticeHref,\n  noticeLabel\n}': HOME_PAGE_QUERY_RESULT;
     '*[_id == "impactAward"][0]{\n  _id,\n  awardYear,\n  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },\n  coordinator{ name, role, email, phone },\n  tiers{\n    bronze{ teens, youngAdults },\n    silver{ teens, youngAdults },\n    gold{ teens, youngAdults }\n  },\n  teachingHours[]{\n    _key,\n    activity,\n    classesY4,\n    classesY5,\n    prepHours,\n    presentingHours,\n    attendedHours\n  },\n  communityIntro,\n  communityProjects[]{ _key, project, participating, onTheTeam, leading },\n  downloads[]{ _key, label, description, url }\n}': IMPACT_AWARD_QUERY_RESULT;
     '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  description,\n  "endsOn": coalesce(showUntil, event->date),\n  "event": event->{ _id, title, date, time, location },\n  body[]{\n    ...,\n    _type == "mediaImage" => { ..., asset->{ _id, url, metadata { lqip, dimensions { width, height } } } }\n  }\n}': PAGE_QUERY_RESULT;
-    '*[_type == "page" && defined(slug.current)]{\n  _id,\n  title,\n  "slug": slug.current,\n  description,\n  menu,\n  menuLabel,\n  "endsOn": coalesce(showUntil, event->date),\n  body\n}': PAGES_QUERY_RESULT;
+    '*[_type == "page" && defined(slug.current)] | order(title asc){\n  _id,\n  title,\n  "slug": slug.current,\n  menu,\n  menuLabel,\n  "endsOn": coalesce(showUntil, event->date)\n}': PAGES_QUERY_RESULT;
+    '*[_type == "page" && defined(slug.current)]{\n  _id,\n  title,\n  "slug": slug.current,\n  description,\n  "endsOn": coalesce(showUntil, event->date),\n  body\n}': PAGES_SEARCH_QUERY_RESULT;
     '*[_type == "photoAlbum" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photos": photos[defined(asset)]{ _key, asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop }\n}': PHOTO_ALBUM_QUERY_RESULT;
     '*[\n  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0\n] | order(schoolYear desc, _createdAt desc){\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photoCount": count(photos[defined(asset)]),\n  "photoKeys": photos[defined(asset)]._key,\n  "cover": photos[defined(asset)][0]{ _key, asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop }\n}': PHOTO_ALBUMS_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image{ asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop }\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;

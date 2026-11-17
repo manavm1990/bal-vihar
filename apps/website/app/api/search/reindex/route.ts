@@ -4,7 +4,7 @@ import {
   CALENDAR_EVENTS_QUERY,
   CLASS_PAGES_QUERY,
   FAQS_QUERY,
-  PAGES_QUERY,
+  PAGES_SEARCH_QUERY,
   PHOTO_ALBUMS_QUERY,
   POLICIES_QUERY,
 } from "@lib/sanity/queries";
@@ -72,7 +72,7 @@ async function collectSearchDocuments(origin: string) {
     sanity.fetch(FAQS_QUERY),
     sanity.fetch(PHOTO_ALBUMS_QUERY),
     sanity.fetch(POLICIES_QUERY),
-    sanity.fetch(PAGES_QUERY),
+    sanity.fetch(PAGES_SEARCH_QUERY),
     crawlPageDocuments(origin),
   ]);
 

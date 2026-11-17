@@ -14,8 +14,6 @@ test("current editor pages are searchable by description and body text; archived
         title: "Diwali Show",
         slug: "diwali-2026",
         description: "Our annual show.",
-        menu: null,
-        menuLabel: null,
         endsOn: "2026-11-20",
         body: [
           {
@@ -30,8 +28,6 @@ test("current editor pages are searchable by description and body text; archived
         title: "Old picnic",
         slug: "picnic-2025",
         description: "Last year.",
-        menu: null,
-        menuLabel: null,
         endsOn: "2025-06-01",
         body: [],
       },

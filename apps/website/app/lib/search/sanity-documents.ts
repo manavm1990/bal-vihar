@@ -1,15 +1,14 @@
 import { stegaClean } from "@sanity/client/stega";
-import type { PAGES_QUERY_RESULT, POLICIES_QUERY_RESULT } from "sanity.types";
+import type { PAGES_SEARCH_QUERY_RESULT, POLICIES_QUERY_RESULT } from "sanity.types";
 import { type FaqItemView, getFaqs } from "../sanity/faqs";
 import { formatCalendarEventMeta, mapCalendarEvents } from "../sanity/map-calendar-events";
 import { getCurrentPages } from "../sanity/pages";
-import { describeAlbum } from "../sanity/photo-albums";
 import { getPolicies, type PolicySectionView } from "../sanity/policies";
 import { extractText } from "../sanity/portable-text";
 import type { CalendarEventData } from "../sanity/types";
 import type { SearchDocument } from "./search";
 
-type SearchPage = PAGES_QUERY_RESULT[number];
+type SearchPage = PAGES_SEARCH_QUERY_RESULT[number];
 
 interface SearchAlbum {
   _id: string;
@@ -31,12 +30,26 @@ interface SanitySearchSource {
   events: unknown;
   faqs: Parameters<typeof getFaqs>[0];
   now?: Date;
-  pages: PAGES_QUERY_RESULT | null | undefined;
+  pages: PAGES_SEARCH_QUERY_RESULT | null | undefined;
   classes: readonly SearchClassPage[] | null | undefined;
   policies: POLICIES_QUERY_RESULT | null | undefined;
 }
 
 const clean = (value: string | null | undefined) => stegaClean(value ?? "");
+
+const describeAlbum = ({
+  schoolYear,
+  photoCount,
+}: {
+  schoolYear: string | null;
+  photoCount: number | null;
+}) =>
+  [
+    schoolYear ? `School year ${schoolYear}` : null,
+    `${photoCount ?? 0} ${photoCount === 1 ? "photo" : "photos"}`,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
 const createAlbumDocument = (album: SearchAlbum): SearchDocument => ({
   id: `album:${album._id}`,

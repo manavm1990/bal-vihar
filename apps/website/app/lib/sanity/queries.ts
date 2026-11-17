@@ -10,7 +10,7 @@ export const CALENDAR_EVENTS_QUERY = defineQuery(`*[_type == "calendarEvent"] | 
   description,
   isHighlighted,
   academicYear,
-  "detailsSlug": *[_type == "page" && event._ref == ^._id][0].slug.current
+  "detailsSlug": *[_type == "page" && (event._ref == ^._id || "drafts." + event._ref == ^._id)][0].slug.current
 }`);
 
 export const CLASS_PAGE_QUERY = defineQuery(`*[_type == "classPage" && slug.current == $slug][0]{
@@ -112,13 +112,21 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
   }
 }`);
 
-export const PAGES_QUERY = defineQuery(`*[_type == "page" && defined(slug.current)]{
+export const PAGES_QUERY =
+  defineQuery(`*[_type == "page" && defined(slug.current)] | order(title asc){
+  _id,
+  title,
+  "slug": slug.current,
+  menu,
+  menuLabel,
+  "endsOn": coalesce(showUntil, event->date)
+}`);
+
+export const PAGES_SEARCH_QUERY = defineQuery(`*[_type == "page" && defined(slug.current)]{
   _id,
   title,
   "slug": slug.current,
   description,
-  menu,
-  menuLabel,
   "endsOn": coalesce(showUntil, event->date),
   body
 }`);
