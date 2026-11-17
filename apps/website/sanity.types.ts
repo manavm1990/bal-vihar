@@ -288,6 +288,120 @@ export type PhotoAlbum = {
   importReport?: string;
 };
 
+export type PageCards = {
+  _type: "pageCards";
+  cards: Array<{
+    title: string;
+    text: string;
+    href?: string;
+    _type: "pageCard";
+    _key: string;
+  }>;
+};
+
+export type PageCallout = {
+  _type: "pageCallout";
+  title: string;
+  text: string;
+};
+
+export type PageButton = {
+  _type: "pageButton";
+  label: string;
+  href: string;
+};
+
+export type PageAccordion = {
+  _type: "pageAccordion";
+  items: Array<{
+    title: string;
+    body: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: "bullet";
+      markDefs?: Array<{
+        href: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    _type: "pageAccordionItem";
+    _key: string;
+  }>;
+};
+
+export type CalendarEventReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "calendarEvent";
+};
+
+export type Page = {
+  _id: string;
+  _type: "page";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  description: string;
+  event?: CalendarEventReference;
+  showUntil?: string;
+  menu?:
+    | "About"
+    | "Programs"
+    | "Parents"
+    | "Teachers"
+    | "Volunteer"
+    | "Contact"
+    | "none";
+  menuLabel?: string;
+  body: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "normal" | "h2" | "h3";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | ({
+        _key: string;
+      } & MediaImage)
+    | ({
+        _key: string;
+      } & PageCallout)
+    | ({
+        _key: string;
+      } & PageCards)
+    | ({
+        _key: string;
+      } & PageAccordion)
+    | ({
+        _key: string;
+      } & PageButton)
+  >;
+};
+
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
   top: number;
@@ -586,6 +700,12 @@ export type AllSanitySchemaTypes =
   | SanityImageAssetReference
   | MediaImage
   | PhotoAlbum
+  | PageCards
+  | PageCallout
+  | PageButton
+  | PageAccordion
+  | CalendarEventReference
+  | Page
   | SanityImageCrop
   | SanityImageHotspot
   | ImpactAward
@@ -606,7 +726,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: CALENDAR_EVENTS_QUERY
-// Query: *[_type == "calendarEvent"] | order(date asc) {  _id,  title,  date,  location,  eventType,  time,  description,  isHighlighted,  academicYear}
+// Query: *[_type == "calendarEvent"] | order(date asc) {  _id,  title,  date,  location,  eventType,  time,  description,  isHighlighted,  academicYear,  "detailsSlug": *[_type == "page" && event._ref == ^._id][0].slug.current}
 export type CALENDAR_EVENTS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
@@ -618,6 +738,7 @@ export type CALENDAR_EVENTS_QUERY_RESULT = Array<{
   description: string | null;
   isHighlighted: boolean | null;
   academicYear: "2026-27" | null;
+  detailsSlug: string | null;
 }>;
 
 // Source: ../website/app/lib/sanity/queries.ts
@@ -800,6 +921,170 @@ export type IMPACT_AWARD_QUERY_RESULT =
       }> | null;
     }
   | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: PAGE_QUERY
+// Query: *[_type == "page" && slug.current == $slug][0]{  _id,  title,  "slug": slug.current,  description,  "endsOn": coalesce(showUntil, event->date),  "event": event->{ _id, title, date, time, location },  body[]{    ...,    _type == "mediaImage" => { ..., asset->{ _id, url, metadata { lqip, dimensions { width, height } } } }  }}
+export type PAGE_QUERY_RESULT = {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  endsOn: string | null;
+  event: {
+    _id: string;
+    title: string;
+    date: string;
+    time: string | null;
+    location: "HT/HTCC" | "HTCC" | "HTCC/MGC" | null;
+  } | null;
+  body: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "h2" | "h3" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        _key: string;
+        _type: "mediaImage";
+        asset: {
+          _id: string;
+          url: string;
+          metadata: {
+            lqip: string | null;
+            dimensions: {
+              width: number;
+              height: number;
+            } | null;
+          } | null;
+        } | null;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt: string;
+        caption?: string;
+      }
+    | {
+        _key: string;
+        _type: "pageAccordion";
+        items: Array<{
+          title: string;
+          body: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal";
+            listItem?: "bullet";
+            markDefs?: Array<{
+              href: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "pageAccordionItem";
+          _key: string;
+        }>;
+      }
+    | {
+        _key: string;
+        _type: "pageButton";
+        label: string;
+        href: string;
+      }
+    | {
+        _key: string;
+        _type: "pageCallout";
+        title: string;
+        text: string;
+      }
+    | {
+        _key: string;
+        _type: "pageCards";
+        cards: Array<{
+          title: string;
+          text: string;
+          href?: string;
+          _type: "pageCard";
+          _key: string;
+        }>;
+      }
+  >;
+} | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
+// Variable: PAGES_QUERY
+// Query: *[_type == "page" && defined(slug.current)]{  _id,  title,  "slug": slug.current,  description,  menu,  menuLabel,  "endsOn": coalesce(showUntil, event->date),  body}
+export type PAGES_QUERY_RESULT = Array<{
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  menu:
+    | "About"
+    | "Contact"
+    | "none"
+    | "Parents"
+    | "Programs"
+    | "Teachers"
+    | "Volunteer"
+    | null;
+  menuLabel: string | null;
+  endsOn: string | null;
+  body: Array<
+    | ({
+        _key: string;
+      } & MediaImage)
+    | ({
+        _key: string;
+      } & PageAccordion)
+    | ({
+        _key: string;
+      } & PageButton)
+    | ({
+        _key: string;
+      } & PageCallout)
+    | ({
+        _key: string;
+      } & PageCards)
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "h2" | "h3" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+  >;
+}>;
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: PHOTO_ALBUM_QUERY
@@ -1152,12 +1437,14 @@ export type VOLUNTEERS_LIST_QUERY_RESULT =
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '*[_type == "calendarEvent"] | order(date asc) {\n  _id,\n  title,\n  date,\n  location,\n  eventType,\n  time,\n  description,\n  isHighlighted,\n  academicYear\n}': CALENDAR_EVENTS_QUERY_RESULT;
+    '*[_type == "calendarEvent"] | order(date asc) {\n  _id,\n  title,\n  date,\n  location,\n  eventType,\n  time,\n  description,\n  isHighlighted,\n  academicYear,\n  "detailsSlug": *[_type == "page" && event._ref == ^._id][0].slug.current\n}': CALENDAR_EVENTS_QUERY_RESULT;
     '*[_type == "classPage" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  teachers,\n  pinnedNote,\n  links[]{\n    _key,\n    label,\n    url\n  },\n  "sessions": sessions[] | order(date desc){\n    _key,\n    date,\n    covered,\n    homework,\n    links[]{\n      _key,\n      label,\n      url\n    }\n  }\n}': CLASS_PAGE_QUERY_RESULT;
     '*[_type == "classPage"] | order(sortOrder asc){\n  _id,\n  title,\n  "slug": slug.current,\n  group,\n  teachers,\n  "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)\n}': CLASS_PAGES_QUERY_RESULT;
     '*[_id == "faqs"][0]{\n  _id,\n  items[]{\n    _key,\n    question,\n    answer\n  }\n}': FAQS_QUERY_RESULT;
     '*[_id == "homePage"][0]{\n  _id,\n  title,\n  noticeText,\n  noticeHref,\n  noticeLabel\n}': HOME_PAGE_QUERY_RESULT;
     '*[_id == "impactAward"][0]{\n  _id,\n  awardYear,\n  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },\n  coordinator{ name, role, email, phone },\n  tiers{\n    bronze{ teens, youngAdults },\n    silver{ teens, youngAdults },\n    gold{ teens, youngAdults }\n  },\n  teachingHours[]{\n    _key,\n    activity,\n    classesY4,\n    classesY5,\n    prepHours,\n    presentingHours,\n    attendedHours\n  },\n  communityIntro,\n  communityProjects[]{ _key, project, participating, onTheTeam, leading },\n  downloads[]{ _key, label, description, url }\n}': IMPACT_AWARD_QUERY_RESULT;
+    '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  description,\n  "endsOn": coalesce(showUntil, event->date),\n  "event": event->{ _id, title, date, time, location },\n  body[]{\n    ...,\n    _type == "mediaImage" => { ..., asset->{ _id, url, metadata { lqip, dimensions { width, height } } } }\n  }\n}': PAGE_QUERY_RESULT;
+    '*[_type == "page" && defined(slug.current)]{\n  _id,\n  title,\n  "slug": slug.current,\n  description,\n  menu,\n  menuLabel,\n  "endsOn": coalesce(showUntil, event->date),\n  body\n}': PAGES_QUERY_RESULT;
     '*[_type == "photoAlbum" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photos": photos[defined(asset)]{ _key, asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop }\n}': PHOTO_ALBUM_QUERY_RESULT;
     '*[\n  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0\n] | order(schoolYear desc, _createdAt desc){\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photoCount": count(photos[defined(asset)]),\n  "photoKeys": photos[defined(asset)]._key,\n  "cover": photos[defined(asset)][0]{ _key, asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop }\n}': PHOTO_ALBUMS_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image{ asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop }\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;

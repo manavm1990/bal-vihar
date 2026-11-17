@@ -3,6 +3,7 @@ import { classPage } from "./documents/class-page";
 import { faqs } from "./documents/faqs";
 import { homePage } from "./documents/home-page";
 import { impactAward } from "./documents/impact-award";
+import { page } from "./documents/page";
 import { photoAlbum } from "./documents/photo-album";
 import { PHOTO_PAGE_OPTIONS, photoGallery } from "./documents/photo-gallery";
 import { policies } from "./documents/policies";
@@ -13,7 +14,12 @@ import { volunteersList } from "./documents/volunteers-list";
 import { albumPhoto } from "./objects/album-photo";
 import { classLink } from "./objects/class-link";
 import { mediaImage } from "./objects/media-image";
+import { pageAccordion } from "./objects/page-accordion";
+import { pageButton } from "./objects/page-button";
+import { pageCallout } from "./objects/page-callout";
+import { pageCards } from "./objects/page-cards";
 import { youthAssistant } from "./objects/youth-assistant";
+import { HEADER_MENUS, RESERVED_SLUGS } from "./route-config";
 
 export const SINGLETON_IDS = {
   faqs: "faqs",
@@ -37,6 +43,11 @@ export const schemaTypes = [
   homePage,
   impactAward,
   mediaImage,
+  page,
+  pageAccordion,
+  pageButton,
+  pageCallout,
+  pageCards,
   photoAlbum,
   photoGallery,
   policies,
@@ -53,13 +64,20 @@ export {
   classLink,
   classPage,
   faqs,
+  HEADER_MENUS,
   homePage,
   impactAward,
   mediaImage,
   PHOTO_PAGE_OPTIONS,
+  page,
+  pageAccordion,
+  pageButton,
+  pageCallout,
+  pageCards,
   photoAlbum,
   photoGallery,
   policies,
+  RESERVED_SLUGS,
   spreadsheetImport,
   teachingFaculty,
   volunteerRoster,
