@@ -14,12 +14,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import type { PAGE_QUERY_RESULT } from "sanity.types";
-
-type PageEvent = NonNullable<NonNullable<PAGE_QUERY_RESULT>["event"]>;
 
 interface EditorPageProps {
   params: Promise<{ slug: string }>;
+}
+
+interface PageEvent {
+  _id: string;
+  title: string;
+  date: string;
+  time: string | null;
+  location: string | null;
 }
 
 export default function EditorPage({ params }: EditorPageProps) {

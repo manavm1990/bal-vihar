@@ -2,8 +2,6 @@ import { stegaClean } from "@sanity/client/stega";
 import type { PortableText } from "next-sanity";
 import type { ComponentProps } from "react";
 import type { POLICIES_QUERY_RESULT } from "sanity.types";
-import { fetchSanityOrNull } from "./fetch";
-import { POLICIES_QUERY } from "./queries";
 
 export interface NumberedPolicySection {
   number: number;
@@ -65,16 +63,15 @@ function createPolicies(data: NonNullable<POLICIES_QUERY_RESULT>): PoliciesView 
   return { intro: data.intro ?? "", sections } as const;
 }
 
-export async function fetchPolicySection(slug: string) {
-  const result = await fetchSanityOrNull(POLICIES_QUERY, `the ${slug} policies`);
-  const { sections } = getPolicies(result?.data ?? null);
+export const getPolicies = (data: POLICIES_QUERY_RESULT) =>
+  data ? createPolicies(data) : { intro: "", sections: [] };
+
+export function getPolicySection(data: POLICIES_QUERY_RESULT, slug: string) {
+  const { sections } = getPolicies(data);
   const index = sections.findIndex((section) => section.slug === slug);
   const section = sections[index];
 
   return section ? ({ number: index + 1, section } as const) : null;
 }
-
-export const getPolicies = (data: POLICIES_QUERY_RESULT) =>
-  data ? createPolicies(data) : { intro: "", sections: [] };
 
 export const parseBody = (value: PolicyBody | null) => value ?? [];

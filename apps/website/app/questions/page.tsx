@@ -9,8 +9,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@comp
 import { BuildingOfficeIcon, PhoneIcon, SchoolIcon } from "@components/ui/icons";
 import { H3, MutedP, P } from "@components/ui/typography";
 import { ADMIN_OFFICE, BASE_TITLE, SCHOOL_LOCATION } from "@lib/constants";
-import { fetchFaqs } from "@lib/sanity/faqs";
+import { getFaqs } from "@lib/sanity/faqs";
+import { fetchSanityOrNull } from "@lib/sanity/fetch";
 import { extractText } from "@lib/sanity/portable-text";
+import { FAQS_QUERY } from "@lib/sanity/queries";
 import { stegaClean } from "@sanity/client/stega";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -106,7 +108,8 @@ function Contact() {
 }
 
 async function Faq() {
-  const faqs = await fetchFaqs();
+  const result = await fetchSanityOrNull(FAQS_QUERY, "the FAQs");
+  const faqs = getFaqs(result?.data);
   const structuredData: WithContext<FAQPage> = {
     "@context": "https://schema.org",
     "@type": "FAQPage",

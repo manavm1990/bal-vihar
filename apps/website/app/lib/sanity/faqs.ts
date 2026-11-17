@@ -1,6 +1,4 @@
-import { fetchSanityOrNull } from "./fetch";
 import { type PolicyBody, parseBody } from "./policies";
-import { FAQS_QUERY } from "./queries";
 
 export interface FaqItemView {
   key: string;
@@ -14,9 +12,6 @@ interface FaqsData {
     | null
     | undefined;
 }
-
-export const fetchFaqs = async (): Promise<FaqItemView[]> =>
-  getFaqs((await fetchSanityOrNull(FAQS_QUERY, "the FAQs"))?.data);
 
 export const getFaqs = (data: FaqsData | null | undefined) =>
   (data?.items ?? []).flatMap((item) =>
