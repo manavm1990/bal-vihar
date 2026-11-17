@@ -1,13 +1,25 @@
 import { SINGLETON_TYPES, schemaTypes } from "@bv/schemas";
+import { HomeIcon } from "@sanity/icons/Home";
 import { visionTool } from "@sanity/vision";
 import { defineConfig } from "sanity";
 import { presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
+import { createDuplicateWithoutSlug } from "./actions/duplicate-without-slug";
+import UndoUploadAction from "./actions/undo-upload";
+import Layout from "./components/layout";
+import Logo from "./components/logo";
+import Home from "./home";
 import { resolve } from "./presentation/resolve";
+import { getAccess, type SectionId } from "./roles";
 import { structure } from "./structure";
 import { templates } from "./templates";
+import { theme } from "./theme";
 
-const CREATABLE_TYPES = new Set(["calendarEvent", "page", "photoAlbum"]);
+const CREATABLE_TYPES = new Map<string, SectionId>([
+  ["calendarEvent", "calendar"],
+  ["page", "pages"],
+  ["photoAlbum", "photos"],
+]);
 const EDIT_ONLY_ACTIONS = new Set(["publish", "discardChanges", "restore"]);
 const EDIT_ONLY_TYPE_SET = new Set<string>([...SINGLETON_TYPES, "classPage", "spreadsheetImport"]);
 
@@ -19,6 +31,10 @@ const previewOrigin =
 export default defineConfig({
   name: "default",
   title: "Bal Vihar CMS",
+  icon: Logo,
+  theme,
+  studio: { components: { layout: Layout } },
+  tools: (prev) => [{ name: "home", title: "Home", icon: HomeIcon, component: Home }, ...prev],
   projectId: "x5wq3sbt",
   dataset: "production",
 
@@ -46,10 +62,22 @@ export default defineConfig({
   },
 
   document: {
-    newDocumentOptions: (prev) => prev.filter((item) => CREATABLE_TYPES.has(item.templateId)),
-    actions: (prev, { schemaType }) =>
-      EDIT_ONLY_TYPE_SET.has(schemaType)
+    newDocumentOptions: (prev, { currentUser }) => {
+      const { canSee } = getAccess(currentUser?.id);
+
+      return prev.filter((item) => {
+        const section = CREATABLE_TYPES.get(item.templateId);
+        return section !== undefined && canSee(section);
+      });
+    },
+    actions: (prev, { schemaType }) => {
+      const allowed = EDIT_ONLY_TYPE_SET.has(schemaType)
         ? prev.filter(({ action }) => action && EDIT_ONLY_ACTIONS.has(action))
-        : prev,
+        : prev.map((action) =>
+            action.action === "duplicate" ? createDuplicateWithoutSlug(action) : action,
+          );
+
+      return schemaType === "spreadsheetImport" ? [...allowed, UndoUploadAction] : allowed;
+    },
   },
 });
