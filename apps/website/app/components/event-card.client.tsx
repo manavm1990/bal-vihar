@@ -10,6 +10,7 @@ import {
 import type { CalendarEventData } from "@lib/sanity/types";
 import { cn } from "@lib/utils";
 import { CalendarIcon, Cross2Icon, Share1Icon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { H2, MutedP, P } from "./ui/typography";
@@ -79,6 +80,15 @@ export default function EventCard({ event }: EventCardProps) {
             <MutedP className="line-clamp-3 text-sm leading-snug whitespace-pre-line">
               {note}
             </MutedP>
+          ) : null}
+          {event.detailsHref ? (
+            <Button
+              asChild
+              variant="link"
+              className="h-auto p-0 pt-1 font-semibold text-primary-ink"
+            >
+              <Link href={event.detailsHref}>Full details</Link>
+            </Button>
           ) : null}
           {isSpecial ? (
             <Button
