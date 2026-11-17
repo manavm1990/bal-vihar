@@ -1,5 +1,6 @@
 import { ImagesIcon } from "@sanity/icons/Images";
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { getCurrentSchoolYear, SCHOOL_YEARS } from "../school-years";
 
 export const PHOTO_PAGE_OPTIONS = [
   { title: "About Us → History", value: "/about-us/history" },
@@ -11,7 +12,7 @@ export const PHOTO_PAGE_OPTIONS = [
 
 export const photoGallery = defineType({
   name: "photoGallery",
-  title: "Home page strip & page banners",
+  title: "Banner photos",
   type: "document",
   icon: ImagesIcon,
   fields: [
@@ -45,7 +46,8 @@ export const photoGallery = defineType({
               name: "schoolYear",
               title: "School year",
               type: "string",
-              description: 'e.g. "2025-26"',
+              options: { list: SCHOOL_YEARS, layout: "dropdown" },
+              initialValue: getCurrentSchoolYear,
             }),
             defineField({
               name: "note",
@@ -106,7 +108,7 @@ export const photoGallery = defineType({
   ],
   preview: {
     prepare() {
-      return { title: "Home page strip & page banners" };
+      return { title: "Banner photos" };
     },
   },
 });

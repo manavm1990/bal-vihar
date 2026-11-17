@@ -3,6 +3,7 @@ import { UsersIcon } from "@sanity/icons/Users";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { describeCount } from "../describe-count";
 import { contactFields } from "../objects/contact-fields";
+import { getCurrentSchoolYear, SCHOOL_YEARS } from "../school-years";
 
 const SUBJECTS = ["Class", "Bhajan", "Yoga", "Teachers"];
 
@@ -31,8 +32,10 @@ export const teachingFaculty = defineType({
       name: "schoolYear",
       title: "School year",
       type: "string",
-      description: 'Shown under the page title, e.g. "2026–2027".',
-      validation: (rule) => rule.required().error("Add the school year."),
+      description: "Shown under the page title.",
+      options: { list: SCHOOL_YEARS, layout: "dropdown" },
+      initialValue: getCurrentSchoolYear,
+      validation: (rule) => rule.required().error("Pick the school year."),
     }),
     defineField({
       name: "groups",
@@ -58,10 +61,9 @@ export const teachingFaculty = defineType({
               name: "kind",
               title: "Type",
               type: "string",
+              description: "Decides which list the group appears in on the website.",
               options: { list: GROUP_KINDS, layout: "radio" },
-              initialValue: "balVihar",
-              hidden: true,
-              validation: (rule) => rule.required(),
+              validation: (rule) => rule.required().error("Pick Bal Vihar or Youth Group."),
             }),
             defineField({
               name: "teams",

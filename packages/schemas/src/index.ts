@@ -20,6 +20,7 @@ import { pageCallout } from "./objects/page-callout";
 import { pageCards } from "./objects/page-cards";
 import { youthAssistant } from "./objects/youth-assistant";
 import { HEADER_MENUS, RESERVED_SLUGS } from "./route-config";
+import { getToday } from "./school-years";
 
 export const SINGLETON_IDS = {
   faqs: "faqs",
@@ -64,6 +65,7 @@ export {
   classLink,
   classPage,
   faqs,
+  getToday,
   HEADER_MENUS,
   homePage,
   impactAward,

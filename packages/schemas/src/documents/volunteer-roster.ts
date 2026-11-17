@@ -2,6 +2,7 @@ import { UserIcon } from "@sanity/icons/User";
 import { UsersIcon } from "@sanity/icons/Users";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { describeCount } from "../describe-count";
+import { getCurrentSchoolYear, SCHOOL_YEARS } from "../school-years";
 
 export const volunteerRoster = defineType({
   name: "volunteerRoster",
@@ -13,8 +14,10 @@ export const volunteerRoster = defineType({
       name: "schoolYear",
       title: "School year",
       type: "string",
-      description: 'Shown under the page title, e.g. "2017–2018".',
-      validation: (rule) => rule.required().error("Add the school year."),
+      description: "Shown under the page title.",
+      options: { list: SCHOOL_YEARS, layout: "dropdown" },
+      initialValue: getCurrentSchoolYear,
+      validation: (rule) => rule.required().error("Pick the school year."),
     }),
     defineField({
       name: "activities",
