@@ -53,6 +53,7 @@ export const mapHomePage = (input: unknown): HomePageData | null => {
   if (!id) return null;
 
   const noticeText = parseString(dataRecord["noticeText"])?.trim();
+  const noticeUntil = parseString(dataRecord["noticeUntil"]);
   const noticeHref = parseSafeHref(dataRecord["noticeHref"]);
   const noticeLabel = noticeHref ? (parseString(dataRecord["noticeLabel"])?.trim() ?? null) : null;
 
@@ -61,6 +62,7 @@ export const mapHomePage = (input: unknown): HomePageData | null => {
     noticeHref,
     noticeLabel,
     noticeText: noticeText ?? null,
+    noticeUntil: noticeUntil ? stegaClean(noticeUntil) : null,
     title: parseString(dataRecord["title"]),
   } as const;
 };

@@ -28,13 +28,35 @@ export const homePage = defineType({
       title: "Notice link (optional)",
       type: "url",
       description: "Website path (/calendar) or full https link.",
-      validation: (rule) => rule.uri({ allowRelative: true, scheme: ["http", "https", "mailto"] }),
+      validation: (rule) =>
+        rule
+          .uri({ allowRelative: true, scheme: ["http", "https", "mailto"] })
+          .custom((value, { document }) =>
+            !value && document?.["noticeLabel"] ? "Add the link, or clear the link text." : true,
+          ),
     }),
     defineField({
       name: "noticeLabel",
       title: "Notice link text (optional)",
       type: "string",
       description: 'Example: "View calendar". Add this alongside a notice link.',
+      validation: (rule) =>
+        rule.custom((value, { document }) =>
+          !value && document?.["noticeHref"] ? "Add the text people click for the link." : true,
+        ),
+    }),
+    defineField({
+      name: "noticeUntil",
+      title: "Show until",
+      type: "date",
+      options: { dateFormat: "YYYY-MM-DD" },
+      description:
+        "Last day the notice shows. After that the next class or event shows again automatically, so nobody has to remember to clear it.",
+      hidden: ({ document }) => !document?.["noticeText"],
+      validation: (rule) =>
+        rule.custom((value, { document }) =>
+          !value && document?.["noticeText"] ? "Pick the last day this notice should show." : true,
+        ),
     }),
   ],
   preview: {

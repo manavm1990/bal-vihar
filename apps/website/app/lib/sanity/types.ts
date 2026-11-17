@@ -17,6 +17,7 @@ export interface HomePageData {
   noticeText?: string | null;
   noticeHref?: string | null;
   noticeLabel?: string | null;
+  noticeUntil?: string | null;
 }
 
 export interface HomePhotoBoardItem {

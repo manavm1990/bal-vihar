@@ -49,7 +49,25 @@ export type VolunteerRoster = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  schoolYear: string;
+  schoolYear:
+    | "2027-28"
+    | "2026-27"
+    | "2025-26"
+    | "2024-25"
+    | "2023-24"
+    | "2022-23"
+    | "2021-22"
+    | "2020-21"
+    | "2019-20"
+    | "2018-19"
+    | "2017-18"
+    | "2016-17"
+    | "2015-16"
+    | "2014-15"
+    | "2013-14"
+    | "2012-13"
+    | "2011-12"
+    | "2010-11";
   activities?: Array<{
     name: string;
     volunteers?: Array<string>;
@@ -64,7 +82,25 @@ export type TeachingFaculty = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  schoolYear: string;
+  schoolYear:
+    | "2027-28"
+    | "2026-27"
+    | "2025-26"
+    | "2024-25"
+    | "2023-24"
+    | "2022-23"
+    | "2021-22"
+    | "2020-21"
+    | "2019-20"
+    | "2018-19"
+    | "2017-18"
+    | "2016-17"
+    | "2015-16"
+    | "2014-15"
+    | "2013-14"
+    | "2012-13"
+    | "2011-12"
+    | "2010-11";
   groups?: Array<{
     name: string;
     kind: "balVihar" | "youth";
@@ -130,13 +166,32 @@ export type SpreadsheetImport = {
   _updatedAt: string;
   _rev: string;
   kind: "calendar" | "volunteerRoster";
-  schoolYear?: "2026-27";
+  schoolYear?:
+    | "2027-28"
+    | "2026-27"
+    | "2025-26"
+    | "2024-25"
+    | "2023-24"
+    | "2022-23"
+    | "2021-22"
+    | "2020-21"
+    | "2019-20"
+    | "2018-19"
+    | "2017-18"
+    | "2016-17"
+    | "2015-16"
+    | "2014-15"
+    | "2013-14"
+    | "2012-13"
+    | "2011-12"
+    | "2010-11";
   file: {
     asset?: SanityFileAssetReference;
     media?: unknown;
     _type: "file";
   };
   importReport?: string;
+  undoData?: string;
   processedFile?: string;
 };
 
@@ -243,7 +298,25 @@ export type PhotoGallery = {
   title: string;
   photos?: Array<{
     title: string;
-    schoolYear?: string;
+    schoolYear?:
+      | "2027-28"
+      | "2026-27"
+      | "2025-26"
+      | "2024-25"
+      | "2023-24"
+      | "2022-23"
+      | "2021-22"
+      | "2020-21"
+      | "2019-20"
+      | "2018-19"
+      | "2017-18"
+      | "2016-17"
+      | "2015-16"
+      | "2014-15"
+      | "2013-14"
+      | "2012-13"
+      | "2011-12"
+      | "2010-11";
     note?: string;
     image: MediaImage;
     featured?: boolean;
@@ -278,7 +351,25 @@ export type PhotoAlbum = {
   _rev: string;
   title: string;
   slug: Slug;
-  schoolYear: "2026-27";
+  schoolYear:
+    | "2027-28"
+    | "2026-27"
+    | "2025-26"
+    | "2024-25"
+    | "2023-24"
+    | "2022-23"
+    | "2021-22"
+    | "2020-21"
+    | "2019-20"
+    | "2018-19"
+    | "2017-18"
+    | "2016-17"
+    | "2015-16"
+    | "2014-15"
+    | "2013-14"
+    | "2012-13"
+    | "2011-12"
+    | "2010-11";
   photos?: Array<
     {
       _key: string;
@@ -493,6 +584,7 @@ export type HomePage = {
   noticeText?: string;
   noticeHref?: string;
   noticeLabel?: string;
+  noticeUntil?: string;
 };
 
 export type Faqs = {
@@ -577,7 +669,25 @@ export type CalendarEvent = {
   eventType?: "regular" | "special" | "celebration" | "holiday" | "project";
   description?: string;
   isHighlighted?: boolean;
-  academicYear?: "2026-27";
+  academicYear?:
+    | "2027-28"
+    | "2026-27"
+    | "2025-26"
+    | "2024-25"
+    | "2023-24"
+    | "2022-23"
+    | "2021-22"
+    | "2020-21"
+    | "2019-20"
+    | "2018-19"
+    | "2017-18"
+    | "2016-17"
+    | "2015-16"
+    | "2014-15"
+    | "2013-14"
+    | "2012-13"
+    | "2011-12"
+    | "2010-11";
 };
 
 export type AlbumPhoto = {
@@ -737,7 +847,26 @@ export type CALENDAR_EVENTS_QUERY_RESULT = Array<{
   time: string | null;
   description: string | null;
   isHighlighted: boolean | null;
-  academicYear: "2026-27" | null;
+  academicYear:
+    | "2010-11"
+    | "2011-12"
+    | "2012-13"
+    | "2013-14"
+    | "2014-15"
+    | "2015-16"
+    | "2016-17"
+    | "2017-18"
+    | "2018-19"
+    | "2019-20"
+    | "2020-21"
+    | "2021-22"
+    | "2022-23"
+    | "2023-24"
+    | "2024-25"
+    | "2025-26"
+    | "2026-27"
+    | "2027-28"
+    | null;
   detailsSlug: string | null;
 }>;
 
@@ -817,7 +946,7 @@ export type FAQS_QUERY_RESULT =
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: HOME_PAGE_QUERY
-// Query: *[_id == "homePage"][0]{  _id,  title,  noticeText,  noticeHref,  noticeLabel}
+// Query: *[_id == "homePage"][0]{  _id,  title,  noticeText,  noticeHref,  noticeLabel,  noticeUntil}
 export type HOME_PAGE_QUERY_RESULT =
   | {
       _id: "homePage";
@@ -825,6 +954,7 @@ export type HOME_PAGE_QUERY_RESULT =
       noticeText: null;
       noticeHref: null;
       noticeLabel: null;
+      noticeUntil: null;
     }
   | {
       _id: "homePage";
@@ -832,6 +962,7 @@ export type HOME_PAGE_QUERY_RESULT =
       noticeText: null;
       noticeHref: null;
       noticeLabel: null;
+      noticeUntil: null;
     }
   | {
       _id: "homePage";
@@ -839,6 +970,7 @@ export type HOME_PAGE_QUERY_RESULT =
       noticeText: null;
       noticeHref: null;
       noticeLabel: null;
+      noticeUntil: null;
     }
   | {
       _id: "homePage";
@@ -846,6 +978,7 @@ export type HOME_PAGE_QUERY_RESULT =
       noticeText: string | null;
       noticeHref: string | null;
       noticeLabel: string | null;
+      noticeUntil: string | null;
     }
   | null;
 
@@ -1103,7 +1236,25 @@ export type PHOTO_ALBUM_QUERY_RESULT = {
   _id: string;
   title: string;
   slug: string;
-  schoolYear: "2026-27";
+  schoolYear:
+    | "2010-11"
+    | "2011-12"
+    | "2012-13"
+    | "2013-14"
+    | "2014-15"
+    | "2015-16"
+    | "2016-17"
+    | "2017-18"
+    | "2018-19"
+    | "2019-20"
+    | "2020-21"
+    | "2021-22"
+    | "2022-23"
+    | "2023-24"
+    | "2024-25"
+    | "2025-26"
+    | "2026-27"
+    | "2027-28";
   photos: Array<{
     _key: string;
     asset: {
@@ -1131,7 +1282,25 @@ export type PHOTO_ALBUMS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
   slug: string;
-  schoolYear: "2026-27";
+  schoolYear:
+    | "2010-11"
+    | "2011-12"
+    | "2012-13"
+    | "2013-14"
+    | "2014-15"
+    | "2015-16"
+    | "2016-17"
+    | "2017-18"
+    | "2018-19"
+    | "2019-20"
+    | "2020-21"
+    | "2021-22"
+    | "2022-23"
+    | "2023-24"
+    | "2024-25"
+    | "2025-26"
+    | "2026-27"
+    | "2027-28";
   photoCount: number | null;
   photoKeys: Array<string> | null;
   cover: {
@@ -1192,7 +1361,26 @@ export type PHOTO_GALLERY_QUERY_RESULT =
       photos: Array<{
         _key: string;
         title: string;
-        schoolYear: string | null;
+        schoolYear:
+          | "2010-11"
+          | "2011-12"
+          | "2012-13"
+          | "2013-14"
+          | "2014-15"
+          | "2015-16"
+          | "2016-17"
+          | "2017-18"
+          | "2018-19"
+          | "2019-20"
+          | "2020-21"
+          | "2021-22"
+          | "2022-23"
+          | "2023-24"
+          | "2024-25"
+          | "2025-26"
+          | "2026-27"
+          | "2027-28"
+          | null;
         note: string | null;
         featured: boolean | null;
         pages: Array<string> | null;
@@ -1320,25 +1508,74 @@ export type TEACHING_FACULTY_QUERY_RESULT =
     }
   | {
       _id: "teachingFaculty";
-      schoolYear: "2026-27";
+      schoolYear:
+        | "2010-11"
+        | "2011-12"
+        | "2012-13"
+        | "2013-14"
+        | "2014-15"
+        | "2015-16"
+        | "2016-17"
+        | "2017-18"
+        | "2018-19"
+        | "2019-20"
+        | "2020-21"
+        | "2021-22"
+        | "2022-23"
+        | "2023-24"
+        | "2024-25"
+        | "2025-26"
+        | "2026-27"
+        | "2027-28"
+        | null;
       groups: null;
       programs: null;
     }
   | {
       _id: "teachingFaculty";
-      schoolYear: string;
+      schoolYear:
+        | "2010-11"
+        | "2011-12"
+        | "2012-13"
+        | "2013-14"
+        | "2014-15"
+        | "2015-16"
+        | "2016-17"
+        | "2017-18"
+        | "2018-19"
+        | "2019-20"
+        | "2020-21"
+        | "2021-22"
+        | "2022-23"
+        | "2023-24"
+        | "2024-25"
+        | "2025-26"
+        | "2026-27"
+        | "2027-28";
       groups: null;
       programs: null;
     }
   | {
       _id: "teachingFaculty";
-      schoolYear: "2026-27" | null;
-      groups: null;
-      programs: null;
-    }
-  | {
-      _id: "teachingFaculty";
-      schoolYear: string;
+      schoolYear:
+        | "2010-11"
+        | "2011-12"
+        | "2012-13"
+        | "2013-14"
+        | "2014-15"
+        | "2015-16"
+        | "2016-17"
+        | "2017-18"
+        | "2018-19"
+        | "2019-20"
+        | "2020-21"
+        | "2021-22"
+        | "2022-23"
+        | "2023-24"
+        | "2024-25"
+        | "2025-26"
+        | "2026-27"
+        | "2027-28";
       groups: Array<{
         _key: string;
         name: string;
@@ -1396,22 +1633,72 @@ export type VOLUNTEER_ROSTER_QUERY_RESULT =
     }
   | {
       _id: "volunteerRoster";
-      schoolYear: "2026-27";
+      schoolYear:
+        | "2010-11"
+        | "2011-12"
+        | "2012-13"
+        | "2013-14"
+        | "2014-15"
+        | "2015-16"
+        | "2016-17"
+        | "2017-18"
+        | "2018-19"
+        | "2019-20"
+        | "2020-21"
+        | "2021-22"
+        | "2022-23"
+        | "2023-24"
+        | "2024-25"
+        | "2025-26"
+        | "2026-27"
+        | "2027-28"
+        | null;
       activities: null;
     }
   | {
       _id: "volunteerRoster";
-      schoolYear: string;
+      schoolYear:
+        | "2010-11"
+        | "2011-12"
+        | "2012-13"
+        | "2013-14"
+        | "2014-15"
+        | "2015-16"
+        | "2016-17"
+        | "2017-18"
+        | "2018-19"
+        | "2019-20"
+        | "2020-21"
+        | "2021-22"
+        | "2022-23"
+        | "2023-24"
+        | "2024-25"
+        | "2025-26"
+        | "2026-27"
+        | "2027-28";
       activities: null;
     }
   | {
       _id: "volunteerRoster";
-      schoolYear: "2026-27" | null;
-      activities: null;
-    }
-  | {
-      _id: "volunteerRoster";
-      schoolYear: string;
+      schoolYear:
+        | "2010-11"
+        | "2011-12"
+        | "2012-13"
+        | "2013-14"
+        | "2014-15"
+        | "2015-16"
+        | "2016-17"
+        | "2017-18"
+        | "2018-19"
+        | "2019-20"
+        | "2020-21"
+        | "2021-22"
+        | "2022-23"
+        | "2023-24"
+        | "2024-25"
+        | "2025-26"
+        | "2026-27"
+        | "2027-28";
       activities: Array<{
         _key: string;
         name: string;
@@ -1451,7 +1738,7 @@ declare global {
     '*[_type == "classPage" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  teachers,\n  pinnedNote,\n  links[]{\n    _key,\n    label,\n    url\n  },\n  "sessions": sessions[] | order(date desc){\n    _key,\n    date,\n    covered,\n    homework,\n    links[]{\n      _key,\n      label,\n      url\n    }\n  }\n}': CLASS_PAGE_QUERY_RESULT;
     '*[_type == "classPage"] | order(sortOrder asc){\n  _id,\n  title,\n  "slug": slug.current,\n  group,\n  teachers,\n  "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)\n}': CLASS_PAGES_QUERY_RESULT;
     '*[_id == "faqs"][0]{\n  _id,\n  items[]{\n    _key,\n    question,\n    answer\n  }\n}': FAQS_QUERY_RESULT;
-    '*[_id == "homePage"][0]{\n  _id,\n  title,\n  noticeText,\n  noticeHref,\n  noticeLabel\n}': HOME_PAGE_QUERY_RESULT;
+    '*[_id == "homePage"][0]{\n  _id,\n  title,\n  noticeText,\n  noticeHref,\n  noticeLabel,\n  noticeUntil\n}': HOME_PAGE_QUERY_RESULT;
     '*[_id == "impactAward"][0]{\n  _id,\n  awardYear,\n  dates{ trackingStart, trackingEnd, intent, touchpointOne, touchpointTwo, apply, awards },\n  coordinator{ name, role, email, phone },\n  tiers{\n    bronze{ teens, youngAdults },\n    silver{ teens, youngAdults },\n    gold{ teens, youngAdults }\n  },\n  teachingHours[]{\n    _key,\n    activity,\n    classesY4,\n    classesY5,\n    prepHours,\n    presentingHours,\n    attendedHours\n  },\n  communityIntro,\n  communityProjects[]{ _key, project, participating, onTheTeam, leading },\n  downloads[]{ _key, label, description, url }\n}': IMPACT_AWARD_QUERY_RESULT;
     '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  description,\n  "endsOn": coalesce(showUntil, event->date),\n  "event": event->{ _id, title, date, time, location },\n  body[]{\n    ...,\n    _type == "mediaImage" => { ..., asset->{ _id, url, metadata { lqip, dimensions { width, height } } } }\n  }\n}': PAGE_QUERY_RESULT;
     '*[_type == "page" && defined(slug.current)] | order(title asc){\n  _id,\n  title,\n  "slug": slug.current,\n  menu,\n  menuLabel,\n  "endsOn": coalesce(showUntil, event->date)\n}': PAGES_QUERY_RESULT;

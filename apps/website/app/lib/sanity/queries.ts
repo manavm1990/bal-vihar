@@ -60,7 +60,8 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_id == "homePage"][0]{
   title,
   noticeText,
   noticeHref,
-  noticeLabel
+  noticeLabel,
+  noticeUntil
 }`);
 
 export const IMPACT_AWARD_QUERY = defineQuery(`*[_id == "impactAward"][0]{

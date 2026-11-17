@@ -3,6 +3,7 @@ import { getCachedNow } from "@lib/clock";
 import { BASE_TITLE, ORGANIZATION_LEGAL_NAME, REGISTRATION_URL } from "@lib/constants";
 import { fetchSanityData, fetchSanityOrNull } from "@lib/sanity/fetch";
 import {
+  chicagoToday,
   formatCalendarDate,
   getUpcomingCalendarEvents,
   mapCalendarEvents,
@@ -108,6 +109,7 @@ async function Notice() {
   const notice = getNotice(
     mapHomePage(homePayload),
     getUpcomingCalendarEvents(mapCalendarEvents(calendarPayload), { limit: 1, now })[0],
+    chicagoToday(now),
   );
 
   return (
@@ -125,8 +127,9 @@ async function Notice() {
 function getNotice(
   home: HomePageData | null,
   nextEvent: CalendarEventData | undefined,
+  today: string,
 ): HeaderNotice {
-  if (home?.noticeText)
+  if (home?.noticeText && !(home.noticeUntil && home.noticeUntil < today))
     return { text: home.noticeText, href: home.noticeHref, label: home.noticeLabel };
 
   if (nextEvent)
