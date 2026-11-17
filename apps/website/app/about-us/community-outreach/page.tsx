@@ -1,6 +1,6 @@
 import { PhotoGrid } from "@components/photo-grid";
 import StaticContentPage from "@components/static-content-page";
-import { fetchSanityData } from "@lib/sanity/fetch";
+import { fetchSanityOrNull } from "@lib/sanity/fetch";
 import { mapPhotoGallery } from "@lib/sanity/map-photo-gallery";
 import { PHOTO_GALLERY_QUERY } from "@lib/sanity/queries";
 import { createStaticPageMetadata, STATIC_PAGES } from "@lib/static-page-content";
@@ -20,9 +20,9 @@ export default function CommunityOutreachPage() {
 }
 
 async function CommunityPhotos() {
-  const gallery = mapPhotoGallery(await fetchSanityData(PHOTO_GALLERY_QUERY));
-  const photos = (gallery?.photos ?? [])
-    .filter((photo) => photo.image?.asset && photo.pages?.includes(PATH))
+  const gallery = await fetchSanityOrNull(PHOTO_GALLERY_QUERY, "the photo gallery");
+  const photos = mapPhotoGallery(gallery?.data)
+    .filter((photo) => photo.image?.asset && photo.pages.includes(PATH))
     .slice(1);
 
   return photos.length === 0 ? null : (

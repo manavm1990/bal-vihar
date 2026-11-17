@@ -1,10 +1,21 @@
 import { stegaClean } from "@sanity/client/stega";
-import type { HomePageData } from "./types";
+import type { HOME_PAGE_QUERY_RESULT } from "sanity.types";
 
+export type HomeNotice = NonNullable<ReturnType<typeof mapHomePage>>;
 type SafeHref = `/${string}` | `http://${string}` | `https://${string}` | `mailto:${string}`;
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
+export function mapHomePage(home: HOME_PAGE_QUERY_RESULT | null | undefined) {
+  if (!home) return null;
+
+  const noticeHref = parseSafeHref(home.noticeHref);
+
+  return {
+    noticeHref,
+    noticeLabel: noticeHref ? (home.noticeLabel?.trim() ?? null) : null,
+    noticeText: home.noticeText?.trim() ?? null,
+    noticeUntil: home.noticeUntil ? stegaClean(home.noticeUntil) : null,
+  } as const;
+}
 
 const isSafeHref = (href: string): href is SafeHref => {
   if (!href || /\s/.test(href) || href.startsWith("//")) return false;
@@ -24,12 +35,8 @@ const isSafeHref = (href: string): href is SafeHref => {
     : /^\/(?!\/)[^\s]*$/i.test(href) && !/^\/(?:javascript:|data:)/i.test(href);
 };
 
-const isString = (value: unknown): value is string => typeof value === "string";
-
-const parseSafeHref = (value: unknown): SafeHref | null => {
-  if (!isString(value)) return null;
-
-  const cleaned = stegaClean(value).trim();
+function parseSafeHref(value: string | null) {
+  const cleaned = value ? stegaClean(value).trim() : "";
   if (!cleaned) return null;
 
   const href =
@@ -41,28 +48,4 @@ const parseSafeHref = (value: unknown): SafeHref | null => {
       : `/${cleaned}`;
 
   return isSafeHref(href) ? href : null;
-};
-
-const parseString = (value: unknown): string | null => (isString(value) ? value : null);
-
-export const mapHomePage = (input: unknown): HomePageData | null => {
-  if (!isRecord(input)) return null;
-
-  const dataRecord = isRecord(input["data"]) ? input["data"] : input;
-  const id = parseString(dataRecord["_id"]) ?? parseString(dataRecord["id"]);
-  if (!id) return null;
-
-  const noticeText = parseString(dataRecord["noticeText"])?.trim();
-  const noticeUntil = parseString(dataRecord["noticeUntil"]);
-  const noticeHref = parseSafeHref(dataRecord["noticeHref"]);
-  const noticeLabel = noticeHref ? (parseString(dataRecord["noticeLabel"])?.trim() ?? null) : null;
-
-  return {
-    id,
-    noticeHref,
-    noticeLabel,
-    noticeText: noticeText ?? null,
-    noticeUntil: noticeUntil ? stegaClean(noticeUntil) : null,
-    title: parseString(dataRecord["title"]),
-  } as const;
-};
+}

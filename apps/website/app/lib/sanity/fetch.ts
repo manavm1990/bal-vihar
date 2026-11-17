@@ -25,18 +25,6 @@ async function fetchCachedSanity<const QueryString extends string>(
   return { data } as const;
 }
 
-export async function fetchSanityData(query: string, options: FetchOptions = {}) {
-  try {
-    const result = await fetchSanityResult(query, {}, options);
-    if (typeof result !== "object" || result === null) return null;
-
-    return "data" in result ? result.data : result;
-  } catch (error) {
-    console.error("Sanity fetch failed", error);
-    return null;
-  }
-}
-
 export const fetchSanityOrNull = <const QueryString extends string>(
   query: QueryString,
   label: string,

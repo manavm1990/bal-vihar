@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: CalendarEventPageProps): Prom
       type: "website",
       locale: "en_US",
       siteName: BASE_TITLE,
-      url: `/calendar/${event.id}`,
+      url: `/calendar/${event._id}`,
       title,
       description,
     },

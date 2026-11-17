@@ -6,7 +6,7 @@ import {
 } from "@components/ui/accordion";
 import { Button } from "@components/ui/button";
 import { Em, H2, H3, Ol, P, Strong, Ul } from "@components/ui/typography";
-import type { SanityImageValue } from "@lib/sanity/types";
+import type { SanityImageValue } from "@lib/sanity/image";
 import { PortableText } from "next-sanity";
 import type { ComponentProps } from "react";
 import Callout from "./callout";

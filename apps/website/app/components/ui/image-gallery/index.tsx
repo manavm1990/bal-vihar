@@ -1,7 +1,6 @@
 "use client";
 
-import { urlFor } from "@lib/sanity/image";
-import type { SanityImageValue } from "@lib/sanity/types";
+import { type SanityImageValue, urlFor } from "@lib/sanity/image";
 import { isReducedMotionPreferred } from "@lib/utils";
 import { ChevronLeftIcon, ChevronRightIcon, Cross2Icon, Share1Icon } from "@radix-ui/react-icons";
 import useEmblaCarousel from "embla-carousel-react";

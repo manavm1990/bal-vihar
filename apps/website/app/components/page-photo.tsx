@@ -1,4 +1,4 @@
-import { fetchSanityData } from "@lib/sanity/fetch";
+import { fetchSanityOrNull } from "@lib/sanity/fetch";
 import { mapPhotoGallery } from "@lib/sanity/map-photo-gallery";
 import { PHOTO_GALLERY_QUERY } from "@lib/sanity/queries";
 import { SanityImage } from "./sanity-image";
@@ -10,8 +10,10 @@ interface PagePhotoProps {
 export default async function PagePhoto({ path }: PagePhotoProps) {
   if (!path) return null;
 
-  const photos = mapPhotoGallery(await fetchSanityData(PHOTO_GALLERY_QUERY))?.photos ?? [];
-  const photo = photos.find((item) => item.image?.asset && (item.pages ?? []).includes(path));
+  const gallery = await fetchSanityOrNull(PHOTO_GALLERY_QUERY, "the photo gallery");
+  const photo = mapPhotoGallery(gallery?.data).find(
+    (item) => item.image?.asset && item.pages.includes(path),
+  );
 
   return !photo?.image ? null : (
     <figure className="relative aspect-16/6 overflow-hidden rounded-lg border">

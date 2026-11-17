@@ -1,10 +1,10 @@
 import { SanityImage } from "@components/sanity-image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@components/ui/card";
 import { H5, MutedP } from "@components/ui/typography";
-import type { HomePhotoBoardItem } from "@lib/sanity/types";
+import type { GalleryPhoto } from "@lib/sanity/map-photo-gallery";
 
 interface PhotoGridProps {
-  items: HomePhotoBoardItem[];
+  items: GalleryPhoto[];
   title?: string;
   description?: string;
 }
@@ -25,7 +25,7 @@ export function PhotoGrid({
       <CardContent>
         <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {withImages.map((item) => (
-            <li key={item.key}>
+            <li key={item._key}>
               <PhotoCard item={item} />
             </li>
           ))}
@@ -36,7 +36,7 @@ export function PhotoGrid({
 }
 
 interface PhotoCardProps {
-  item: HomePhotoBoardItem;
+  item: GalleryPhoto;
 }
 
 function PhotoCard({ item }: PhotoCardProps) {

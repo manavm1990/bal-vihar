@@ -1,37 +1,33 @@
 import { stegaClean } from "@sanity/client/stega";
-import type { PAGES_SEARCH_QUERY_RESULT, POLICIES_QUERY_RESULT } from "sanity.types";
+import type {
+  CALENDAR_EVENTS_QUERY_RESULT,
+  CLASS_PAGES_QUERY_RESULT,
+  FAQS_QUERY_RESULT,
+  PAGES_SEARCH_QUERY_RESULT,
+  PHOTO_ALBUMS_QUERY_RESULT,
+  POLICIES_QUERY_RESULT,
+} from "sanity.types";
 import { type FaqItemView, getFaqs } from "../sanity/faqs";
-import { formatCalendarEventMeta, mapCalendarEvents } from "../sanity/map-calendar-events";
+import {
+  type CalendarEvent,
+  formatCalendarEventMeta,
+  mapCalendarEvents,
+} from "../sanity/map-calendar-events";
 import { getCurrentPages } from "../sanity/pages";
 import { getPolicies, type PolicySectionView } from "../sanity/policies";
 import { extractText } from "../sanity/portable-text";
-import type { CalendarEventData } from "../sanity/types";
 import type { SearchDocument } from "./search";
 
+type SearchAlbum = PHOTO_ALBUMS_QUERY_RESULT[number];
 type SearchPage = PAGES_SEARCH_QUERY_RESULT[number];
 
-interface SearchAlbum {
-  _id: string;
-  title: string;
-  slug: string;
-  schoolYear: string | null;
-  photoCount: number | null;
-}
-
-interface SearchClassPage {
-  _id: string;
-  title: string | null;
-  slug: string | null;
-  teachers: string | null;
-}
-
 interface SanitySearchSource {
-  albums: readonly SearchAlbum[] | null | undefined;
-  events: unknown;
-  faqs: Parameters<typeof getFaqs>[0];
+  albums: PHOTO_ALBUMS_QUERY_RESULT | null | undefined;
+  events: CALENDAR_EVENTS_QUERY_RESULT | null | undefined;
+  faqs: FAQS_QUERY_RESULT | null | undefined;
   now?: Date;
   pages: PAGES_SEARCH_QUERY_RESULT | null | undefined;
-  classes: readonly SearchClassPage[] | null | undefined;
+  classes: CLASS_PAGES_QUERY_RESULT | null | undefined;
   policies: POLICIES_QUERY_RESULT | null | undefined;
 }
 
@@ -59,11 +55,11 @@ const createAlbumDocument = (album: SearchAlbum): SearchDocument => ({
   text: clean(describeAlbum(album)),
 });
 
-const createEventDocument = (event: CalendarEventData): SearchDocument => ({
-  id: `event:${event.id}`,
+const createEventDocument = (event: CalendarEvent): SearchDocument => ({
+  id: `event:${event._id}`,
   title: clean(event.title),
   section: "Events & Community › Calendar",
-  href: `/calendar/${event.id}`,
+  href: `/calendar/${event._id}`,
   text: clean([formatCalendarEventMeta(event), event.description].filter(Boolean).join(". ")),
 });
 

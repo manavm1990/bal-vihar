@@ -1,76 +1,24 @@
 import { stegaClean } from "@sanity/client/stega";
-import type { HomePhotoBoardItem, PhotoGalleryData, SanityImageValue } from "./types";
+import type { PHOTO_GALLERY_QUERY_RESULT } from "sanity.types";
+
+export type GalleryPhoto = Omit<RawGalleryPhoto, "pages"> & { pages: string[] };
+type RawGalleryPhoto = NonNullable<NonNullable<PHOTO_GALLERY_QUERY_RESULT>["photos"]>[number];
 
 interface MapPhotoGalleryOptions {
   featuredOnly?: boolean;
 }
 
-const getSanityArrayKey = (item: Record<string, unknown>, fallback: string) => {
-  const raw = item["_key"];
-  return typeof raw === "string" && raw.trim().length > 0 ? raw.trim() : fallback;
-};
+export function mapPhotoGallery(
+  gallery: PHOTO_GALLERY_QUERY_RESULT | null | undefined,
+  { featuredOnly = false }: MapPhotoGalleryOptions = {},
+): GalleryPhoto[] {
+  const photos: RawGalleryPhoto[] = gallery?.photos ?? [];
 
-const isBoolean = (value: unknown): value is boolean => typeof value === "boolean";
+  return photos.flatMap((photo) => {
+    const title = photo.title?.trim();
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
-const isString = (value: unknown): value is string => typeof value === "string";
-
-const mapGalleryPhoto = (
-  value: unknown,
-  index: number,
-  featuredOnly: boolean,
-): HomePhotoBoardItem | null => {
-  if (!isRecord(value)) return null;
-
-  const item = value;
-  const title = parseString(item["title"])?.trim();
-  if (!title) return null;
-
-  if (featuredOnly && parseBoolean(item["featured"]) === false) return null;
-
-  return {
-    image: parseImage(item["image"]),
-    key: getSanityArrayKey(item, `photo-${index}`),
-    note: parseString(item["note"]),
-    pages: parseStrings(item["pages"]),
-    schoolYear: parseString(item["schoolYear"]),
-    title,
-  } as const;
-};
-
-export const mapPhotoGallery = (
-  input: unknown,
-  options: MapPhotoGalleryOptions = {},
-): PhotoGalleryData | null => {
-  const root = isRecord(input) ? input : null;
-  if (!root) return null;
-
-  const dataRecord = isRecord(root["data"]) ? root["data"] : root;
-  const id = parseString(dataRecord["_id"]) ?? parseString(dataRecord["id"]);
-  if (!id) return null;
-
-  const photosRaw = dataRecord["photos"];
-  const photos = Array.isArray(photosRaw)
-    ? photosRaw
-        .map((value, index) => mapGalleryPhoto(value, index, options.featuredOnly === true))
-        .filter((item): item is HomePhotoBoardItem => item !== null)
-    : [];
-
-  return {
-    id,
-    photos,
-    title: parseString(dataRecord["title"]),
-  } as const;
-};
-
-const parseBoolean = (value: unknown): boolean | null => (isBoolean(value) ? value : null);
-
-const parseImage = (value: unknown): SanityImageValue | null =>
-  isRecord(value) ? (value as SanityImageValue) : null;
-
-const parseString = (value: unknown): string | null => (isString(value) ? value : null);
-
-const parseStrings = (value: unknown): string[] =>
-  Array.isArray(value) ? value.filter(isString).map((entry) => stegaClean(entry)) : [];
+    return !title || (featuredOnly && photo.featured === false)
+      ? []
+      : [{ ...photo, title, pages: (photo.pages ?? []).map((page) => stegaClean(page)) }];
+  });
+}

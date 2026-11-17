@@ -1,19 +1,16 @@
 import { stegaClean } from "@sanity/client/stega";
+import type { CALENDAR_EVENTS_QUERY_RESULT } from "sanity.types";
 import { SITE_URL } from "../constants";
 import { createWhatsAppShareUrl } from "../share";
-import type { CalendarEventData } from "./types";
+
+export type CalendarEvent = Omit<CALENDAR_EVENTS_QUERY_RESULT[number], "detailsSlug"> & {
+  detailsHref: string | null;
+};
 
 interface UpcomingOptions {
   limit?: number;
   now?: Date;
 }
-
-const isBoolean = (value: unknown): value is boolean => typeof value === "boolean";
-
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
-const isString = (value: unknown): value is string => typeof value === "string";
 
 export function formatCalendarDate(date: string) {
   const parsed = Date.parse(`${date}T12:00:00`);
@@ -28,45 +25,30 @@ export function formatCalendarDate(date: string) {
       });
 }
 
-export const createCalendarEventShareUrl = (event: CalendarEventData) =>
+export const createCalendarEventShareUrl = (event: CalendarEvent) =>
   createWhatsAppShareUrl([
     event.title,
     formatCalendarEventMeta(event),
-    `${SITE_URL}/calendar/${event.id}`,
+    `${SITE_URL}/calendar/${event._id}`,
   ]);
 
-export const formatCalendarEventMeta = (event: CalendarEventData) =>
+export const formatCalendarEventMeta = (event: CalendarEvent) =>
   [formatCalendarDate(event.date), event.time, event.location].filter(Boolean).join(" · ");
 
-export const mapCalendarEvents = (input: unknown): CalendarEventData[] =>
-  !Array.isArray(input)
-    ? []
-    : input.flatMap((row) => {
-        if (!isRecord(row)) return [];
-
-        const id = isString(row["_id"]) ? row["_id"] : isString(row["id"]) ? row["id"] : null;
-        const title = isString(row["title"]) ? row["title"] : null;
-        const date = isString(row["date"]) ? stegaClean(row["date"]) : null;
-
-        return !id || !title || !date
-          ? []
-          : [
-              {
-                id,
-                title,
-                date,
-                location: isString(row["location"]) ? row["location"] : null,
-                eventType: isString(row["eventType"]) ? row["eventType"] : null,
-                time: isString(row["time"]) ? row["time"] : null,
-                description: isString(row["description"]) ? row["description"] : null,
-                isHighlighted: isBoolean(row["isHighlighted"]) ? row["isHighlighted"] : null,
-                academicYear: isString(row["academicYear"]) ? row["academicYear"] : null,
-                detailsHref: isString(row["detailsSlug"])
-                  ? `/${stegaClean(row["detailsSlug"])}`
-                  : null,
-              } satisfies CalendarEventData,
-            ];
-      });
+export const mapCalendarEvents = (
+  events: CALENDAR_EVENTS_QUERY_RESULT | null | undefined,
+): CalendarEvent[] =>
+  (events ?? []).flatMap(({ detailsSlug, ...event }) =>
+    !event.title || !event.date
+      ? []
+      : [
+          {
+            ...event,
+            date: stegaClean(event.date),
+            detailsHref: detailsSlug ? `/${stegaClean(detailsSlug)}` : null,
+          },
+        ],
+  );
 
 export const chicagoToday = (now = new Date()) =>
   now.toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
@@ -78,11 +60,11 @@ const escapeIcsText = (value: string) =>
     .replaceAll(",", "\\,")
     .replaceAll("\n", "\\n");
 
-const sortByDateAsc = (events: CalendarEventData[]) =>
+const sortByDateAsc = (events: CalendarEvent[]) =>
   [...events].sort((a, b) => a.date.localeCompare(b.date));
 
 export const getUpcomingCalendarEvents = (
-  events: CalendarEventData[],
+  events: CalendarEvent[],
   { limit = 5, now = new Date() }: UpcomingOptions = {},
 ) => {
   const today = chicagoToday(now);
@@ -90,7 +72,7 @@ export const getUpcomingCalendarEvents = (
   return sortByDateAsc(events.filter((event) => event.date >= today)).slice(0, limit);
 };
 
-export function createCalendarEventIcs(event: CalendarEventData) {
+export function createCalendarEventIcs(event: CalendarEvent) {
   const stamp = new Date()
     .toISOString()
     .replace(/[-:]/g, "")
@@ -111,7 +93,7 @@ export function createCalendarEventIcs(event: CalendarEventData) {
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    `UID:${event.id}@balviharstlouis.org`,
+    `UID:${event._id}@balviharstlouis.org`,
     `DTSTAMP:${stamp}`,
     `DTSTART;VALUE=DATE:${day}`,
     `SUMMARY:${summary}`,

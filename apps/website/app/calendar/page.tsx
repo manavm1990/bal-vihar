@@ -4,7 +4,7 @@ import { Card, CardContent } from "@components/ui/card";
 import { MutedP } from "@components/ui/typography";
 import { getCachedNow } from "@lib/clock";
 import { BASE_TITLE } from "@lib/constants";
-import { fetchSanityData } from "@lib/sanity/fetch";
+import { fetchSanityOrNull } from "@lib/sanity/fetch";
 import { getUpcomingCalendarEvents, mapCalendarEvents } from "@lib/sanity/map-calendar-events";
 import { CALENDAR_EVENTS_QUERY } from "@lib/sanity/queries";
 import type { Metadata } from "next";
@@ -35,11 +35,11 @@ export default function CalendarPage() {
 }
 
 async function CalendarEvents() {
-  const [payload, now] = await Promise.all([
-    fetchSanityData(CALENDAR_EVENTS_QUERY),
+  const [result, now] = await Promise.all([
+    fetchSanityOrNull(CALENDAR_EVENTS_QUERY, "the calendar"),
     getCachedNow(),
   ]);
-  const events = mapCalendarEvents(payload);
+  const events = mapCalendarEvents(result?.data);
   const upcoming = getUpcomingCalendarEvents(events, { limit: Number.POSITIVE_INFINITY, now });
 
   return events.length === 0 ? (
@@ -53,7 +53,7 @@ async function CalendarEvents() {
   ) : (
     <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
       {upcoming.map((event) => (
-        <li key={event.id} className="min-w-0">
+        <li key={event._id} className="min-w-0">
           <EventCard event={event} />
         </li>
       ))}

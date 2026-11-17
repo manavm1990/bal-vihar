@@ -1,17 +1,17 @@
 import { Button } from "@components/ui/button";
 import { getCachedNow } from "@lib/clock";
 import { BASE_TITLE, ORGANIZATION_LEGAL_NAME, REGISTRATION_URL } from "@lib/constants";
-import { fetchSanityData, fetchSanityOrNull } from "@lib/sanity/fetch";
+import { fetchSanityOrNull } from "@lib/sanity/fetch";
 import {
+  type CalendarEvent,
   chicagoToday,
   formatCalendarDate,
   getUpcomingCalendarEvents,
   mapCalendarEvents,
 } from "@lib/sanity/map-calendar-events";
-import { mapHomePage } from "@lib/sanity/map-home-page";
+import { type HomeNotice, mapHomePage } from "@lib/sanity/map-home-page";
 import { getMenuPages } from "@lib/sanity/pages";
 import { CALENDAR_EVENTS_QUERY, HOME_PAGE_QUERY, PAGES_QUERY } from "@lib/sanity/queries";
-import type { CalendarEventData, HomePageData } from "@lib/sanity/types";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -101,14 +101,14 @@ async function Navs() {
 }
 
 async function Notice() {
-  const [homePayload, calendarPayload, now] = await Promise.all([
-    fetchSanityData(HOME_PAGE_QUERY),
-    fetchSanityData(CALENDAR_EVENTS_QUERY),
+  const [home, calendar, now] = await Promise.all([
+    fetchSanityOrNull(HOME_PAGE_QUERY, "the home page notice"),
+    fetchSanityOrNull(CALENDAR_EVENTS_QUERY, "the calendar"),
     getCachedNow(),
   ]);
   const notice = getNotice(
-    mapHomePage(homePayload),
-    getUpcomingCalendarEvents(mapCalendarEvents(calendarPayload), { limit: 1, now })[0],
+    mapHomePage(home?.data),
+    getUpcomingCalendarEvents(mapCalendarEvents(calendar?.data), { limit: 1, now })[0],
     chicagoToday(now),
   );
 
@@ -125,8 +125,8 @@ async function Notice() {
 }
 
 function getNotice(
-  home: HomePageData | null,
-  nextEvent: CalendarEventData | undefined,
+  home: HomeNotice | null,
+  nextEvent: CalendarEvent | undefined,
   today: string,
 ): HeaderNotice {
   if (home?.noticeText && !(home.noticeUntil && home.noticeUntil < today))

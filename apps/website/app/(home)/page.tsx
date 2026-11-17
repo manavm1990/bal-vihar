@@ -5,11 +5,14 @@ import { Button } from "@components/ui/button";
 import { Bq, H1, H2, LeadP, MutedP, P } from "@components/ui/typography";
 import { getCachedNow } from "@lib/clock";
 import { REGISTRATION_URL } from "@lib/constants";
-import { fetchSanityData } from "@lib/sanity/fetch";
-import { getUpcomingCalendarEvents, mapCalendarEvents } from "@lib/sanity/map-calendar-events";
-import { mapPhotoGallery } from "@lib/sanity/map-photo-gallery";
+import { fetchSanityOrNull } from "@lib/sanity/fetch";
+import {
+  type CalendarEvent,
+  getUpcomingCalendarEvents,
+  mapCalendarEvents,
+} from "@lib/sanity/map-calendar-events";
+import { type GalleryPhoto, mapPhotoGallery } from "@lib/sanity/map-photo-gallery";
 import { CALENDAR_EVENTS_QUERY, PHOTO_GALLERY_QUERY } from "@lib/sanity/queries";
-import type { CalendarEventData, HomePhotoBoardItem } from "@lib/sanity/types";
 import Link from "next/link";
 
 const AUDIENCE_LINKS = [
@@ -99,14 +102,14 @@ const WHO_WE_ARE =
   "Center for Indian Cultural Education – Bal Vihar of St. Louis is a non-profit organization that has served the Metro St. Louis Indian community since 1992. Our primary focus is Indian cultural education for students ages 5–18, and its application and integration with the global, multicultural society. Students also learn discipline, tolerance and devotion in their daily routine.";
 
 export default async function HomePage() {
-  const [calendarPayload, galleryPayload, now] = await Promise.all([
-    fetchSanityData(CALENDAR_EVENTS_QUERY),
-    fetchSanityData(PHOTO_GALLERY_QUERY),
+  const [calendar, gallery, now] = await Promise.all([
+    fetchSanityOrNull(CALENDAR_EVENTS_QUERY, "the calendar"),
+    fetchSanityOrNull(PHOTO_GALLERY_QUERY, "the photo gallery"),
     getCachedNow(),
   ]);
 
-  const events = getUpcomingCalendarEvents(mapCalendarEvents(calendarPayload), { now });
-  const photos = (mapPhotoGallery(galleryPayload, { featuredOnly: true })?.photos ?? []).filter(
+  const events = getUpcomingCalendarEvents(mapCalendarEvents(calendar?.data), { now });
+  const photos = mapPhotoGallery(gallery?.data, { featuredOnly: true }).filter(
     (photo) => photo.image?.asset?._id || photo.image?.asset?.url,
   );
   const [banner, ...stripPhotos] = photos;
@@ -221,7 +224,7 @@ function NewToBalVihar() {
 }
 
 interface PhotoBannerProps {
-  photo: HomePhotoBoardItem | undefined;
+  photo: GalleryPhoto | undefined;
 }
 
 function PhotoBanner({ photo }: PhotoBannerProps) {
@@ -242,7 +245,7 @@ function PhotoBanner({ photo }: PhotoBannerProps) {
 }
 
 interface PhotoStripProps {
-  photos: HomePhotoBoardItem[];
+  photos: GalleryPhoto[];
 }
 
 function PhotoStrip({ photos }: PhotoStripProps) {
@@ -251,7 +254,7 @@ function PhotoStrip({ photos }: PhotoStripProps) {
       <H2 variant="plain">Around Bal Vihar</H2>
       <ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {photos.map((photo) => (
-          <li key={photo.key}>
+          <li key={photo._key}>
             <Link
               href="/photos"
               className="group relative block aspect-4/3 overflow-hidden rounded-lg border"
@@ -314,7 +317,7 @@ function Stats() {
 }
 
 interface UpcomingEventsProps {
-  events: CalendarEventData[];
+  events: CalendarEvent[];
 }
 
 function UpcomingEvents({ events }: UpcomingEventsProps) {
@@ -328,7 +331,7 @@ function UpcomingEvents({ events }: UpcomingEventsProps) {
       ) : (
         <ul className="space-y-3">
           {events.map((event) => (
-            <li key={event.id}>
+            <li key={event._id}>
               <EventCard event={event} />
             </li>
           ))}

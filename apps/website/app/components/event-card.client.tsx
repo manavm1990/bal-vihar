@@ -2,12 +2,12 @@
 
 import useAnimatedDialog from "@lib/hooks/use-animated-dialog";
 import {
+  type CalendarEvent,
   createCalendarEventIcs,
   createCalendarEventShareUrl,
   formatCalendarDate,
   formatCalendarEventMeta,
 } from "@lib/sanity/map-calendar-events";
-import type { CalendarEventData } from "@lib/sanity/types";
 import { cn } from "@lib/utils";
 import { CalendarIcon, Cross2Icon, Share1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -18,7 +18,7 @@ import { H2, MutedP, P } from "./ui/typography";
 type EventTypeKey = keyof typeof EVENT_TYPE_LABELS;
 
 interface EventCardProps {
-  event: CalendarEventData;
+  event: CalendarEvent;
 }
 
 const EVENT_TYPE_LABELS = {
@@ -134,7 +134,7 @@ export default function EventCard({ event }: EventCardProps) {
       {isSpecial ? (
         <dialog
           ref={dialogRef}
-          aria-labelledby={`event-detail-${event.id}`}
+          aria-labelledby={`event-detail-${event._id}`}
           onClick={handleBackdropClick}
           onCancel={handleDialogCancel}
           onKeyDown={handleDialogKeyDown}
@@ -148,7 +148,7 @@ export default function EventCard({ event }: EventCardProps) {
                     {typeLabel}
                   </span>
                 ) : null}
-                <H2 id={`event-detail-${event.id}`} variant="plain" className="text-2xl">
+                <H2 id={`event-detail-${event._id}`} variant="plain" className="text-2xl">
                   {event.title}
                 </H2>
               </div>
@@ -196,7 +196,7 @@ export default function EventCard({ event }: EventCardProps) {
   );
 }
 
-function downloadCalendarEvent(event: CalendarEventData) {
+function downloadCalendarEvent(event: CalendarEvent) {
   const url = URL.createObjectURL(
     new Blob([createCalendarEventIcs(event)], { type: "text/calendar;charset=utf-8" }),
   );
