@@ -7,7 +7,7 @@ import { resolve } from "./presentation/resolve";
 import { structure } from "./structure";
 import { templates } from "./templates";
 
-const CREATABLE_TYPES = new Set(["calendarEvent", "photoAlbum"]);
+const CREATABLE_TYPES = new Set(["calendarEvent", "page", "photoAlbum"]);
 const EDIT_ONLY_ACTIONS = new Set(["publish", "discardChanges", "restore"]);
 const EDIT_ONLY_TYPE_SET = new Set<string>([...SINGLETON_TYPES, "classPage", "spreadsheetImport"]);
 

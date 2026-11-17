@@ -31,6 +31,12 @@ export const resolve = {
         locations: [{ title: "Home page", href: "/" }],
       }),
     }),
+    page: defineLocations({
+      select: { title: "title", slug: "slug.current" },
+      resolve: (doc) => ({
+        locations: doc?.slug ? [{ title: doc.title ?? "Page", href: `/${doc.slug}` }] : [],
+      }),
+    }),
     photoAlbum: defineLocations({
       select: { title: "title", slug: "slug.current" },
       resolve: (doc) => ({
