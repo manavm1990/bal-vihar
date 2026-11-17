@@ -1,3 +1,4 @@
+import type { StegaBranded } from "@sanity/client/stega";
 import type { VOLUNTEER_ROSTER_QUERY_RESULT } from "sanity.types";
 import { cleanText, compareNames, type DirectoryEntry, sortDirectory } from "./directory";
 
@@ -33,7 +34,9 @@ function buildDirectory(activities: VolunteerActivity[]) {
   return sortDirectory([...people.values()]);
 }
 
-export function getVolunteerRosterView(data: VOLUNTEER_ROSTER_QUERY_RESULT | null | undefined) {
+export function getVolunteerRosterView(
+  data: StegaBranded<VOLUNTEER_ROSTER_QUERY_RESULT> | undefined,
+) {
   const activities = (data?.activities ?? []).flatMap((activity): VolunteerActivity[] => {
     const name = cleanText(activity.name);
     if (!name) return [];

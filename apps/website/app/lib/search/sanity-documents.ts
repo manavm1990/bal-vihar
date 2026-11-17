@@ -1,4 +1,4 @@
-import { stegaClean } from "@sanity/client/stega";
+import { stegaBrand, stegaClean } from "@sanity/client/stega";
 import type {
   CALENDAR_EVENTS_QUERY_RESULT,
   CLASS_PAGES_QUERY_RESULT,
@@ -19,15 +19,16 @@ import { extractText } from "../sanity/portable-text";
 import type { SearchDocument } from "./search";
 
 type SearchAlbum = PHOTO_ALBUMS_QUERY_RESULT[number];
+type SearchClassPage = CLASS_PAGES_QUERY_RESULT[number];
 type SearchPage = PAGES_SEARCH_QUERY_RESULT[number];
 
 interface SanitySearchSource {
-  albums: PHOTO_ALBUMS_QUERY_RESULT | null | undefined;
-  events: CALENDAR_EVENTS_QUERY_RESULT | null | undefined;
+  albums: readonly SearchAlbum[] | null | undefined;
+  events: readonly CALENDAR_EVENTS_QUERY_RESULT[number][] | null | undefined;
   faqs: FAQS_QUERY_RESULT | null | undefined;
   now?: Date;
   pages: PAGES_SEARCH_QUERY_RESULT | null | undefined;
-  classes: CLASS_PAGES_QUERY_RESULT | null | undefined;
+  classes: readonly SearchClassPage[] | null | undefined;
   policies: POLICIES_QUERY_RESULT | null | undefined;
 }
 
@@ -111,7 +112,7 @@ export function createSanitySearchDocuments({
   policies,
 }: SanitySearchSource): SearchDocument[] {
   return [
-    ...mapCalendarEvents(events).map(createEventDocument),
+    ...mapCalendarEvents(stegaBrand(events)).map(createEventDocument),
     ...(classes ?? []).flatMap(({ _id, title, slug, teachers }) =>
       title && slug
         ? [

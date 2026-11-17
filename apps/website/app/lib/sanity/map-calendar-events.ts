@@ -1,11 +1,14 @@
-import { stegaClean } from "@sanity/client/stega";
+import { type StegaBranded, stegaClean } from "@sanity/client/stega";
 import type { CALENDAR_EVENTS_QUERY_RESULT } from "sanity.types";
 import { SITE_URL } from "../constants";
 import { createWhatsAppShareUrl } from "../share";
 
-export type CalendarEvent = Omit<CALENDAR_EVENTS_QUERY_RESULT[number], "detailsSlug"> & {
+export type CalendarEvent = Omit<CalendarRow, "date" | "detailsSlug" | "eventType"> & {
+  date: string;
   detailsHref: string | null;
+  eventType: CALENDAR_EVENTS_QUERY_RESULT[number]["eventType"];
 };
+type CalendarRow = StegaBranded<CALENDAR_EVENTS_QUERY_RESULT>[number];
 
 interface UpcomingOptions {
   limit?: number;
@@ -36,7 +39,7 @@ export const formatCalendarEventMeta = (event: CalendarEvent) =>
   [formatCalendarDate(event.date), event.time, event.location].filter(Boolean).join(" · ");
 
 export const mapCalendarEvents = (
-  events: CALENDAR_EVENTS_QUERY_RESULT | null | undefined,
+  events: readonly CalendarRow[] | null | undefined,
 ): CalendarEvent[] =>
   (events ?? []).flatMap(({ detailsSlug, ...event }) =>
     !event.title || !event.date
@@ -46,6 +49,7 @@ export const mapCalendarEvents = (
             ...event,
             date: stegaClean(event.date),
             detailsHref: detailsSlug ? `/${stegaClean(detailsSlug)}` : null,
+            eventType: stegaClean(event.eventType),
           },
         ],
   );

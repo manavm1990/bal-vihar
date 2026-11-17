@@ -1,15 +1,19 @@
-import { stegaClean } from "@sanity/client/stega";
+import { type StegaBranded, stegaClean } from "@sanity/client/stega";
 import type { PHOTO_GALLERY_QUERY_RESULT } from "sanity.types";
 
-export type GalleryPhoto = Omit<RawGalleryPhoto, "pages"> & { pages: string[] };
-type RawGalleryPhoto = NonNullable<NonNullable<PHOTO_GALLERY_QUERY_RESULT>["photos"]>[number];
+type Gallery = StegaBranded<PHOTO_GALLERY_QUERY_RESULT>;
+export type GalleryPhoto = Omit<RawGalleryPhoto, "pages" | "title"> & {
+  pages: string[];
+  title: string;
+};
+type RawGalleryPhoto = NonNullable<NonNullable<Gallery>["photos"]>[number];
 
 interface MapPhotoGalleryOptions {
   featuredOnly?: boolean;
 }
 
 export function mapPhotoGallery(
-  gallery: PHOTO_GALLERY_QUERY_RESULT | null | undefined,
+  gallery: Gallery | undefined,
   { featuredOnly = false }: MapPhotoGalleryOptions = {},
 ): GalleryPhoto[] {
   const photos: RawGalleryPhoto[] = gallery?.photos ?? [];

@@ -1,10 +1,10 @@
-import { stegaClean } from "@sanity/client/stega";
+import { type StegaBranded, stegaClean } from "@sanity/client/stega";
 import type { HOME_PAGE_QUERY_RESULT } from "sanity.types";
 
 export type HomeNotice = NonNullable<ReturnType<typeof mapHomePage>>;
 type SafeHref = `/${string}` | `http://${string}` | `https://${string}` | `mailto:${string}`;
 
-export function mapHomePage(home: HOME_PAGE_QUERY_RESULT | null | undefined) {
+export function mapHomePage(home: StegaBranded<HOME_PAGE_QUERY_RESULT> | undefined) {
   if (!home) return null;
 
   const noticeHref = parseSafeHref(home.noticeHref);
