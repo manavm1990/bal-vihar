@@ -5,7 +5,7 @@ import { REGISTRATION_URL } from "@lib/constants";
 import { ChevronDownIcon, Cross1Icon as CrossIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
-import { groupItems, NAVIGATION } from "../constants";
+import { groupItems, type MenuNavigationItem, mergeNavigation } from "../constants";
 import useMobile from "./use-mobile";
 
 const ITEM_VARIANTS = {
@@ -67,7 +67,11 @@ const SUB_ITEM_VARIANTS = {
   },
 } as const;
 
-export default function MobileNav() {
+interface MobileNavProps {
+  extraItems?: readonly MenuNavigationItem[];
+}
+
+export default function MobileNav({ extraItems = [] }: MobileNavProps) {
   const { isOpen, setIsOpen, activeSection, setActiveSection, containerRef } = useMobile();
 
   return (
@@ -121,7 +125,7 @@ export default function MobileNav() {
 
         <nav id="mobile-navigation" className="p-4" aria-label="Primary">
           <motion.ul className="space-y-2" variants={ITEM_VARIANTS}>
-            {NAVIGATION.map((section) => (
+            {mergeNavigation(extraItems).map((section) => (
               <motion.li key={section.name} variants={ITEM_VARIANTS}>
                 {!section.items ? (
                   <Link

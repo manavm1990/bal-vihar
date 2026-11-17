@@ -1,14 +1,15 @@
 import { Button } from "@components/ui/button";
 import { getCachedNow } from "@lib/clock";
 import { BASE_TITLE, ORGANIZATION_LEGAL_NAME, REGISTRATION_URL } from "@lib/constants";
-import { fetchSanityData } from "@lib/sanity/fetch";
+import { fetchSanityData, fetchSanityOrNull } from "@lib/sanity/fetch";
 import {
   formatCalendarDate,
   getUpcomingCalendarEvents,
   mapCalendarEvents,
 } from "@lib/sanity/map-calendar-events";
 import { mapHomePage } from "@lib/sanity/map-home-page";
-import { CALENDAR_EVENTS_QUERY, HOME_PAGE_QUERY } from "@lib/sanity/queries";
+import { getMenuPages } from "@lib/sanity/pages";
+import { CALENDAR_EVENTS_QUERY, HOME_PAGE_QUERY, PAGES_QUERY } from "@lib/sanity/queries";
 import type { CalendarEventData, HomePageData } from "@lib/sanity/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -61,8 +62,16 @@ export default function Header() {
           </span>
         </Link>
 
-        <MobileNav />
-        <DesktopNav />
+        <Suspense
+          fallback={
+            <>
+              <MobileNav />
+              <DesktopNav />
+            </>
+          }
+        >
+          <Navs />
+        </Suspense>
 
         <div className="ml-auto flex items-center gap-3 xl:ml-0">
           <Button asChild size="sm" className="hidden sm:inline-flex">
@@ -72,6 +81,21 @@ export default function Header() {
         </div>
       </div>
     </header>
+  );
+}
+
+async function Navs() {
+  const [result, now] = await Promise.all([
+    fetchSanityOrNull(PAGES_QUERY, "the editor pages"),
+    getCachedNow(),
+  ]);
+  const extraItems = getMenuPages(result?.data, now);
+
+  return (
+    <>
+      <MobileNav extraItems={extraItems} />
+      <DesktopNav extraItems={extraItems} />
+    </>
   );
 }
 

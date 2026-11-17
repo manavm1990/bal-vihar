@@ -4,6 +4,7 @@ import {
   CALENDAR_EVENTS_QUERY,
   CLASS_PAGES_QUERY,
   FAQS_QUERY,
+  PAGES_QUERY,
   PHOTO_ALBUMS_QUERY,
   POLICIES_QUERY,
 } from "@lib/sanity/queries";
@@ -65,19 +66,20 @@ export const POST = async (request: Request) => {
 
 async function collectSearchDocuments(origin: string) {
   const sanity = client.withConfig({ useCdn: false });
-  const [events, classes, faqs, albums, policies, crawled] = await Promise.all([
+  const [events, classes, faqs, albums, policies, pages, crawled] = await Promise.all([
     sanity.fetch(CALENDAR_EVENTS_QUERY),
     sanity.fetch(CLASS_PAGES_QUERY),
     sanity.fetch(FAQS_QUERY),
     sanity.fetch(PHOTO_ALBUMS_QUERY),
     sanity.fetch(POLICIES_QUERY),
+    sanity.fetch(PAGES_QUERY),
     crawlPageDocuments(origin),
   ]);
 
   return [
     ...staticSearchDocuments,
     ...crawled,
-    ...createSanitySearchDocuments({ events, classes, faqs, albums, policies }),
+    ...createSanitySearchDocuments({ events, classes, faqs, albums, pages, policies }),
   ] as const;
 }
 

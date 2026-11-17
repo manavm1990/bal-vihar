@@ -6,7 +6,12 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentPropsWithoutRef } from "react";
-import { groupItems, NAVIGATION, type NavigationSubItem } from "./constants";
+import {
+  groupItems,
+  type MenuNavigationItem,
+  mergeNavigation,
+  type NavigationSubItem,
+} from "./constants";
 
 type LinkProps = {
   href: string;
@@ -30,12 +35,16 @@ function Link({ href, ...props }: LinkProps) {
   );
 }
 
-export default function DesktopNav() {
+interface DesktopNavProps {
+  extraItems?: readonly MenuNavigationItem[];
+}
+
+export default function DesktopNav({ extraItems = [] }: DesktopNavProps) {
   return (
     <nav className="ml-auto hidden xl:block xl:pr-2">
       <NavigationMenu.Root className="relative">
         <NavigationMenu.List className="flex items-center">
-          {NAVIGATION.map((item) => (
+          {mergeNavigation(extraItems).map((item) => (
             <NavigationMenu.Item key={item.name} className="relative">
               {!item.items ? (
                 <NavigationMenu.Link asChild>

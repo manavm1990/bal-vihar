@@ -1,12 +1,15 @@
 import { stegaClean } from "@sanity/client/stega";
-import type { POLICIES_QUERY_RESULT } from "sanity.types";
+import type { PAGES_QUERY_RESULT, POLICIES_QUERY_RESULT } from "sanity.types";
 import { type FaqItemView, getFaqs } from "../sanity/faqs";
 import { formatCalendarEventMeta, mapCalendarEvents } from "../sanity/map-calendar-events";
+import { getCurrentPages } from "../sanity/pages";
 import { describeAlbum } from "../sanity/photo-albums";
 import { getPolicies, type PolicySectionView } from "../sanity/policies";
 import { extractText } from "../sanity/portable-text";
 import type { CalendarEventData } from "../sanity/types";
 import type { SearchDocument } from "./search";
+
+type SearchPage = PAGES_QUERY_RESULT[number];
 
 interface SearchAlbum {
   _id: string;
@@ -27,6 +30,8 @@ interface SanitySearchSource {
   albums: readonly SearchAlbum[] | null | undefined;
   events: unknown;
   faqs: Parameters<typeof getFaqs>[0];
+  now?: Date;
+  pages: PAGES_QUERY_RESULT | null | undefined;
   classes: readonly SearchClassPage[] | null | undefined;
   policies: POLICIES_QUERY_RESULT | null | undefined;
 }
@@ -57,6 +62,14 @@ const createFaqDocument = ({ key, question, answer }: FaqItemView): SearchDocume
   text: clean(extractText(answer)),
 });
 
+const createPageDocument = (page: SearchPage): SearchDocument => ({
+  id: `editor-page:${page._id}`,
+  title: clean(page.title),
+  section: "Events & Community › Pages",
+  href: `/${clean(page.slug)}`,
+  text: clean([page.description, extractText(page.body)].filter(Boolean).join(" ")),
+});
+
 function createPolicyDocuments(section: PolicySectionView): SearchDocument[] {
   const href = `/about-us/policies-procedures#${clean(section.slug)}`;
   const sectionTitle = clean(section.title);
@@ -84,6 +97,8 @@ export function createSanitySearchDocuments({
   events,
   faqs,
   classes,
+  now = new Date(),
+  pages,
   policies,
 }: SanitySearchSource): SearchDocument[] {
   return [
@@ -101,6 +116,7 @@ export function createSanitySearchDocuments({
           ]
         : [],
     ),
+    ...getCurrentPages(pages, now).map(createPageDocument),
     ...getFaqs(faqs).map(createFaqDocument),
     ...(albums ?? []).map(createAlbumDocument),
     ...getPolicies(policies ?? null).sections.flatMap(createPolicyDocuments),

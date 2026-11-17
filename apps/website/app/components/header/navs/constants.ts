@@ -1,4 +1,4 @@
-interface NavigationItem {
+export interface NavigationItem {
   name: string;
   link: string;
   align?: "right";
@@ -9,6 +9,10 @@ export interface NavigationSubItem {
   name: string;
   link: string;
   group?: string;
+}
+
+export interface MenuNavigationItem extends NavigationSubItem {
+  menu: string;
 }
 
 export const NAVIGATION: readonly NavigationItem[] = [
@@ -97,3 +101,19 @@ export function groupItems(items: readonly NavigationSubItem[]) {
 
   return groups;
 }
+
+export const mergeNavigation = (extraItems: readonly MenuNavigationItem[]) =>
+  NAVIGATION.map((item): NavigationItem => {
+    const extras = extraItems.filter(({ menu }) => menu === item.name);
+    if (extras.length === 0) return item;
+
+    const usesGroups = item.items?.some(({ group }) => group) ?? false;
+
+    return {
+      ...item,
+      items: [
+        ...(item.items ?? []),
+        ...extras.map(({ name, link }) => ({ name, link, group: usesGroups ? "More" : undefined })),
+      ],
+    };
+  });
