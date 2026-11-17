@@ -47,17 +47,9 @@ export interface TeachingFacultyView {
   directory: DirectoryEntry[];
 }
 
-interface SanityAssistant {
-  _key: string;
-  name: string | null;
-  level: string | null;
-}
-
-interface SanityPerson {
-  name: string | null;
-  email: string | null;
-  phone: string | null;
-}
+type SanityAssistant = NonNullable<SanityProgram["assistants"]>[number];
+type SanityPerson = NonNullable<SanityProgram["team"]>[number];
+type SanityProgram = NonNullable<NonNullable<TEACHING_FACULTY_QUERY_RESULT>["programs"]>[number];
 
 function buildDirectory(groups: FacultyGroup[], programs: FacultyProgram[]): DirectoryEntry[] {
   const credits = getCredits(groups, programs);
@@ -84,7 +76,7 @@ function createAssistants(list: SanityAssistant[] | null | undefined): FacultyAs
   });
 }
 
-function createPeople(list: (SanityPerson | null)[] | null | undefined): FacultyPerson[] {
+function createPeople(list: SanityPerson[] | null | undefined): FacultyPerson[] {
   return (list ?? []).flatMap((person) => createPerson(person) ?? []);
 }
 

@@ -1,4 +1,5 @@
 import { stegaClean } from "@sanity/client/stega";
+import type { IMPACT_AWARD_QUERY_RESULT } from "sanity.types";
 import { fetchSanityOrNull } from "./fetch";
 import { IMPACT_AWARD_QUERY } from "./queries";
 import { getVolunteerContactLinks } from "./volunteers-list";
@@ -41,30 +42,6 @@ export interface AwardTier {
   youngAdults: string;
 }
 
-interface ImpactAwardData {
-  awardYear?: Text;
-  dates?: Partial<Record<keyof AwardDates, Text>> | null;
-  coordinator?: { name?: Text; role?: Text; email?: Text; phone?: Text } | null;
-  tiers?: Partial<
-    Record<"bronze" | "silver" | "gold", { teens?: Text; youngAdults?: Text } | null>
-  > | null;
-  teachingHours?:
-    | readonly {
-        activity?: Text;
-        classesY4?: Text;
-        classesY5?: Text;
-        prepHours?: Text;
-        presentingHours?: Text;
-        attendedHours?: Text;
-      }[]
-    | null;
-  communityIntro?: Text;
-  communityProjects?:
-    | readonly { project?: Text; participating?: Text; onTheTeam?: Text; leading?: Text }[]
-    | null;
-  downloads?: readonly { label?: Text; description?: Text; url?: Text }[] | null;
-}
-
 export interface ImpactAwardView {
   year: string | null;
   dates: AwardDates;
@@ -76,11 +53,11 @@ export interface ImpactAwardView {
   downloads: AwardDownload[];
 }
 
-type Text = string | null | undefined;
+type ImpactAwardData = NonNullable<IMPACT_AWARD_QUERY_RESULT>;
 
-const clean = (value: Text) => stegaClean(value ?? "").trim() || null;
+const clean = (value: string | null | undefined) => stegaClean(value ?? "").trim() || null;
 
-function getContact(coordinator: ImpactAwardData["coordinator"]): AwardContact | null {
+function getContact(coordinator: ImpactAwardData["coordinator"] | undefined): AwardContact | null {
   const name = clean(coordinator?.name);
   if (!name) return null;
 
@@ -99,7 +76,7 @@ function getContact(coordinator: ImpactAwardData["coordinator"]): AwardContact |
   };
 }
 
-function getDownloads(downloads: ImpactAwardData["downloads"]): AwardDownload[] {
+function getDownloads(downloads: ImpactAwardData["downloads"] | undefined): AwardDownload[] {
   return (downloads ?? []).flatMap((item) => {
     const label = clean(item.label);
     const href = clean(item.url);
@@ -110,7 +87,7 @@ function getDownloads(downloads: ImpactAwardData["downloads"]): AwardDownload[] 
   });
 }
 
-function getTiers(tiers: ImpactAwardData["tiers"]): AwardTier[] {
+function getTiers(tiers: ImpactAwardData["tiers"] | undefined): AwardTier[] {
   return TIER_LEVELS.flatMap(({ key, name }) => {
     const teens = clean(tiers?.[key]?.teens);
     const youngAdults = clean(tiers?.[key]?.youngAdults);
@@ -119,7 +96,7 @@ function getTiers(tiers: ImpactAwardData["tiers"]): AwardTier[] {
   });
 }
 
-export const getImpactAward = (data: ImpactAwardData | null | undefined): ImpactAwardView => ({
+export const getImpactAward = (data: IMPACT_AWARD_QUERY_RESULT | undefined): ImpactAwardView => ({
   year: clean(data?.awardYear),
   dates: {
     trackingStart: clean(data?.dates?.trackingStart),

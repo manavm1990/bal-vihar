@@ -1,3 +1,4 @@
+import type { FAQS_QUERY_RESULT } from "sanity.types";
 import { type PolicyBody, parseBody } from "./policies";
 
 export interface FaqItemView {
@@ -6,14 +7,7 @@ export interface FaqItemView {
   answer: PolicyBody;
 }
 
-interface FaqsData {
-  items?:
-    | readonly { _key: string; question: string | null; answer: PolicyBody | null }[]
-    | null
-    | undefined;
-}
-
-export const getFaqs = (data: FaqsData | null | undefined) =>
+export const getFaqs = (data: FAQS_QUERY_RESULT | undefined): FaqItemView[] =>
   (data?.items ?? []).flatMap((item) =>
     item.question
       ? [{ key: item._key, question: item.question, answer: parseBody(item.answer) }]
