@@ -1,7 +1,9 @@
 import { DocumentIcon } from "@sanity/icons/Document";
 import { defineArrayMember, defineField, defineType, getPublishedId } from "sanity";
+import { hasSlug, isAdministrator } from "../field-rules";
 import { createBodyBlock } from "../objects/page-blocks";
 import { HEADER_MENUS, RESERVED_SLUGS } from "../route-config";
+import { getToday } from "../school-years";
 
 const API_VERSION = "2025-01-01";
 const NO_MENU = "none";
@@ -11,8 +13,6 @@ const MENU_OPTIONS = [
   ...HEADER_MENUS.map((menu) => ({ title: menu, value: menu })),
   { title: "Not in the menu", value: NO_MENU },
 ];
-
-const getToday = () => new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
 
 const isInMenu = (menu: unknown) => typeof menu === "string" && menu !== NO_MENU;
 
@@ -35,8 +35,9 @@ export const page = defineType({
       title: "Web address",
       type: "slug",
       description:
-        "The page lives at balvihar-stlouis.com/this-address. Pick it once; links to it break if you change it.",
+        "The page lives at balvihar-stlouis.com/this-address. Click Generate once. After that it is locked so shared links keep working; ask the site administrator if it must change.",
       options: { source: "title" },
+      readOnly: ({ value, currentUser }) => hasSlug(value) && !isAdministrator(currentUser),
       validation: (rule) =>
         rule.required().custom((value) => {
           const slug = value?.current;

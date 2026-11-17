@@ -1,5 +1,6 @@
 import { DocumentTextIcon } from "@sanity/icons/DocumentText";
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { describeUnevenRows } from "../field-rules";
 import { LINK_ANNOTATION, LINK_SCHEMES } from "../objects/link-annotation";
 
 const policyBody = () => [
@@ -57,7 +58,11 @@ const policyBody = () => [
             },
           }),
         ],
-        validation: (rule) => rule.required().min(1),
+        validation: (rule) =>
+          rule
+            .required()
+            .min(1)
+            .custom((rows, { parent }) => describeUnevenRows(rows, parent) ?? true),
       }),
       defineField({
         name: "footer",

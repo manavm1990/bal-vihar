@@ -108,7 +108,7 @@ export const impactAward = defineType({
       name: "tiers",
       title: "Hours for each award level",
       type: "object",
-      description: "From the 2025–26 slides. Confirm they still apply each year.",
+      description: "Check these each year before the award opens.",
       options: { collapsible: false },
       fields: [
         defineField({ name: "bronze", title: "Bronze", type: "object", fields: hoursFields() }),
@@ -120,8 +120,7 @@ export const impactAward = defineType({
       name: "teachingHours",
       title: "Teaching hours",
       type: "array",
-      description:
-        "One row per activity. The 2025–26 guidelines disagree on how many classes Bhajan, Yoga and Art youth lead (“4–5” and “8–10”, against 5 and 8 in their table). Confirm which is right.",
+      description: "One row per activity, as shown in the teaching hours table.",
       of: [
         defineArrayMember({
           name: "teachingHoursRow",
@@ -172,7 +171,7 @@ export const impactAward = defineType({
       title: "Tracking sheet and templates",
       type: "array",
       description:
-        "Links to the shared documents. The first one is also the “Tracking sheet” button at the top. Confirm what the second proof sample is.",
+        "Links to the shared documents. The first one is also the “Tracking sheet” button at the top.",
       of: [
         defineArrayMember({
           name: "awardDownload",

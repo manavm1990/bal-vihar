@@ -7,6 +7,7 @@ export const mediaImage = defineType({
   type: "image",
   icon: ImageIcon,
   options: {
+    accept: "image/jpeg,image/png,image/webp",
     hotspot: true,
   },
   fields: [

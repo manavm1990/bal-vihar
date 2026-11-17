@@ -1,6 +1,13 @@
 import { BookIcon } from "@sanity/icons/Book";
 import { CalendarIcon } from "@sanity/icons/Calendar";
-import { defineArrayMember, defineField, defineType } from "sanity";
+import {
+  type ConditionalPropertyCallbackContext,
+  defineArrayMember,
+  defineField,
+  defineType,
+} from "sanity";
+import { isAdministrator } from "../field-rules";
+import { getToday } from "../school-years";
 
 const GROUP_OPTIONS = [
   { title: "Grade levels (K–7)", value: "grade" },
@@ -28,13 +35,21 @@ const formatSessionDate = (date: unknown) =>
 const getGroupTitle = (value: unknown) =>
   GROUP_OPTIONS.find((option) => option.value === value)?.title;
 
-const getToday = () => new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
+const isLockedForEditors = ({ currentUser }: ConditionalPropertyCallbackContext) =>
+  !isAdministrator(currentUser);
 
 export const classPage = defineType({
   name: "classPage",
   title: "Class page",
   type: "document",
   icon: BookIcon,
+  fieldsets: [
+    {
+      name: "setup",
+      title: "Set up by the site administrator",
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   fields: [
     defineField({
       name: "sessions",
@@ -112,7 +127,8 @@ export const classPage = defineType({
       name: "title",
       title: "Class name",
       type: "string",
-      description: "Set up by the site administrator. Leave as is.",
+      readOnly: isLockedForEditors,
+      fieldset: "setup",
       validation: (rule) => rule.required().error("Add the class name."),
     }),
     defineField({
@@ -121,13 +137,15 @@ export const classPage = defineType({
       type: "slug",
       description: "Fixed when the class was created, so saved links keep working.",
       readOnly: true,
+      fieldset: "setup",
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "group",
       title: "Section",
       type: "string",
-      description: "Set up by the site administrator. Leave as is.",
+      readOnly: isLockedForEditors,
+      fieldset: "setup",
       options: { list: GROUP_OPTIONS, layout: "radio" },
       validation: (rule) => rule.required().error("Pick a section."),
     }),
@@ -135,7 +153,9 @@ export const classPage = defineType({
       name: "sortOrder",
       title: "Order",
       type: "number",
-      description: "Set up by the site administrator. Lowest number is listed first.",
+      description: "Lowest number is listed first.",
+      readOnly: isLockedForEditors,
+      fieldset: "setup",
       validation: (rule) => rule.required().integer().min(0),
     }),
   ],
