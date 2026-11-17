@@ -8,10 +8,10 @@ import { Button } from "@components/ui/button";
 import { Card, CardContent } from "@components/ui/card";
 import { Em, H3, H5, P, Strong, Table, Ul } from "@components/ui/typography";
 import type { PolicyBody, PolicySectionView } from "@lib/sanity/policies";
-import { stegaClean } from "@sanity/client/stega";
 import Link from "next/link";
 import { PortableText } from "next-sanity";
 import type { ComponentProps } from "react";
+import SmartLink from "./smart-link";
 
 interface PolicyTableValue {
   headers?: string[];
@@ -34,7 +34,7 @@ const POLICY_TEXT_COMPONENTS: ComponentProps<typeof PortableText>["components"] 
     strong: ({ children }) => <Strong>{children}</Strong>,
     em: ({ children }) => <Em>{children}</Em>,
     link: ({ children, value }) => (
-      <PolicyLink href={String(value?.href ?? "")}>{children}</PolicyLink>
+      <SmartLink href={String(value?.href ?? "")}>{children}</SmartLink>
     ),
   },
   types: {
@@ -92,23 +92,6 @@ export function PolicySectionBody({ number, section }: PolicySectionProps) {
         </Card>
       )}
     </div>
-  );
-}
-
-interface PolicyLinkProps {
-  href: string;
-  children: React.ReactNode;
-}
-
-function PolicyLink({ href, children }: PolicyLinkProps) {
-  const cleanHref = stegaClean(href);
-
-  return cleanHref.startsWith("/") || cleanHref.startsWith("#") ? (
-    <Link href={cleanHref}>{children}</Link>
-  ) : (
-    <a href={cleanHref} target="_blank" rel="noopener noreferrer">
-      {children}
-    </a>
   );
 }
 

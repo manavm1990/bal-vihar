@@ -1,8 +1,8 @@
 import { cn } from "@lib/utils";
 import kebabCase from "lodash.kebabcase";
 import Image, { type StaticImageData } from "next/image";
-import Link from "next/link";
 import { Fragment } from "react";
+import SmartLink from "./smart-link";
 import { Bq, Em, H2, H3, H4, Ol, P, Strong, Table, Ul } from "./ui/typography";
 
 type MarkdownBlock =
@@ -30,23 +30,6 @@ export default function MarkdownContent({ content, images = {} }: MarkdownConten
       {section.blocks.map((block, blockIndex) => renderBlock(block, blockIndex, images))}
     </section>
   ));
-}
-
-interface SmartLinkProps {
-  href: string;
-  children: React.ReactNode;
-}
-
-function SmartLink({ href, children }: SmartLinkProps) {
-  if (href.startsWith("#")) return <a href={href}>{children}</a>;
-
-  return href.startsWith("http") ? (
-    <a href={href} target="_blank" rel="noopener noreferrer">
-      {children}
-    </a>
-  ) : (
-    <Link href={href}>{children}</Link>
-  );
 }
 
 const cleanInlineText = (text: string) =>
