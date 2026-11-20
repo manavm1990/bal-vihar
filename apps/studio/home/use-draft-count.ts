@@ -10,16 +10,22 @@ export default function useDraftCount(types: string[]) {
   const [count, setCount] = useState(0);
   const typesKey = types.join(",");
 
-  // Subscribes to Sanity so the count stays right while edits are made and published elsewhere.
+  // Justified. External system synchronization.
   useEffect(() => {
     const params = { types: typesKey.split(",") };
+    let latestRequest = 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
-    const refresh = () =>
-      client
+    function refresh() {
+      const request = ++latestRequest;
+      return client
         .fetch<number>(`count(*[${UNPUBLISHED_FILTER}])`, params, { perspective: "drafts" })
-        .then(setCount, (error: unknown) =>
-          console.error("Could not count unpublished changes", error),
+        .then(
+          (next) => {
+            if (request === latestRequest) setCount(next);
+          },
+          (error: unknown) => console.error("Could not count unpublished changes", error),
         );
+    }
 
     void refresh();
     const subscription = client
@@ -33,6 +39,7 @@ export default function useDraftCount(types: string[]) {
       });
 
     return () => {
+      latestRequest += 1;
       clearTimeout(timer);
       subscription.unsubscribe();
     };
