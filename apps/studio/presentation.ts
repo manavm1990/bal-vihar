@@ -1,3 +1,11 @@
+/*
+ * Maps each document type to the website pages that show it,
+ * for the Presentation tool's "Used on" links.
+ *
+ * If `presentation.test.ts` fails on 🔗s that no longer exist,
+ * update this mapping accordingly.
+ */
+
 import { defineLocations } from "sanity/presentation";
 
 export const resolve = {

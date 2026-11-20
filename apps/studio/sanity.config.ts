@@ -9,7 +9,7 @@ import UndoUploadAction from "./actions/undo-upload";
 import Layout from "./components/layout";
 import Logo from "./components/logo";
 import Home from "./home";
-import { resolve } from "./presentation/resolve";
+import { resolve } from "./presentation";
 import { getAccess, type SectionId } from "./roles";
 import { structure } from "./structure";
 import { templates } from "./templates";
