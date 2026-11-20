@@ -1,10 +1,5 @@
 import { useState } from "react";
-import type {
-  DocumentActionDescription,
-  DocumentActionProps,
-  SanityClient,
-  SanityDocument,
-} from "sanity";
+import type { DocumentActionProps, SanityClient, SanityDocument } from "sanity";
 import { useClient } from "sanity";
 
 type UndoRecord =
@@ -14,11 +9,7 @@ type UndoRecord =
 const API_VERSION = "2025-05-08";
 const ROSTER_ID = "volunteerRoster";
 
-export default function UndoUploadAction({
-  id,
-  draft,
-  published,
-}: DocumentActionProps): DocumentActionDescription | null {
+export default function UndoUploadAction({ id, draft, published }: DocumentActionProps) {
   const client = useClient({ apiVersion: API_VERSION });
   const [phase, setPhase] = useState<"idle" | "confirm" | "working" | "failed">("idle");
   const undo = parseUndo(published?.["undoData"]);
@@ -42,7 +33,13 @@ export default function UndoUploadAction({
             onCancel: close,
             onConfirm: () => {
               setPhase("working");
-              runUndo(client, id, undo, published?.["importReport"], draft !== null)
+              runUndo({
+                client,
+                hasDraft: draft !== null,
+                id,
+                report: published?.["importReport"],
+                undo,
+              })
                 .then(close)
                 .catch(() => setPhase("failed"));
             },
@@ -58,7 +55,7 @@ export default function UndoUploadAction({
               onClose: close,
             }
           : null,
-  };
+  } as const;
 }
 
 const describeUndo = (undo: UndoRecord) =>
@@ -88,13 +85,19 @@ function restoreDocument(document: SanityDocument) {
   return rest;
 }
 
-async function runUndo(
-  client: SanityClient,
-  id: string,
-  undo: UndoRecord,
-  report: unknown,
-  hasDraft: boolean,
-) {
+async function runUndo({
+  client,
+  hasDraft,
+  id,
+  report,
+  undo,
+}: {
+  client: SanityClient;
+  hasDraft: boolean;
+  id: string;
+  report: unknown;
+  undo: UndoRecord;
+}) {
   const transaction = client.transaction();
 
   if (undo.kind === "calendar")
