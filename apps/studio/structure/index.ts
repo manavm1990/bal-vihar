@@ -23,10 +23,8 @@ interface Section {
 }
 
 const GROUPS = ["After each class", "Now and then", "Once a year"] as const;
-
 const PAGE_END = "coalesce(showUntil, event->date)";
-
-const SECTIONS: Section[] = [
+const SECTIONS = [
   {
     id: "classes",
     group: "After each class",
@@ -48,7 +46,8 @@ const SECTIONS: Section[] = [
   {
     id: "banners",
     group: "Now and then",
-    create: (S) => createSingletonItem(S, "Banner photos", "photoGallery", ImageIcon),
+    create: (S) =>
+      createSingletonItem({ S, title: "Banner photos", type: "photoGallery", icon: ImageIcon }),
   },
   {
     id: "calendar",
@@ -78,7 +77,11 @@ const SECTIONS: Section[] = [
                 orderBy: "date",
               }),
               S.divider(),
-              createUploadItem(S, "Add events from a spreadsheet", UPLOADS.calendar),
+              createUploadItem({
+                S,
+                title: "Add events from a spreadsheet",
+                upload: UPLOADS.calendar,
+              }),
             ]),
         ),
   },
@@ -111,7 +114,13 @@ const SECTIONS: Section[] = [
   {
     id: "notice",
     group: "Now and then",
-    create: (S) => createSingletonItem(S, "Header notice", "homePage", WarningOutlineIcon),
+    create: (S) =>
+      createSingletonItem({
+        S,
+        title: "Header notice",
+        type: "homePage",
+        icon: WarningOutlineIcon,
+      }),
   },
   {
     id: "photos",
@@ -132,7 +141,13 @@ const SECTIONS: Section[] = [
   {
     id: "adminTeam",
     group: "Once a year",
-    create: (S) => createSingletonItem(S, "Administrative Team", "volunteersList", UsersIcon),
+    create: (S) =>
+      createSingletonItem({
+        S,
+        title: "Administrative Team",
+        type: "volunteersList",
+        icon: UsersIcon,
+      }),
   },
   {
     id: "eventVolunteers",
@@ -145,36 +160,55 @@ const SECTIONS: Section[] = [
           S.list()
             .title("Event volunteers")
             .items([
-              createSingletonItem(S, "Edit the list", "volunteerRoster", EditIcon),
-              createUploadItem(
+              createSingletonItem({
                 S,
-                "Replace the whole list from a spreadsheet",
-                UPLOADS.volunteerRoster,
-              ),
+                title: "Edit the list",
+                type: "volunteerRoster",
+                icon: EditIcon,
+              }),
+              createUploadItem({
+                S,
+                title: "Replace the whole list from a spreadsheet",
+                upload: UPLOADS.volunteerRoster,
+              }),
             ]),
         ),
   },
   {
     id: "impactAward",
     group: "Once a year",
-    create: (S) => createSingletonItem(S, "Impact Award", "impactAward", StarIcon),
+    create: (S) =>
+      createSingletonItem({ S, title: "Impact Award", type: "impactAward", icon: StarIcon }),
   },
   {
     id: "policies",
     group: "Once a year",
-    create: (S) => createSingletonItem(S, "Policies & Procedures", "policies", DocumentTextIcon),
+    create: (S) =>
+      createSingletonItem({
+        S,
+        title: "Policies & Procedures",
+        type: "policies",
+        icon: DocumentTextIcon,
+      }),
   },
   {
     id: "faqs",
     group: "Once a year",
-    create: (S) => createSingletonItem(S, "Questions & Answers", "faqs", HelpCircleIcon),
+    create: (S) =>
+      createSingletonItem({ S, title: "Questions & Answers", type: "faqs", icon: HelpCircleIcon }),
   },
   {
     id: "faculty",
     group: "Once a year",
-    create: (S) => createSingletonItem(S, "Teaching Faculty", "teachingFaculty", UsersIcon),
+    create: (S) =>
+      createSingletonItem({
+        S,
+        title: "Teaching Faculty",
+        type: "teachingFaculty",
+        icon: UsersIcon,
+      }),
   },
-];
+] as const satisfies readonly Section[];
 
 export const structure: StructureResolver = (S, { currentUser }) => {
   const { canSee, classes, types } = getAccess(currentUser?.id);
@@ -197,12 +231,12 @@ export const structure: StructureResolver = (S, { currentUser }) => {
       ...GROUPS.flatMap((group) => {
         const items = visible.filter((section) => section.group === group);
 
-        return items.length === 0
+        return !items.length
           ? []
-          : [
+          : ([
               S.divider().title(group),
               ...items.map((section) => section.create(S, classes).id(section.id)),
-            ];
+            ] as const);
       }),
     ]);
 };
@@ -233,22 +267,31 @@ const createDatedItem = ({
         .defaultOrdering([{ field: orderBy, direction }]),
     );
 
-const createSingletonItem = (
-  S: StructureBuilder,
-  title: string,
-  type: keyof typeof SINGLETON_IDS,
-  icon: typeof UsersIcon,
-) =>
+const createSingletonItem = ({
+  S,
+  title,
+  type,
+  icon,
+}: {
+  S: StructureBuilder;
+  title: string;
+  type: keyof typeof SINGLETON_IDS;
+  icon: typeof UsersIcon;
+}) =>
   S.listItem()
     .title(title)
     .icon(icon)
     .child(S.document().schemaType(type).documentId(SINGLETON_IDS[type]).title(title));
 
-const createUploadItem = (
-  S: StructureBuilder,
-  title: string,
-  upload: (typeof UPLOADS)[keyof typeof UPLOADS],
-) =>
+const createUploadItem = ({
+  S,
+  title,
+  upload,
+}: {
+  S: StructureBuilder;
+  title: string;
+  upload: (typeof UPLOADS)[keyof typeof UPLOADS];
+}) =>
   S.listItem()
     .title(title)
     .icon(UploadIcon)
