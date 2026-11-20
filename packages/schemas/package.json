@@ -17,7 +17,7 @@
   "dependencies": {
     "@sanity/icons": "^5.4.0",
     "react": "^19.3.1",
-    "sanity": "^6.23.0"
+    "sanity": "^6.24.0"
   },
   "devDependencies": {
     "@bv/typescript-config": "workspace:*",
