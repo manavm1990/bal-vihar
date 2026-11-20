@@ -5,7 +5,7 @@ import { UNPUBLISHED_FILTER } from "../roles";
 
 const REFRESH_DELAY_MS = 1500;
 
-export default function useDraftCount(types: string[]) {
+export default function useDraftCount(types: readonly string[]) {
   const client = useClient({ apiVersion: API_VERSION });
   const [count, setCount] = useState(0);
   const typesKey = types.join(",");

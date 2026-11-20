@@ -1,6 +1,11 @@
 import { API_VERSION } from "@bv/schemas/constants";
 import { useState } from "react";
-import type { DocumentActionProps, SanityClient, SanityDocument } from "sanity";
+import type {
+  DocumentActionDescription,
+  DocumentActionProps,
+  SanityClient,
+  SanityDocument,
+} from "sanity";
 import { useClient } from "sanity";
 
 type UndoRecord =
@@ -9,7 +14,11 @@ type UndoRecord =
 
 const ROSTER_ID = "volunteerRoster";
 
-export default function UndoUploadAction({ id, draft, published }: DocumentActionProps) {
+export default function UndoUploadAction({
+  id,
+  draft,
+  published,
+}: DocumentActionProps): DocumentActionDescription | null {
   const client = useClient({ apiVersion: API_VERSION });
   const [phase, setPhase] = useState<"idle" | "confirm" | "working" | "failed">("idle");
   const undo = parseUndo(published?.["undoData"]);
@@ -18,44 +27,52 @@ export default function UndoUploadAction({ id, draft, published }: DocumentActio
 
   const close = () => setPhase("idle");
 
-  return {
+  const description: DocumentActionDescription = {
     label: "Undo last upload",
     tone: "caution",
     disabled: phase === "working",
     onHandle: () => setPhase("confirm"),
-    dialog:
-      phase === "confirm"
-        ? {
-            type: "confirm",
-            tone: "caution",
-            message: describeUndo(undo),
-            confirmButtonText: "Undo upload",
-            onCancel: close,
-            onConfirm: () => {
-              setPhase("working");
-              runUndo({
-                client,
-                hasDraft: draft !== null,
-                id,
-                report: published?.["importReport"],
-                undo,
-              })
-                .then(close)
-                .catch(() => setPhase("failed"));
-            },
-          }
-        : phase === "failed"
-          ? {
-              type: "dialog",
-              header: "Could not undo",
-              content:
-                undo.kind === "calendar"
-                  ? "Nothing was changed. One of the events is probably linked from a custom page: remove that link first, then try again."
-                  : "Nothing was changed. Please try again in a minute.",
-              onClose: close,
-            }
-          : null,
-  } as const;
+  };
+
+  if (phase === "confirm")
+    return {
+      ...description,
+      dialog: {
+        type: "confirm",
+        tone: "caution",
+        message: describeUndo(undo),
+        confirmButtonText: "Undo upload",
+        onCancel: close,
+        onConfirm: () => {
+          setPhase("working");
+          runUndo({
+            client,
+            hasDraft: draft !== null,
+            id,
+            report: published?.["importReport"],
+            undo,
+          })
+            .then(close)
+            .catch(() => setPhase("failed"));
+        },
+      },
+    };
+
+  if (phase === "failed")
+    return {
+      ...description,
+      dialog: {
+        type: "dialog",
+        header: "Could not undo",
+        content:
+          undo.kind === "calendar"
+            ? "Nothing was changed. One of the events is probably linked from a custom page: remove that link first, then try again."
+            : "Nothing was changed. Please try again in a minute.",
+        onClose: close,
+      },
+    };
+
+  return description;
 }
 
 const describeUndo = (undo: UndoRecord) =>
