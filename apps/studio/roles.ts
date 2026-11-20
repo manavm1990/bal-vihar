@@ -26,7 +26,7 @@ export const SECTION_IDS = [
   "policies",
 ] as const;
 
-export const SECTION_TYPES: Record<SectionId, string[]> = {
+export const SECTION_TYPES = {
   adminTeam: ["volunteersList"],
   banners: ["photoGallery"],
   calendar: ["calendarEvent", "spreadsheetImport"],
@@ -39,13 +39,10 @@ export const SECTION_TYPES: Record<SectionId, string[]> = {
   pages: ["page"],
   photos: ["photoAlbum"],
   policies: ["policies"],
-};
+} as const satisfies Record<SectionId, readonly string[]>;
 
 export const UNPUBLISHED_FILTER = '_originalId in path("drafts.**") && _type in $types';
 
-// Hides sections to keep the Studio simple; it does not restrict access. Keys are Sanity user IDs
-// from the project's Members page. `classes` lists class page slugs a teacher sees; leave it out
-// to show every class. Anyone not listed sees everything.
 const PEOPLE: Record<string, Person> = {};
 
 export function getAccess(userId: string | undefined, people: Record<string, Person> = PEOPLE) {
@@ -59,5 +56,5 @@ export function getAccess(userId: string | undefined, people: Record<string, Per
     canSee,
     classes: person?.classes ?? null,
     types: [...new Set(sections.flatMap((section) => SECTION_TYPES[section]))],
-  };
+  } as const;
 }
