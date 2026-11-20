@@ -66,6 +66,7 @@ export default function Home() {
               )}
             </TaskLink>
           ) : null}
+
           {groups.map((group, groupIndex) => (
             <Stack as="section" gap={4} key={group.title}>
               <GroupTitle>{group.title}</GroupTitle>

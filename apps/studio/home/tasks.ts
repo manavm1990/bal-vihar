@@ -27,7 +27,7 @@ export interface Task {
   title: string;
 }
 
-export const TASK_GROUPS: { title: string; tasks: Task[] }[] = [
+export const TASK_GROUPS = [
   {
     title: "After each class",
     tasks: [
@@ -150,4 +150,4 @@ export const TASK_GROUPS: { title: string; tasks: Task[] }[] = [
       },
     ],
   },
-];
+] as const;
