@@ -1,22 +1,26 @@
 import type { DuplicateActionProps, DuplicateDocumentActionComponent } from "sanity";
 
-const WRAPPED = new WeakMap<DuplicateDocumentActionComponent, DuplicateDocumentActionComponent>();
+const wrappedActions = new WeakMap<
+  DuplicateDocumentActionComponent,
+  DuplicateDocumentActionComponent
+>();
 
 export function createDuplicateWithoutSlug(originalAction: DuplicateDocumentActionComponent) {
-  const cached = WRAPPED.get(originalAction);
+  const cached = wrappedActions.get(originalAction);
   if (cached) return cached;
 
-  function DuplicateWithoutSlugAction(props: DuplicateActionProps) {
-    return originalAction({
+  const DuplicateWithoutSlugAction = (props: DuplicateActionProps) =>
+    originalAction({
       ...props,
       mapDocument: (document) => {
         const { slug, ...rest } = props.mapDocument ? props.mapDocument(document) : document;
         return rest;
       },
     });
-  }
+
   DuplicateWithoutSlugAction.action = originalAction.action;
 
-  WRAPPED.set(originalAction, DuplicateWithoutSlugAction);
+  wrappedActions.set(originalAction, DuplicateWithoutSlugAction);
+
   return DuplicateWithoutSlugAction;
 }
