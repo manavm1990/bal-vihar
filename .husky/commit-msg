@@ -1,7 +1,7 @@
 npx --no-install commitlint --edit "$1" || {
   echo ""
-  echo "husky - Commit message rejected. Use: type(scope): subject"
-  echo "        e.g. feat(website): add volunteer page"
-  echo "        Types and scopes: see CONTRIBUTING.md and commitlint.config.ts. Do not use --no-verify."
+  echo "husky - Commit message rejected. Use conventional commits: type: subject"
+  echo "        e.g. feat: add volunteer page"
+  echo "        Optional scope is fine: fix(website): …. See CONTRIBUTING.md. Do not use --no-verify."
   exit 1
 }

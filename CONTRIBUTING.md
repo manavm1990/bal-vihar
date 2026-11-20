@@ -17,10 +17,22 @@
 2. **Clone this repository. Do not fork.** Then run `bun install`. Bun is used only for `bun install` and `bun update`; everything else runs through `turbo`.
 3. `git switch main && git pull`, then `git switch -c your-branch-name`.
 4. Run the site while you work: `npx turbo run dev --filter=@bv/website` (or `--filter=@bv/studio`).
-5. Commit with a message like `feat(website): add volunteer page`. Allowed scopes are in `commitlint.config.ts`. Lint runs only on the files you staged.
+5. Commit with a conventional message (see **Commit messages** below). Lint runs only on the files you staged.
 6. Push. Type generation and type checks run for the packages you changed. If generated files changed, commit `apps/studio/schema.json` and `apps/website/sanity.types.ts` and push again.
 7. Open a pull request into `main`. CI must be green and the maintainer must approve it. Only the maintainer can merge into `main`.
 
 You can see your change before it merges, either with the Vercel preview deployment on your pull request (if one appears) or locally with `npx turbo run dev --filter=@bv/website`.
 
 Never use `--no-verify`, commit secrets, or mix unrelated changes in one pull request. Read `AGENTS.md` first; AI assistants must follow it too. If CI is red, open the failed step in GitHub Actions and ask the maintainer if it is unclear.
+
+## Commit messages
+
+Husky `commit-msg` and CI run Commitlint with [Conventional Commits](https://www.conventionalcommits.org/): `type: subject` or optionally `type(scope): subject`.
+
+Examples:
+
+- `feat: add volunteer page`
+- `fix(website): correct calendar timezone display`
+- `chore: configure VS Code settings`
+
+What matters is a **clear subject** that says what changed and why it is in the history. Use a scope when it helps a reader skim (`website`, `studio`, `schemas`, …); it is optional and not restricted to a fixed list. Prefer one logical change per commit. Types are the usual set (`feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `ci`, …).

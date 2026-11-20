@@ -136,7 +136,7 @@ npx turbo build --filter=@bv/website
 
 1. Install [Bun](https://bun.sh/docs/installation) yourself (see Prerequisites), then `bun install` (also refreshes agent skills; commit lock/skill churn if it appears)
 2. Code changes go through the maintainer; content goes in Sanity Studio. If invited to change code: clone (never fork), branch off `main`, open a PR, never push to `main`. Full guide: `CONTRIBUTING.md`
-3. Use conventional commits: `type(scope?): subject` (allowed scopes: `commitlint.config.ts`)
+3. Use conventional commits: `type: subject` (optional scope; see `CONTRIBUTING.md`)
 4. Pre-commit runs Biome via lint-staged; commit-msg runs Commitlint; pre-push runs Sanity typegen drift, then typecheck and tests for changed packages only (`turbo --filter`)
 5. CI must be green; default reviewer is via `.github/CODEOWNERS`
 6. See `AGENTS.md` for coding standards, Sanity typegen (`apps/studio/sanity.cli.ts`), and MCP (`.mcp.json`)
