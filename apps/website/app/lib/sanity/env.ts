@@ -1,5 +1,4 @@
-const DEFAULT_API_VERSION = "2025-01-01";
-const API_VERSION = process.env["NEXT_PUBLIC_SANITY_API_VERSION"] ?? DEFAULT_API_VERSION;
+import { API_VERSION } from "@bv/schemas/constants";
 
 const DEFAULT_DATASET = "production";
 const DATASET = process.env["NEXT_PUBLIC_SANITY_DATASET"] ?? DEFAULT_DATASET;

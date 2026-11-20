@@ -1,11 +1,11 @@
 import { DocumentIcon } from "@sanity/icons/Document";
 import { defineArrayMember, defineField, defineType, getPublishedId } from "sanity";
+import { API_VERSION } from "../constants";
 import { hasSlug, isAdministrator } from "../field-rules";
 import { createBodyBlock } from "../objects/page-blocks";
 import { HEADER_MENUS, RESERVED_SLUGS } from "../route-config";
 import { getToday } from "../school-years";
 
-const API_VERSION = "2025-01-01";
 const NO_MENU = "none";
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 

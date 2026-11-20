@@ -1,3 +1,4 @@
+import { API_VERSION } from "@bv/schemas/constants";
 import { useState } from "react";
 import type { DocumentActionProps, SanityClient, SanityDocument } from "sanity";
 import { useClient } from "sanity";
@@ -6,7 +7,6 @@ type UndoRecord =
   | { kind: "calendar"; createdIds: string[] }
   | { kind: "volunteerRoster"; draft: SanityDocument | null; published: SanityDocument | null };
 
-const API_VERSION = "2025-05-08";
 const ROSTER_ID = "volunteerRoster";
 
 export default function UndoUploadAction({ id, draft, published }: DocumentActionProps) {
