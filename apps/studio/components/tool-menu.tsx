@@ -1,6 +1,7 @@
 import { CheckmarkIcon } from "@sanity/icons/Checkmark";
 import { EyeOpenIcon } from "@sanity/icons/EyeOpen";
-import { Button, Flex, Menu, MenuButton, MenuDivider, MenuItem } from "@sanity/ui";
+import { Button, Flex } from "@sanity/ui";
+import { Menu, MenuButton, MenuDivider, MenuItem } from "@sanity/ui/menu";
 import type { ToolMenuProps } from "sanity";
 import { DEMO_VIEWS, isDemoView } from "../roles";
 import useViewAs from "./use-view-as";
