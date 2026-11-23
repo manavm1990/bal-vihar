@@ -1,5 +1,7 @@
 import { WarningOutlineIcon } from "@sanity/icons/WarningOutline";
 import { defineField, defineType } from "sanity";
+import { createLinkRules } from "../objects/link-annotation";
+import { getToday } from "../school-years";
 
 export const homePage = defineType({
   name: "homePage",
@@ -28,12 +30,12 @@ export const homePage = defineType({
       title: "Notice link (optional)",
       type: "url",
       description: "Website path (/calendar) or full https link.",
-      validation: (rule) =>
-        rule
-          .uri({ allowRelative: true, scheme: ["http", "https", "mailto"] })
-          .custom((value, { document }) =>
-            !value && document?.["noticeLabel"] ? "Add the link, or clear the link text." : true,
-          ),
+      validation: (rule) => [
+        ...createLinkRules(rule),
+        rule.custom((value, { document }) =>
+          !value && document?.["noticeLabel"] ? "Add the link, or clear the link text." : true,
+        ),
+      ],
     }),
     defineField({
       name: "noticeLabel",
@@ -53,10 +55,18 @@ export const homePage = defineType({
       description:
         "Last day the notice shows. After that the next class or event shows again automatically, so nobody has to remember to clear it.",
       hidden: ({ document }) => !document?.["noticeText"],
-      validation: (rule) =>
+      validation: (rule) => [
         rule.custom((value, { document }) =>
           !value && document?.["noticeText"] ? "Pick the last day this notice should show." : true,
         ),
+        rule
+          .custom((value) =>
+            !value || value >= getToday()
+              ? true
+              : "This day has passed, so the notice isn't showing. Pick a later day or clear the notice.",
+          )
+          .warning(),
+      ],
     }),
   ],
   preview: {

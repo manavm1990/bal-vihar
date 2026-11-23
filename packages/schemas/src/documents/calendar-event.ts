@@ -1,5 +1,6 @@
 import { CalendarIcon } from "@sanity/icons/Calendar";
-import { defineField, defineType } from "sanity";
+import { defineField, defineType, getPublishedId, type ValidationContext } from "sanity";
+import { API_VERSION } from "../constants";
 
 const EVENT_TYPES = [
   { title: "Regular classes", value: "regular", label: "Classes" },
@@ -8,6 +9,23 @@ const EVENT_TYPES = [
   { title: "Holiday", value: "holiday", label: "Holiday" },
   { title: "Project / show", value: "project", label: "Project" },
 ] as const;
+
+async function checkSameDayTwin(date: string | undefined, context: ValidationContext) {
+  const title = context.document?.["title"];
+  if (!date || !context.document || typeof title !== "string" || !title.trim()) return true;
+
+  const publishedId = getPublishedId(context.document._id);
+  const twin = await context
+    .getClient({ apiVersion: API_VERSION })
+    .fetch<string | null>(
+      `*[_type == "calendarEvent" && date == $date && lower(title) == lower($title) && !(_id in [$published, $draft])][0].title`,
+      { date, title: title.trim(), published: publishedId, draft: `drafts.${publishedId}` },
+    );
+
+  return twin
+    ? `"${twin}" is already on the calendar for this day. Make sure this isn't a second copy.`
+    : true;
+}
 
 export const calendarEvent = defineType({
   name: "calendarEvent",
@@ -32,7 +50,10 @@ export const calendarEvent = defineType({
       title: "Date",
       type: "date",
       description: "Day of the event.",
-      validation: (rule) => rule.required().error("Pick a date."),
+      validation: (rule) => [
+        rule.required().error("Pick a date."),
+        rule.custom(checkSameDayTwin).warning(),
+      ],
       options: {
         dateFormat: "YYYY-MM-DD",
       },

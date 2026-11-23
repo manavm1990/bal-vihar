@@ -1,7 +1,7 @@
 import { DocumentTextIcon } from "@sanity/icons/DocumentText";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { describeUnevenRows } from "../field-rules";
-import { LINK_ANNOTATION, LINK_SCHEMES } from "../objects/link-annotation";
+import { createLinkRules, LINK_ANNOTATION } from "../objects/link-annotation";
 
 const policyBody = () => [
   defineArrayMember({
@@ -190,8 +190,7 @@ export const policies = defineType({
                   name: "href",
                   title: "Button link",
                   type: "url",
-                  validation: (rule) =>
-                    rule.required().uri({ allowRelative: true, scheme: LINK_SCHEMES }),
+                  validation: (rule) => [rule.required(), ...createLinkRules(rule)],
                 }),
               ],
             }),

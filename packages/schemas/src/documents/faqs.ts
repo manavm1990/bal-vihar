@@ -1,7 +1,6 @@
 import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
 import { defineArrayMember, defineField, defineType } from "sanity";
-
-const LINK_SCHEMES = ["http", "https", "mailto", "tel"];
+import { LINK_ANNOTATION } from "../objects/link-annotation";
 
 const faqAnswer = () => [
   defineArrayMember({
@@ -13,23 +12,7 @@ const faqAnswer = () => [
         { title: "Bold", value: "strong" },
         { title: "Italic", value: "em" },
       ],
-      annotations: [
-        {
-          name: "link",
-          title: "Link",
-          type: "object",
-          fields: [
-            defineField({
-              name: "href",
-              title: "URL",
-              type: "url",
-              description: "Use /calendar for pages on this site, or a full https:// link.",
-              validation: (rule) =>
-                rule.required().uri({ allowRelative: true, scheme: LINK_SCHEMES }),
-            }),
-          ],
-        },
-      ],
+      annotations: [LINK_ANNOTATION],
     },
   }),
 ];

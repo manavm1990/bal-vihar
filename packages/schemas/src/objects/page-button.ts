@@ -1,6 +1,6 @@
 import { LaunchIcon } from "@sanity/icons/Launch";
 import { defineField, defineType } from "sanity";
-import { LINK_SCHEMES } from "./link-annotation";
+import { createLinkRules } from "./link-annotation";
 
 export const pageButton = defineType({
   name: "pageButton",
@@ -19,7 +19,7 @@ export const pageButton = defineType({
       title: "Button link",
       type: "url",
       description: "Use /calendar for pages on this site, or a full https:// link.",
-      validation: (rule) => rule.required().uri({ allowRelative: true, scheme: LINK_SCHEMES }),
+      validation: (rule) => [rule.required(), ...createLinkRules(rule)],
     }),
   ],
   preview: {

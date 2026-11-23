@@ -1,6 +1,6 @@
 import { ThLargeIcon } from "@sanity/icons/ThLarge";
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { LINK_SCHEMES } from "./link-annotation";
+import { createLinkRules } from "./link-annotation";
 
 export const pageCards = defineType({
   name: "pageCards",
@@ -37,7 +37,7 @@ export const pageCards = defineType({
               title: "Link (optional)",
               type: "url",
               description: "Use /calendar for pages on this site, or a full https:// link.",
-              validation: (rule) => rule.uri({ allowRelative: true, scheme: LINK_SCHEMES }),
+              validation: createLinkRules,
             }),
           ],
           preview: { select: { title: "title", subtitle: "text" } },

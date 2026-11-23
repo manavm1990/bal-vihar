@@ -6,7 +6,7 @@ import {
   defineField,
   defineType,
 } from "sanity";
-import { isAdministrator } from "../field-rules";
+import { describeRepeatedDates, isAdministrator } from "../field-rules";
 import { getToday } from "../school-years";
 
 const GROUP_OPTIONS = [
@@ -57,6 +57,8 @@ export const classPage = defineType({
       type: "array",
       description:
         "Add one row after each class Sunday. Parents see the newest first. Preview on the site before Publish.",
+      validation: (rule) =>
+        rule.custom((sessions) => describeRepeatedDates(sessions) ?? true).warning(),
       of: [
         defineArrayMember({
           name: "classSession",
@@ -70,7 +72,16 @@ export const classPage = defineType({
               type: "date",
               options: { dateFormat: "YYYY-MM-DD" },
               initialValue: getToday,
-              validation: (rule) => rule.required().error("Pick the class date."),
+              validation: (rule) => [
+                rule.required().error("Pick the class date."),
+                rule
+                  .custom((date) =>
+                    !date || date <= getToday()
+                      ? true
+                      : "This day hasn't happened yet. Pick the day of the class.",
+                  )
+                  .warning(),
+              ],
             }),
             defineField({
               name: "covered",
