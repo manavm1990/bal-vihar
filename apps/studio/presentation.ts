@@ -83,6 +83,12 @@ export const resolve = {
         locations: [{ title: "Policies & Procedures", href: "/about-us/policies-procedures" }],
       }),
     }),
+    presidentsMessage: defineLocations({
+      select: { title: "date" },
+      resolve: () => ({
+        locations: [{ title: "President's Message", href: "/presidents-message" }],
+      }),
+    }),
     teachingFaculty: defineLocations({
       select: { title: "schoolYear" },
       resolve: () => ({

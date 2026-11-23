@@ -6,6 +6,7 @@ import { ClockIcon } from "@sanity/icons/Clock";
 import { DocumentIcon } from "@sanity/icons/Document";
 import { DocumentTextIcon } from "@sanity/icons/DocumentText";
 import { EditIcon } from "@sanity/icons/Edit";
+import { EnvelopeIcon } from "@sanity/icons/Envelope";
 import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
 import { ImageIcon } from "@sanity/icons/Image";
 import { ImagesIcon } from "@sanity/icons/Images";
@@ -188,6 +189,17 @@ const SECTIONS = [
         title: "Policies & Procedures",
         type: "policies",
         icon: DocumentTextIcon,
+      }),
+  },
+  {
+    id: "presidentsMessage",
+    group: "Once a year",
+    create: (S) =>
+      createSingletonItem({
+        S,
+        title: "President's Message",
+        type: "presidentsMessage",
+        icon: EnvelopeIcon,
       }),
   },
   {

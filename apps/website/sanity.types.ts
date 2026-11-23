@@ -141,6 +141,34 @@ export type SpreadsheetImport = {
   processedFile?: string;
 };
 
+export type PresidentsMessage = {
+  _id: string;
+  _type: "presidentsMessage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  date: string;
+  body: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  signedBy: string;
+};
+
 export type Policies = {
   _id: string;
   _type: "policies";
@@ -695,6 +723,7 @@ export type AllSanitySchemaTypes =
   | TeachingFaculty
   | SanityFileAssetReference
   | SpreadsheetImport
+  | PresidentsMessage
   | Policies
   | Slug
   | PhotoGallery
@@ -1313,6 +1342,83 @@ export type POLICIES_QUERY_RESULT =
   | null;
 
 // Source: ../website/app/lib/sanity/queries.ts
+// Variable: PRESIDENTS_MESSAGE_QUERY
+// Query: *[_id == "presidentsMessage"][0]{  date,  body,  signedBy}
+export type PRESIDENTS_MESSAGE_QUERY_RESULT =
+  | {
+      date: string;
+      body: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "normal";
+        listItem?: "bullet";
+        markDefs?: Array<{
+          href: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }>;
+      signedBy: string;
+    }
+  | {
+      date: null;
+      body: Array<
+        | ({
+            _key: string;
+          } & MediaImage)
+        | ({
+            _key: string;
+          } & PageAccordion)
+        | ({
+            _key: string;
+          } & PageButton)
+        | ({
+            _key: string;
+          } & PageCallout)
+        | ({
+            _key: string;
+          } & PageCards)
+        | {
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "h2" | "h3" | "normal";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href: string;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }
+      >;
+      signedBy: null;
+    }
+  | {
+      date: null;
+      body: null;
+      signedBy: null;
+    }
+  | {
+      date: string;
+      body: null;
+      signedBy: null;
+    }
+  | null;
+
+// Source: ../website/app/lib/sanity/queries.ts
 // Variable: TEACHING_FACULTY_QUERY
 // Query: *[_id == "teachingFaculty"][0]{  _id,  schoolYear,  groups[]{    _key,    name,    kind,    teams[]{      _key,      subject,      section,      teachers[]{ _key, isBackup, name, email, phone },      assistants[]{ _key, name, level }    }  },  programs[]{    _key,    name,    coordinators[]{ _key, name, email, phone },    team[]{ _key, name, email, phone },    assistants[]{ _key, name, level }  }}
 export type TEACHING_FACULTY_QUERY_RESULT =
@@ -1453,6 +1559,7 @@ declare global {
     '*[\n  _type == "photoAlbum" && defined(slug.current) && count(photos[defined(asset)]) > 0\n] | order(schoolYear desc, _createdAt desc){\n  _id,\n  title,\n  "slug": slug.current,\n  schoolYear,\n  "photoCount": count(photos[defined(asset)]),\n  "photoKeys": photos[defined(asset)]._key,\n  "cover": photos[defined(asset)][0]{ _key, asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop }\n}': PHOTO_ALBUMS_QUERY_RESULT;
     '*[_id == "photoGallery"][0]{\n  _id,\n  title,\n  photos[]{\n    _key,\n    title,\n    schoolYear,\n    note,\n    featured,\n    pages,\n    image{ asset->{\n    _id,\n    url,\n    metadata {\n      lqip,\n      dimensions { width, height }\n    }\n  },\n  alt,\n  caption,\n  hotspot,\n  crop }\n  }\n}': PHOTO_GALLERY_QUERY_RESULT;
     '*[_id == "policies"][0]{\n  _id,\n  intro,\n  sections[]{\n    _key,\n    title,\n    "slug": slug.current,\n    intro,\n    callToAction{\n      text,\n      label,\n      href\n    },\n    items[]{\n      _key,\n      title,\n      body\n    }\n  }\n}': POLICIES_QUERY_RESULT;
+    '*[_id == "presidentsMessage"][0]{\n  date,\n  body,\n  signedBy\n}': PRESIDENTS_MESSAGE_QUERY_RESULT;
     '*[_id == "teachingFaculty"][0]{\n  _id,\n  schoolYear,\n  groups[]{\n    _key,\n    name,\n    kind,\n    teams[]{\n      _key,\n      subject,\n      section,\n      teachers[]{ _key, isBackup, name, email, phone },\n      assistants[]{ _key, name, level }\n    }\n  },\n  programs[]{\n    _key,\n    name,\n    coordinators[]{ _key, name, email, phone },\n    team[]{ _key, name, email, phone },\n    assistants[]{ _key, name, level }\n  }\n}': TEACHING_FACULTY_QUERY_RESULT;
     '*[_id == "volunteerRoster"][0]{\n  _id,\n  schoolYear,\n  activities[]{\n    _key,\n    name,\n    volunteers\n  }\n}': VOLUNTEER_ROSTER_QUERY_RESULT;
     '*[_id == "volunteersList"][0]{\n  _id,\n  teams[]{\n    _key,\n    name,\n    description,\n    members[]{\n      _key,\n      name,\n      email,\n      phone\n    }\n  }\n}': VOLUNTEERS_LIST_QUERY_RESULT;

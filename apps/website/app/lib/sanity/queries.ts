@@ -186,6 +186,12 @@ export const POLICIES_QUERY = defineQuery(`*[_id == "policies"][0]{
   }
 }`);
 
+export const PRESIDENTS_MESSAGE_QUERY = defineQuery(`*[_id == "presidentsMessage"][0]{
+  date,
+  body,
+  signedBy
+}`);
+
 export const TEACHING_FACULTY_QUERY = defineQuery(`*[_id == "teachingFaculty"][0]{
   _id,
   schoolYear,

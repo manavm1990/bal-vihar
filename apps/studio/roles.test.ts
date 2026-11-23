@@ -2,10 +2,10 @@ import { deepStrictEqual, equal } from "node:assert/strict";
 import { test } from "node:test";
 import { getAccess, type Person, SECTION_IDS } from "./roles";
 
-const PEOPLE: Record<string, Person> = {
-  photosPerson: { role: "photos" },
-  teacher: { role: "teacher", classes: ["grade-3"] },
-};
+const PEOPLE = new Map<string, Person>([
+  ["photosPerson", { role: "photos" }],
+  ["teacher", { role: "teacher", classes: ["grade-3"] }],
+]);
 
 const ADMIN = { id: "admin", roles: [{ name: "administrator" }] };
 
@@ -56,10 +56,18 @@ test("an education lead sees every class plus the faculty and team lists", () =>
   equal(classes, null);
 });
 
-test("a volunteer coordinator sees the volunteer lists, their upload and the Impact Award", () => {
-  const { types } = getAccess(ADMIN, { people: PEOPLE, viewAs: "volunteers" });
+test("the Impact Award belongs to the B-VISION coordinator, not the volunteer coordinator", () => {
+  deepStrictEqual(getAccess(ADMIN, { people: PEOPLE, viewAs: "bVision" }).types, ["impactAward"]);
+  deepStrictEqual(getAccess(ADMIN, { people: PEOPLE, viewAs: "volunteers" }).types, [
+    "volunteerRoster",
+    "spreadsheetImport",
+  ]);
+});
 
-  deepStrictEqual(types, ["volunteerRoster", "spreadsheetImport", "impactAward"]);
+test("the president sees only the President's Message", () => {
+  const { canSee } = getAccess(ADMIN, { people: PEOPLE, viewAs: "president" });
+
+  deepStrictEqual(SECTION_IDS.filter(canSee), ["presidentsMessage"]);
 });
 
 test("a chosen view is ignored for non-administrators and for unknown names", () => {

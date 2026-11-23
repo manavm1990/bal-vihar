@@ -5,23 +5,28 @@ export type SectionId = (typeof SECTION_IDS)[number];
 
 export interface Person {
   classes?: readonly string[];
+  name?: string;
   role: keyof typeof ROLES;
 }
 
 type User = { id: string; roles: { name: string }[] } | null | undefined;
 
 export const ROLES = {
+  bVision: ["impactAward"],
   communications: ["calendar", "faqs", "notice", "pages"],
   education: ["adminTeam", "classes", "faculty"],
   photos: ["banners", "photos"],
+  president: ["presidentsMessage"],
   teacher: ["classes"],
-  volunteers: ["eventVolunteers", "impactAward"],
+  volunteers: ["eventVolunteers"],
 } as const satisfies Record<string, readonly SectionId[]>;
 
 export const DEMO_VIEWS = {
+  bVision: { title: "B-VISION coordinator", person: { role: "bVision" } },
   communications: { title: "Communications", person: { role: "communications" } },
   education: { title: "Education lead", person: { role: "education" } },
   photos: { title: "Photos helper", person: { role: "photos" } },
+  president: { title: "President", person: { role: "president" } },
   teacher: { title: "Teacher, 1 class", person: { role: "teacher", classes: ["3-a"] } },
   teacherOfTwo: {
     title: "Teacher, 2 classes",
@@ -43,6 +48,7 @@ export const SECTION_IDS = [
   "pages",
   "photos",
   "policies",
+  "presidentsMessage",
 ] as const;
 
 export const SECTION_TYPES = {
@@ -58,18 +64,21 @@ export const SECTION_TYPES = {
   pages: ["page"],
   photos: ["photoAlbum"],
   policies: ["policies"],
+  presidentsMessage: ["presidentsMessage"],
 } as const satisfies Record<SectionId, readonly string[]>;
 
 export const UNPUBLISHED_FILTER = '_originalId in path("drafts.**") && _type in $types';
 
-const PEOPLE: Record<string, Person> = {};
+const PEOPLE = new Map<string, Person>([
+  ["p1jnSM0Sf", { name: "Sudhir Brahmbhatt", role: "president" }],
+]);
 
 export function getAccess(
   user: User,
   {
     people = PEOPLE,
     viewAs = getViewAs(),
-  }: { people?: Record<string, Person>; viewAs?: string | null } = {},
+  }: { people?: ReadonlyMap<string, Person>; viewAs?: string | null } = {},
 ) {
   const person = getPerson(user, people, viewAs);
 
@@ -86,12 +95,12 @@ export function getAccess(
 
 function getPerson(
   user: User,
-  people: Record<string, Person>,
+  people: ReadonlyMap<string, Person>,
   viewAs: string | null,
 ): Person | undefined {
   if (isAdministrator(user) && isDemoView(viewAs)) return DEMO_VIEWS[viewAs].person;
 
-  return user ? people[user.id] : undefined;
+  return user ? people.get(user.id) : undefined;
 }
 
 export const isDemoView = (value: unknown): value is DemoView =>

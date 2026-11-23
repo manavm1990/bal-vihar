@@ -3,6 +3,7 @@ import { BookIcon } from "@sanity/icons/Book";
 import { CalendarIcon } from "@sanity/icons/Calendar";
 import { DocumentIcon } from "@sanity/icons/Document";
 import { DocumentTextIcon } from "@sanity/icons/DocumentText";
+import { EnvelopeIcon } from "@sanity/icons/Envelope";
 import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
 import { ImageIcon } from "@sanity/icons/Image";
 import { ImagesIcon } from "@sanity/icons/Images";
@@ -140,6 +141,16 @@ export const TASK_GROUPS = [
         description: "Review dates, fees and numbers for the new year.",
         icon: DocumentTextIcon,
         target: { intent: "edit", params: { id: SINGLETON_IDS.policies, type: "policies" } },
+      },
+      {
+        section: "presidentsMessage",
+        title: "President's Message",
+        description: "The president's letter to families.",
+        icon: EnvelopeIcon,
+        target: {
+          intent: "edit",
+          params: { id: SINGLETON_IDS.presidentsMessage, type: "presidentsMessage" },
+        },
       },
       {
         section: "faqs",

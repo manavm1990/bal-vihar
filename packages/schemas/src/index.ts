@@ -7,6 +7,7 @@ import { page } from "./documents/page";
 import { photoAlbum } from "./documents/photo-album";
 import { PHOTO_PAGE_OPTIONS, photoGallery } from "./documents/photo-gallery";
 import { policies } from "./documents/policies";
+import { presidentsMessage } from "./documents/presidents-message";
 import { spreadsheetImport } from "./documents/spreadsheet-import";
 import { teachingFaculty } from "./documents/teaching-faculty";
 import { volunteerRoster } from "./documents/volunteer-roster";
@@ -29,6 +30,7 @@ export const SINGLETON_IDS = {
   impactAward: "impactAward",
   photoGallery: "photoGallery",
   policies: "policies",
+  presidentsMessage: "presidentsMessage",
   teachingFaculty: "teachingFaculty",
   volunteerRoster: "volunteerRoster",
   volunteersList: "volunteersList",
@@ -53,6 +55,7 @@ export const schemaTypes = [
   photoAlbum,
   photoGallery,
   policies,
+  presidentsMessage,
   spreadsheetImport,
   teachingFaculty,
   volunteerRoster,
@@ -82,6 +85,7 @@ export {
   photoAlbum,
   photoGallery,
   policies,
+  presidentsMessage,
   RESERVED_SLUGS,
   spreadsheetImport,
   teachingFaculty,
