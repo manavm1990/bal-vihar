@@ -1,6 +1,6 @@
 import { ImagesIcon } from "@sanity/icons/Images";
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { hasSlug, isAdministrator } from "../field-rules";
+import { hasSlug, isAdminView } from "../field-rules";
 import { getCurrentSchoolYear, SCHOOL_YEARS } from "../school-years";
 
 const describePhotoCount = (photos: unknown) => {
@@ -33,7 +33,7 @@ export const photoAlbum = defineType({
       description:
         "Click Generate once. After that it is locked, so links people already shared keep working.",
       options: { source: "title", maxLength: 80 },
-      readOnly: ({ value, currentUser }) => hasSlug(value) && !isAdministrator(currentUser),
+      readOnly: ({ value, currentUser }) => hasSlug(value) && !isAdminView(currentUser),
       validation: (rule) => rule.required().error("Click Generate to make the web address."),
     }),
     defineField({

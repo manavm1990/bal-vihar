@@ -7,15 +7,25 @@ const PEOPLE: Record<string, Person> = {
   teacher: { role: "teacher", classes: ["grade-3"] },
 };
 
+const ADMIN = { id: "admin", roles: [{ name: "administrator" }] };
+
+const createUser = (id: string) => ({ id, roles: [{ name: "editor" }] });
+
 test("anyone not on the list sees every section", () => {
-  const { canSee, classes } = getAccess("someoneElse", PEOPLE);
+  const { canSee, classes } = getAccess(createUser("someoneElse"), {
+    people: PEOPLE,
+    viewAs: null,
+  });
 
   equal(SECTION_IDS.every(canSee), true);
   equal(classes, null);
 });
 
 test("a teacher sees only classes, limited to their own", () => {
-  const { canSee, classes, types } = getAccess("teacher", PEOPLE);
+  const { canSee, classes, types } = getAccess(createUser("teacher"), {
+    people: PEOPLE,
+    viewAs: null,
+  });
 
   deepStrictEqual(SECTION_IDS.filter(canSee), ["classes"]);
   deepStrictEqual(classes, ["grade-3"]);
@@ -23,11 +33,25 @@ test("a teacher sees only classes, limited to their own", () => {
 });
 
 test("a role's types cover every section it can see, without repeats", () => {
-  const { types } = getAccess("calendarPerson", PEOPLE);
+  const { types } = getAccess(createUser("calendarPerson"), { people: PEOPLE, viewAs: null });
 
   deepStrictEqual(types, ["calendarEvent", "spreadsheetImport", "homePage"]);
 });
 
 test("signed-out or unknown users fall back to everything", () => {
-  equal(getAccess(undefined, PEOPLE).canSee("policies"), true);
+  equal(getAccess(undefined, { people: PEOPLE, viewAs: null }).canSee("policies"), true);
+});
+
+test("an administrator viewing as a teacher of two classes sees just those classes", () => {
+  const { canSee, classes } = getAccess(ADMIN, { people: PEOPLE, viewAs: "teacherOfTwo" });
+
+  deepStrictEqual(SECTION_IDS.filter(canSee), ["classes"]);
+  deepStrictEqual(classes, ["3-a", "bhajan"]);
+});
+
+test("a chosen view is ignored for non-administrators and for unknown names", () => {
+  deepStrictEqual(getAccess(createUser("teacher"), { people: PEOPLE, viewAs: "photos" }).classes, [
+    "grade-3",
+  ]);
+  equal(SECTION_IDS.every(getAccess(ADMIN, { people: PEOPLE, viewAs: "nobody" }).canSee), true);
 });

@@ -17,7 +17,7 @@ import { getAccess, type SectionId, UNPUBLISHED_FILTER } from "../roles";
 import { UPLOADS } from "../templates";
 
 interface Section {
-  create: (S: StructureBuilder, classes: string[] | null) => ListItemBuilder;
+  create: (S: StructureBuilder, classes: readonly string[] | null) => ListItemBuilder;
   group: (typeof GROUPS)[number];
   id: SectionId;
 }
@@ -211,7 +211,7 @@ const SECTIONS = [
 ] as const satisfies readonly Section[];
 
 export const structure: StructureResolver = (S, { currentUser }) => {
-  const { canSee, classes, types } = getAccess(currentUser?.id);
+  const { canSee, classes, types } = getAccess(currentUser);
   const visible = SECTIONS.filter(({ id }) => canSee(id));
 
   return S.list()

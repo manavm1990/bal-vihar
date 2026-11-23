@@ -11,6 +11,7 @@ import { spreadsheetImport } from "./documents/spreadsheet-import";
 import { teachingFaculty } from "./documents/teaching-faculty";
 import { volunteerRoster } from "./documents/volunteer-roster";
 import { volunteersList } from "./documents/volunteers-list";
+import { getViewAs, isAdministrator, VIEW_AS_KEY } from "./field-rules";
 import { albumPhoto } from "./objects/album-photo";
 import { classLink } from "./objects/class-link";
 import { mediaImage } from "./objects/media-image";
@@ -43,6 +44,7 @@ export const schemaTypes = [
   faqs,
   homePage,
   impactAward,
+  isAdministrator,
   mediaImage,
   page,
   pageAccordion,
@@ -54,6 +56,7 @@ export const schemaTypes = [
   policies,
   spreadsheetImport,
   teachingFaculty,
+  VIEW_AS_KEY,
   volunteerRoster,
   volunteersList,
   youthAssistant,
@@ -66,6 +69,7 @@ export {
   classPage,
   faqs,
   getToday,
+  getViewAs,
   HEADER_MENUS,
   homePage,
   impactAward,

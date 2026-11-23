@@ -8,6 +8,7 @@ import { createDuplicateWithoutSlug } from "./actions/duplicate-without-slug";
 import UndoUploadAction from "./actions/undo-upload";
 import Layout from "./components/layout";
 import Logo from "./components/logo";
+import ToolMenu from "./components/tool-menu";
 import Home from "./home";
 import { resolve } from "./presentation";
 import { getAccess, type SectionId } from "./roles";
@@ -33,7 +34,7 @@ export default defineConfig({
   title: "Bal Vihar CMS",
   icon: Logo,
   theme,
-  studio: { components: { layout: Layout } },
+  studio: { components: { layout: Layout, toolMenu: ToolMenu } },
   tools: (prev) => [{ name: "home", title: "Home", icon: HomeIcon, component: Home }, ...prev],
   projectId: "x5wq3sbt",
   dataset: "production",
@@ -63,7 +64,7 @@ export default defineConfig({
 
   document: {
     newDocumentOptions: (prev, { currentUser }) => {
-      const { canSee } = getAccess(currentUser?.id);
+      const { canSee } = getAccess(currentUser);
 
       return prev.filter((item) => {
         const section = CREATABLE_TYPES.get(item.templateId);

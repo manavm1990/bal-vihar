@@ -3,6 +3,8 @@ type User = { roles: { name: string }[] } | null | undefined;
 const HAS_SCHEME = /^[a-z][a-z0-9+.-]*:/i;
 const SITE_HOSTS = ["balvihar-stlouis.com", "www.balvihar-stlouis.com"];
 
+export const VIEW_AS_KEY = "bv-studio-view-as";
+
 export const describeMissingSlash = (href: unknown) =>
   typeof href !== "string" || href === "" || HAS_SCHEME.test(href) || /^[/#]/.test(href)
     ? null
@@ -37,11 +39,21 @@ export function describeUnevenRows(rows: unknown, table: unknown) {
 
 export const getFirstSegment = (path: string) => path.split(/[/?#]/)[1] ?? "";
 
+export function getViewAs() {
+  try {
+    return globalThis.localStorage?.getItem(VIEW_AS_KEY) ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export const hasSlug = (value: unknown) =>
   typeof value === "object" && value !== null && "current" in value && Boolean(value.current);
 
 export const isAdministrator = (user: User) =>
   Boolean(user?.roles.some(({ name }) => name === "administrator"));
+
+export const isAdminView = (user: User) => isAdministrator(user) && getViewAs() === null;
 
 export function parseSitePath(href: unknown) {
   if (typeof href !== "string") return null;

@@ -1,7 +1,7 @@
 import { DocumentIcon } from "@sanity/icons/Document";
 import { defineArrayMember, defineField, defineType, getPublishedId } from "sanity";
 import { API_VERSION } from "../constants";
-import { hasSlug, isAdministrator } from "../field-rules";
+import { hasSlug, isAdminView } from "../field-rules";
 import { createBodyBlock } from "../objects/page-blocks";
 import { HEADER_MENUS, RESERVED_SLUGS } from "../route-config";
 import { getToday } from "../school-years";
@@ -37,7 +37,7 @@ export const page = defineType({
       description:
         "The page lives at balvihar-stlouis.com/this-address. Click Generate once. After that it is locked so shared links keep working; ask the site administrator if it must change.",
       options: { source: "title" },
-      readOnly: ({ value, currentUser }) => hasSlug(value) && !isAdministrator(currentUser),
+      readOnly: ({ value, currentUser }) => hasSlug(value) && !isAdminView(currentUser),
       validation: (rule) =>
         rule.required().custom((value) => {
           const slug = value?.current;

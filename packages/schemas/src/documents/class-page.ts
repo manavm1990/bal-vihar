@@ -6,7 +6,7 @@ import {
   defineField,
   defineType,
 } from "sanity";
-import { describeRepeatedDates, isAdministrator } from "../field-rules";
+import { describeRepeatedDates, isAdminView } from "../field-rules";
 import { getToday } from "../school-years";
 
 const GROUP_OPTIONS = [
@@ -36,7 +36,7 @@ const getGroupTitle = (value: unknown) =>
   GROUP_OPTIONS.find((option) => option.value === value)?.title;
 
 const isLockedForEditors = ({ currentUser }: ConditionalPropertyCallbackContext) =>
-  !isAdministrator(currentUser);
+  !isAdminView(currentUser);
 
 export const classPage = defineType({
   name: "classPage",

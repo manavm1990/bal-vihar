@@ -17,7 +17,7 @@ const STAGGER_MS = 40;
 export default function Home() {
   const user = useCurrentUser();
   const scheme = useColorSchemeValue();
-  const { canSee, types } = getAccess(user?.id);
+  const { canSee, types } = getAccess(user);
   const draftCount = useDraftCount(types);
   const firstName = user?.name?.split(" ")[0];
   const groups = TASK_GROUPS.map((group) => ({
