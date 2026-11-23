@@ -49,6 +49,19 @@ test("an administrator viewing as a teacher of two classes sees just those class
   deepStrictEqual(classes, ["3-a", "bhajan"]);
 });
 
+test("an education lead sees every class plus the faculty and team lists", () => {
+  const { canSee, classes } = getAccess(ADMIN, { people: PEOPLE, viewAs: "education" });
+
+  deepStrictEqual(SECTION_IDS.filter(canSee), ["adminTeam", "classes", "faculty"]);
+  equal(classes, null);
+});
+
+test("a volunteer coordinator sees the volunteer lists, their upload and the Impact Award", () => {
+  const { types } = getAccess(ADMIN, { people: PEOPLE, viewAs: "volunteers" });
+
+  deepStrictEqual(types, ["volunteerRoster", "spreadsheetImport", "impactAward"]);
+});
+
 test("a chosen view is ignored for non-administrators and for unknown names", () => {
   deepStrictEqual(getAccess(createUser("teacher"), { people: PEOPLE, viewAs: "photos" }).classes, [
     "grade-3",

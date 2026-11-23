@@ -11,17 +11,23 @@ export interface Person {
 type User = { id: string; roles: { name: string }[] } | null | undefined;
 
 export const ROLES = {
+  communications: ["calendar", "faqs", "notice", "pages"],
+  education: ["adminTeam", "classes", "faculty"],
   photos: ["banners", "photos"],
   teacher: ["classes"],
+  volunteers: ["eventVolunteers", "impactAward"],
 } as const satisfies Record<string, readonly SectionId[]>;
 
 export const DEMO_VIEWS = {
+  communications: { title: "Communications", person: { role: "communications" } },
+  education: { title: "Education lead", person: { role: "education" } },
   photos: { title: "Photos helper", person: { role: "photos" } },
   teacher: { title: "Teacher, 1 class", person: { role: "teacher", classes: ["3-a"] } },
   teacherOfTwo: {
     title: "Teacher, 2 classes",
     person: { role: "teacher", classes: ["3-a", "bhajan"] },
   },
+  volunteers: { title: "Volunteer coordinator", person: { role: "volunteers" } },
 } as const satisfies Record<string, { title: string; person: Person }>;
 
 export const SECTION_IDS = [
