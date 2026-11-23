@@ -579,7 +579,6 @@ export type CalendarEvent = {
   eventType?: "regular" | "special" | "celebration" | "holiday" | "project";
   description?: string;
   isHighlighted?: boolean;
-  academicYear?: "2027-28" | "2026-27" | "2025-26";
 };
 
 export type AlbumPhoto = {
@@ -728,7 +727,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../website/app/lib/sanity/queries.ts
 // Variable: CALENDAR_EVENTS_QUERY
-// Query: *[_type == "calendarEvent"] | order(date asc) {  _id,  title,  date,  location,  eventType,  time,  description,  isHighlighted,  academicYear,  "detailsSlug": *[_type == "page" && (event._ref == ^._id || "drafts." + event._ref == ^._id)][0].slug.current}
+// Query: *[_type == "calendarEvent"] | order(date asc) {  _id,  title,  date,  location,  eventType,  time,  description,  isHighlighted,  "detailsSlug": *[_type == "page" && (event._ref == ^._id || "drafts." + event._ref == ^._id)][0].slug.current}
 export type CALENDAR_EVENTS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
@@ -739,7 +738,6 @@ export type CALENDAR_EVENTS_QUERY_RESULT = Array<{
   time: string | null;
   description: string | null;
   isHighlighted: boolean | null;
-  academicYear: "2025-26" | "2026-27" | "2027-28" | null;
   detailsSlug: string | null;
 }>;
 
@@ -1442,7 +1440,7 @@ export type VOLUNTEERS_LIST_QUERY_RESULT =
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '*[_type == "calendarEvent"] | order(date asc) {\n  _id,\n  title,\n  date,\n  location,\n  eventType,\n  time,\n  description,\n  isHighlighted,\n  academicYear,\n  "detailsSlug": *[_type == "page" && (event._ref == ^._id || "drafts." + event._ref == ^._id)][0].slug.current\n}': CALENDAR_EVENTS_QUERY_RESULT;
+    '*[_type == "calendarEvent"] | order(date asc) {\n  _id,\n  title,\n  date,\n  location,\n  eventType,\n  time,\n  description,\n  isHighlighted,\n  "detailsSlug": *[_type == "page" && (event._ref == ^._id || "drafts." + event._ref == ^._id)][0].slug.current\n}': CALENDAR_EVENTS_QUERY_RESULT;
     '*[_type == "classPage" && slug.current == $slug][0]{\n  _id,\n  title,\n  "slug": slug.current,\n  teachers,\n  pinnedNote,\n  links[]{\n    _key,\n    label,\n    url\n  },\n  "sessions": sessions[] | order(date desc){\n    _key,\n    date,\n    covered,\n    homework,\n    links[]{\n      _key,\n      label,\n      url\n    }\n  }\n}': CLASS_PAGE_QUERY_RESULT;
     '*[_type == "classPage"] | order(sortOrder asc){\n  _id,\n  title,\n  "slug": slug.current,\n  group,\n  teachers,\n  "hasContent": count(sessions) > 0 || count(links) > 0 || defined(pinnedNote)\n}': CLASS_PAGES_QUERY_RESULT;
     '*[_id == "faqs"][0]{\n  _id,\n  items[]{\n    _key,\n    question,\n    answer\n  }\n}': FAQS_QUERY_RESULT;

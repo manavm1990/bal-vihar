@@ -1,7 +1,6 @@
 import { locateColumns, type Row, SheetError, toText } from "./sheet";
 
 export interface CalendarEvent {
-  academicYear: string;
   date: string;
   description?: string;
   eventType: string;
@@ -44,13 +43,6 @@ function formatTime(cell: unknown) {
   const hours = cell.getUTCHours();
 
   return `${hours % 12 || 12}:${padTwo(cell.getUTCMinutes())} ${hours < 12 ? "A.M." : "P.M."}`;
-}
-
-function getAcademicYear(date: string) {
-  const year = Number(date.slice(0, 4));
-  const start = Number(date.slice(5, 7)) >= 8 ? year : year - 1;
-
-  return `${start}-${padTwo((start + 1) % 100)}`;
 }
 
 const isBlankRow = (row: Row) =>
@@ -151,7 +143,6 @@ export function parseCalendarEvents(rows: Row[]) {
 
       if (!events.has(key))
         events.set(key, {
-          academicYear: getAcademicYear(date),
           date,
           ...(description ? { description } : {}),
           eventType,

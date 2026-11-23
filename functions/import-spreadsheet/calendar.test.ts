@@ -15,7 +15,6 @@ test("reads dates, times and optional columns below a title row", () => {
   deepStrictEqual(problems, []);
   deepStrictEqual(events, [
     {
-      academicYear: "2025-26",
       date: "2025-09-07",
       description: "Bring a dish",
       eventType: "celebration",
@@ -25,14 +24,12 @@ test("reads dates, times and optional columns below a title row", () => {
       title: "Diwali",
     },
     {
-      academicYear: "2025-26",
       date: "2025-09-14",
       eventType: "regular",
       isHighlighted: false,
       title: "Regular classes",
     },
     {
-      academicYear: "2025-26",
       date: "2025-10-05",
       eventType: "regular",
       isHighlighted: false,
@@ -40,20 +37,6 @@ test("reads dates, times and optional columns below a title row", () => {
       title: "Garba night",
     },
   ]);
-});
-
-test("the school year starts in August", () => {
-  const { events } = parseCalendarEvents([
-    ["Date", "Name"],
-    ["2025-07-31", "Summer"],
-    ["2025-08-01", "New year"],
-    ["2026-03-01", "Spring"],
-  ]);
-
-  deepStrictEqual(
-    events.map(({ academicYear }) => academicYear),
-    ["2024-25", "2025-26", "2025-26"],
-  );
 });
 
 test("kind names match the Studio labels and short forms", () => {

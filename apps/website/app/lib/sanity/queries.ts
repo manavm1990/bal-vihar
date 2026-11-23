@@ -9,7 +9,6 @@ export const CALENDAR_EVENTS_QUERY = defineQuery(`*[_type == "calendarEvent"] | 
   time,
   description,
   isHighlighted,
-  academicYear,
   "detailsSlug": *[_type == "page" && (event._ref == ^._id || "drafts." + event._ref == ^._id)][0].slug.current
 }`);
 

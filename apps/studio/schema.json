@@ -3710,27 +3710,6 @@
           "type": "boolean"
         },
         "optional": true
-      },
-      "academicYear": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "union",
-          "of": [
-            {
-              "type": "string",
-              "value": "2027-28"
-            },
-            {
-              "type": "string",
-              "value": "2026-27"
-            },
-            {
-              "type": "string",
-              "value": "2025-26"
-            }
-          ]
-        },
-        "optional": true
       }
     }
   },

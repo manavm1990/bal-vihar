@@ -1,6 +1,5 @@
 import { CalendarIcon } from "@sanity/icons/Calendar";
 import { defineField, defineType } from "sanity";
-import { getCurrentSchoolYear, SCHOOL_YEARS } from "../school-years";
 
 const EVENT_TYPES = [
   { title: "Regular classes", value: "regular", label: "Classes" },
@@ -86,14 +85,6 @@ export const calendarEvent = defineType({
       type: "boolean",
       description: "Turn on for especially important events.",
       initialValue: false,
-      group: "settings",
-    }),
-    defineField({
-      name: "academicYear",
-      title: "School year",
-      type: "string",
-      options: { list: SCHOOL_YEARS, layout: "dropdown" },
-      initialValue: getCurrentSchoolYear,
       group: "settings",
     }),
   ],
