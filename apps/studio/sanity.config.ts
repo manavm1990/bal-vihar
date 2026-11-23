@@ -42,6 +42,7 @@ export default defineConfig({
   projectId: "x5wq3sbt",
   dataset: "production",
   releases: { enabled: false },
+  scheduledDrafts: { enabled: false },
 
   plugins: [
     structureTool({ structure, title: "Edit", icon: EditIcon }),
