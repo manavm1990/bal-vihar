@@ -1,4 +1,6 @@
 import { SINGLETON_TYPES, schemaTypes } from "@bv/schemas";
+import { DesktopIcon } from "@sanity/icons/Desktop";
+import { EditIcon } from "@sanity/icons/Edit";
 import { HomeIcon } from "@sanity/icons/Home";
 import { visionTool } from "@sanity/vision";
 import { defineConfig } from "sanity";
@@ -6,6 +8,7 @@ import { presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
 import { createDuplicateWithoutSlug } from "./actions/duplicate-without-slug";
 import UndoUploadAction from "./actions/undo-upload";
+import FormInput from "./components/form-input";
 import Layout from "./components/layout";
 import Logo from "./components/logo";
 import ToolMenu from "./components/tool-menu";
@@ -38,11 +41,13 @@ export default defineConfig({
   tools: (prev) => [{ name: "home", title: "Home", icon: HomeIcon, component: Home }, ...prev],
   projectId: "x5wq3sbt",
   dataset: "production",
+  releases: { enabled: false },
 
   plugins: [
-    structureTool({ structure, title: "Edit" }),
+    structureTool({ structure, title: "Edit", icon: EditIcon }),
     presentationTool({
       title: "Preview",
+      icon: DesktopIcon,
       resolve,
       previewUrl: {
         origin: previewOrigin,
@@ -56,6 +61,8 @@ export default defineConfig({
     // Vision is a developer query tool — keep it out of the hosted editor UI.
     ...(isDev ? [visionTool()] : []),
   ],
+
+  form: { components: { input: FormInput } },
 
   schema: {
     types: [...schemaTypes],
