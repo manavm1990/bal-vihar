@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { getAccess, type Person, SECTION_IDS } from "./roles";
 
 const PEOPLE: Record<string, Person> = {
-  calendarPerson: { role: "calendar" },
+  photosPerson: { role: "photos" },
   teacher: { role: "teacher", classes: ["grade-3"] },
 };
 
@@ -33,9 +33,9 @@ test("a teacher sees only classes, limited to their own", () => {
 });
 
 test("a role's types cover every section it can see, without repeats", () => {
-  const { types } = getAccess(createUser("calendarPerson"), { people: PEOPLE, viewAs: null });
+  const { types } = getAccess(createUser("photosPerson"), { people: PEOPLE, viewAs: null });
 
-  deepStrictEqual(types, ["calendarEvent", "spreadsheetImport", "homePage"]);
+  deepStrictEqual(types, ["photoGallery", "photoAlbum"]);
 });
 
 test("signed-out or unknown users fall back to everything", () => {
