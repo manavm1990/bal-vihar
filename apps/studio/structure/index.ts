@@ -1,4 +1,5 @@
 import { getToday, SINGLETON_IDS } from "@bv/schemas";
+import { API_VERSION } from "@bv/schemas/constants";
 import { BookIcon } from "@sanity/icons/Book";
 import { CalendarIcon } from "@sanity/icons/Calendar";
 import { ClockIcon } from "@sanity/icons/Clock";
@@ -12,12 +13,23 @@ import { StarIcon } from "@sanity/icons/Star";
 import { UploadIcon } from "@sanity/icons/Upload";
 import { UsersIcon } from "@sanity/icons/Users";
 import { WarningOutlineIcon } from "@sanity/icons/WarningOutline";
-import type { ListItemBuilder, StructureBuilder, StructureResolver } from "sanity/structure";
+import { getPublishedId } from "sanity";
+import type {
+  ListItemBuilder,
+  StructureBuilder,
+  StructureResolver,
+  StructureResolverContext,
+} from "sanity/structure";
 import { getAccess, type SectionId, UNPUBLISHED_FILTER } from "../roles";
 import { UPLOADS } from "../templates";
 
+interface SectionContext {
+  classes: readonly string[] | null;
+  getClient: StructureResolverContext["getClient"];
+}
+
 interface Section {
-  create: (S: StructureBuilder, classes: readonly string[] | null) => ListItemBuilder;
+  create: (S: StructureBuilder, context: SectionContext) => ListItemBuilder;
   group: (typeof GROUPS)[number];
   id: SectionId;
 }
@@ -28,20 +40,7 @@ const SECTIONS = [
   {
     id: "classes",
     group: "After each class",
-    create: (S, classes) =>
-      S.listItem()
-        .title(classes?.length === 1 ? "My class" : "Classes")
-        .icon(BookIcon)
-        .child(
-          S.documentList()
-            .title("Classes")
-            .schemaType("classPage")
-            .filter(
-              classes ? '_type == "classPage" && slug.current in $classes' : '_type == "classPage"',
-            )
-            .params({ classes: classes ?? [] })
-            .defaultOrdering([{ field: "sortOrder", direction: "asc" }]),
-        ),
+    create: (S, { classes, getClient }) => createClassesItem({ S, classes, getClient }),
   },
   {
     id: "banners",
@@ -210,7 +209,7 @@ const SECTIONS = [
   },
 ] as const satisfies readonly Section[];
 
-export const structure: StructureResolver = (S, { currentUser }) => {
+export const structure: StructureResolver = (S, { currentUser, getClient }) => {
   const { canSee, classes, types } = getAccess(currentUser);
   const visible = SECTIONS.filter(({ id }) => canSee(id));
 
@@ -235,11 +234,37 @@ export const structure: StructureResolver = (S, { currentUser }) => {
           ? []
           : ([
               S.divider().title(group),
-              ...items.map((section) => section.create(S, classes).id(section.id)),
+              ...items.map((section) => section.create(S, { classes, getClient }).id(section.id)),
             ] as const);
       }),
     ]);
 };
+
+function createClassesItem({ S, classes, getClient }: SectionContext & { S: StructureBuilder }) {
+  const list = S.documentList()
+    .title("Classes")
+    .schemaType("classPage")
+    .filter(classes ? '_type == "classPage" && slug.current in $classes' : '_type == "classPage"')
+    .params({ classes: classes ?? [] })
+    .defaultOrdering([{ field: "sortOrder", direction: "asc" }]);
+  const onlyClass = classes?.length === 1 ? classes[0] : undefined;
+
+  return S.listItem()
+    .title(onlyClass ? "My class" : "Classes")
+    .icon(BookIcon)
+    .child(
+      !onlyClass
+        ? list
+        : async () => {
+            const id = await getClient({ apiVersion: API_VERSION }).fetch<string | null>(
+              `*[_type == "classPage" && slug.current == $slug][0]._id`,
+              { slug: onlyClass },
+            );
+
+            return id ? S.document().schemaType("classPage").documentId(getPublishedId(id)) : list;
+          },
+    );
+}
 
 const createDatedItem = ({
   S,
