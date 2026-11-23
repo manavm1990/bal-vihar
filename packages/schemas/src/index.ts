@@ -9,10 +9,11 @@ import { PHOTO_PAGE_OPTIONS, photoGallery } from "./documents/photo-gallery";
 import { policies } from "./documents/policies";
 import { presidentsMessage } from "./documents/presidents-message";
 import { spreadsheetImport } from "./documents/spreadsheet-import";
+import { studioAccess, studioMember } from "./documents/studio-access";
 import { teachingFaculty } from "./documents/teaching-faculty";
 import { volunteerRoster } from "./documents/volunteer-roster";
 import { volunteersList } from "./documents/volunteers-list";
-import { getViewAs, isAdministrator, VIEW_AS_KEY } from "./field-rules";
+import { getViewAs, isAdministrator, isAdminView, VIEW_AS_KEY } from "./field-rules";
 import { albumPhoto } from "./objects/album-photo";
 import { classLink } from "./objects/class-link";
 import { mediaImage } from "./objects/media-image";
@@ -23,6 +24,7 @@ import { pageCards } from "./objects/page-cards";
 import { youthAssistant } from "./objects/youth-assistant";
 import { HEADER_MENUS, RESERVED_SLUGS } from "./route-config";
 import { getToday } from "./school-years";
+import { isStudioRole, STUDIO_ROLES, type StudioRole } from "./studio-roles";
 
 export const SINGLETON_IDS = {
   faqs: "faqs",
@@ -31,6 +33,7 @@ export const SINGLETON_IDS = {
   photoGallery: "photoGallery",
   policies: "policies",
   presidentsMessage: "presidentsMessage",
+  studioAccess: "studioAccess",
   teachingFaculty: "teachingFaculty",
   volunteerRoster: "volunteerRoster",
   volunteersList: "volunteersList",
@@ -57,6 +60,8 @@ export const schemaTypes = [
   policies,
   presidentsMessage,
   spreadsheetImport,
+  studioAccess,
+  studioMember,
   teachingFaculty,
   volunteerRoster,
   volunteersList,
@@ -75,6 +80,8 @@ export {
   homePage,
   impactAward,
   isAdministrator,
+  isAdminView,
+  isStudioRole,
   mediaImage,
   PHOTO_PAGE_OPTIONS,
   page,
@@ -87,7 +94,11 @@ export {
   policies,
   presidentsMessage,
   RESERVED_SLUGS,
+  STUDIO_ROLES,
+  type StudioRole,
   spreadsheetImport,
+  studioAccess,
+  studioMember,
   teachingFaculty,
   VIEW_AS_KEY,
   volunteerRoster,

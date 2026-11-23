@@ -1,17 +1,31 @@
-import { Button, Card, Flex, Text } from "@sanity/ui";
-import type { LayoutProps } from "sanity";
+import { API_VERSION } from "@bv/schemas/constants";
+import { Button, Card, Flex, Spinner, Text } from "@sanity/ui";
+import { type ReactNode, Suspense, use } from "react";
+import { type LayoutProps, useClient } from "sanity";
 import { createGlobalStyle } from "styled-components";
+import { loadPeople } from "../access-store";
 import { DEMO_VIEWS } from "../roles";
 import useViewAs from "./use-view-as";
 
 export default function Layout(props: LayoutProps) {
   const { switchView, viewAs } = useViewAs();
+  const studio = (
+    <Suspense
+      fallback={
+        <Flex align="center" height="fill" justify="center">
+          <Spinner muted />
+        </Flex>
+      }
+    >
+      <AccessGate>{props.renderDefault(props)}</AccessGate>
+    </Suspense>
+  );
 
   return (
     <>
       <FontFaces />
       {!viewAs ? (
-        props.renderDefault(props)
+        studio
       ) : (
         <Flex direction="column" height="fill">
           <Card borderBottom padding={2} tone="caution">
@@ -30,12 +44,20 @@ export default function Layout(props: LayoutProps) {
             </Flex>
           </Card>
           <Flex direction="column" flex={1} overflow="hidden">
-            {props.renderDefault(props)}
+            {studio}
           </Flex>
         </Flex>
       )}
     </>
   );
+}
+
+type AccessGateProps = { children: ReactNode };
+
+function AccessGate({ children }: AccessGateProps) {
+  use(loadPeople(useClient({ apiVersion: API_VERSION })));
+
+  return children;
 }
 
 const FontFaces = createGlobalStyle`

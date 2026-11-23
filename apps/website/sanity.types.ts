@@ -116,6 +116,45 @@ export type TeachingFaculty = {
   }>;
 };
 
+export type StudioMember = {
+  _type: "studioMember";
+  id?: string;
+  name?: string;
+};
+
+export type ClassPageReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "classPage";
+};
+
+export type StudioAccess = {
+  _id: string;
+  _type: "studioAccess";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  people?: Array<{
+    member?: StudioMember;
+    role:
+      | "bVision"
+      | "communications"
+      | "education"
+      | "photos"
+      | "president"
+      | "teacher"
+      | "volunteers";
+    classes?: Array<
+      {
+        _key: string;
+      } & ClassPageReference
+    >;
+    _type: "studioPerson";
+    _key: string;
+  }>;
+};
+
 export type SanityFileAssetReference = {
   _ref: string;
   _type: "reference";
@@ -721,6 +760,9 @@ export type AllSanitySchemaTypes =
   | VolunteersList
   | VolunteerRoster
   | TeachingFaculty
+  | StudioMember
+  | ClassPageReference
+  | StudioAccess
   | SanityFileAssetReference
   | SpreadsheetImport
   | PresidentsMessage

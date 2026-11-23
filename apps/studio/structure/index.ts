@@ -1,4 +1,4 @@
-import { getToday, SINGLETON_IDS } from "@bv/schemas";
+import { getToday, isAdminView, SINGLETON_IDS } from "@bv/schemas";
 import { API_VERSION } from "@bv/schemas/constants";
 import { BookIcon } from "@sanity/icons/Book";
 import { CalendarIcon } from "@sanity/icons/Calendar";
@@ -10,6 +10,7 @@ import { EnvelopeIcon } from "@sanity/icons/Envelope";
 import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
 import { ImageIcon } from "@sanity/icons/Image";
 import { ImagesIcon } from "@sanity/icons/Images";
+import { LockIcon } from "@sanity/icons/Lock";
 import { StarIcon } from "@sanity/icons/Star";
 import { UploadIcon } from "@sanity/icons/Upload";
 import { UsersIcon } from "@sanity/icons/Users";
@@ -249,6 +250,17 @@ export const structure: StructureResolver = (S, { currentUser, getClient }) => {
               ...items.map((section) => section.create(S, { classes, getClient }).id(section.id)),
             ] as const);
       }),
+      ...(!isAdminView(currentUser)
+        ? []
+        : [
+            S.divider().title("Administrators"),
+            createSingletonItem({
+              S,
+              title: "Who sees what",
+              type: "studioAccess",
+              icon: LockIcon,
+            }),
+          ]),
     ]);
 };
 

@@ -1,4 +1,5 @@
-import { getViewAs, isAdministrator } from "@bv/schemas";
+import { getViewAs, isAdministrator, type StudioRole } from "@bv/schemas";
+import { getPeople } from "./access-store";
 
 export type DemoView = keyof typeof DEMO_VIEWS;
 export type SectionId = (typeof SECTION_IDS)[number];
@@ -6,7 +7,7 @@ export type SectionId = (typeof SECTION_IDS)[number];
 export interface Person {
   classes?: readonly string[];
   name?: string;
-  role: keyof typeof ROLES;
+  role: StudioRole;
 }
 
 type User = { id: string; roles: { name: string }[] } | null | undefined;
@@ -19,7 +20,7 @@ export const ROLES = {
   president: ["presidentsMessage"],
   teacher: ["classes"],
   volunteers: ["eventVolunteers"],
-} as const satisfies Record<string, readonly SectionId[]>;
+} as const satisfies Record<StudioRole, readonly SectionId[]>;
 
 export const DEMO_VIEWS = {
   bVision: { title: "B-VISION coordinator", person: { role: "bVision" } },
@@ -69,14 +70,10 @@ export const SECTION_TYPES = {
 
 export const UNPUBLISHED_FILTER = '_originalId in path("drafts.**") && _type in $types';
 
-const PEOPLE = new Map<string, Person>([
-  ["p1jnSM0Sf", { name: "Sudhir Brahmbhatt", role: "president" }],
-]);
-
 export function getAccess(
   user: User,
   {
-    people = PEOPLE,
+    people = getPeople(),
     viewAs = getViewAs(),
   }: { people?: ReadonlyMap<string, Person>; viewAs?: string | null } = {},
 ) {
